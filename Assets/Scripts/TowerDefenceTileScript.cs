@@ -2,17 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TowerDefenceTileScript : MonoBehaviour
+namespace TowerDefence
 {
-    // Start is called before the first frame update
-    void Start()
+    public class TowerDefenceTileScript : MonoBehaviour
     {
-        
-    }
+        Material _material = null;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        void Awake()
+        {
+            if (TryGetComponent(out MeshRenderer mr))
+            {
+                _material = mr.sharedMaterial;
+            }
+        }
+
+        public void GetHighlighted() => SetHighlighted(true);
+        public void GetUnhighlighted() => SetHighlighted(false);
+        public void SetHighlighted(bool setTo)
+        {
+            if (_material == null) return;
+
+            _material.SetFloat("_IsHighlighted", setTo ? 1 : 0);
+        }
+    } 
 }
