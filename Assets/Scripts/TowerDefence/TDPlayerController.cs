@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace TowerDefence
@@ -8,6 +9,7 @@ namespace TowerDefence
     {
         [SerializeField] LayerMask TowerDefenceLayer;
         [SerializeField] GameObject _Debugger1;
+        [SerializeField] TextMeshProUGUI _CurrentTurretText;
 
         Camera _camera = null;
         TowerDefenceTileScript _currentTile = null;

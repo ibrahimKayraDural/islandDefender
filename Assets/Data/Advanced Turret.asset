@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _DisplayName: Advanced Turret
   _id: advanced-turret
+  _PrefabObject: {fileID: 748293828728509242, guid: a60b7757f588a724780c77fe918aa17f, type: 3}
