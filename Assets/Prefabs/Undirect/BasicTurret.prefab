@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5935529944412841522}
   - component: {fileID: 4693159869935080451}
   - component: {fileID: 7099255540141961048}
+  - component: {fileID: -1049455464985597258}
   m_Layer: 0
   m_Name: BasicTurret
   m_TagString: Untagged
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-1049455464985597258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 906911832218085558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44d6db14eb2d1f14a8c47c9812b829cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Data: {fileID: 11400000, guid: 4aa778b15955f154281e86a7c64628c7, type: 2}
