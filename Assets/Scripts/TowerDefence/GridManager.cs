@@ -12,6 +12,7 @@ namespace TowerDefence
         [SerializeField, Min(1)] int _Height = 1;
         [SerializeField] Material _FirstTileMaterial;
         [SerializeField] Material _SecondTileMaterial;
+        [SerializeField, Min(0)] float _BoundingBoxHeight = 1;
 
         [Header("Reference")]
         [Tooltip("The plane must have 1 in scale to work properly.")]
@@ -31,6 +32,17 @@ namespace TowerDefence
             }
 
             Transform tempParent = new GameObject().transform;
+
+            GameObject boundingBox = new GameObject("bounding box", new System.Type[] { typeof(BoxCollider) });
+            Transform bbTrans = boundingBox.transform;
+            bbTrans.parent = tempParent;
+            bbTrans.localPosition = new Vector3(_Width * bounds.extents.x, _BoundingBoxHeight / 2, _Height * bounds.extents.z);
+            bbTrans.localRotation = Quaternion.identity;
+            Vector3 targetBBScale = Vector3.Scale(bounds.size, new Vector3(_Width, 1, _Height));
+            targetBBScale.y = _BoundingBoxHeight;
+            bbTrans.localScale = targetBBScale;
+            boundingBox.GetComponent<BoxCollider>().isTrigger = true;
+            boundingBox.tag = "TowerDefencePlayground";
 
             for (int y = 0; y < _Height; y++)
             {
@@ -58,5 +70,5 @@ namespace TowerDefence
             }
             DestroyImmediate(tempParent.gameObject);
         }
-    } 
+    }
 }

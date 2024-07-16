@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f668a1441eb51ad46ac03f32cd815cc9, type: 3}
   m_Name: Advanced Turret
   m_EditorClassIdentifier: 
-  _DisplayName: Advanced Turret
+  _displayName: Advanced Turret
   _id: advanced-turret
-  _PrefabObject: {fileID: 748293828728509242, guid: a60b7757f588a724780c77fe918aa17f, type: 3}
+  _activationCooldown: 0.5
+  _prefabObject: {fileID: 748293828728509242, guid: a60b7757f588a724780c77fe918aa17f, type: 3}
+  _projectilePrefab: {fileID: 665859162509387241, guid: 001a401080937344bb4b906cb0679a15, type: 3}

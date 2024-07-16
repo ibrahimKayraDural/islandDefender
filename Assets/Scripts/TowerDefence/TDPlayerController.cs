@@ -9,7 +9,6 @@ namespace TowerDefence
     public class TDPlayerController : MonoBehaviour
     {
         [SerializeField] LayerMask TowerDefenceLayer;
-        [SerializeField] GameObject _Debugger1;
         [SerializeField] TextMeshProUGUI _CurrentTurretText;
 
         Camera _camera = null;
@@ -37,7 +36,6 @@ namespace TowerDefence
         {
             Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
             Physics.Raycast(ray, out RaycastHit hit, 100, TowerDefenceLayer);
-            _Debugger1.transform.position = hit.point;
 
             GameObject hitGo = hit.transform?.gameObject;
             if (hitGo == null || hitGo.TryGetComponent(out TowerDefenceTileScript tdts) == false)

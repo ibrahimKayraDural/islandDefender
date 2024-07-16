@@ -5,6 +5,7 @@ public static class GLOBAL
 {
     public static string UnassignedString = "UNASSIGNED";
 
+    public static float BaseProjectileSpeed = 3;
 
     static TurretDatabase _turretDB = null;
     public static TurretDatabase GetTurretDatabase()
