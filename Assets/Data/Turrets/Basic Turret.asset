@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f668a1441eb51ad46ac03f32cd815cc9, type: 3}
-  m_Name: Advanced Turret
+  m_Name: Basic Turret
   m_EditorClassIdentifier: 
-  _displayName: Advanced Turret
-  _id: advanced-turret
-  _activationCooldown: 0.5
-  _prefabObject: {fileID: 748293828728509242, guid: a60b7757f588a724780c77fe918aa17f, type: 3}
+  _displayName: Basic Turret
+  _id: turret-basic
+  _activationCooldown: 1
+  _prefabObject: {fileID: 906911832218085558, guid: 6ee021627a986004c9b4e919b056b6fd, type: 3}
   _projectilePrefab: {fileID: 665859162509387241, guid: 001a401080937344bb4b906cb0679a15, type: 3}
+  _projectileSpeedMultiplier: 1

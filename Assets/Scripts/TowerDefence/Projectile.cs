@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Projectile : MonoBehaviour
 {
+    [SerializeField] float _Damage = 1;
     [SerializeField] float _IterationDuration = .05f;
     [SerializeField] float _LifeTime = 10f;
 
@@ -27,7 +28,7 @@ public class Projectile : MonoBehaviour
         transform.forward = direction;
 
         StartCoroutine(nameof(UpdateLoop));
-        Invoke(nameof(DestroyProjectile), 10);
+        Invoke(nameof(DestroyProjectile), _LifeTime);
 
         _isInitialized = true;
     }
@@ -49,5 +50,15 @@ public class Projectile : MonoBehaviour
         StopAllCoroutines();
 
         Destroy(gameObject);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.TryGetComponent(out IGetShot igs))
+        {
+            igs.GetShot(_Damage);
+        }
+
+        DestroyProjectile();
     }
 }
