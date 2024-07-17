@@ -49,7 +49,7 @@ namespace TowerDefence
                 for (int x = 0; x < _Width; x++)
                 {
                     GameObject instGo = Instantiate(_TilePrefab, tempParent);
-                    instGo.transform.position = new Vector3(((x + 1) * 2 - 1) * bounds.extents.x, 0, ((y + 1) * 2 - 1) * bounds.extents.z);
+                    instGo.transform.position = new Vector3(((x + 1) * 2 - 1) * bounds.extents.x, -bounds.extents.y, ((y + 1) * 2 - 1) * bounds.extents.z);
 
                     if (instGo.TryGetComponent(out MeshRenderer mr))
                     { mr.sharedMaterial = (((y % 2) + (x % 2)) % 2) == 0 ? new Material(_FirstTileMaterial) : new Material(_SecondTileMaterial); }

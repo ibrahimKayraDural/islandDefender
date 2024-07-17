@@ -95,6 +95,8 @@ namespace TowerDefence
             if (_currentTile == null) return;
             if (_currentTile.IsOccupied) return;
 
+            if (ResourceManager.Instance.TryBuyTurret(_currentTurret) == false) return;
+
             TurretUnit unit = Instantiate(_currentTurret.PrefabObject).GetComponent<TurretUnit>();
             unit.Initialize(_currentTurret, _currentTile);
         }

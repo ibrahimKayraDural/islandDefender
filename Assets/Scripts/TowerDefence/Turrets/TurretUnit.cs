@@ -6,6 +6,8 @@ namespace TowerDefence
 {
     public class TurretUnit : MonoBehaviour
     {
+        public TurretData Data => _data;
+
         internal TurretData _data;
         internal TowerDefenceTileScript _parentTile;
         internal bool _breakActivationLoop;
@@ -31,8 +33,8 @@ namespace TowerDefence
         {
             while(_breakActivationLoop == false)
             {
-                ActivationMethod();
                 yield return new WaitForSeconds(interval);
+                ActivationMethod();
             }
             _breakActivationLoop = false;
         }

@@ -10,6 +10,7 @@ namespace TowerDefence
         public string DisplayName => _displayName;
         public string ID => _id;
         public float ActivationCooldown => _activationCooldown;
+        public Cost[] Costs => _costs;
         public GameObject PrefabObject => _prefabObject;
         public GameObject ProjectilePrefab => _projectilePrefab;
         public float ProjectileSpeedMultiplier => _projectileSpeedMultiplier;
@@ -17,6 +18,7 @@ namespace TowerDefence
         [SerializeField] string _displayName = GLOBAL.UnassignedString;
         [SerializeField] string _id = GLOBAL.UnassignedString;
         [SerializeField] float _activationCooldown = 1;
+        [SerializeField] Cost[] _costs = new Cost[0];
         [SerializeField,Tooltip("Main body of the turret, with turret unit script")] GameObject _prefabObject;
         [SerializeField] GameObject _projectilePrefab;
         [SerializeField, Tooltip("Do not touch if you are certain you know what you are doing")] float _projectileSpeedMultiplier = 1;
