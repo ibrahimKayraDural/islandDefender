@@ -103,7 +103,7 @@ namespace TowerDefence
 
         void DeleteTurret()
         {
-            _currentTile?.UnOccupy();
+            _currentTile?.OccupyingTurret.KillSelf();
         }
     }
 }

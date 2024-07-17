@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IGetShot
+public interface IGetHit
 {
-    public void GetShot(float damage) { }
+    public void GetHit(float damage) { }
 }

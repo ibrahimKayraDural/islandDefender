@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - TowerDefencePlayground
+  - Turret
   layers:
   - Default
   - TransparentFX
@@ -14,8 +15,8 @@ TagManager:
   - UI
   - TowerDefenceTile
   - TowerDefenceEnemy
-  - PlayerUnit
-  - 
+  - ProjectileIgnore
+  - TowerDefenceTurret
   - 
   - 
   - 

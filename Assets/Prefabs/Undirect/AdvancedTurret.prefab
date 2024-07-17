@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 8371694804971766445}
   - component: {fileID: 1827716372995832622}
   - component: {fileID: 3881706878965205722}
-  m_Layer: 0
+  - component: {fileID: 3609958174762323324}
+  m_Layer: 9
   m_Name: AdvancedTurret
-  m_TagString: Untagged
+  m_TagString: Turret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,8 +98,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c945e046bf62244e8d8f26f09206359, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _MaxHealth: 2
   ShootPoint: {fileID: 879956914809145568}
   rayLenght: 100
+  _enemyMask:
+    serializedVersion: 2
+    m_Bits: 128
+--- !u!65 &3609958174762323324
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748293828728509242}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.75000006, y: 2.3788347, z: 0.77841747}
+  m_Center: {x: 0, y: 1.1191006, z: -0.038394913}
 --- !u!1 &8771958071109315196
 GameObject:
   m_ObjectHideFlags: 0

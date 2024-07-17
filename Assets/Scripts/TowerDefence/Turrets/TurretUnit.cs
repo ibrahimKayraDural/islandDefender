@@ -4,12 +4,16 @@ using UnityEngine;
 
 namespace TowerDefence
 {
-    public class TurretUnit : MonoBehaviour
+    public class TurretUnit : MonoBehaviour, IGetHit
     {
         public TurretData Data => _data;
+        public float MaxHealth => _MaxHealth;
+        
+        [SerializeField,Min(1)] internal float _MaxHealth = 1;
 
         internal TurretData _data;
         internal TowerDefenceTileScript _parentTile;
+        internal float _health;
         internal bool _breakActivationLoop;
         internal bool _isInitialized;
 
@@ -22,6 +26,7 @@ namespace TowerDefence
             transform.parent = tile.transform;
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
+            _health = _MaxHealth;
 
             tile.SetOccupied(this);
             StartCoroutine(nameof(ActivationLoop), _data.ActivationCooldown);
@@ -49,9 +54,18 @@ namespace TowerDefence
             _breakActivationLoop = true;
             StopCoroutine(nameof(ActivationLoop));
         }
+        virtual public void GetHit(float damage) => RemoveHealth(damage);
+        virtual public void AddHealth(float value) => SetHealth(_health + value);
+        virtual public void RemoveHealth(float value) => SetHealth(_health - value);
+        virtual public void SetHealth(float setTo)
+        {
+            _health = Mathf.Clamp(setTo, 0, _MaxHealth);
 
+            if (_health == 0) KillSelf();
+        }
         virtual public void KillSelf()
         {
+            _parentTile.UnOccupy();
             BreakActivationLoop();
             StopAllCoroutines();
             Destroy(gameObject);

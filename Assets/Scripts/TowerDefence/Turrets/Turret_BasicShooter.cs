@@ -8,8 +8,7 @@ namespace TowerDefence
     {
         [SerializeField] Transform ShootPoint;
         [SerializeField] float rayLenght = 100;
-
-        internal LayerMask _enemyMask = 1 << 7;  //7th layer which is TowerDefenceEnemy
+        [SerializeField] internal LayerMask _enemyMask = 1 << 7;  //7th layer which is TowerDefenceEnemy
         Ray _ray;
 
         public override void Initialize(TurretData data, TowerDefenceTileScript tile)
@@ -21,6 +20,7 @@ namespace TowerDefence
             transform.parent = tile.transform;
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
+            _health = _MaxHealth;
 
             _ray = new Ray(ShootPoint.position, transform.forward);
 
@@ -32,7 +32,7 @@ namespace TowerDefence
 
         internal override void ActivationMethod()
         {
-            if(Physics.Raycast(_ray, rayLenght, _enemyMask))
+            if (Physics.Raycast(_ray, rayLenght, _enemyMask))
             {
                 Shoot();
             }

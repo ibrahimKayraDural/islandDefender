@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] float _Damage = 1;
     [SerializeField] float _IterationDuration = .05f;
     [SerializeField] float _LifeTime = 10f;
+    [SerializeField] GameObject HitSfx;
 
     bool _isInitialized;
     bool _breakUpdate;
@@ -49,14 +50,19 @@ public class Projectile : MonoBehaviour
         _breakUpdate = true;
         StopAllCoroutines();
 
+        if (HitSfx != null)
+            Instantiate(HitSfx, transform.position, Quaternion.identity);
+
         Destroy(gameObject);
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent(out IGetShot igs))
+        if(other.gameObject.tag == "Turret") return;
+
+        if (other.TryGetComponent(out IGetHit igs))
         {
-            igs.GetShot(_Damage);
+            igs.GetHit(_Damage);
         }
 
         DestroyProjectile();

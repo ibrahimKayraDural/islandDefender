@@ -30,7 +30,6 @@ namespace TowerDefence
         }
         public void UnOccupy()
         {
-            _occupyingTurret?.KillSelf();
             _occupyingTurret = null;
         }
         public void SetOccupied(TurretUnit occupyingTurret)
