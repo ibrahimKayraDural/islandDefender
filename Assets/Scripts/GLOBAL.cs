@@ -20,4 +20,11 @@ public static class GLOBAL
         if (_resourceDB == null) _resourceDB = Resources.Load<ResourceDatabase>("Databases/ResourceDatabase");
         return _resourceDB;
     }
+
+    static WaveDatabase _waveDatabase = null;
+    public static WaveDatabase GetWaveDatabase()
+    {
+        if (_waveDatabase == null) _waveDatabase = Resources.Load<WaveDatabase>("Databases/WaveDatabase");
+        return _waveDatabase;
+    }
 }

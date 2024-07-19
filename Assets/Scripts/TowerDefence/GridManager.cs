@@ -15,8 +15,8 @@ namespace TowerDefence
         [SerializeField, Min(0)] float _BoundingBoxHeight = 1;
 
         [Header("Reference")]
-        [Tooltip("The plane must have 1 in scale to work properly.")]
-        [SerializeField] GameObject _TilePrefab;
+        [SerializeField] SpawnManager _SpawnManager;
+        [SerializeField, Tooltip("The plane must have 1 in scale to work properly.")] GameObject _TilePrefab;
         [SerializeField] LayerMask _TileLayer;
 
         public void Generate()
@@ -30,6 +30,9 @@ namespace TowerDefence
             {
                 DestroyImmediate(child.gameObject);
             }
+
+            if (_SpawnManager == null) Debug.LogError("No SpawnManager was assigned");
+            _SpawnManager?.DeleteSpawners();
 
             Transform tempParent = new GameObject().transform;
 
@@ -49,13 +52,22 @@ namespace TowerDefence
                 for (int x = 0; x < _Width; x++)
                 {
                     GameObject instGo = Instantiate(_TilePrefab, tempParent);
-                    instGo.transform.position = new Vector3(((x + 1) * 2 - 1) * bounds.extents.x, -bounds.extents.y, ((y + 1) * 2 - 1) * bounds.extents.z);
+                    Vector3 targetPos = new Vector3(((x + 1) * 2 - 1) * bounds.extents.x, -bounds.extents.y, ((y + 1) * 2 - 1) * bounds.extents.z);
+                    instGo.transform.position = targetPos;
 
                     if (instGo.TryGetComponent(out MeshRenderer mr))
                     { mr.sharedMaterial = (((y % 2) + (x % 2)) % 2) == 0 ? new Material(_FirstTileMaterial) : new Material(_SecondTileMaterial); }
 
                     instGo.layer = (int)Mathf.Log(_TileLayer.value, 2);
                     //Aptal unity layermask'ý layere dönüþtüremiyo o yüzden elle yaptým
+
+                    instGo.name = $"TDTile({x},{y})";
+
+                    if (y == _Height - 1)
+                    {
+                        targetPos.z += bounds.extents.z * 3;
+                        _SpawnManager?.SpawnSpawnerAt(targetPos, tempParent);
+                    }
                 }
             }
 
