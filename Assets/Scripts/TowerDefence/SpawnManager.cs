@@ -41,15 +41,23 @@ namespace TowerDefence
 
             List<KeyValuePair<S_EnemyWithCount, int>> enemiesWithLanes = new List<KeyValuePair<S_EnemyWithCount, int>>();
 
+            List<int> laneIndexes = new List<int>();
             for (int i = 0; i < _currentWave.Lanes.Count; i++)
             {
                 S_LaneGroup lane = _currentWave.Lanes[i];
 
                 for (int n = 0; n < lane.Enemies.Count; n++)
                 {
-                    //register enemy with a lane
+                    if (lane.Enemies[n].Count <= 0) continue;
                     enemiesWithLanes.Add(new KeyValuePair<S_EnemyWithCount, int>(lane.Enemies[n], i));
+                    if (laneIndexes.Contains(i) == false) laneIndexes.Add(i);
                 }
+            }
+
+            for (int i = 0; i < laneIndexes.Count - _spawners.Count; i++)
+            {
+                int randomIndex = UnityEngine.Random.Range(0, laneIndexes.Count);
+                enemiesWithLanes.FindAll(x => x.Value == randomIndex).ForEach(y => enemiesWithLanes.Remove(y));
             }
 
             List<float> cooldownArr = _currentWave.UseCustomCooldowns ? _currentWave.WaveCooldowns : _waveDatabase.DefaultCooldowns;
