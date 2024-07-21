@@ -34,45 +34,62 @@ namespace TowerDefence
             _waveIsActive = false;
             StopCoroutine(nameof(WaveCoroutine));
         }
+
         IEnumerator WaveCoroutine()
         {
             _waveIsActive = true;
 
-            S_Wave tempWave = _currentWave;
-            List<int> cooldownArr = tempWave.UseCustomCooldowns ? tempWave.WaveCooldowns : _waveDatabase.DefaultCooldowns;
-            int totalEnemyCount = 0;
-            foreach (var item in _currentWave.Lanes)
+            List<KeyValuePair<S_EnemyWithCount, int>> enemiesWithLanes = new List<KeyValuePair<S_EnemyWithCount, int>>();
+
+            for (int i = 0; i < _currentWave.Lanes.Count; i++)
             {
-                item.Enemies.ForEach(x => totalEnemyCount += x.count);
+                S_LaneGroup lane = _currentWave.Lanes[i];
+
+                for (int n = 0; n < lane.Enemies.Count; n++)
+                {
+                    //register enemy with a lane
+                    enemiesWithLanes.Add(new KeyValuePair<S_EnemyWithCount, int>(lane.Enemies[n], i));
+                }
             }
 
+            List<float> cooldownArr = _currentWave.UseCustomCooldowns ? _currentWave.WaveCooldowns : _waveDatabase.DefaultCooldowns;
             int cooldownArrCount = cooldownArr.Count;
-            for (int i = 0; i < totalEnemyCount; i++)
+
+            for (int i = 0; enemiesWithLanes.Count > 0 && i <= 10000; i++)
             {
-                tempWave = SpawnNextWave(tempWave);
+                SpawnNextWave(ref enemiesWithLanes);
+
                 yield return new WaitForSeconds(cooldownArrCount > i ? cooldownArr[i] : cooldownArr[cooldownArrCount-1]);
+
+                if (i == 10000) Debug.LogError("Failsafe cap was reached while spawning waves");
             }
             _waveIsActive = false;
             Debug.Log("wave has ended");
         }
 
-        S_Wave SpawnNextWave(S_Wave waveToEat)
+        void SpawnNextWave(ref List<KeyValuePair<S_EnemyWithCount, int>> currentWave)
         {
-            List<EnemyData> enemyDatas = new List<EnemyData>();
-            foreach (var lane in waveToEat.Lanes)
+            List<int> laneIndexes = new List<int>();
+            foreach (var item in currentWave)
             {
-                foreach (var eCount in lane.Enemies)
-                {
-                    for (int i = 0; i < eCount.count; i++)
-                    {
-                        enemyDatas.Add(eCount.Enemy);
-                    }
-                }
+                if (laneIndexes.Contains(item.Value)) continue;
+                laneIndexes.Add(item.Value);
             }
 
-            int randomInt = UnityEngine.Random.Range(0, enemyDatas.Count);
+            int laneInt = laneIndexes[UnityEngine.Random.Range(0, laneIndexes.Count)];
 
-            return waveToEat;
+            List<S_EnemyWithCount> enemyList = new List<S_EnemyWithCount>();
+            foreach (var ewcPair in currentWave.FindAll(x => x.Value == laneInt)) for (int i = 0; i < ewcPair.Key.Count; i++) enemyList.Add(ewcPair.Key);
+
+            int rando = UnityEngine.Random.Range(0, enemyList.Count);
+            S_EnemyWithCount selectedEnemy = enemyList[rando];
+
+            int selectedIndex = currentWave.FindIndex(new Predicate<KeyValuePair<S_EnemyWithCount, int>>(x => x.Key.Equals(selectedEnemy) && x.Value == laneInt));
+
+            //spawn(selectedEnemy.Enemy);
+
+            currentWave[selectedIndex] = new KeyValuePair<S_EnemyWithCount, int>(new S_EnemyWithCount(selectedEnemy.Enemy, selectedEnemy.Count - 1), laneInt);
+            if (currentWave[selectedIndex].Key.Count <= 0) currentWave.RemoveAt(selectedIndex);
         }
 
         public void SpawnSpawnerAt(Vector3 position, Transform parent = null)
