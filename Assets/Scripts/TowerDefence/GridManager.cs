@@ -13,6 +13,7 @@ namespace TowerDefence
         [SerializeField] Material _FirstTileMaterial;
         [SerializeField] Material _SecondTileMaterial;
         [SerializeField, Min(0)] float _BoundingBoxHeight = 1;
+        [SerializeField] Vector3 _SpawnerOffset;
 
         [Header("Reference")]
         [SerializeField] SpawnManager _SpawnManager;
@@ -66,7 +67,7 @@ namespace TowerDefence
                     if (y == _Height - 1)
                     {
                         targetPos.z += bounds.extents.z * 3;
-                        _SpawnManager?.SpawnSpawnerAt(targetPos, tempParent);
+                        _SpawnManager?.SpawnSpawnerAt(targetPos + _SpawnerOffset, tempParent);
                     }
                 }
             }

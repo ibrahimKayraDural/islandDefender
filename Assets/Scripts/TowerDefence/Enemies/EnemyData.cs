@@ -15,6 +15,7 @@ namespace TowerDefence
         public float AttackCooldown => _AttackCooldown;
         public float AttackRange => _AttackRange;
         public AudioClip AttackSFX => _AttackSFX;
+        public GameObject EnemyPrefab => _enemyPrefab;
 
         [SerializeField] string _DisplayName = GLOBAL.UnassignedString;
         [SerializeField] string _ID = GLOBAL.UnassignedString;
@@ -24,5 +25,6 @@ namespace TowerDefence
         [SerializeField, Min(0)] float _AttackCooldown = 1;
         [SerializeField, Min(0)] float _AttackRange = 1;
         [SerializeField] AudioClip _AttackSFX;
+        [SerializeField] GameObject _enemyPrefab;
     } 
 }

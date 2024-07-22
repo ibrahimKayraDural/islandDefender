@@ -8,15 +8,11 @@ namespace TowerDefence
     public class SpawnManager : MonoBehaviour
     {
         [SerializeField] List<Transform> _spawners = new List<Transform>();
-        WaveDatabase _waveDatabase;
+        [SerializeField] WaveDatabase _waveDatabase;
+
         int _currentWaveIndex;
         S_Wave _currentWave => _waveDatabase.Waves[_currentWaveIndex];
         string spawnerName = "EnemySpawner";
-
-        void Awake()
-        {
-            _waveDatabase = GLOBAL.GetWaveDatabase();
-        }
 
         private void Start()
         {
@@ -136,7 +132,8 @@ namespace TowerDefence
 
             int selectedIndex = currentWave.FindIndex(new Predicate<KeyValuePair<S_EnemyWithCount, int>>(x => x.Key.Equals(selectedEnemy) && x.Value == laneInt));
 
-            //spawn(selectedEnemy.Enemy);
+            GameObject prefab = selectedEnemy.Enemy.EnemyPrefab;
+            Instantiate(prefab, _spawners[laneInt].position, prefab.transform.rotation);
 
             currentWave[selectedIndex] = new KeyValuePair<S_EnemyWithCount, int>(new S_EnemyWithCount(selectedEnemy.Enemy, selectedEnemy.Count - 1), laneInt);
             if (currentWave[selectedIndex].Key.Count <= 0) currentWave.RemoveAt(selectedIndex);
