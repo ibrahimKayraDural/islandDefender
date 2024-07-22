@@ -7,10 +7,11 @@ namespace TowerDefence
 {
     public class SpawnManager : MonoBehaviour
     {
-        List<Transform> _spawners = new List<Transform>();
+        [SerializeField] List<Transform> _spawners = new List<Transform>();
         WaveDatabase _waveDatabase;
         int _currentWaveIndex;
         S_Wave _currentWave => _waveDatabase.Waves[_currentWaveIndex];
+        string spawnerName = "EnemySpawner";
 
         void Awake()
         {
@@ -41,6 +42,8 @@ namespace TowerDefence
 
             List<KeyValuePair<S_EnemyWithCount, int>> enemiesWithLanes = new List<KeyValuePair<S_EnemyWithCount, int>>();
 
+
+            //instantiating wave data
             List<int> laneIndexes = new List<int>();
             for (int i = 0; i < _currentWave.Lanes.Count; i++)
             {
@@ -49,20 +52,57 @@ namespace TowerDefence
                 for (int n = 0; n < lane.Enemies.Count; n++)
                 {
                     if (lane.Enemies[n].Count <= 0) continue;
+                    if (lane.Enemies[n].Enemy == null) continue;
                     enemiesWithLanes.Add(new KeyValuePair<S_EnemyWithCount, int>(lane.Enemies[n], i));
                     if (laneIndexes.Contains(i) == false) laneIndexes.Add(i);
                 }
             }
 
+
+            //removing excess from waveData to fit the actual lane count
             for (int i = 0; i < laneIndexes.Count - _spawners.Count; i++)
             {
                 int randomIndex = UnityEngine.Random.Range(0, laneIndexes.Count);
                 enemiesWithLanes.FindAll(x => x.Value == randomIndex).ForEach(y => enemiesWithLanes.Remove(y));
             }
 
+
+            //Shuffling lanes (fuck this)
+            List<int> spawnerIndexes = new List<int>();
+            List<int> oldLaneIndexes = new List<int>();
+            List<int> uniqueLaneIndexes = new List<int>();
+            for (int i = 0; i < _spawners.Count; i++) spawnerIndexes.Add(i);
+            for (int i = 0; i < enemiesWithLanes.Count; i++) oldLaneIndexes.Add(enemiesWithLanes[i].Value);
+            for (int i = 0; i < enemiesWithLanes.Count; i++)
+            {
+                if (uniqueLaneIndexes.Contains(enemiesWithLanes[i].Value) == false)
+                {
+                    uniqueLaneIndexes.Add(enemiesWithLanes[i].Value);
+                }
+            }
+
+            for (int i = 0; i < uniqueLaneIndexes.Count; i++)
+            {
+                int randomIndex = UnityEngine.Random.Range(0,spawnerIndexes.Count);
+
+                for (int n = 0; n < enemiesWithLanes.Count; n++)
+                {
+                    if (oldLaneIndexes[n] == uniqueLaneIndexes[i])
+                    {
+                        enemiesWithLanes[n] = new KeyValuePair<S_EnemyWithCount, int>(enemiesWithLanes[n].Key, spawnerIndexes[randomIndex]);
+                    }
+                }
+
+                spawnerIndexes.RemoveAt(randomIndex);
+            }
+
+
+            //registering cooldown values
             List<float> cooldownArr = _currentWave.UseCustomCooldowns ? _currentWave.WaveCooldowns : _waveDatabase.DefaultCooldowns;
             int cooldownArrCount = cooldownArr.Count;
 
+
+            //looping untill either no data is left in wave data or the failsafe cap is reached
             for (int i = 0; enemiesWithLanes.Count > 0 && i <= 10000; i++)
             {
                 SpawnNextWave(ref enemiesWithLanes);
@@ -71,6 +111,8 @@ namespace TowerDefence
 
                 if (i == 10000) Debug.LogError("Failsafe cap was reached while spawning waves");
             }
+
+
             _waveIsActive = false;
             Debug.Log("wave has ended");
         }
@@ -102,10 +144,9 @@ namespace TowerDefence
 
         public void SpawnSpawnerAt(Vector3 position, Transform parent = null)
         {
-            Transform temp = new GameObject($"Spawner{_spawners.Count + 1}").transform;
+            Transform temp = new GameObject(spawnerName).transform;
             if (parent != null) temp.parent = parent;
             temp.position = position;
-            _spawners.Add(temp);
         }
         public void DeleteSpawners()
         {

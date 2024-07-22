@@ -16,73 +16,76 @@ MonoBehaviour:
   - Lanes:
     - Enemies:
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
-      - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
+        Count: 1
     - Enemies:
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
-      - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
+        Count: 2
     - Enemies:
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
+        Count: 3
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
-    WaveCooldowns: 010000000200000003000000
+        Count: 4
+    WaveCooldowns:
+    - 0.1
+    - 0.1
+    - 0.1
     UseCustomCooldowns: 1
   - Lanes:
     - Enemies:
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
+        Count: 0
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
+        Count: 0
     - Enemies:
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
+        Count: 0
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
+        Count: 0
     - Enemies:
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
+        Count: 0
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
-    WaveCooldowns: 
+        Count: 0
+    WaveCooldowns: []
     UseCustomCooldowns: 0
   - Lanes:
     - Enemies:
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
+        Count: 0
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
+        Count: 0
     - Enemies:
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
+        Count: 0
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
+        Count: 0
     - Enemies:
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
+        Count: 0
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
-    WaveCooldowns: 
+        Count: 0
+    WaveCooldowns: []
     UseCustomCooldowns: 0
   - Lanes:
     - Enemies:
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
+        Count: 0
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
+        Count: 0
     - Enemies:
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
+        Count: 0
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
+        Count: 0
     - Enemies:
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
+        Count: 0
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        count: 1
-    WaveCooldowns: 
+        Count: 0
+    WaveCooldowns: []
     UseCustomCooldowns: 0
-  DefaultCooldowns: 01000000010000000200000005000000
+  DefaultCooldowns:
+  - 1
+  - 1
+  - 2
+  - 5
