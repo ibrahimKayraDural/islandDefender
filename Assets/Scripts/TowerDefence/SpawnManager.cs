@@ -54,8 +54,6 @@ namespace TowerDefence
 
         IEnumerator WaveCoroutine()
         {
-            Debug.Log("NextWavetaym");
-
             _waveIsActive = true;
 
             List<KeyValuePair<S_EnemyWithCount, int>> enemiesWithLanes = new List<KeyValuePair<S_EnemyWithCount, int>>();
@@ -190,7 +188,6 @@ namespace TowerDefence
         void AllWavesEnded()
         {
             _TimeTM.text = "All Waves are finished";
-            Debug.Log("All Waves are finished");
         }
 
         public void SpawnSpawnerAt(Vector3 position, Transform parent = null)

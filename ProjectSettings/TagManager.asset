@@ -6,6 +6,7 @@ TagManager:
   tags:
   - TowerDefencePlayground
   - Turret
+  - Base
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - TowerDefenceEnemy
   - ProjectileIgnore
   - TowerDefenceTurret
-  - 
+  - Base
   - 
   - 
   - 

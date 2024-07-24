@@ -15,7 +15,10 @@ public class PlayOneShot : MonoBehaviour
         _asour.PlayOneShot(_clip);
         Invoke(nameof(KillSelf), lenght);
     }
-
+    public void SetClip(AudioClip clip)
+    {
+        _clip = clip;
+    }
     void KillSelf()
     {
         Destroy(gameObject);

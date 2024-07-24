@@ -13,6 +13,7 @@ namespace TowerDefence
         [SerializeField] internal Transform _AttackPoint;
         [SerializeField] internal LayerMask _AttackLayer = 1 << 9;
         [SerializeField] internal EnemyData _data;
+        [SerializeField] internal GameObject OneShotSFX;
 
         internal float _health;
         internal Rigidbody _rb;
@@ -34,10 +35,25 @@ namespace TowerDefence
                 {
                     if (hit.transform.TryGetComponent(out IHealth ih))
                     {
-                        ih.RemoveHealth(_data.Damage);
+                        if(hit.transform.tag == "Base") //Reached base. KYS
+                        {
+                            ih.RemoveHealth(_data.DamageToBase);
+                            if (_data.AttackToBaseSFX != null)
+                            {
+                                GameObject tempSFX = OneShotSFX;
+                                tempSFX.GetComponent<PlayOneShot>().SetClip(_data.AttackToBaseSFX);
+                                Instantiate(tempSFX, transform.position, Quaternion.identity);
+                            }
+                            Die();
+                        }
+                        else //Reached Turret. Kill Turret
+                        {
+                            ih.RemoveHealth(_data.Damage);
+                            if (_data.AttackSFX != null) _asource?.PlayOneShot(_data.AttackSFX);
+                        }
+
                         _nextAttack_TargetTime = Time.time + _data.AttackCooldown;
 
-                        if (_data.AttackSFX != null) _asource?.PlayOneShot(_data.AttackSFX);
                     }
                 }
             }

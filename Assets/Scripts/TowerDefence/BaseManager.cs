@@ -7,9 +7,10 @@ using System;
 public class BaseManager : MonoBehaviour, IHealth
 {
     [Header("Values")]
-    [SerializeField, Min(.1f)] float _MaxHealth = 1;
+    [SerializeField, Min(.1f)] float _MaxHealth = 10;
     [Header("Reference")]
     [SerializeField] TextMeshProUGUI _HealthTM;
+    [SerializeField] PlayOneShot _BigExplosionOneShot;
 
     public float Health => _health;
     float _health;
@@ -29,5 +30,7 @@ public class BaseManager : MonoBehaviour, IHealth
     void Die()
     {
         Debug.Log("Base is dead :(");
+        if (_BigExplosionOneShot != null) Instantiate(_BigExplosionOneShot, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 }

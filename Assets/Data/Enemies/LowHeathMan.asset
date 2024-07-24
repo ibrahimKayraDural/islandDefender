@@ -17,7 +17,9 @@ MonoBehaviour:
   _MaxHealth: 2
   _Speed: 3
   _Damage: 1
+  _DamageToBase: 1
   _AttackCooldown: 0.3
   _AttackRange: 1.5
   _AttackSFX: {fileID: 8300000, guid: da51225feb1d1a84f925d2ff1ecccef1, type: 3}
+  _AttackToBaseSFX: {fileID: 8300000, guid: 7a20eae449e1e194eba729821a468867, type: 3}
   _enemyPrefab: {fileID: 8660632794050134643, guid: b116511a15c81c04abc14515fa3f74a1, type: 3}

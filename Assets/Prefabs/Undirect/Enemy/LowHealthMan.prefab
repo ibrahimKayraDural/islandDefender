@@ -166,8 +166,9 @@ MonoBehaviour:
   _AttackPoint: {fileID: 2584798347446764318}
   _AttackLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 1536
   _data: {fileID: 11400000, guid: c17b7fcb5eb53d34b9cd4601d897cb28, type: 2}
+  OneShotSFX: {fileID: 739595196568915160, guid: cf38192033b0431428b633c8f8bb2f2d, type: 3}
 --- !u!65 &6679866713872118601
 BoxCollider:
   m_ObjectHideFlags: 0
