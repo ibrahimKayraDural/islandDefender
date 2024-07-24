@@ -60,9 +60,9 @@ public class Projectile : MonoBehaviour
     {
         if(other.gameObject.tag == "Turret") return;
 
-        if (other.TryGetComponent(out IGetHit igs))
+        if (other.TryGetComponent(out IHealth ih))
         {
-            igs.GetHit(_Damage);
+            ih.RemoveHealth(_Damage);
         }
 
         DestroyProjectile();
