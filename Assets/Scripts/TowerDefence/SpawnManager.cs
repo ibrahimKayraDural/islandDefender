@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 namespace TowerDefence
 {
@@ -9,13 +10,25 @@ namespace TowerDefence
     {
         [SerializeField] List<Transform> _spawners = new List<Transform>();
         [SerializeField] WaveDatabase _waveDatabase;
+        [SerializeField] TextMeshProUGUI _TimeTM;
 
         int _currentWaveIndex;
-        S_Wave _currentWave => _waveDatabase.Waves[_currentWaveIndex];
+        S_Wave? _currentWave
+        {
+            get
+            {
+                if (_waveDatabase == null || _waveDatabase.Waves.Length <= _currentWaveIndex)
+                    return null;
+
+                return _waveDatabase.Waves[_currentWaveIndex];
+            }
+        }
+        int _waveCount => _waveDatabase.Waves.Length;
         string spawnerName = "EnemySpawner";
 
         private void Start()
         {
+            _TimeTM.text = "";
             StartWave();
         }
 
@@ -23,17 +36,26 @@ namespace TowerDefence
         public void StartWave()
         {
             if (_waveIsActive) return;
+            if (_currentWave == null)
+            {
+                Debug.LogError("_currentWave is null");
+                return;
+            }
 
             StartCoroutine(nameof(WaveCoroutine));
         }
         public void StopWave()
         {
-            _waveIsActive = false;
+            if (_waveIsActive == false) return;
+
             StopCoroutine(nameof(WaveCoroutine));
+            _waveIsActive = false;
         }
 
         IEnumerator WaveCoroutine()
         {
+            Debug.Log("NextWavetaym");
+
             _waveIsActive = true;
 
             List<KeyValuePair<S_EnemyWithCount, int>> enemiesWithLanes = new List<KeyValuePair<S_EnemyWithCount, int>>();
@@ -41,9 +63,9 @@ namespace TowerDefence
 
             //instantiating wave data
             List<int> laneIndexes = new List<int>();
-            for (int i = 0; i < _currentWave.Lanes.Count; i++)
+            for (int i = 0; i < _currentWave.Value.Lanes.Count; i++)
             {
-                S_LaneGroup lane = _currentWave.Lanes[i];
+                S_LaneGroup lane = _currentWave.Value.Lanes[i];
 
                 for (int n = 0; n < lane.Enemies.Count; n++)
                 {
@@ -94,7 +116,7 @@ namespace TowerDefence
 
 
             //registering cooldown values
-            List<float> cooldownArr = _currentWave.UseCustomCooldowns ? _currentWave.WaveCooldowns : _waveDatabase.DefaultCooldowns;
+            List<float> cooldownArr = _currentWave.Value.UseCustomCooldowns ? _currentWave.Value.WaveCooldowns : _waveDatabase.DefaultCooldowns;
             int cooldownArrCount = cooldownArr.Count;
 
 
@@ -108,9 +130,8 @@ namespace TowerDefence
                 if (i == 10000) Debug.LogError("Failsafe cap was reached while spawning waves");
             }
 
-
             _waveIsActive = false;
-            Debug.Log("wave has ended");
+            OnWaveEnded();
         }
 
         void SpawnNextWave(ref List<KeyValuePair<S_EnemyWithCount, int>> currentWave)
@@ -137,6 +158,39 @@ namespace TowerDefence
 
             currentWave[selectedIndex] = new KeyValuePair<S_EnemyWithCount, int>(new S_EnemyWithCount(selectedEnemy.Enemy, selectedEnemy.Count - 1), laneInt);
             if (currentWave[selectedIndex].Key.Count <= 0) currentWave.RemoveAt(selectedIndex);
+        }
+
+        void OnWaveEnded()
+        {
+            if (_currentWaveIndex + 1 >= _waveCount)
+            {
+                AllWavesEnded();
+                return;
+            }
+
+            int cooldown = _currentWave.Value.TimeUntillNextWave;
+            _currentWaveIndex++;
+
+            StartCoroutine(nameof(RunWaveCooldown), cooldown);
+        }
+
+        IEnumerator RunWaveCooldown(int cooldown)
+        {
+            while(true)
+            {
+                if (cooldown <= 0) break;
+                _TimeTM.text = $"Untill Next Wave : {cooldown}";
+                yield return new WaitForSeconds(1);
+                cooldown--;
+            }
+            _TimeTM.text = "";
+            StartWave();
+        }
+
+        void AllWavesEnded()
+        {
+            _TimeTM.text = "All Waves are finished";
+            Debug.Log("All Waves are finished");
         }
 
         public void SpawnSpawnerAt(Vector3 position, Transform parent = null)

@@ -14,6 +14,7 @@ namespace TowerDefence
     [System.Serializable] public struct S_Wave
     {
         public List<S_LaneGroup> Lanes;
+        public int TimeUntillNextWave;
         public List<float> WaveCooldowns;
         public bool UseCustomCooldowns;
 
