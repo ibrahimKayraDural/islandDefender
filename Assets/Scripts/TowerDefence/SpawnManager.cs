@@ -15,6 +15,7 @@ namespace TowerDefence
         [SerializeField] bool _WaitUntillEnemiesAreDead = true;
         [SerializeField] bool _RepeatLastWave;
         [SerializeField] List<Transform> _spawners = new List<Transform>();
+        [SerializeField] BaseManager _BaseMngr;
         [SerializeField] WaveDatabase _waveDatabase;
         [SerializeField] TextMeshProUGUI _TimeTM;
 
@@ -36,8 +37,14 @@ namespace TowerDefence
         private void Start()
         {
             e_ActiveEnemiesListIsEmptied += OnWaveEnded;
+            _BaseMngr.e_BaseHasDied += _BaseMngr_e_BaseHasDied;
             _TimeTM.text = "";
             StartWave();
+        }
+
+        void _BaseMngr_e_BaseHasDied(object sender, EventArgs e)
+        {
+            StopWave();
         }
 
         public static bool RemoveFromActiveEnemyList(GameObject target)

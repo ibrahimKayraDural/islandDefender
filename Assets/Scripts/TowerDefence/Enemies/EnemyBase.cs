@@ -13,18 +13,16 @@ namespace TowerDefence
         [SerializeField] internal Transform _AttackPoint;
         [SerializeField] internal LayerMask _AttackLayer = 1 << 9;
         [SerializeField] internal EnemyData _data;
-        [SerializeField] internal GameObject OneShotSFX;
+        [SerializeField] internal GameObject OneShotNull;
 
         internal float _health;
         internal Rigidbody _rb;
-        internal AudioSource _asource;
         internal float _nextAttack_TargetTime = -1;
 
         virtual public void Awake()
         {
             _health = _data.MaxHealth;
             _rb = GetComponent<Rigidbody>();
-            _asource = GetComponent<AudioSource>();
         }
         virtual internal void FixedUpdate()
         {
@@ -36,7 +34,12 @@ namespace TowerDefence
                     if (hit.transform.TryGetComponent(out IHealth ih))
                     {
                         ih.RemoveHealth(_data.Damage);
-                        if (_data.AttackSFX != null) _asource?.PlayOneShot(_data.AttackSFX);
+                        if (_data.AttackSFX != null)
+                        {
+                            PlayOneShot temp = OneShotNull.GetComponent<PlayOneShot>();
+                            temp.SetClip(_data.AttackSFX);
+                            Instantiate(temp.gameObject, transform.position, Quaternion.identity);
+                        }
 
                         _nextAttack_TargetTime = Time.time + _data.AttackCooldown;
                     }

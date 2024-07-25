@@ -29,7 +29,7 @@ public class Projectile : MonoBehaviour
         transform.forward = direction;
 
         StartCoroutine(nameof(UpdateLoop));
-        Invoke(nameof(DestroyProjectile), _LifeTime);
+        StartCoroutine(LifeTimeEnum());
 
         _isInitialized = true;
     }
@@ -44,13 +44,18 @@ public class Projectile : MonoBehaviour
             yield return new WaitForSeconds(_IterationDuration);
         }
     }
+    IEnumerator LifeTimeEnum()
+    {
+        yield return new WaitForSeconds(_LifeTime);
+        DestroyProjectile(false);
+    }
 
-    void DestroyProjectile()
+    void DestroyProjectile(bool playSFX = true)
     {
         _breakUpdate = true;
         StopAllCoroutines();
 
-        if (HitSfx != null)
+        if (HitSfx != null && playSFX)
             Instantiate(HitSfx, transform.position, Quaternion.identity);
 
         Destroy(gameObject);

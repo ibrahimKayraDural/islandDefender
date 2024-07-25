@@ -86,7 +86,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1536
   _data: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-  OneShotSFX: {fileID: 739595196568915160, guid: cf38192033b0431428b633c8f8bb2f2d, type: 3}
+  OneShotNull: {fileID: 739595196568915160, guid: cf38192033b0431428b633c8f8bb2f2d, type: 3}
 --- !u!33 &2106797722749187603
 MeshFilter:
   m_ObjectHideFlags: 0
