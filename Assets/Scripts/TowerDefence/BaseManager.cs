@@ -6,6 +6,9 @@ using System;
 
 public class BaseManager : MonoBehaviour, IHealth
 {
+    public event EventHandler<bool> e_BaseHasDied;
+    public event EventHandler<float> e_BaseIsAttacked;
+
     [Header("Values")]
     [SerializeField, Min(.1f)] float _MaxHealth = 10;
     [Header("Reference")]
@@ -20,16 +23,25 @@ public class BaseManager : MonoBehaviour, IHealth
         SetHealth(_MaxHealth);
     }
 
+    public void RemoveHealth(float amount)
+    {
+        float targetHealth = Mathf.Clamp(Health - amount, 0, _MaxHealth);
+        e_BaseIsAttacked.Invoke(this, targetHealth);
+        SetHealth(targetHealth);
+    }
+
     public void SetHealth(float setTo)
     {
         _health = Mathf.Clamp(setTo, 0, _MaxHealth);
         _HealthTM.text = "BASE HEALTH : " + _health;
+
         if (_health == 0) Die();
     }
 
     void Die()
     {
-        Debug.Log("Base is dead :(");
+        e_BaseHasDied?.Invoke(this, true);
+
         if (_BigExplosionOneShot != null) Instantiate(_BigExplosionOneShot, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
