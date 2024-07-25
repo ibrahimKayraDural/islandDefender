@@ -8,6 +8,12 @@ namespace TowerDefence
 {
     public class SpawnManager : MonoBehaviour
     {
+        static List<GameObject> ActiveEnemies = new List<GameObject>();
+        static event EventHandler<string> e_ActiveEnemiesListIsEmptied;
+        static bool _waveEndedOnce;
+
+        [SerializeField] bool _WaitUntillEnemiesAreDead = true;
+        [SerializeField] bool _RepeatLastWave;
         [SerializeField] List<Transform> _spawners = new List<Transform>();
         [SerializeField] WaveDatabase _waveDatabase;
         [SerializeField] TextMeshProUGUI _TimeTM;
@@ -25,14 +31,22 @@ namespace TowerDefence
         }
         int _waveCount => _waveDatabase.Waves.Length;
         string spawnerName = "EnemySpawner";
+        bool _waveIsActive;
 
         private void Start()
         {
+            e_ActiveEnemiesListIsEmptied += OnWaveEnded;
             _TimeTM.text = "";
             StartWave();
         }
 
-        bool _waveIsActive;
+        public static bool RemoveFromActiveEnemyList(GameObject target)
+        {
+            bool didRemove = ActiveEnemies.Remove(target);
+            if (ActiveEnemies.Count <= 0 && _waveEndedOnce == false) e_ActiveEnemiesListIsEmptied?.Invoke(typeof(SpawnManager), "listEmpty");
+            return didRemove;
+        }
+
         public void StartWave()
         {
             if (_waveIsActive) return;
@@ -42,6 +56,7 @@ namespace TowerDefence
                 return;
             }
 
+            _waveEndedOnce = false;
             StartCoroutine(nameof(WaveCoroutine));
         }
         public void StopWave()
@@ -129,7 +144,7 @@ namespace TowerDefence
             }
 
             _waveIsActive = false;
-            OnWaveEnded();
+            if ((_waveEndedOnce == false && ActiveEnemies.Count <= 0) || _WaitUntillEnemiesAreDead == false) OnWaveEnded(this, "waveEnd");
         }
 
         void SpawnNextWave(ref List<KeyValuePair<S_EnemyWithCount, int>> currentWave)
@@ -152,22 +167,29 @@ namespace TowerDefence
             int selectedIndex = currentWave.FindIndex(new Predicate<KeyValuePair<S_EnemyWithCount, int>>(x => x.Key.Equals(selectedEnemy) && x.Value == laneInt));
 
             GameObject prefab = selectedEnemy.Enemy.EnemyPrefab;
-            Instantiate(prefab, _spawners[laneInt].position, prefab.transform.rotation);
+            prefab = Instantiate(prefab, _spawners[laneInt].position, prefab.transform.rotation);
+            ActiveEnemies.Add(prefab);
 
             currentWave[selectedIndex] = new KeyValuePair<S_EnemyWithCount, int>(new S_EnemyWithCount(selectedEnemy.Enemy, selectedEnemy.Count - 1), laneInt);
             if (currentWave[selectedIndex].Key.Count <= 0) currentWave.RemoveAt(selectedIndex);
         }
 
-        void OnWaveEnded()
+        void OnWaveEnded(object sender, string senderID)
         {
-            if (_currentWaveIndex + 1 >= _waveCount)
+            if (_waveIsActive) return;
+
+            if (senderID == "listEmpty" && _WaitUntillEnemiesAreDead == false) return;
+
+            _waveEndedOnce = true;
+
+            if (_currentWaveIndex + 1 >= _waveCount && _RepeatLastWave == false)
             {
                 AllWavesEnded();
                 return;
             }
 
             int cooldown = _currentWave.Value.TimeUntillNextWave;
-            _currentWaveIndex++;
+            if (_currentWaveIndex + 1 < _waveCount) _currentWaveIndex++;
 
             StartCoroutine(nameof(RunWaveCooldown), cooldown);
         }

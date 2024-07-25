@@ -6,7 +6,7 @@ using System;
 
 public class BaseManager : MonoBehaviour, IHealth
 {
-    public event EventHandler<bool> e_BaseHasDied;
+    public event EventHandler e_BaseHasDied;
     public event EventHandler<float> e_BaseIsAttacked;
 
     [Header("Values")]
@@ -40,7 +40,7 @@ public class BaseManager : MonoBehaviour, IHealth
 
     void Die()
     {
-        e_BaseHasDied?.Invoke(this, true);
+        e_BaseHasDied?.Invoke(this, EventArgs.Empty);
 
         if (_BigExplosionOneShot != null) Instantiate(_BigExplosionOneShot, transform.position, Quaternion.identity);
         Destroy(gameObject);

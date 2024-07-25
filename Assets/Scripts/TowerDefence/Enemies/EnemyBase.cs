@@ -39,7 +39,6 @@ namespace TowerDefence
                         if (_data.AttackSFX != null) _asource?.PlayOneShot(_data.AttackSFX);
 
                         _nextAttack_TargetTime = Time.time + _data.AttackCooldown;
-
                     }
                 }
             }
@@ -57,6 +56,7 @@ namespace TowerDefence
 
         virtual internal void Die()
         {
+            SpawnManager.RemoveFromActiveEnemyList(gameObject);
             Destroy(gameObject);
         }
         void OnDrawGizmosSelected()

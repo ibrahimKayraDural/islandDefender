@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,11 +18,9 @@ public class PlayerNotificator : MonoBehaviour
     public void BaseIsAttacked(object sender, float remainingHealth)
     {
         if (_baseIsDead) return;
-        Debug.Log($"BASEA IS ATTACKED OMG GUYS ONLY {remainingHealth} HEALTH IS LEFT NOOOOOOOOO");
     }
-    public void BaseIsDead(object sender, bool _)
+    public void BaseIsDead(object sender, EventArgs e)
     {
-        Debug.Log("base is dead 3(");
         _baseIsDead = true;
     }
 }
