@@ -2,14 +2,14 @@ using UnityEditor;
 using UnityEngine;
 using TowerDefence;
 
-[CustomEditor(typeof(GridManager))]
+[CustomEditor(typeof(TowerDefenceGridManager))]
 public class Editor_GridManager : Editor
 {
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
 
-        GridManager gm = (GridManager)target;
+        TowerDefenceGridManager gm = (TowerDefenceGridManager)target;
 
         GUILayout.Space(30);
         if (GUILayout.Button("Generate")) gm.Generate();

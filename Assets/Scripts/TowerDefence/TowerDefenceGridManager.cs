@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace TowerDefence
 {
-    public class GridManager : MonoBehaviour
+    public class TowerDefenceGridManager : MonoBehaviour
     {
         [Header("Variables")]
         [SerializeField, Min(1)] int _Width = 1;
