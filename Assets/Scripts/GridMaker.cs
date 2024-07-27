@@ -8,6 +8,7 @@ public class GridMaker : MonoBehaviour
     [Header("Variables")]
     [SerializeField, Min(1)] int _Width = 1;
     [SerializeField, Min(1)] int _Height = 1;
+    [SerializeField] string _TileName = "Tile";
 
     [Header("Reference")]
     [SerializeField, Tooltip("The plane must have 1 in scale to work properly.")] GameObject _TilePrefab;
@@ -41,7 +42,7 @@ public class GridMaker : MonoBehaviour
                 instGo.layer = (int)Mathf.Log(_TileLayer.value, 2);
                 //Aptal unity layermask'ý layere dönüþtüremiyo o yüzden elle yaptým
 
-                instGo.name = $"TDTile({x},{y})";
+                instGo.name = $"{_TileName}({x},{y})";
             }
         }
 
