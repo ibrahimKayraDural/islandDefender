@@ -7,6 +7,7 @@ public abstract class OverworldGun : MonoBehaviour
     public string DisplayName => _DisplayName;
     public string ID => _ID;
 
+    [SerializeField,Min(0)] internal float _ShootCooldown = 1;
     [SerializeField] internal Transform _Barrel;
     [SerializeField] string _DisplayName = GLOBAL.UnassignedString;
     [SerializeField] string _ID = GLOBAL.UnassignedString;
@@ -21,7 +22,7 @@ public abstract class OverworldGun : MonoBehaviour
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
 
-        Unequip();
+        foreach (var item in Visuals) item.SetActive(false);
     }
     virtual public void Equip() 
     {
@@ -44,6 +45,6 @@ public abstract class OverworldGun : MonoBehaviour
         if (_isEquipped == false) return;
         if (_shoot_TargetTime > Time.time) return;
 
-        //_shoot_TargetTime = Time.time + 
+        _shoot_TargetTime = Time.time + _ShootCooldown;
     }
 }

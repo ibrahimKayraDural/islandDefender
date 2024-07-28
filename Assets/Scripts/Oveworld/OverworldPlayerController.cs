@@ -16,9 +16,42 @@ public class OverworldPlayerController : MonoBehaviour
     [SerializeField] Camera _Cam;
     [SerializeField] GameObject _Rotator;
     [SerializeField] Transform _GunPoint;
-    [SerializeField] List<GameObject> _GunPrefabs = new List<GameObject>();
-    
-    List<OverworldGun> _guns = new List<OverworldGun>();
+    [SerializeField] List<OverworldGun> _Guns = new List<OverworldGun>();
+
+    // this is an auto value. do not touch this value. >:(
+    int AUTOVALUE_gunIdx = 0;
+
+    // to change the gun, simply change this value. The value will automatically normalize itself to _Guns array.
+    int _gunIndex
+    {
+        get => AUTOVALUE_gunIdx;
+        set
+        {
+            if(_Guns.Count <= 0)
+            {
+                Debug.LogError("No guns are in the _Guns list");
+                return;
+            }
+
+            _currentGun.Unequip();
+
+            if (value >= _Guns.Count) AUTOVALUE_gunIdx = 0;
+            else if (value < 0) AUTOVALUE_gunIdx = _Guns.Count - 1;
+            else AUTOVALUE_gunIdx = value;
+
+            _currentGun.Equip();
+        }
+    } 
+
+    OverworldGun _currentGun
+    {
+        get
+        {
+            if (_Guns.Count <= 0) return null;
+            return _Guns[_gunIndex];
+        }
+    }
+    bool _anyGunIsEquipped => _currentGun != null;
 
     Vector3 _direction
     {
@@ -35,6 +68,8 @@ public class OverworldPlayerController : MonoBehaviour
     Quaternion _dirAsRot => Quaternion.LookRotation(_direction, Vector3.up);
 
     Vector3 _currentMovement = Vector3.zero;
+    float _changeTurret_TargetTime = -1;
+    float _changeTurret_Cooldown = .2f;
 
     private void Start()
     {
@@ -43,25 +78,33 @@ public class OverworldPlayerController : MonoBehaviour
         _RB.angularDrag = 0;
         _RB.drag = 0;
 
-        foreach (var item in _GunPrefabs)
+        List<OverworldGun> temp = new List<OverworldGun>();
+
+        foreach (var item in _Guns)
         {
-            if(item.TryGetComponent(out OverworldGun og))
+            foreach (var typeItem in temp)
             {
-                og = Instantiate(item).GetComponent<OverworldGun>();
-                og.Initialize(_GunPoint);
-                og.Unequip();
-                _guns.Add(og);
+                if (typeItem.GetType().IsEquivalentTo(item.GetType())) goto Checkpoint1;
             }
+
+            OverworldGun og = Instantiate(item.gameObject).GetComponent<OverworldGun>();
+            og.Initialize(_GunPoint);
+            temp.Add(og);
+
+        Checkpoint1:;
         }
 
-        if (_guns.Count > 0) Equip(_guns[0]);
+        _Guns = temp;
+
+        _gunIndex = 0;
     }
 
     void Update()
     {
         _Rotator.transform.rotation = Quaternion.Lerp(_Rotator.transform.rotation, _dirAsRot, Time.deltaTime * _TurnSpeed);
 
-        if (Input.GetKeyDown("Fire1")) ShootGun();
+        if (Input.GetButton("Fire1")) ShootGun();
+        TryChangeGun(Input.GetAxisRaw("ChangeGun"));
     }
 
     void FixedUpdate()
@@ -74,12 +117,18 @@ public class OverworldPlayerController : MonoBehaviour
 
     void ShootGun()
     {
-        
+        _currentGun?.Shoot();
     }
 
-    void Equip(OverworldGun gun)
+    void TryChangeGun(float v)
     {
-        gun.Equip();
+        if (v == 0) return;
+        if (_changeTurret_TargetTime >= Time.time) return;
+
+        v = v > 0 ? 1 : -1;
+        _gunIndex += (int)v;
+
+        _changeTurret_TargetTime = Time.time + _changeTurret_Cooldown;
     }
 
     private void OnDrawGizmos()
