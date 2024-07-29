@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 3058774881772933977}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.0742, z: 0.3771}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -83,6 +83,8 @@ MonoBehaviour:
   _ID: gun-basic-however-fast
   Visuals:
   - {fileID: 6841182734437318575}
+  _Projectile: {fileID: 4590687476208610346, guid: 6be8f72798af27c4c83128d37a2c660e, type: 3}
+  speedMultiplier: 1
 --- !u!1 &6841182734437318575
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,12 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class BasicGun : OverworldGun
+namespace Overworld
 {
-    public override void Shoot()
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
+
+    public class BasicGun : ProjectileShooterBase
     {
-        base.Shoot();
-        Debug.Log("shootin ma basic gun");
+        public override void ActivationImplementation()
+        {
+            base.ActivationImplementation();
+        }
     }
+
 }

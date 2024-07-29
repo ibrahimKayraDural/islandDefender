@@ -7,6 +7,7 @@ TagManager:
   - TowerDefencePlayground
   - Turret
   - Base
+  - OverworldPlayer
   layers:
   - Default
   - TransparentFX

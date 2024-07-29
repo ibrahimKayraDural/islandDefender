@@ -9,6 +9,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] float _IterationDuration = .05f;
     [SerializeField] float _LifeTime = 10f;
     [SerializeField] GameObject HitSfx;
+    [SerializeField] string[] IgnoreTags = new string[0];
 
     bool _isInitialized;
     bool _breakUpdate;
@@ -63,7 +64,10 @@ public class Projectile : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Turret") return;
+        foreach (var tag in IgnoreTags)
+        {
+            if (other.gameObject.tag == tag) return;
+        }
 
         if (other.TryGetComponent(out IHealth ih))
         {
