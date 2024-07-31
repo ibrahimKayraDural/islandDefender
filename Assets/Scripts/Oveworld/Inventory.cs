@@ -29,17 +29,8 @@ namespace Overworld
                     }
                     else
                     {
-                        for (int n = 0; n < _slots.Length; n++)
-                        {
-                            if (IsNull(_slots[n]))
-                            {
-                                _slots[n] = temp[i];
-                                goto Checkpoint1;
-                            }
-                        }
-                        break;
+                        TryAddItemWithSpill(temp[i]);
                     }
-                Checkpoint1:;
                 }
             }
         }

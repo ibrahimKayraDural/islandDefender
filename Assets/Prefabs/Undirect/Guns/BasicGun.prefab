@@ -85,6 +85,8 @@ MonoBehaviour:
   - {fileID: 6841182734437318575}
   _Projectile: {fileID: 4590687476208610346, guid: 6be8f72798af27c4c83128d37a2c660e, type: 3}
   speedMultiplier: 1
+  OneShotNull: {fileID: 1785450916016651603, guid: cf38192033b0431428b633c8f8bb2f2d, type: 3}
+  ShootSFX: {fileID: 8300000, guid: a065f47f7d0087a4ba39b7863850db9e, type: 3}
 --- !u!1 &6841182734437318575
 GameObject:
   m_ObjectHideFlags: 0
