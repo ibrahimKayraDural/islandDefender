@@ -1,0 +1,142 @@
+using System.Collections;
+using System.Collections.Generic;
+using TowerDefence;
+using UnityEditor;
+using UnityEngine;
+
+public class ExcelSwarmConverter : EditorWindow
+{
+    TextAsset _ExcelFile;
+
+    const string NAME_IDENTIFIER = "[NAME]>";
+    const string ASSET_PATH = "Assets/Data/WaveData/ScriptableObjects/";
+    const string ASSET_EXTENTION = ".asset";
+
+    void OnGUI()
+    {
+        ExcelSwarmConverter window = this;
+        window.maxSize = new Vector2(500, 250);
+        window.minSize = window.maxSize;
+
+        GUILayout.Label("Select a CSV file from the project window and press 'CONVERT' button to convert the contents into seperate scriptable objects. The objects will be saved (and overriden if necessary) to " + ASSET_PATH,EditorStyles.helpBox);
+        Object[] selection = Selection.GetFiltered(typeof(TextAsset), SelectionMode.Assets);
+        GUILayout.Space(10);
+
+        if (selection.Length > 0)
+        {
+            TextAsset temp = selection[0] as TextAsset;
+            if (temp != null && AssetDatabase.GetAssetPath(temp).EndsWith(".csv"))
+            {
+                _ExcelFile = temp;
+            }
+        }
+
+        if (_ExcelFile == null)
+        { GUILayout.Label("Please select a csv file...", EditorStyles.boldLabel); }
+        else
+        {
+            GUILayout.Label("''" + _ExcelFile.name + "''  is selected", EditorStyles.boldLabel);
+
+            GUILayout.Space(10);
+            GUI.contentColor = Color.yellow;
+
+            if (GUILayout.Button("CONVERT"))
+            {
+                RefreshExcel();
+                Unselect();
+            }
+
+            GUILayout.Space(5);
+
+            GUI.contentColor = new Color(.8f, 0, 0);
+            if (GUILayout.Button("UNSELECT"))
+            { Unselect(); }
+        }
+        
+        GUI.contentColor = Color.white;
+    }
+
+    [MenuItem("Window/Excel to Swarm Converter")]
+    public static void ShowWindow()
+    {
+        GetWindow<ExcelSwarmConverter>("Excel to Swarm Converter");
+    }
+
+    void Unselect()
+    {
+        Selection.objects = null;
+        _ExcelFile = null;
+    }
+
+    public void RefreshExcel()
+    {
+        List<List<List<string>>> WaveDataList = new List<List<List<string>>>();
+        List<List<string>> tempWaveData = new List<List<string>>();
+
+        foreach (var item in _ExcelFile.text.Split('\n'))
+        {
+            tempWaveData.Add(new List<string>());
+            string[] currArr = item.Split(',');
+            int lastIndex = tempWaveData.Count - 1;
+
+            for (int i = 0; i < currArr.Length; i++)
+            {
+                if (string.IsNullOrWhiteSpace(currArr[i])) continue;
+                tempWaveData[lastIndex].Add(currArr[i]);
+            }
+
+            if (tempWaveData[lastIndex].Count == 0)
+            { tempWaveData.RemoveAt(lastIndex); }
+        }
+
+        List<int> WaveNameIndexes = new List<int>() { 0 };
+        int currentIndex = -1;
+        do
+        {
+            currentIndex = tempWaveData.FindIndex(currentIndex + 1, x => x[0] == NAME_IDENTIFIER);
+            if (currentIndex >= 0 && WaveNameIndexes.Contains(currentIndex) == false) WaveNameIndexes.Add(currentIndex);
+        }
+        while (currentIndex >= 0);
+
+        currentIndex = 0;
+        int nextIndex = 0;
+        int IndextCount = WaveNameIndexes.Count;
+
+        for (int i = 0; i < IndextCount; i++)
+        {
+            currentIndex = WaveNameIndexes[i];
+
+            if (i + 1 >= IndextCount)
+            {
+                WaveDataList.Add(tempWaveData.GetRange(currentIndex, tempWaveData.Count - currentIndex));
+                break;
+            }
+
+            nextIndex = WaveNameIndexes[i + 1];
+
+            WaveDataList.Add(tempWaveData.GetRange(currentIndex, nextIndex - currentIndex));
+        }
+
+        foreach (var ND in WaveDataList)
+        {
+            foreach (var RD in ND)
+            {
+                foreach (var CD in RD)
+                {
+                    Debug.Log(CD);
+                }
+                Debug.Log("--------");
+            }
+            Debug.Log("XXXXXXXXX");
+        }
+
+        //SwarmData sd = ScriptableObject.CreateInstance<SwarmData>();
+        //sd.DefaultCooldowns = new List<float>() { 1, 1, 1 };
+        //string name = "testWaveDatabase";
+        //AssetDatabase.CreateAsset(sd, ASSET_PATH + name + ASSET_EXTENTION);
+        //AssetDatabase.SaveAssets();
+        //AssetDatabase.Refresh();
+        //EditorUtility.FocusProjectWindow();
+        //Selection.activeObject = sd;
+    }
+}
