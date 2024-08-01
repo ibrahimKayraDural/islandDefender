@@ -17,7 +17,7 @@ public class BaseResourceController : MonoBehaviour
         if (Instance == null) Instance = this;
         else if (Instance != this) Destroy(this);
 
-        GLOBAL.GetResourceDatabase().Resources.ForEach(x => _resourceDictionary.TryAdd(x, 0));
+        GLOBAL.GetResourceDatabase().DataList.ForEach(x => _resourceDictionary.TryAdd(x, 0));
         RefreshText();
     }
     int debug1 = 0;

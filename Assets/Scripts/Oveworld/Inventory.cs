@@ -53,13 +53,13 @@ namespace Overworld
                 SlotCount--;
             if (Input.GetKeyDown(KeyCode.L))
             {
-                ResourceData datdat = GLOBAL.GetResourceDatabase().GetResourceByID("resource-iron");
+                ResourceData datdat = GLOBAL.GetResourceDatabase().GetDataByID("resource-iron");
                 IInventoryItem itemm = datdat.AsItem(15);
                 _slots[_slots.Length - 1] = itemm; 
             }
             if (Input.GetKeyDown(KeyCode.M))
             {
-                ResourceData datdat = GLOBAL.GetResourceDatabase().GetResourceByID("resource-iron");
+                ResourceData datdat = GLOBAL.GetResourceDatabase().GetDataByID("resource-iron");
                 IInventoryItem itemm = datdat.AsItem(15);
                 TryAddItemWithSpill( itemm);
             }

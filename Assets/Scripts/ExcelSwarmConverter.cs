@@ -10,7 +10,7 @@ public class ExcelSwarmConverter : EditorWindow
 
     const string NAME_IDENTIFIER = "[NAME]>";
     const string ASSET_PATH = "Assets/Data/WaveData/ScriptableObjects/";
-    const string ASSET_EXTENTION = ".asset";
+    const string SCOBJ_ASSET_EXTENTION = ".asset";
 
     void OnGUI()
     {
@@ -129,6 +129,13 @@ public class ExcelSwarmConverter : EditorWindow
             }
             Debug.Log("XXXXXXXXX");
         }
+
+        //foreach (var NameSeperation in WaveDataList)
+        //{
+        //    SwarmData
+
+
+        //}
 
         //SwarmData sd = ScriptableObject.CreateInstance<SwarmData>();
         //sd.DefaultCooldowns = new List<float>() { 1, 1, 1 };

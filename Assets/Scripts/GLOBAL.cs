@@ -20,4 +20,11 @@ public static class GLOBAL
         if (_resourceDB == null) _resourceDB = Resources.Load<ResourceDatabase>("Databases/ResourceDatabase");
         return _resourceDB;
     }
+
+    static EnemyDatabase _enemyDB = null;
+    public static EnemyDatabase GetEnemyDatabase()
+    {
+        if (_enemyDB == null) _enemyDB = Resources.Load<EnemyDatabase>("Databases/EnemyDatabase");
+        return _enemyDB;
+    }
 }
