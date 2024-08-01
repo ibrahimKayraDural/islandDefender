@@ -16,7 +16,7 @@ namespace TowerDefence
         [SerializeField] bool _RepeatLastWave;
         [SerializeField] List<Transform> _spawners = new List<Transform>();
         [SerializeField] BaseManager _BaseMngr;
-        [SerializeField] WaveDatabase _waveDatabase;
+        [SerializeField] SwarmData _SwarmDatabase;
         [SerializeField] TextMeshProUGUI _TimeTM;
 
         int _currentWaveIndex;
@@ -24,13 +24,13 @@ namespace TowerDefence
         {
             get
             {
-                if (_waveDatabase == null || _waveDatabase.Waves.Length <= _currentWaveIndex)
+                if (_SwarmDatabase == null || _SwarmDatabase.Waves.Count <= _currentWaveIndex)
                     return null;
 
-                return _waveDatabase.Waves[_currentWaveIndex];
+                return _SwarmDatabase.Waves[_currentWaveIndex];
             }
         }
-        int _waveCount => _waveDatabase.Waves.Length;
+        int _waveCount => _SwarmDatabase.Waves.Count;
         string spawnerName = "EnemySpawner";
         bool _waveIsActive;
 
@@ -136,7 +136,7 @@ namespace TowerDefence
 
 
             //registering cooldown values
-            List<float> cooldownArr = _currentWave.Value.UseCustomCooldowns ? _currentWave.Value.WaveCooldowns : _waveDatabase.DefaultCooldowns;
+            List<float> cooldownArr = _currentWave.Value.UseCustomCooldowns ? _currentWave.Value.WaveCooldowns : _SwarmDatabase.DefaultCooldowns;
             int cooldownArrCount = cooldownArr.Count;
 
 

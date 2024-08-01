@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace TowerDefence
 {
-    [CreateAssetMenu(menuName = "Tower Defence/Wave Manager")]
-    public class WaveDatabase : ScriptableObject
+    [CreateAssetMenu(menuName = "Tower Defence/Swarm Data")]
+    public class SwarmData : ScriptableObject
     {
-        public S_Wave[] Waves;
+        public List<S_Wave> Waves;
         public List<float> DefaultCooldowns = new List<float>();
     }
 

@@ -3637,7 +3637,7 @@ MonoBehaviour:
   - {fileID: 731649348}
   - {fileID: 662048261}
   _BaseMngr: {fileID: 1583899788}
-  _waveDatabase: {fileID: 11400000, guid: 7a83bb409b465984da9ff727f3a64aec, type: 2}
+  _SwarmDatabase: {fileID: 11400000, guid: 7a83bb409b465984da9ff727f3a64aec, type: 2}
   _TimeTM: {fileID: 1063157223}
 --- !u!4 &1600570452
 Transform:
