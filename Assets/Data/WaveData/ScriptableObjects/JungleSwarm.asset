@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3558748f6ab5bec418eca287e8d2cfa9, type: 3}
+  m_Name: JungleSwarm
+  m_EditorClassIdentifier: 
+  Waves:
+  - Lanes:
+    - Enemies:
+      - Enemy: {fileID: 11400000, guid: c17b7fcb5eb53d34b9cd4601d897cb28, type: 2}
+        Count: 1
+    - Enemies:
+      - Enemy: {fileID: 11400000, guid: c17b7fcb5eb53d34b9cd4601d897cb28, type: 2}
+        Count: 1
+    - Enemies:
+      - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
+        Count: 1
+    TimeUntillNextWave: 0
+    WaveCooldowns: []
+    UseCustomCooldowns: 0
+  - Lanes:
+    - Enemies:
+      - Enemy: {fileID: 11400000, guid: c17b7fcb5eb53d34b9cd4601d897cb28, type: 2}
+        Count: 1
+    TimeUntillNextWave: 0
+    WaveCooldowns: []
+    UseCustomCooldowns: 0
+  - Lanes:
+    - Enemies:
+      - Enemy: {fileID: 11400000, guid: c17b7fcb5eb53d34b9cd4601d897cb28, type: 2}
+        Count: 1
+    - Enemies:
+      - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
+        Count: 1
+    TimeUntillNextWave: 0
+    WaveCooldowns: []
+    UseCustomCooldowns: 0
+  - Lanes:
+    - Enemies:
+      - Enemy: {fileID: 11400000, guid: c17b7fcb5eb53d34b9cd4601d897cb28, type: 2}
+        Count: 1
+    TimeUntillNextWave: 0
+    WaveCooldowns: []
+    UseCustomCooldowns: 0
+  - Lanes:
+    - Enemies:
+      - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
+        Count: 1
+    TimeUntillNextWave: 0
+    WaveCooldowns: []
+    UseCustomCooldowns: 0
+  DefaultCooldowns:
+  - 1
+  - 1
+  - 1

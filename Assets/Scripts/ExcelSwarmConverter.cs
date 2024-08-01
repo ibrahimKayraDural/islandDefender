@@ -12,7 +12,9 @@ public class ExcelSwarmConverter : EditorWindow
     const string ASSET_PATH = "Assets/Data/WaveData/ScriptableObjects/";
     const string SCOBJ_ASSET_EXTENTION = ".asset";
 
-    void OnGUI()
+    List<float> defaultCooldowns = new List<float>() { 1, 1, 1 };
+
+void OnGUI()
     {
         ExcelSwarmConverter window = this;
         window.maxSize = new Vector2(500, 250);
@@ -117,29 +119,69 @@ public class ExcelSwarmConverter : EditorWindow
             WaveDataList.Add(tempWaveData.GetRange(currentIndex, nextIndex - currentIndex));
         }
 
-        foreach (var ND in WaveDataList)
-        {
-            foreach (var RD in ND)
-            {
-                foreach (var CD in RD)
-                {
-                    Debug.Log(CD);
-                }
-                Debug.Log("--------");
-            }
-            Debug.Log("XXXXXXXXX");
-        }
-
-        //foreach (var NameSeperation in WaveDataList)
+        //foreach (var ND in WaveDataList)
         //{
-        //    SwarmData
-
-
+        //    foreach (var RD in ND)
+        //    {
+        //        foreach (var CD in RD)
+        //        {
+        //            Debug.Log(CD);
+        //        }
+        //        Debug.Log("--------");
+        //    }
+        //    Debug.Log("XXXXXXXXX");
         //}
+
+        EnemyDatabase enemyDB = GLOBAL.GetEnemyDatabase();
+        string sdName = GLOBAL.UnassignedString;
+
+        foreach (var NameSeperation in WaveDataList)
+        {
+            SwarmData swarmData = ScriptableObject.CreateInstance<SwarmData>();
+            swarmData.Waves = new List<S_Wave>();
+
+            foreach (var RowSeperation in NameSeperation)
+            {
+                if (RowSeperation[0] == NAME_IDENTIFIER)
+                {
+                    sdName = RowSeperation[1];
+                    continue;
+                }
+
+                S_Wave currWave = new S_Wave();
+                currWave.Lanes = new List<S_LaneGroup>();
+
+                foreach (var CommaSeperation in RowSeperation)
+                {
+                    EnemyData eData = enemyDB.GetDataByID(CommaSeperation);
+                    if (eData == null)
+                    {
+                        Debug.LogError(CommaSeperation + " is not an enemy");
+                        continue;
+                    }
+
+                    S_LaneGroup lGroup = new S_LaneGroup();
+
+                    S_EnemyWithCount ewc = new S_EnemyWithCount();
+                    ewc.Count = 1;
+                    ewc.Enemy = eData;
+
+                    lGroup.Enemies = new List<S_EnemyWithCount>() { ewc };
+
+                    currWave.Lanes.Add(lGroup);
+                }
+
+                swarmData.Waves.Add(currWave);
+            }
+
+            swarmData.DefaultCooldowns = defaultCooldowns;
+            AssetDatabase.CreateAsset(swarmData, ASSET_PATH + sdName + SCOBJ_ASSET_EXTENTION);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+        }
 
         //SwarmData sd = ScriptableObject.CreateInstance<SwarmData>();
         //sd.DefaultCooldowns = new List<float>() { 1, 1, 1 };
-        //string name = "testWaveDatabase";
         //AssetDatabase.CreateAsset(sd, ASSET_PATH + name + ASSET_EXTENTION);
         //AssetDatabase.SaveAssets();
         //AssetDatabase.Refresh();
