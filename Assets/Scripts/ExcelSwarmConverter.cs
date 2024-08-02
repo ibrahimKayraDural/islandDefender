@@ -124,12 +124,18 @@ void OnGUI()
         SwarmDatabase swarmDB = GLOBAL.GetSwarmDatabase();
         string sdName = GLOBAL.UnassignedString;
 
+        List<float> targetEnemyCooldowns = new List<float>();
+        List<int> targetWaveCooldowns = new List<int>();
+
         swarmDB.DataListAccess = new List<Data<SwarmData>>();
 
         foreach (var NameSeperation in WaveDataList)
         {
             SwarmData swarmData = ScriptableObject.CreateInstance<SwarmData>();
             swarmData.Waves = new List<S_Wave>();
+
+            targetEnemyCooldowns = defaultEnemyCooldowns;
+            targetWaveCooldowns = defaultWaveCooldowns;
 
             foreach (var RowSeperation in NameSeperation)
             {
@@ -168,8 +174,8 @@ void OnGUI()
             string fullPath = ASSET_PATH + sdName + SCOBJ_ASSET_EXTENTION;
 
             swarmData.SetNameAndID(sdName);
-            swarmData.DefaultEnemyCooldowns = defaultEnemyCooldowns;
-            swarmData.DefaultUntillNextWave = defaultWaveCooldowns;
+            swarmData.DefaultEnemyCooldowns = targetEnemyCooldowns;
+            swarmData.DefaultUntillNextWave = targetWaveCooldowns;
             AssetDatabase.CreateAsset(swarmData, fullPath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
@@ -195,12 +201,40 @@ void OnGUI()
             string message = identifier.Substring(startIndex + 1, endIndex - startIndex - 1);
             message = message.ToLower();
 
+            string firstCollumn = rowSeperation[1];
             switch (message)
             {
                 case "title":
-                    sdName = rowSeperation[1];
+                    sdName = firstCollumn;
                     break;
-                case "enemy-cooldowns":
+
+                case "wave-cooldown":
+
+                    List<int> ints = new List<int>();
+                    foreach (var item in firstCollumn.Split('/'))
+                    {
+                        string target = item.Replace(".", ",");
+
+                        float currFloat = 0;
+                        if (float.TryParse(target, out currFloat)) ints.Add(Mathf.RoundToInt(currFloat));
+                    }
+
+                    if (ints != null && ints.Count > 0) targetWaveCooldowns = ints;
+
+                    break;
+
+                case "enemy-cooldown":
+
+                    List<float> floats = new List<float>();
+                    foreach (var item in firstCollumn.Split('/'))
+                    {
+                        string target = item.Replace(".", ",");
+
+                        float currFloat = 0;
+                        if (float.TryParse(target, out currFloat)) floats.Add(currFloat);
+                    }
+
+                    if (floats != null && floats.Count > 0) targetEnemyCooldowns = floats;
 
                     break;
             }
