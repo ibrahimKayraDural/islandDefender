@@ -34,6 +34,14 @@ namespace TowerDefence
         string spawnerName = "EnemySpawner";
         bool _waveIsActive;
         SwarmData _changedSwarm = null;
+        List<int> _waveCooldownArr = GLOBAL.FailsafeWaveCooldowns;
+        int _currentWaveCooldown
+        {
+            get
+            {
+                return _currentWaveIndex < _waveCooldownArr.Count && _currentWaveIndex >= 0 ? _waveCooldownArr[_currentWaveIndex] : _waveCooldownArr[_waveCooldownArr.Count - 1];
+            }
+        }
 
         private void Start()
         {
@@ -74,6 +82,9 @@ namespace TowerDefence
                 Debug.LogError("_currentWave is null");
                 return;
             }
+
+            _waveCooldownArr = _currentSwarm.DefaultUntillNextWave;
+            if (_waveCooldownArr == null || _waveCooldownArr.Count <= 0) _waveCooldownArr = GLOBAL.FailsafeWaveCooldowns;
 
             _waveEndedOnce = false;
             StartCoroutine(nameof(WaveCoroutine));
@@ -148,9 +159,9 @@ namespace TowerDefence
 
 
             //registering cooldown values
-            List<float> cooldownArr = _currentWave.Value.UseCustomCooldowns ? _currentWave.Value.WaveCooldowns : _currentSwarm.DefaultEnemyCooldowns;
-            if (cooldownArr == null || cooldownArr.Count <= 0) cooldownArr = GLOBAL.FailsafeEnemyCooldowns;
-            int cooldownArrCount = cooldownArr.Count;
+            List<float> enemyCooldownArr = _currentSwarm.DefaultEnemyCooldowns;
+            if (enemyCooldownArr == null || enemyCooldownArr.Count <= 0) enemyCooldownArr = GLOBAL.FailsafeEnemyCooldowns;
+            int enemyCooldownArrCount = enemyCooldownArr.Count;
 
 
             //looping untill either no data is left in wave data or the failsafe cap is reached
@@ -158,7 +169,7 @@ namespace TowerDefence
             {
                 SpawnNextWave(ref enemiesWithLanes);
 
-                yield return new WaitForSeconds(cooldownArrCount > i ? cooldownArr[i] : cooldownArr[cooldownArrCount-1]);
+                yield return new WaitForSeconds(enemyCooldownArrCount > i ? enemyCooldownArr[i] : enemyCooldownArr[enemyCooldownArrCount-1]);
 
                 if (i == 10000) Debug.LogError("Failsafe cap was reached while spawning waves");
             }
@@ -214,7 +225,7 @@ namespace TowerDefence
                 return;
             }
 
-            int cooldown = _currentWave.Value.TimeUntillNextWave;
+            int cooldown = _currentWaveCooldown;
             if (_currentWaveIndex + 1 < _waveCount) _currentWaveIndex++;
 
             StartCoroutine(nameof(RunWaveCooldown), cooldown);
@@ -244,7 +255,7 @@ namespace TowerDefence
             _changedSwarm = null;
             _currentWaveIndex = 0;
 
-            RunWaveCooldown(_currentWave.Value.TimeUntillNextWave);
+            RunWaveCooldown(_currentWaveCooldown);
         }
 
         public void SpawnSpawnerAt(Vector3 position, Transform parent = null)

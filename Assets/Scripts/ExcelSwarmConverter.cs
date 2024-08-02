@@ -12,7 +12,8 @@ public class ExcelSwarmConverter : EditorWindow
     const string ASSET_PATH = "Assets/Data/WaveData/ScriptableObjects/";
     const string SCOBJ_ASSET_EXTENTION = ".asset";
 
-    List<float> defaultCooldowns = GLOBAL.FailsafeEnemyCooldowns;
+    List<float> defaultEnemyCooldowns = GLOBAL.FailsafeEnemyCooldowns;
+    List<int> defaultWaveCooldowns = GLOBAL.FailsafeWaveCooldowns;
 
 void OnGUI()
     {
@@ -167,7 +168,8 @@ void OnGUI()
             string fullPath = ASSET_PATH + sdName + SCOBJ_ASSET_EXTENTION;
 
             swarmData.SetNameAndID(sdName);
-            swarmData.DefaultEnemyCooldowns = defaultCooldowns;
+            swarmData.DefaultEnemyCooldowns = defaultEnemyCooldowns;
+            swarmData.DefaultUntillNextWave = defaultWaveCooldowns;
             AssetDatabase.CreateAsset(swarmData, fullPath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();

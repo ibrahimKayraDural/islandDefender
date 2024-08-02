@@ -11,7 +11,7 @@ namespace TowerDefence
     {
         public List<S_Wave> Waves;
         public List<float> DefaultEnemyCooldowns = new List<float>();
-        public List<float> DefaultUntillNextWave = new List<float>();
+        public List<int> DefaultUntillNextWave = new List<int>();
 
         public string DisplayNameAccess
         {
@@ -48,9 +48,6 @@ namespace TowerDefence
     [System.Serializable] public struct S_Wave
     {
         public List<S_LaneGroup> Lanes;
-        public int TimeUntillNextWave;
-        public List<float> WaveCooldowns;
-        public bool UseCustomCooldowns;
 
         public int TotalEnemyCount
         {
