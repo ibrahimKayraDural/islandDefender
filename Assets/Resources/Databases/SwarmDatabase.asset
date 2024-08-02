@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3558748f6ab5bec418eca287e8d2cfa9, type: 3}
-  m_Name: CurrentSwarm
+  m_Script: {fileID: 11500000, guid: af47f6edea5d224418e53679c9e3dc84, type: 3}
+  m_Name: SwarmDatabase
   m_EditorClassIdentifier: 
-  _displayName: Current Swarm Data
-  _id: current-swarm-data
-  Waves: []
-  DefaultCooldowns: []
+  _DataList: []
+  _CurrentSwarmData: {fileID: 11400000, guid: 7a83bb409b465984da9ff727f3a64aec, type: 2}

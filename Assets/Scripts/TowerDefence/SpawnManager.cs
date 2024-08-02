@@ -16,30 +16,42 @@ namespace TowerDefence
         [SerializeField] bool _RepeatLastWave;
         [SerializeField] List<Transform> _spawners = new List<Transform>();
         [SerializeField] BaseManager _BaseMngr;
-        [SerializeField] SwarmData _SwarmDatabase;
         [SerializeField] TextMeshProUGUI _TimeTM;
 
+        SwarmData _currentSwarm;
         int _currentWaveIndex;
         S_Wave? _currentWave
         {
             get
             {
-                if (_SwarmDatabase == null || _SwarmDatabase.Waves.Count <= _currentWaveIndex)
+                if (_currentSwarm == null || _currentSwarm.Waves.Count <= _currentWaveIndex)
                     return null;
 
-                return _SwarmDatabase.Waves[_currentWaveIndex];
+                return _currentSwarm.Waves[_currentWaveIndex];
             }
         }
-        int _waveCount => _SwarmDatabase.Waves.Count;
+        int _waveCount => _currentSwarm.Waves.Count;
         string spawnerName = "EnemySpawner";
         bool _waveIsActive;
+        SwarmData _changedSwarm = null;
 
         private void Start()
         {
+            SwarmDatabase sdb = GLOBAL.GetSwarmDatabase();
+            _currentSwarm = sdb.CurrentSwarmData;
+            sdb.e_CurrentSDHasChanged += OnCurrentSDHasChanged;
+
             e_ActiveEnemiesListIsEmptied += OnWaveEnded;
             _BaseMngr.e_BaseHasDied += _BaseMngr_e_BaseHasDied;
             _TimeTM.text = "";
             StartWave();
+        }
+
+        private void OnCurrentSDHasChanged(object sender, SwarmData e)
+        {
+            _changedSwarm = e;
+
+            if (_waveIsActive == false) ChangeCurrentSwarm();
         }
 
         void _BaseMngr_e_BaseHasDied(object sender, EventArgs e)
@@ -136,7 +148,7 @@ namespace TowerDefence
 
 
             //registering cooldown values
-            List<float> cooldownArr = _currentWave.Value.UseCustomCooldowns ? _currentWave.Value.WaveCooldowns : _SwarmDatabase.DefaultCooldowns;
+            List<float> cooldownArr = _currentWave.Value.UseCustomCooldowns ? _currentWave.Value.WaveCooldowns : _currentSwarm.DefaultCooldowns;
             int cooldownArrCount = cooldownArr.Count;
 
 
@@ -189,6 +201,12 @@ namespace TowerDefence
 
             _waveEndedOnce = true;
 
+            if (_changedSwarm != null)
+            {
+                ChangeCurrentSwarm();
+                return;
+            }
+
             if (_currentWaveIndex + 1 >= _waveCount && _RepeatLastWave == false)
             {
                 AllWavesEnded();
@@ -217,6 +235,15 @@ namespace TowerDefence
         void AllWavesEnded()
         {
             _TimeTM.text = "All Waves are finished";
+        }
+
+        void ChangeCurrentSwarm()
+        {
+            _currentSwarm = _changedSwarm;
+            _changedSwarm = null;
+            _currentWaveIndex = 0;
+
+            RunWaveCooldown(_currentWave.Value.TimeUntillNextWave);
         }
 
         public void SpawnSpawnerAt(Vector3 position, Transform parent = null)

@@ -27,4 +27,11 @@ public static class GLOBAL
         if (_enemyDB == null) _enemyDB = Resources.Load<EnemyDatabase>("Databases/EnemyDatabase");
         return _enemyDB;
     }
+
+    static SwarmDatabase _swarmDB = null;
+    public static SwarmDatabase GetSwarmDatabase()
+    {
+        if (_swarmDB == null) _swarmDB = Resources.Load<SwarmDatabase>("Databases/SwarmDatabase");
+        return _swarmDB;
+    }
 }

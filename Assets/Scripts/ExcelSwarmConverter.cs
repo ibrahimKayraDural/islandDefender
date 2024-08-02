@@ -119,21 +119,11 @@ void OnGUI()
             WaveDataList.Add(tempWaveData.GetRange(currentIndex, nextIndex - currentIndex));
         }
 
-        //foreach (var ND in WaveDataList)
-        //{
-        //    foreach (var RD in ND)
-        //    {
-        //        foreach (var CD in RD)
-        //        {
-        //            Debug.Log(CD);
-        //        }
-        //        Debug.Log("--------");
-        //    }
-        //    Debug.Log("XXXXXXXXX");
-        //}
-
         EnemyDatabase enemyDB = GLOBAL.GetEnemyDatabase();
+        SwarmDatabase swarmDB = GLOBAL.GetSwarmDatabase();
         string sdName = GLOBAL.UnassignedString;
+
+        swarmDB.DataListAccess = new List<Data<SwarmData>>();
 
         foreach (var NameSeperation in WaveDataList)
         {
@@ -174,10 +164,15 @@ void OnGUI()
                 swarmData.Waves.Add(currWave);
             }
 
+            string fullPath = ASSET_PATH + sdName + SCOBJ_ASSET_EXTENTION;
+
+            swarmData.SetNameAndID(sdName);
             swarmData.DefaultCooldowns = defaultCooldowns;
-            AssetDatabase.CreateAsset(swarmData, ASSET_PATH + sdName + SCOBJ_ASSET_EXTENTION);
+            AssetDatabase.CreateAsset(swarmData, fullPath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
+
+            swarmDB.DataListAccess.Add(AssetDatabase.LoadAssetAtPath<SwarmData>(fullPath));
         }
 
         //SwarmData sd = ScriptableObject.CreateInstance<SwarmData>();

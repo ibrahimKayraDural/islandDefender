@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3558748f6ab5bec418eca287e8d2cfa9, type: 3}
   m_Name: BonusSwarm
   m_EditorClassIdentifier: 
+  _displayName: BonusSwarm
+  _id: bonusswarm
   Waves:
   - Lanes:
     - Enemies:
