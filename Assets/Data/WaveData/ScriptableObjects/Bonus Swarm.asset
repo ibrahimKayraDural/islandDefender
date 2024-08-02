@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3558748f6ab5bec418eca287e8d2cfa9, type: 3}
-  m_Name: BonusSwarm
+  m_Name: Bonus Swarm
   m_EditorClassIdentifier: 
-  _displayName: BonusSwarm
-  _id: bonusswarm
+  _displayName: Bonus Swarm
+  _id: bonus-swarm
   Waves:
   - Lanes:
     - Enemies:

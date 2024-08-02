@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af47f6edea5d224418e53679c9e3dc84, type: 3}
   m_Name: SwarmDatabase
   m_EditorClassIdentifier: 
-  _DataList: []
-  _CurrentSwarmData: {fileID: 11400000, guid: 7a83bb409b465984da9ff727f3a64aec, type: 2}
+  _DataList:
+  - {fileID: 11400000, guid: c9d503656fda61949981f83bc055e134, type: 2}
+  - {fileID: 11400000, guid: ace7ef4666986b44bafd2db487de5a40, type: 2}
+  - {fileID: 11400000, guid: 2ce1d7f67404ee94abc52cfccb605c36, type: 2}
+  _CurrentSwarmData: {fileID: 11400000, guid: 658dc0bac352e384ea5e2a6259905cc7, type: 2}

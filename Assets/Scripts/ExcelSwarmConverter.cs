@@ -8,11 +8,11 @@ public class ExcelSwarmConverter : EditorWindow
 {
     TextAsset _ExcelFile;
 
-    const string NAME_IDENTIFIER = "[NAME]>";
+    const string SWARM_START_IDENTIFIER = "[title]";
     const string ASSET_PATH = "Assets/Data/WaveData/ScriptableObjects/";
     const string SCOBJ_ASSET_EXTENTION = ".asset";
 
-    List<float> defaultCooldowns = new List<float>() { 1, 1, 1 };
+    List<float> defaultCooldowns = GLOBAL.FailsafeEnemyCooldowns;
 
 void OnGUI()
     {
@@ -95,7 +95,7 @@ void OnGUI()
         int currentIndex = -1;
         do
         {
-            currentIndex = tempWaveData.FindIndex(currentIndex + 1, x => x[0] == NAME_IDENTIFIER);
+            currentIndex = tempWaveData.FindIndex(currentIndex + 1, x => x[0].ToLower() == SWARM_START_IDENTIFIER);
             if (currentIndex >= 0 && WaveNameIndexes.Contains(currentIndex) == false) WaveNameIndexes.Add(currentIndex);
         }
         while (currentIndex >= 0);
@@ -132,9 +132,9 @@ void OnGUI()
 
             foreach (var RowSeperation in NameSeperation)
             {
-                if (RowSeperation[0] == NAME_IDENTIFIER)
+                if (RowSeperation[0].Contains("["))
                 {
-                    sdName = RowSeperation[1];
+                    HandleIdentifier(RowSeperation);
                     continue;
                 }
 
@@ -143,7 +143,7 @@ void OnGUI()
 
                 foreach (var CommaSeperation in RowSeperation)
                 {
-                    EnemyData eData = enemyDB.GetDataByID(CommaSeperation);
+                    EnemyData eData = enemyDB.GetDataByID(CommaSeperation.Trim());
                     if (eData == null)
                     {
                         Debug.LogError(CommaSeperation + " is not an enemy");
@@ -167,7 +167,7 @@ void OnGUI()
             string fullPath = ASSET_PATH + sdName + SCOBJ_ASSET_EXTENTION;
 
             swarmData.SetNameAndID(sdName);
-            swarmData.DefaultCooldowns = defaultCooldowns;
+            swarmData.DefaultEnemyCooldowns = defaultCooldowns;
             AssetDatabase.CreateAsset(swarmData, fullPath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
@@ -182,5 +182,26 @@ void OnGUI()
         //AssetDatabase.Refresh();
         //EditorUtility.FocusProjectWindow();
         //Selection.activeObject = sd;
+
+        void HandleIdentifier(List<string> rowSeperation)
+        {
+            string identifier = rowSeperation[0];
+
+            int startIndex = identifier.IndexOf("[");
+            int endIndex = identifier.IndexOf("]");
+            if (startIndex == -1 || endIndex == -1) return;
+            string message = identifier.Substring(startIndex + 1, endIndex - startIndex - 1);
+            message = message.ToLower();
+
+            switch (message)
+            {
+                case "title":
+                    sdName = rowSeperation[1];
+                    break;
+                case "enemy-cooldowns":
+
+                    break;
+            }
+        }
     }
 }

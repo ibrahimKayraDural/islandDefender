@@ -148,7 +148,8 @@ namespace TowerDefence
 
 
             //registering cooldown values
-            List<float> cooldownArr = _currentWave.Value.UseCustomCooldowns ? _currentWave.Value.WaveCooldowns : _currentSwarm.DefaultCooldowns;
+            List<float> cooldownArr = _currentWave.Value.UseCustomCooldowns ? _currentWave.Value.WaveCooldowns : _currentSwarm.DefaultEnemyCooldowns;
+            if (cooldownArr == null || cooldownArr.Count <= 0) cooldownArr = GLOBAL.FailsafeEnemyCooldowns;
             int cooldownArrCount = cooldownArr.Count;
 
 

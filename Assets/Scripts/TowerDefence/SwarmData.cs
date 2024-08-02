@@ -10,7 +10,8 @@ namespace TowerDefence
     public class SwarmData : Data<SwarmData>
     {
         public List<S_Wave> Waves;
-        public List<float> DefaultCooldowns = new List<float>();
+        public List<float> DefaultEnemyCooldowns = new List<float>();
+        public List<float> DefaultUntillNextWave = new List<float>();
 
         public string DisplayNameAccess
         {
@@ -40,7 +41,7 @@ namespace TowerDefence
         public void SetSwarmValues(SwarmData setTo)
         {
             Waves = setTo.Waves;
-            DefaultCooldowns = setTo.DefaultCooldowns;
+            DefaultEnemyCooldowns = setTo.DefaultEnemyCooldowns;
         }
     }
 

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3558748f6ab5bec418eca287e8d2cfa9, type: 3}
-  m_Name: OverworldSwarm
+  m_Name: CurrentSwarmData
   m_EditorClassIdentifier: 
-  _displayName: OverworldSwarm
-  _id: overworldswarm
+  _displayName: Current Swarm Data
+  _id: current-swarm-data
   Waves:
   - Lanes:
     - Enemies:
@@ -22,13 +22,7 @@ MonoBehaviour:
     - Enemies:
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
         Count: 1
-    - Enemies:
-      - Enemy: {fileID: 11400000, guid: c17b7fcb5eb53d34b9cd4601d897cb28, type: 2}
-        Count: 1
-    - Enemies:
-      - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        Count: 1
-    TimeUntillNextWave: 0
+    TimeUntillNextWave: 3
     WaveCooldowns: []
     UseCustomCooldowns: 0
   - Lanes:
@@ -38,7 +32,7 @@ MonoBehaviour:
     - Enemies:
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
         Count: 1
-    TimeUntillNextWave: 0
+    TimeUntillNextWave: 3
     WaveCooldowns: []
     UseCustomCooldowns: 0
   - Lanes:
@@ -48,7 +42,7 @@ MonoBehaviour:
     - Enemies:
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
         Count: 1
-    TimeUntillNextWave: 0
+    TimeUntillNextWave: 3
     WaveCooldowns: []
     UseCustomCooldowns: 0
   - Lanes:
@@ -61,7 +55,7 @@ MonoBehaviour:
     - Enemies:
       - Enemy: {fileID: 11400000, guid: c17b7fcb5eb53d34b9cd4601d897cb28, type: 2}
         Count: 1
-    TimeUntillNextWave: 0
+    TimeUntillNextWave: 3
     WaveCooldowns: []
     UseCustomCooldowns: 0
   - Lanes:
@@ -71,7 +65,7 @@ MonoBehaviour:
     - Enemies:
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
         Count: 1
-    TimeUntillNextWave: 0
+    TimeUntillNextWave: 3
     WaveCooldowns: []
     UseCustomCooldowns: 0
   DefaultCooldowns:
