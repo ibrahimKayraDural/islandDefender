@@ -42,6 +42,7 @@ namespace TowerDefence
         {
             Waves = setTo.Waves;
             DefaultEnemyCooldowns = setTo.DefaultEnemyCooldowns;
+            DefaultUntillNextWave = setTo.DefaultUntillNextWave;
         }
     }
 
