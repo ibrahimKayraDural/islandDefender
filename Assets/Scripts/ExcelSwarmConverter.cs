@@ -180,6 +180,7 @@ void OnGUI()
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
+            EditorUtility.SetDirty(swarmDB);//changes will not be saved if this is not set dirty
             swarmDB.DataListAccess.Add(AssetDatabase.LoadAssetAtPath<SwarmData>(fullPath));
         }
 
