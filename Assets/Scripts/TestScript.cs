@@ -10,14 +10,17 @@ public class TestScript : MonoBehaviour
     [SerializeField] GameObject _Cube;
     [SerializeField] TextMeshProUGUI _Tmesh;
     [SerializeField] Image _Img;
+    [SerializeField] bool _ShowDebugLogs;
+
+    [SerializeField] SwarmDatabase database;
 
     void Awake()
     {
-        
+        WriteDebug("Awake ran");
     }
     void Start()
     {
-
+        WriteDebug("Start ran");
     }
     void Update()
     {
@@ -32,48 +35,77 @@ public class TestScript : MonoBehaviour
         else if (Input.GetMouseButtonDown(2)) MMB_WasPressed();
     }
 
-    private void MMB_WasPressed()
+    public void TestMethod()//this is hooked up with the button in the inspector
     {
-        Debug.Log("MMB_WasPressed");
+        WriteDebug("Test Method was invoked");
+
+        foreach (var item in database.DataListAccess)
+        {
+            if(item is SwarmData)
+            {
+                SwarmData sd = item as SwarmData;
+                Debug.Log(sd.DisplayName);
+                sd.Refresh();
+            }
+        }
     }
 
-    private void RMB_WasPressed()
+    void WriteDebug(string message)
     {
-        Debug.Log("RMB_WasPressed");
+        if (_ShowDebugLogs == false) return;
+        Debug.Log(message);
     }
-
-    private void LMB_WasPressed()
+    void WriteDebug(string[] messages)
     {
-        Debug.Log("LMB_WasPressed");
-    }
-
-    private void D_WasPressed()
-    {
-        Debug.Log("D_WasPressed");
-    }
-
-    private void S_WasPressed()
-    {
-        Debug.Log("S_WasPressed");
-    }
-
-    private void A_WasPressed()
-    {
-        Debug.Log("A_WasPressed");
-    }
-
-    private void W_WasPressed()
-    {
-        Debug.Log("W_WasPressed");
+        if (_ShowDebugLogs == false) return;
+        foreach (var msg in messages)
+        {
+            Debug.Log(msg);
+        }
     }
 
     private void O_WasPressed()
     {
-        Debug.Log("O_WasPressed");
+        WriteDebug("O_WasPressed");
     }
 
     private void P_WasPressed()
     {
-        Debug.Log("P_WasPressed");
+        WriteDebug("P_WasPressed");
+    }
+
+    private void MMB_WasPressed()
+    {
+        WriteDebug("MMB_WasPressed");
+    }
+
+    private void RMB_WasPressed()
+    {
+        WriteDebug("RMB_WasPressed");
+    }
+
+    private void LMB_WasPressed()
+    {
+        WriteDebug("LMB_WasPressed");
+    }
+
+    private void D_WasPressed()
+    {
+        WriteDebug("D_WasPressed");
+    }
+
+    private void S_WasPressed()
+    {
+        WriteDebug("S_WasPressed");
+    }
+
+    private void A_WasPressed()
+    {
+        WriteDebug("A_WasPressed");
+    }
+
+    private void W_WasPressed()
+    {
+        WriteDebug("W_WasPressed");
     }
 }

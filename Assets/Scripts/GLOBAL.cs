@@ -5,11 +5,11 @@ using UnityEngine;
 
 public static class GLOBAL
 {
-    public static string UnassignedString = "UNASSIGNED";
+    public readonly static string UnassignedString = "UNASSIGNED";
 
-    public static float BaseProjectileSpeed = 5;
-    public static List<float> FailsafeEnemyCooldowns = new List<float>() { 5, 5, 5, 3, 3, 3, 2.5f, 2.5f, 2, 2, 2, 1 };
-    public static List<int> FailsafeWaveCooldowns = new List<int>() { 10, 8, 5, 5, 5, 3 };
+    public readonly static float BaseProjectileSpeed = 5;
+    public readonly static List<float> FailsafeEnemyCooldowns = new List<float>() { 5, 5, 5, 3, 3, 3, 2.5f, 2.5f, 2, 2, 2, 1 };
+    public readonly static List<int> FailsafeWaveCooldowns = new List<int>() { 10, 8, 5, 5, 5, 3 };
 
     static TurretDatabase _turretDB = null;
     public static TurretDatabase GetTurretDatabase()

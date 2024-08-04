@@ -40,10 +40,49 @@ namespace TowerDefence
         /// </summary>
         public void SetSwarmValues(SwarmData setTo)
         {
+            if (setTo.Waves == null || setTo.Waves.Count <= 0) return;
+
             Waves = setTo.Waves;
             DefaultEnemyCooldowns = setTo.DefaultEnemyCooldowns;
             DefaultUntillNextWave = setTo.DefaultUntillNextWave;
+
+            if (DefaultEnemyCooldowns == null || DefaultEnemyCooldowns.Count <= 0) DefaultEnemyCooldowns = new List<float>() {0};
+            if (DefaultUntillNextWave == null || DefaultUntillNextWave.Count <= 0) DefaultUntillNextWave = new List<int>() {0};
+
+            //repeat last value untill sizes are the same
+            int diff = Waves.Count - DefaultEnemyCooldowns.Count;
+            for (int i = 0; i < diff; i++) DefaultEnemyCooldowns.Add(DefaultEnemyCooldowns[DefaultEnemyCooldowns.Count - 1]);
+            DefaultEnemyCooldowns.RemoveRange(Waves.Count, (int)Mathf.Max(0, DefaultEnemyCooldowns.Count - Waves.Count));
+
+            diff = Waves.Count - DefaultUntillNextWave.Count;
+            for (int i = 0; i < diff; i++) DefaultUntillNextWave.Add(DefaultUntillNextWave[DefaultUntillNextWave.Count - 1]);
+            DefaultUntillNextWave.RemoveRange(Waves.Count, (int)Mathf.Max(0, DefaultUntillNextWave.Count - Waves.Count));
         }
+
+        public void InsertSwarmValues(SwarmData insertion, int insertAt)
+        {
+            if (insertion == null) return;
+
+            Refresh();
+            insertion.Refresh();
+            insertAt = Mathf.Max(insertAt, 0);
+            int oldCount = insertion.Waves.Count;
+
+            if (insertAt >= oldCount)
+            {
+                Waves.AddRange(insertion.Waves);
+                DefaultEnemyCooldowns.AddRange(insertion.DefaultEnemyCooldowns);
+                DefaultUntillNextWave.AddRange(insertion.DefaultUntillNextWave);
+            }
+            else
+            {
+                Waves.InsertRange(insertAt, insertion.Waves);
+                DefaultEnemyCooldowns.InsertRange(insertAt, insertion.DefaultEnemyCooldowns);
+                DefaultUntillNextWave.InsertRange(insertAt, insertion.DefaultUntillNextWave);
+            }
+        }
+
+        public void Refresh() => SetSwarmValues(this);
     }
 
     [System.Serializable] public struct S_Wave

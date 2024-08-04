@@ -20,16 +20,5 @@ MonoBehaviour:
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
         Count: 1
   DefaultEnemyCooldowns:
-  - 5
-  - 5
-  - 5
-  - 3
-  - 3
-  - 3
-  - 2.5
-  - 2.5
-  - 2
-  - 2
-  - 2
   - 1
-  DefaultUntillNextWave: 0a0000000800000005000000050000000500000003000000
+  DefaultUntillNextWave: 0a000000

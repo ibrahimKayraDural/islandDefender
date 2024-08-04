@@ -28,6 +28,8 @@ namespace TowerDefence
 
         [SerializeField] SwarmData _CurrentSwarmData;
 
+        public void InsertWavesToCurrentSwarmData(SwarmData insertion, int insertAt) => _CurrentSwarmData.InsertSwarmValues(insertion, insertAt);
+
 #if UNITY_EDITOR
         /// <summary>
         /// Tries to set values of Current Swarm Data to the Swarm Data at index

@@ -12,9 +12,6 @@ public class ExcelSwarmConverter : EditorWindow
     const string ASSET_PATH = "Assets/Data/WaveData/ScriptableObjects/";
     const string SCOBJ_ASSET_EXTENTION = ".asset";
 
-    List<float> defaultEnemyCooldowns = GLOBAL.FailsafeEnemyCooldowns;
-    List<int> defaultWaveCooldowns = GLOBAL.FailsafeWaveCooldowns;
-
 void OnGUI()
     {
         ExcelSwarmConverter window = this;
@@ -134,8 +131,8 @@ void OnGUI()
             SwarmData swarmData = ScriptableObject.CreateInstance<SwarmData>();
             swarmData.Waves = new List<S_Wave>();
 
-            targetEnemyCooldowns = defaultEnemyCooldowns;
-            targetWaveCooldowns = defaultWaveCooldowns;
+            targetEnemyCooldowns = GLOBAL.FailsafeEnemyCooldowns;
+            targetWaveCooldowns = GLOBAL.FailsafeWaveCooldowns;
 
             foreach (var RowSeperation in NameSeperation)
             {
@@ -176,6 +173,7 @@ void OnGUI()
             swarmData.SetNameAndID(sdName);
             swarmData.DefaultEnemyCooldowns = targetEnemyCooldowns;
             swarmData.DefaultUntillNextWave = targetWaveCooldowns;
+            swarmData.Refresh();
             AssetDatabase.CreateAsset(swarmData, fullPath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
@@ -183,6 +181,19 @@ void OnGUI()
             EditorUtility.SetDirty(swarmDB);//changes will not be saved if this is not set dirty
             swarmDB.DataListAccess.Add(AssetDatabase.LoadAssetAtPath<SwarmData>(fullPath));
         }
+
+        //foreach (var item in swarmDB.DataListAccess)
+        //{
+        //    if (item is SwarmData)
+        //    {
+        //        SwarmData sd = item as SwarmData;
+        //        EditorUtility.SetDirty(sd);
+        //        Debug.Log(sd.DisplayName);
+        //        sd.Refresh();
+        //        AssetDatabase.SaveAssets();
+        //        AssetDatabase.Refresh();
+        //    }
+        //}
 
         //SwarmData sd = ScriptableObject.CreateInstance<SwarmData>();
         //sd.DefaultCooldowns = new List<float>() { 1, 1, 1 };
