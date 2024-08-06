@@ -52,7 +52,7 @@ namespace TowerDefence
 
             Refresh();
             insertion.Refresh();
-            int oldCount = insertion.Waves.Count;
+            int oldCount = Waves.Count;
 
             if (insertAt >= oldCount || insertAt < 0)
             {
