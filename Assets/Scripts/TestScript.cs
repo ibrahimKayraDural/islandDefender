@@ -12,7 +12,7 @@ public class TestScript : MonoBehaviour
     [SerializeField] Image _Img;
     [SerializeField] bool _ShowDebugLogs;
 
-    [SerializeField] SwarmDatabase database;
+    [SerializeField] SwarmData data;
 
     void Awake()
     {
@@ -33,11 +33,23 @@ public class TestScript : MonoBehaviour
         else if (Input.GetMouseButtonDown(0)) LMB_WasPressed();
         else if (Input.GetMouseButtonDown(1)) RMB_WasPressed();
         else if (Input.GetMouseButtonDown(2)) MMB_WasPressed();
+
+        _Tmesh.text = "";
+        foreach (var wave in SpawnManager.CurrentSwarm.Waves)
+        {
+            foreach (var lane in wave.Lanes)
+            {
+                _Tmesh.text += lane.Enemies[0].Enemy.DisplayName +" - ";
+            }
+            _Tmesh.text += "\n";
+        }
     }
 
     public void TestMethod()//this is hooked up with the button in the inspector
     {
         WriteDebug("Test Method was invoked");
+
+        SpawnManager.CurrentSwarm.InsertSwarmValues(data.AsValue, 1);
     }
 
     void WriteDebug(string message)

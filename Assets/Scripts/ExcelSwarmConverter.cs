@@ -201,7 +201,7 @@ void OnGUI()
 
             swarmData.SetNameAndID(sdName);
             swarmData.DefaultEnemyCooldowns = targetEnemyCooldowns;
-            swarmData.DefaultUntillNextWave = targetWaveCooldowns;
+            swarmData.DefaultWaveCooldowns = targetWaveCooldowns;
             AssetDatabase.CreateAsset(swarmData, fullPath);
             EditorUtility.SetDirty(AssetDatabase.LoadAssetAtPath<SwarmData>(fullPath));
 

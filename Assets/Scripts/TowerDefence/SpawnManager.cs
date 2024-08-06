@@ -8,6 +8,8 @@ namespace TowerDefence
 {
     public class SpawnManager : MonoBehaviour
     {
+        public static SwarmDataValueContainer CurrentSwarm;
+
         static List<GameObject> ActiveEnemies = new List<GameObject>();
         static event EventHandler<string> e_ActiveEnemiesListIsEmptied;
         static bool _waveEndedOnce;
@@ -18,22 +20,21 @@ namespace TowerDefence
         [SerializeField] BaseManager _BaseMngr;
         [SerializeField] TextMeshProUGUI _TimeTM;
 
-        SwarmData _currentSwarm;
         int _currentWaveIndex;
         S_Wave? _currentWave
         {
             get
             {
-                if (_currentSwarm == null || _currentSwarm.Waves.Count <= _currentWaveIndex)
+                if (CurrentSwarm == null || CurrentSwarm.Waves.Count <= _currentWaveIndex)
                     return null;
 
-                return _currentSwarm.Waves[_currentWaveIndex];
+                return CurrentSwarm.Waves[_currentWaveIndex];
             }
         }
-        int _waveCount => _currentSwarm.Waves.Count;
+        int _waveCount => CurrentSwarm.Waves.Count;
         string spawnerName = "EnemySpawner";
         bool _waveIsActive;
-        SwarmData _changedSwarm = null;
+        SwarmDataValueContainer _changedSwarm = null;
         List<int> _waveCooldownArr = GLOBAL.FailsafeWaveCooldowns;
         int _currentWaveCooldown
         {
@@ -46,8 +47,11 @@ namespace TowerDefence
         private void Start()
         {
             SwarmDatabase sdb = GLOBAL.GetSwarmDatabase();
-            _currentSwarm = sdb.CurrentSwarmData;
-            sdb.e_CurrentSDHasChanged += OnCurrentSDHasChanged;
+
+            SwarmData sd = sdb.DataList[0] as SwarmData;
+            sd = ScriptableObject.Instantiate(sd);
+            CurrentSwarm = sd.AsValue;
+            CurrentSwarm.e_ValuesHaveChanged += OnCurrentSwarmValuesHaveChanged;
 
             e_ActiveEnemiesListIsEmptied += OnWaveEnded;
             _BaseMngr.e_BaseHasDied += _BaseMngr_e_BaseHasDied;
@@ -55,11 +59,9 @@ namespace TowerDefence
             StartWave();
         }
 
-        private void OnCurrentSDHasChanged(object sender, SwarmData e)
+        void OnCurrentSwarmValuesHaveChanged(object sender, SwarmDataValueContainer e)
         {
-            _changedSwarm = e;
-
-            if (_waveIsActive == false) ChangeCurrentSwarm();
+            Debug.Log($"{sender.ToString()} has changed values.");
         }
 
         void _BaseMngr_e_BaseHasDied(object sender, EventArgs e)
@@ -83,7 +85,7 @@ namespace TowerDefence
                 return;
             }
 
-            _waveCooldownArr = _currentSwarm.DefaultUntillNextWave;
+            _waveCooldownArr = CurrentSwarm.DefaultWaveCooldowns;
             if (_waveCooldownArr == null || _waveCooldownArr.Count <= 0) _waveCooldownArr = GLOBAL.FailsafeWaveCooldowns;
 
             _waveEndedOnce = false;
@@ -128,7 +130,7 @@ namespace TowerDefence
             }
 
 
-            //Shuffling lanes (fuck this)
+            //Shuffling lanes
             List<int> spawnerIndexes = new List<int>();
             List<int> oldLaneIndexes = new List<int>();
             List<int> uniqueLaneIndexes = new List<int>();
@@ -159,7 +161,7 @@ namespace TowerDefence
 
 
             //registering cooldown values
-            List<float> enemyCooldownArr = _currentSwarm.DefaultEnemyCooldowns;
+            List<float> enemyCooldownArr = CurrentSwarm.DefaultEnemyCooldowns;
             if (enemyCooldownArr == null || enemyCooldownArr.Count <= 0) enemyCooldownArr = GLOBAL.FailsafeEnemyCooldowns;
             int enemyCooldownArrCount = enemyCooldownArr.Count;
 
@@ -251,7 +253,7 @@ namespace TowerDefence
 
         void ChangeCurrentSwarm()
         {
-            _currentSwarm = _changedSwarm;
+            CurrentSwarm = _changedSwarm;
             _changedSwarm = null;
             _currentWaveIndex = 0;
 
