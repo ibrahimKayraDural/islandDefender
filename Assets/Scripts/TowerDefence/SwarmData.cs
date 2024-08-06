@@ -27,7 +27,7 @@ namespace TowerDefence
         public void SetNameAndID(string targetName)
         {
             string targetID = targetName;
-            targetID = targetID.Trim().Replace(" ", "-").ToLower();
+            targetID = targetID.Trim().Replace(" ", "-").ToLower(new System.Globalization.CultureInfo("en-US"));
 
             _displayName = targetName;
             _id = targetID;
@@ -46,17 +46,23 @@ namespace TowerDefence
             DefaultEnemyCooldowns = setTo.DefaultEnemyCooldowns;
             DefaultUntillNextWave = setTo.DefaultUntillNextWave;
 
-            if (DefaultEnemyCooldowns == null || DefaultEnemyCooldowns.Count <= 0) DefaultEnemyCooldowns = new List<float>() {0};
-            if (DefaultUntillNextWave == null || DefaultUntillNextWave.Count <= 0) DefaultUntillNextWave = new List<int>() {0};
+            if (DefaultEnemyCooldowns == null || DefaultEnemyCooldowns.Count <= 0) DefaultEnemyCooldowns = new List<float>() { 0 };
+            if (DefaultUntillNextWave == null || DefaultUntillNextWave.Count <= 0) DefaultUntillNextWave = new List<int>() { 0 };
 
             //repeat last value untill sizes are the same
-            int diff = Waves.Count - DefaultEnemyCooldowns.Count;
-            for (int i = 0; i < diff; i++) DefaultEnemyCooldowns.Add(DefaultEnemyCooldowns[DefaultEnemyCooldowns.Count - 1]);
-            DefaultEnemyCooldowns.RemoveRange(Waves.Count, (int)Mathf.Max(0, DefaultEnemyCooldowns.Count - Waves.Count));
+            int waveCount = Waves.Count;
 
-            diff = Waves.Count - DefaultUntillNextWave.Count;
+            int diff = waveCount - DefaultEnemyCooldowns.Count;
+            for (int i = 0; i < diff; i++) DefaultEnemyCooldowns.Add(DefaultEnemyCooldowns[DefaultEnemyCooldowns.Count - 1]);
+            DefaultEnemyCooldowns = DefaultEnemyCooldowns.GetRange(0, waveCount);
+
+            diff = waveCount - DefaultUntillNextWave.Count;
             for (int i = 0; i < diff; i++) DefaultUntillNextWave.Add(DefaultUntillNextWave[DefaultUntillNextWave.Count - 1]);
-            DefaultUntillNextWave.RemoveRange(Waves.Count, (int)Mathf.Max(0, DefaultUntillNextWave.Count - Waves.Count));
+            DefaultUntillNextWave = DefaultUntillNextWave.GetRange(0, waveCount);
+
+            UnityEditor.EditorUtility.SetDirty(this);
+            UnityEditor.AssetDatabase.SaveAssets();
+            UnityEditor.AssetDatabase.Refresh();
         }
 
         public void InsertSwarmValues(SwarmData insertion, int insertAt)

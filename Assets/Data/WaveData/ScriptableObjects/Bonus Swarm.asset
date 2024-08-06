@@ -19,6 +19,11 @@ MonoBehaviour:
     - Enemies:
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
         Count: 1
+  - Lanes:
+    - Enemies:
+      - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
+        Count: 1
   DefaultEnemyCooldowns:
   - 1
-  DefaultUntillNextWave: 0a000000
+  - 2
+  DefaultUntillNextWave: 1800000019000000

@@ -38,16 +38,6 @@ public class TestScript : MonoBehaviour
     public void TestMethod()//this is hooked up with the button in the inspector
     {
         WriteDebug("Test Method was invoked");
-
-        foreach (var item in database.DataListAccess)
-        {
-            if(item is SwarmData)
-            {
-                SwarmData sd = item as SwarmData;
-                Debug.Log(sd.DisplayName);
-                sd.Refresh();
-            }
-        }
     }
 
     void WriteDebug(string message)

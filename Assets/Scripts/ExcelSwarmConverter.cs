@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using TowerDefence;
 using UnityEditor;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class ExcelSwarmConverter : EditorWindow
 {
     TextAsset _ExcelFile;
 
+    const string INFO_IDENTIFIER = "[info]";
     const string SWARM_START_IDENTIFIER = "[title]";
     const string ASSET_PATH = "Assets/Data/WaveData/ScriptableObjects/";
     const string SCOBJ_ASSET_EXTENTION = ".asset";
@@ -18,7 +20,10 @@ void OnGUI()
         window.maxSize = new Vector2(500, 250);
         window.minSize = window.maxSize;
 
-        GUILayout.Label("Select a CSV file from the project window and press 'CONVERT' button to convert the contents into seperate scriptable objects. The objects will be saved (and overriden if necessary) to " + ASSET_PATH,EditorStyles.helpBox);
+        GUILayout.Label($"Select a CSV file from the project window and press 'CONVERT' button to convert the contents into seperate scriptable objects. The objects will be saved to {ASSET_PATH}.",EditorStyles.helpBox);
+        GUI.contentColor = Color.yellow;
+        GUILayout.Label($" ALL FILES IN {ASSET_PATH} WILL BE DELETED AND REPLACED",EditorStyles.boldLabel);
+        GUI.contentColor = Color.white;
         Object[] selection = Selection.GetFiltered(typeof(TextAsset), SelectionMode.Assets);
         GUILayout.Space(10);
 
@@ -44,6 +49,8 @@ void OnGUI()
             {
                 RefreshExcel();
                 Unselect();
+
+                RefreshSwarmDatas();
             }
 
             GUILayout.Space(5);
@@ -52,8 +59,15 @@ void OnGUI()
             if (GUILayout.Button("UNSELECT"))
             { Unselect(); }
         }
-        
+
+        /*
+        GUILayout.Space(10);
         GUI.contentColor = Color.white;
+        if (GUILayout.Button("REFRESH"))
+        {
+            RefreshSwarmDatas();
+        }
+        */
     }
 
     [MenuItem("Window/Excel to Swarm Converter")]
@@ -70,6 +84,12 @@ void OnGUI()
 
     public void RefreshExcel()
     {
+        foreach (var asset in AssetDatabase.FindAssets("", new string[] { ASSET_PATH }))
+        {
+            string path = AssetDatabase.GUIDToAssetPath(asset);
+            AssetDatabase.DeleteAsset(path);
+        }
+
         List<List<List<string>>> WaveDataList = new List<List<List<string>>>();
         List<List<string>> tempWaveData = new List<List<string>>();
 
@@ -93,7 +113,7 @@ void OnGUI()
         int currentIndex = -1;
         do
         {
-            currentIndex = tempWaveData.FindIndex(currentIndex + 1, x => x[0].ToLower() == SWARM_START_IDENTIFIER);
+            currentIndex = tempWaveData.FindIndex(currentIndex + 1, x => x[0].ToLower(new CultureInfo("en-US")) == SWARM_START_IDENTIFIER || x[0].ToLower(new CultureInfo("en-US")) == INFO_IDENTIFIER);
             if (currentIndex >= 0 && WaveNameIndexes.Contains(currentIndex) == false) WaveNameIndexes.Add(currentIndex);
         }
         while (currentIndex >= 0);
@@ -121,6 +141,9 @@ void OnGUI()
         SwarmDatabase swarmDB = GLOBAL.GetSwarmDatabase();
         string sdName = GLOBAL.UnassignedString;
 
+        List<float> defaultEnemyCooldowns = GLOBAL.FailsafeEnemyCooldowns;
+        List<int> defaultWaveCooldowns = GLOBAL.FailsafeWaveCooldowns;
+
         List<float> targetEnemyCooldowns = new List<float>();
         List<int> targetWaveCooldowns = new List<int>();
 
@@ -131,8 +154,10 @@ void OnGUI()
             SwarmData swarmData = ScriptableObject.CreateInstance<SwarmData>();
             swarmData.Waves = new List<S_Wave>();
 
-            targetEnemyCooldowns = GLOBAL.FailsafeEnemyCooldowns;
-            targetWaveCooldowns = GLOBAL.FailsafeWaveCooldowns;
+            targetEnemyCooldowns = defaultEnemyCooldowns;
+            targetWaveCooldowns = defaultWaveCooldowns;
+
+            bool isInfo = NameSeperation[0][0].ToLower(new CultureInfo("en-US")) == INFO_IDENTIFIER;
 
             foreach (var RowSeperation in NameSeperation)
             {
@@ -141,6 +166,8 @@ void OnGUI()
                     HandleIdentifier(RowSeperation);
                     continue;
                 }
+
+                if (isInfo) continue;
 
                 S_Wave currWave = new S_Wave();
                 currWave.Lanes = new List<S_LaneGroup>();
@@ -168,50 +195,35 @@ void OnGUI()
                 swarmData.Waves.Add(currWave);
             }
 
+            if (isInfo) continue;
+
             string fullPath = ASSET_PATH + sdName + SCOBJ_ASSET_EXTENTION;
 
             swarmData.SetNameAndID(sdName);
             swarmData.DefaultEnemyCooldowns = targetEnemyCooldowns;
             swarmData.DefaultUntillNextWave = targetWaveCooldowns;
-            swarmData.Refresh();
             AssetDatabase.CreateAsset(swarmData, fullPath);
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
+            EditorUtility.SetDirty(AssetDatabase.LoadAssetAtPath<SwarmData>(fullPath));
 
             EditorUtility.SetDirty(swarmDB);//changes will not be saved if this is not set dirty
             swarmDB.DataListAccess.Add(AssetDatabase.LoadAssetAtPath<SwarmData>(fullPath));
         }
 
-        //foreach (var item in swarmDB.DataListAccess)
-        //{
-        //    if (item is SwarmData)
-        //    {
-        //        SwarmData sd = item as SwarmData;
-        //        EditorUtility.SetDirty(sd);
-        //        Debug.Log(sd.DisplayName);
-        //        sd.Refresh();
-        //        AssetDatabase.SaveAssets();
-        //        AssetDatabase.Refresh();
-        //    }
-        //}
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
 
-        //SwarmData sd = ScriptableObject.CreateInstance<SwarmData>();
-        //sd.DefaultCooldowns = new List<float>() { 1, 1, 1 };
-        //AssetDatabase.CreateAsset(sd, ASSET_PATH + name + ASSET_EXTENTION);
-        //AssetDatabase.SaveAssets();
-        //AssetDatabase.Refresh();
-        //EditorUtility.FocusProjectWindow();
-        //Selection.activeObject = sd;
-
+        //local method
         void HandleIdentifier(List<string> rowSeperation)
         {
+            if (rowSeperation.Count <= 1) return;
+
             string identifier = rowSeperation[0];
 
             int startIndex = identifier.IndexOf("[");
             int endIndex = identifier.IndexOf("]");
             if (startIndex == -1 || endIndex == -1) return;
             string message = identifier.Substring(startIndex + 1, endIndex - startIndex - 1);
-            message = message.ToLower();
+            message = message.ToLower(new CultureInfo("en-US"));
 
             string firstCollumn = rowSeperation[1];
             switch (message)
@@ -249,7 +261,49 @@ void OnGUI()
                     if (floats != null && floats.Count > 0) targetEnemyCooldowns = floats;
 
                     break;
+
+                case "default-wave-cooldown":
+
+                    ints = new List<int>();
+                    foreach (var item in firstCollumn.Split('/'))
+                    {
+                        string target = item.Replace(".", ",");
+
+                        float currFloat = 0;
+                        if (float.TryParse(target, out currFloat)) ints.Add(Mathf.RoundToInt(currFloat));
+                    }
+
+                    if (ints != null && ints.Count > 0) defaultWaveCooldowns = ints;
+
+                    break;
+
+                case "default-enemy-cooldown":
+
+                    floats = new List<float>();
+                    foreach (var item in firstCollumn.Split('/'))
+                    {
+                        string target = item.Replace(".", ",");
+
+                        float currFloat = 0;
+                        if (float.TryParse(target, out currFloat)) floats.Add(currFloat);
+                    }
+
+                    if (floats != null && floats.Count > 0) defaultEnemyCooldowns = floats;
+
+                    break;
             }
+        }
+    }
+
+    void RefreshSwarmDatas()
+    {
+        foreach (var asset in AssetDatabase.FindAssets("", new string[] { ASSET_PATH }))
+        {
+            string path = AssetDatabase.GUIDToAssetPath(asset);
+            SwarmData data = AssetDatabase.LoadAssetAtPath<SwarmData>(path);
+            if (data == null) continue;
+            EditorUtility.SetDirty(data);
+            data.Refresh();
         }
     }
 }
