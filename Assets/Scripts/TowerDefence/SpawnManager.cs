@@ -12,7 +12,7 @@ namespace TowerDefence
 
         static List<GameObject> ActiveEnemies = new List<GameObject>();
         static event EventHandler<string> e_ActiveEnemiesListIsEmptied;
-        static bool _waveEndedOnce;
+        public static bool WaveIsActive { get; private set; }
 
         [SerializeField] bool _WaitUntillEnemiesAreDead = true;
         [SerializeField] bool _RepeatLastWave;
@@ -33,7 +33,6 @@ namespace TowerDefence
         }
         int _waveCount => CurrentSwarm.Waves.Count;
         string spawnerName = "EnemySpawner";
-        bool _waveIsActive;
         SwarmDataValueContainer _changedSwarm = null;
         List<int> _waveCooldownArr = GLOBAL.FailsafeWaveCooldowns;
         int _currentWaveCooldown
@@ -72,13 +71,13 @@ namespace TowerDefence
         public static bool RemoveFromActiveEnemyList(GameObject target)
         {
             bool didRemove = ActiveEnemies.Remove(target);
-            if (ActiveEnemies.Count <= 0 && _waveEndedOnce == false) e_ActiveEnemiesListIsEmptied?.Invoke(typeof(SpawnManager), "listEmpty");
+            if (ActiveEnemies.Count <= 0) e_ActiveEnemiesListIsEmptied?.Invoke(typeof(SpawnManager), "listEmpty");
             return didRemove;
         }
 
         public void StartWave()
         {
-            if (_waveIsActive) return;
+            if (WaveIsActive) return;
             if (_currentWave == null)
             {
                 Debug.LogError("_currentWave is null");
@@ -88,20 +87,19 @@ namespace TowerDefence
             _waveCooldownArr = CurrentSwarm.DefaultWaveCooldowns;
             if (_waveCooldownArr == null || _waveCooldownArr.Count <= 0) _waveCooldownArr = GLOBAL.FailsafeWaveCooldowns;
 
-            _waveEndedOnce = false;
+            WaveIsActive = true;
             StartCoroutine(nameof(WaveCoroutine));
         }
         public void StopWave()
         {
-            if (_waveIsActive == false) return;
+            if (WaveIsActive == false) return;
 
             StopCoroutine(nameof(WaveCoroutine));
-            _waveIsActive = false;
+            WaveIsActive = false;
         }
 
         IEnumerator WaveCoroutine()
         {
-            _waveIsActive = true;
 
             List<KeyValuePair<S_EnemyWithCount, int>> enemiesWithLanes = new List<KeyValuePair<S_EnemyWithCount, int>>();
 
@@ -176,8 +174,7 @@ namespace TowerDefence
                 if (i == 10000) Debug.LogError("Failsafe cap was reached while spawning waves");
             }
 
-            _waveIsActive = false;
-            if ((_waveEndedOnce == false && ActiveEnemies.Count <= 0) || _WaitUntillEnemiesAreDead == false) OnWaveEnded(this, "waveEnd");
+            if (ActiveEnemies.Count <= 0 || _WaitUntillEnemiesAreDead == false) OnWaveEnded(this, "waveEnd");
         }
 
         void SpawnNextWave(ref List<KeyValuePair<S_EnemyWithCount, int>> currentWave)
@@ -209,11 +206,11 @@ namespace TowerDefence
 
         void OnWaveEnded(object sender, string senderID)
         {
-            if (_waveIsActive) return;
+            if (WaveIsActive == false) return;
 
             if (senderID == "listEmpty" && _WaitUntillEnemiesAreDead == false) return;
 
-            _waveEndedOnce = true;
+            WaveIsActive = false;
 
             if (_changedSwarm != null)
             {
