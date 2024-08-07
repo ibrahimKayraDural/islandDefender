@@ -1,0 +1,21 @@
+                    -- DIFFICULTY --
+
+Weak------------------------- ''weak''
+Medium----------------------- ''medium''
+Tough------------------------ ''tough''
+
+
+                    -- RANGE --
+
+Melee------------------------ ''melee''
+Ranged----------------------- ''ranged''
+Special---------------------- ''special''
+
+
+                    -- ENEMY TYPES --
+
+Durable---------------------- ''durable''
+FastAttacking---------------- ''fast-attacking''
+FastMoving------------------- ''fast-moving''
+HardHitting------------------ ''hard-hitting''
+None------------------------- ''none''

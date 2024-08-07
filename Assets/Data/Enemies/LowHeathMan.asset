@@ -19,5 +19,8 @@ MonoBehaviour:
   _Damage: 1
   _AttackCooldown: 0.3
   _AttackRange: 1.5
+  _Difficulty: 0
+  _RangeType: 0
+  _EnemyTypes: 0200000003000000
   _AttackSFX: {fileID: 8300000, guid: da51225feb1d1a84f925d2ff1ecccef1, type: 3}
   _enemyPrefab: {fileID: 8660632794050134643, guid: b116511a15c81c04abc14515fa3f74a1, type: 3}

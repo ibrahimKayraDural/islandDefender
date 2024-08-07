@@ -1,0 +1,19 @@
+[title] - Establishes the swarm and names it. Must use this to divide swarms from each other. Name value must be written to the second cell (B cell).
+
+[info] - Is used for defining default parameters etc. Used exactly like "[title]", however, anything written under this definer (except parameters) will be ignored. It should be used once and at the top (before any title is established).
+
+[enemy-cooldown] - adds cooldown values between enemies in a wave. Cooldowns are written to second (B) cell. Numbers are divided by '/' symbol and float values are accepted if given with '.' symbol. Example : "1/1/2.7/3".
+
+[wave-cooldown] - adds cooldown values between waves. Cooldowns are written to second (B) cell. Numbers are divided by '/' symbol and float values are accepted (but rounded to integer by the code) if given with '.' symbol. Example : "1/1/2.7/3" (will become "1/1/3/3" in the code).
+
+[default-enemy-cooldown] - Adds default cooldown values between enemies in a wave. This value will be used if no spesific value is given to a wave using "[enemy-cooldown]". It should be used with "[info]". Cooldowns are written to second (B) cell. Numbers are divided by '/' symbol and float values are accepted if given with '.' symbol. Example : "1/1/2.7/3".
+
+[default-wave-cooldown] - Adds default cooldown values between waves. This value will be used if no spesific value is given to a wave using "[wave-cooldown]". Used exactly like "[default-enemy-cooldown]". Float values will be rounded to integers by the code. Example : "1/1/2.7/3" (will become "1/1/3/3" in the code).
+
+<count=ValueInteger> - Sets the count of the enemy when it is put next to one. Change ValueInteger with a number ranging 1-99 (inclusive). Example/: example-enemy<count=3>
+
+<difficulty=DifficultyId> - Tries to select a random enemy with given difficulty from the database. Replace DifficultyId with a proper ID. IDs can be found in "WildcardInfo" file.
+
+<range=RangeId> - Tries to select a random enemy with given range from the database. Replace RangeId with a proper ID. IDs can be found in "WildcardInfo" file.
+
+<type=TypeId> - Tries to select a random enemy with given enemy type from the database. Replace TypeId with a proper ID. IDs can be found in "WildcardInfo" file.

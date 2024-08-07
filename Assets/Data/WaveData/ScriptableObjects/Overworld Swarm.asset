@@ -17,11 +17,9 @@ MonoBehaviour:
   Waves:
   - Lanes:
     - Enemies:
-      - Enemy: {fileID: 11400000, guid: c17b7fcb5eb53d34b9cd4601d897cb28, type: 2}
-        Count: 1
-    - Enemies:
       - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        Count: 1
+        Count: 2
+  - Lanes:
     - Enemies:
       - Enemy: {fileID: 11400000, guid: c17b7fcb5eb53d34b9cd4601d897cb28, type: 2}
         Count: 1
@@ -29,37 +27,13 @@ MonoBehaviour:
     - Enemies:
       - Enemy: {fileID: 11400000, guid: c17b7fcb5eb53d34b9cd4601d897cb28, type: 2}
         Count: 1
-    - Enemies:
-      - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        Count: 1
   - Lanes:
     - Enemies:
       - Enemy: {fileID: 11400000, guid: c17b7fcb5eb53d34b9cd4601d897cb28, type: 2}
-        Count: 1
-    - Enemies:
-      - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        Count: 1
-  - Lanes:
-    - Enemies:
-      - Enemy: {fileID: 11400000, guid: c17b7fcb5eb53d34b9cd4601d897cb28, type: 2}
-        Count: 1
-    - Enemies:
-      - Enemy: {fileID: 11400000, guid: c17b7fcb5eb53d34b9cd4601d897cb28, type: 2}
-        Count: 1
-    - Enemies:
-      - Enemy: {fileID: 11400000, guid: c17b7fcb5eb53d34b9cd4601d897cb28, type: 2}
-        Count: 1
-  - Lanes:
-    - Enemies:
-      - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
-        Count: 1
-    - Enemies:
-      - Enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
         Count: 1
   DefaultEnemyCooldowns:
   - 1
   - 1
-  - 2.9
-  - 3
-  - 5
-  DefaultWaveCooldowns: 0300000003000000020000000300000001000000
+  - 1
+  - 1
+  DefaultWaveCooldowns: 02000000020000000200000002000000

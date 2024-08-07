@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using TowerDefence;
 using UnityEditor;
 using UnityEngine;
@@ -84,6 +85,33 @@ void OnGUI()
 
     public void RefreshExcel()
     {
+        #region Writing to Wildcard Info
+        string space = " ---------------------------- ";
+        string wildcardIds = "                    -- DIFFICULTY --\n\n";
+        foreach (var pair in GLOBAL.EnemyDifficultyIDs)
+        {
+            string pairValue = pair.Value.ToString();
+            pairValue = space.Length > pairValue.Length ? pairValue + space.Remove(0, pairValue.Length) : pairValue + "  ";
+            wildcardIds += $"{pairValue}''{pair.Key}''\n";
+        }
+        wildcardIds += "\n\n                    -- RANGE --\n\n";
+        foreach (var pair in GLOBAL.EnemyRangeIDs)
+        {
+            string pairValue = pair.Value.ToString();
+            pairValue = space.Length > pairValue.Length ? pairValue + space.Remove(0, pairValue.Length) : pairValue + "  ";
+            wildcardIds += $"{pairValue}''{pair.Key}''\n";
+        }
+        wildcardIds += "\n\n                    -- ENEMY TYPES --\n\n";
+        foreach (var pair in GLOBAL.EnemyTypeIDs)
+        {
+            string pairValue = pair.Value.ToString();
+            pairValue = space.Length > pairValue.Length ? pairValue + space.Remove(0, pairValue.Length) : pairValue + "  ";
+            wildcardIds += $"{pairValue}''{pair.Key}''\n";
+        }
+
+        File.WriteAllText(@"Assets\Data\WaveData\info\WildcardInfo.txt", wildcardIds);
+        #endregion
+
         foreach (var asset in AssetDatabase.FindAssets("", new string[] { ASSET_PATH }))
         {
             string path = AssetDatabase.GUIDToAssetPath(asset);
@@ -139,7 +167,6 @@ void OnGUI()
 
         EnemyDatabase enemyDB = GLOBAL.GetEnemyDatabase();
         SwarmDatabase swarmDB = GLOBAL.GetSwarmDatabase();
-        string sdName = GLOBAL.UnassignedString;
 
         List<float> defaultEnemyCooldowns = GLOBAL.FailsafeEnemyCooldowns;
         List<int> defaultWaveCooldowns = GLOBAL.FailsafeWaveCooldowns;
@@ -148,6 +175,9 @@ void OnGUI()
         List<int> targetWaveCooldowns = new List<int>();
 
         swarmDB.DataListAccess = new List<Data<SwarmData>>();
+
+        int enemyCount;
+        string sdName = GLOBAL.UnassignedString;
 
         foreach (var NameSeperation in WaveDataList)
         {
@@ -163,7 +193,7 @@ void OnGUI()
             {
                 if (RowSeperation[0].Contains("["))
                 {
-                    HandleIdentifier(RowSeperation);
+                    HandleParameter(RowSeperation);
                     continue;
                 }
 
@@ -174,7 +204,10 @@ void OnGUI()
 
                 foreach (var CommaSeperation in RowSeperation)
                 {
-                    EnemyData eData = enemyDB.GetDataByID(CommaSeperation.Trim());
+                    enemyCount = 1;
+                    string enemyID = HandleOption(CommaSeperation);
+
+                    EnemyData eData = enemyDB.GetDataByID(enemyID);
                     if (eData == null)
                     {
                         Debug.LogError(CommaSeperation + " is not an enemy");
@@ -184,7 +217,7 @@ void OnGUI()
                     S_LaneGroup lGroup = new S_LaneGroup();
 
                     S_EnemyWithCount ewc = new S_EnemyWithCount();
-                    ewc.Count = 1;
+                    ewc.Count = enemyCount;
                     ewc.Enemy = eData;
 
                     lGroup.Enemies = new List<S_EnemyWithCount>() { ewc };
@@ -212,8 +245,8 @@ void OnGUI()
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
 
-        //local method
-        void HandleIdentifier(List<string> rowSeperation)
+        //local methods
+        void HandleParameter(List<string> rowSeperation)
         {
             if (rowSeperation.Count <= 1) return;
 
@@ -292,6 +325,59 @@ void OnGUI()
 
                     break;
             }
+        }
+
+        //handles options given with "<...>" and "=" symbol.
+        //returns cleaned enemyId.
+        string HandleOption(string enemyId)
+        {
+            enemyId = enemyId.Trim();
+            int startIndex = enemyId.IndexOf("<");
+            int endIndex = enemyId.IndexOf(">");
+            if (startIndex == -1 || endIndex == -1) return enemyId;
+
+            string message = enemyId.Substring(startIndex + 1, endIndex - startIndex - 1);
+            message = message.ToLower(new CultureInfo("en-US"));
+            enemyId = enemyId.Remove(startIndex, endIndex - startIndex + 1).Trim();
+
+            int equalsIndex = message.IndexOf("=");
+            string valueStr = GLOBAL.UnassignedString;
+            if(equalsIndex > 0 && equalsIndex < message.Length)
+            {
+                valueStr = message.Substring(equalsIndex + 1, message.Length - (equalsIndex + 1));
+                message = message.Substring(0,equalsIndex);
+            }
+
+            switch (message)
+            {
+                case "count":
+                    if (int.TryParse(valueStr, out int temp))
+                    { enemyCount = Mathf.Clamp(temp, 1, 99); }
+                    else
+                    { Debug.Log(valueStr + " is not a valid number"); }
+                    break;
+
+                case "difficulty":
+                    EnemyData data = enemyDB.GetRandomEnemyByDifficulty(GLOBAL.EnemyDifficultyIDs[valueStr]);
+                    if (data != null) return data.ID;
+                    break;
+
+                case "range":
+                    data = enemyDB.GetRandomEnemyByRange(GLOBAL.EnemyRangeIDs[valueStr]);
+                    if (data != null) return data.ID;
+                    break;
+
+                case "type":
+                    data = enemyDB.GetRandomEnemyByEnemyType(GLOBAL.EnemyTypeIDs[valueStr]);
+                    if (data != null) return data.ID;
+                    break;
+
+                default:
+                    Debug.Log(message + " is not defined");
+                    break;
+            }
+
+            return enemyId;
         }
     }
 
