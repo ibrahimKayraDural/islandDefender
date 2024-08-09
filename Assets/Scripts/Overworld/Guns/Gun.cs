@@ -55,6 +55,6 @@ namespace Overworld
         }
 
         //override this method to handle what happens after activation (like bullet spawning)
-        virtual public void ActivationImplementation() { }
+        abstract public void ActivationImplementation();
     } 
 }

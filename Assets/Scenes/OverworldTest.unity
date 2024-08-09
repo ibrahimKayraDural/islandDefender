@@ -2674,7 +2674,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 84
+  m_Constraints: 0
   m_CollisionDetection: 1
 --- !u!114 &1622365101
 MonoBehaviour:
@@ -2706,6 +2706,7 @@ MonoBehaviour:
   _Guns:
   - {fileID: 3218449559990595896, guid: 858dc8b09a2c78c40bc390229fff0d64, type: 3}
   - {fileID: 6452433810146732460, guid: f9806c31d03bb3c448058da3fb107898, type: 3}
+  - {fileID: 1535015549455893020, guid: 9dc268fd29d04a7429b988669ec73a27, type: 3}
 --- !u!1001 &1622722115
 PrefabInstance:
   m_ObjectHideFlags: 0
