@@ -39,8 +39,9 @@ namespace Overworld
         {
             _RB = GetComponent<Rigidbody>();
             _RB.useGravity = false;
-            _RB.angularDrag = 0;
-            _RB.drag = 0;
+            _RB.angularDrag = 1000000;
+            _RB.drag = 1000000;
+            _RB.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
         }
 
         void Update()

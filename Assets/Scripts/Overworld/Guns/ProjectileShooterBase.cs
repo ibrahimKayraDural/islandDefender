@@ -13,7 +13,6 @@ namespace Overworld
 
         public override void ActivationImplementation()
         {
-            base.ActivationImplementation();
             Projectile proj = Instantiate(_Projectile.gameObject, _Barrel.position, Quaternion.identity).GetComponent<Projectile>();
             proj.Initialize(_direction, speedMultiplier);
             if(OneShotNull != null && ShootSFX != null)
