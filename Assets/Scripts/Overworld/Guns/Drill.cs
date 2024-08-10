@@ -7,19 +7,25 @@ namespace Overworld
 
     public class Drill : Tool
     {
-        [SerializeField] Collider _DrillCollider;
+        [SerializeField] Rigidbody _Rigidbody;
+
+        public void Awake()
+        {
+            _Rigidbody.detectCollisions = false;
+        }
 
         internal override IEnumerator FireIEnum()
         {
             _isFiring = true;
-            _DrillCollider.enabled = true;
+            _Rigidbody.detectCollisions = true;
+
             yield return null;
         }
         public override void StopFiring()
         {
             base.StopFiring();
 
-            _DrillCollider.enabled = false;
+            _Rigidbody.detectCollisions = false;
         }
 
         internal override void ActivationImplementation() { }

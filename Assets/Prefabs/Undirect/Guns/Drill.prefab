@@ -84,7 +84,7 @@ MonoBehaviour:
   _ID: gun-drill
   Visuals:
   - {fileID: 7819544275235308796}
-  _DrillCollider: {fileID: 4315374149781412417}
+  _Rigidbody: {fileID: 500343713260558876}
 --- !u!54 &500343713260558876
 Rigidbody:
   m_ObjectHideFlags: 0

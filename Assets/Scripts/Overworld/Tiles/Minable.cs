@@ -44,6 +44,7 @@ public class Minable : MonoBehaviour
 
         _isMining = true;
     }
+
     public void StopMining()
     {
         if (_isMining == false) return;
