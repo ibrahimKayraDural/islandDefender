@@ -54,6 +54,7 @@ MonoBehaviour:
   HitSfx: {fileID: 739595196568915160, guid: 0cc49c091004bff4da6016cef73e79a4, type: 3}
   IgnoreTags:
   - OverworldPlayer
+  - OverworldGun
 --- !u!33 &37545966810398415
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Overworld
 {
-    public abstract class Gun : MonoBehaviour
+    public abstract class Tool : MonoBehaviour
     {
         public string DisplayName => _DisplayName;
         public string ID => _ID;
@@ -20,7 +20,10 @@ namespace Overworld
         internal bool _isEquipped;
         internal float _shoot_TargetTime = -1;
 
-
+        virtual internal void OnApplicationFocus(bool focus)
+        {
+            if (focus == false) StopFiring();
+        }
         virtual public void Initialize(Transform equipPoint)
         {
             transform.parent = equipPoint;
@@ -42,19 +45,43 @@ namespace Overworld
             if (_isEquipped == false) return;
 
             foreach (var item in Visuals) item.SetActive(false);
+            StopFiring();
 
             _isEquipped = false;
         }
-        public void Activate()
+
+        internal bool _isFiring;
+        virtual public void StartFiring()
+        {
+            if (_isFiring) return;
+            StartCoroutine(nameof(FireIEnum));
+        }
+        virtual public void StopFiring()
+        {
+            if (_isFiring == false) return;
+            StopCoroutine(nameof(FireIEnum));
+            _isFiring = false;
+        }
+
+        virtual internal IEnumerator FireIEnum()
+        {
+            while(true)
+            {
+                _isFiring = true;
+                float duration = Mathf.Max(_shoot_TargetTime - Time.time, 0);
+                yield return new WaitForSeconds(duration);
+                Activate();
+            }
+        }
+
+        virtual internal void Activate()
         {
             if (_isEquipped == false) return;
-            if (_shoot_TargetTime > Time.time) return;
 
             ActivationImplementation();
             _shoot_TargetTime = Time.time + _ShootCooldown;
         }
 
-        //override this method to handle what happens after activation (like bullet spawning)
-        abstract public void ActivationImplementation();
+        abstract internal void ActivationImplementation();
     } 
 }

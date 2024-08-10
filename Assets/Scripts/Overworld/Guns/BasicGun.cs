@@ -4,9 +4,9 @@ namespace Overworld
     using System.Collections.Generic;
     using UnityEngine;
 
-    public class BasicGun : ProjectileShooterBase
+    public class BasicGun : ProjectileGun
     {
-        public override void ActivationImplementation()
+        internal override void ActivationImplementation()
         {
             base.ActivationImplementation();
         }

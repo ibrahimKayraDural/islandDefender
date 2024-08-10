@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace Overworld
 {
-    public abstract class ProjectileShooterBase : Gun
+    public abstract class ProjectileGun : Tool
     {
         [SerializeField] internal Projectile _Projectile;
         [SerializeField] internal float speedMultiplier = 1;
         [SerializeField] internal PlayOneShot OneShotNull;
         [SerializeField] internal AudioClip ShootSFX;
 
-        public override void ActivationImplementation()
+        internal override void ActivationImplementation()
         {
             Projectile proj = Instantiate(_Projectile.gameObject, _Barrel.position, Quaternion.identity).GetComponent<Projectile>();
             proj.Initialize(_direction, speedMultiplier);

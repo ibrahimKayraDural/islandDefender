@@ -7,7 +7,7 @@ namespace Overworld
     public class PlayerGunController : MonoBehaviour
     {
         [SerializeField] Transform _GunPoint;
-        [SerializeField] List<Gun> _Guns = new List<Gun>();
+        [SerializeField] List<Tool> _Guns = new List<Tool>();
 
         // this is an auto value. do not touch this value. >:(
         int AUTOVALUE_gunIdx = 0;
@@ -33,7 +33,7 @@ namespace Overworld
                 _currentGun.Equip();
             }
         }
-        Gun _currentGun
+        Tool _currentGun
         {
             get
             {
@@ -48,7 +48,7 @@ namespace Overworld
 
         void Start()
         {
-            List<Gun> temp = new List<Gun>();
+            List<Tool> temp = new List<Tool>();
 
             foreach (var item in _Guns)
             {
@@ -57,7 +57,7 @@ namespace Overworld
                     if (typeItem.GetType().IsEquivalentTo(item.GetType())) goto Checkpoint1;
                 }
 
-                Gun gun = Instantiate(item.gameObject).GetComponent<Gun>();
+                Tool gun = Instantiate(item.gameObject).GetComponent<Tool>();
                 gun.Initialize(_GunPoint);
                 temp.Add(gun);
 
@@ -70,13 +70,10 @@ namespace Overworld
         }
         void Update()
         {
-            if (Input.GetButton("Fire1")) ShootGun();
-            TryChangeGun(Input.GetAxisRaw("ChangeGun"));
-        }
+            if (Input.GetButtonDown("Fire1")) _currentGun?.StartFiring();
+            else if (Input.GetButtonUp("Fire1")) _currentGun?.StopFiring();
 
-        void ShootGun()
-        {
-            _currentGun?.Activate();
+            TryChangeGun(Input.GetAxisRaw("ChangeGun"));
         }
 
         void TryChangeGun(float v)

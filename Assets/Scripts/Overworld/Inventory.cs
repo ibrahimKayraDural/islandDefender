@@ -7,6 +7,8 @@ namespace Overworld
 {
     public class Inventory : MonoBehaviour
     {
+        public static Inventory Instance = null;
+
         int SlotCount
         {
             get => _slotCount;
@@ -35,35 +37,38 @@ namespace Overworld
             }
         }
 
-        [SerializeField,Min(0)] int _slotCount = 5;
-        [SerializeField,Min(0)] TextMeshProUGUI tsext;
+        [SerializeField, Min(0)] int _slotCount = 5;
+        [SerializeField, Min(0)] TextMeshProUGUI tsext;
 
         IInventoryItem[] _slots;
 
         void Awake()
         {
+            if (Instance == null) Instance = this;
+            else if (Instance != this) Destroy(this);
+
             _slots = new IInventoryItem[5];
         }
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.P)) 
+            if (Input.GetKeyDown(KeyCode.P))
                 SlotCount++;
-            if (Input.GetKeyDown(KeyCode.O)) 
+            if (Input.GetKeyDown(KeyCode.O))
                 SlotCount--;
             if (Input.GetKeyDown(KeyCode.L))
             {
                 ResourceData datdat = GLOBAL.GetResourceDatabase().GetDataByID("resource-iron");
                 IInventoryItem itemm = datdat.AsItem(15);
-                _slots[_slots.Length - 1] = itemm; 
+                _slots[_slots.Length - 1] = itemm;
             }
             if (Input.GetKeyDown(KeyCode.M))
             {
                 ResourceData datdat = GLOBAL.GetResourceDatabase().GetDataByID("resource-iron");
                 IInventoryItem itemm = datdat.AsItem(15);
-                TryAddItemWithSpill( itemm);
+                TryAddItemWithSpill(itemm);
             }
-            if (Input.GetKeyDown(KeyCode.K)) 
+            if (Input.GetKeyDown(KeyCode.K))
                 _slots[_slots.Length - 1] = null;
             if (Input.GetKeyDown(KeyCode.Alpha2))
                 _slots[2] = null;
@@ -71,7 +76,7 @@ namespace Overworld
             tsext.text = "";
             foreach (var item in _slots)
             {
-                if(IsNull(item))
+                if (IsNull(item))
                 {
                     tsext.text += "NULL<br>";
                     tsext.text += "-------------------------------<br>";
@@ -79,9 +84,9 @@ namespace Overworld
                 }
 
                 ResourceItem dataaa = (ResourceItem)item;
-                tsext.text += item.Count+"<br>";
-                tsext.text += dataaa.Data.DisplayName+"<br>";
-                tsext.text += item.IsInitialized+"<br>";
+                tsext.text += item.Count + "<br>";
+                tsext.text += dataaa.Data.DisplayName + "<br>";
+                tsext.text += item.IsInitialized + "<br>";
                 tsext.text += "--------------------------<br>";
             }
         }
@@ -139,6 +144,17 @@ namespace Overworld
             return itemToAdd;
         }
 
+        public List<IInventoryItem> TryAddItemWithSpill(IInventoryItem[] itemsToAdd)
+        {
+            List<IInventoryItem> returnList = new List<IInventoryItem>();
+            foreach (var item in itemsToAdd)
+            {
+                IInventoryItem temp  = TryAddItemWithSpill(item);
+                if (temp != null) returnList.Add(temp);
+            }
+            return returnList;
+        }
+
         bool IsNull(IInventoryItem item)
         {
             //since c# is a dumbass it initializes the item as null, but
@@ -149,5 +165,5 @@ namespace Overworld
             else if (item.IsInitialized == false) return true;
             return false;
         }
-    } 
+    }
 }
