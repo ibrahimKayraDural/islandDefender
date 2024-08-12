@@ -22,7 +22,7 @@ namespace Overworld
 
         virtual internal void OnApplicationFocus(bool focus)
         {
-            if (focus == false) StopFiring();
+            if (_isEquipped && focus == false) StopFiring();
         }
         virtual public void Initialize(Transform equipPoint)
         {
@@ -44,8 +44,8 @@ namespace Overworld
         {
             if (_isEquipped == false) return;
 
-            foreach (var item in Visuals) item.SetActive(false);
             StopFiring();
+            foreach (var item in Visuals) item.SetActive(false);
 
             _isEquipped = false;
         }
