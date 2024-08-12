@@ -16,6 +16,7 @@ namespace Overworld
         [Header("Reference")]
         [SerializeField] Rigidbody _RB;
         [SerializeField] Camera _Cam;
+        [SerializeField] Animator _Animator;
         [SerializeField] GameObject _Rotator;
         [SerializeField] GameObject _DebugCube;
 
@@ -54,15 +55,23 @@ namespace Overworld
             Quaternion rotation = Quaternion.AngleAxis(_Cam.transform.rotation.eulerAngles.y, Vector3.up);
             Vector3 movement = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized * _Speed * Time.deltaTime;
             movement = rotation * movement;
-            _currentMovement = Vector3.Lerp(_currentMovement, movement, groundFriction * Time.deltaTime);
+            _currentMovement = Vector3.Lerp(_currentMovement, movement, groundFriction);
 
             _RB.MovePosition(transform.position + _currentMovement);
-        }
 
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, _direction + transform.position);
+            Vector3 normalizedVelocity = _currentMovement / Time.deltaTime / _Speed;
+            normalizedVelocity.y = 0;
+            float nVelMag = normalizedVelocity.magnitude;
+            Quaternion InverseRotation = Quaternion.AngleAxis(-_Cam.transform.rotation.eulerAngles.y, Vector3.up);
+
+            normalizedVelocity = InverseRotation * normalizedVelocity;
+            Vector3 rotDir = InverseRotation * _direction;
+            float angleBetween = Vector3.SignedAngle(normalizedVelocity, rotDir, Vector3.up);
+            normalizedVelocity = Quaternion.Euler(0, -angleBetween, 0) * Vector3.forward;
+            normalizedVelocity = normalizedVelocity.normalized * nVelMag;
+
+            _Animator.SetFloat("X", Mathf.Clamp(normalizedVelocity.x, -1, 1));
+            _Animator.SetFloat("Z", Mathf.Clamp(normalizedVelocity.z, -1, 1));
         }
     }
 }

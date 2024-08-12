@@ -8,6 +8,8 @@ namespace Overworld
     public class Drill : Tool
     {
         [SerializeField] Rigidbody _Rigidbody;
+        [SerializeField] Animator _Animator;
+        [SerializeField] AudioSource _ASource;
 
         public void Awake()
         {
@@ -17,6 +19,9 @@ namespace Overworld
         internal override IEnumerator FireIEnum()
         {
             _isFiring = true;
+            _Animator.SetBool("IsRunning", _isFiring);
+            StopCoroutine(nameof(StopSoundIEnum));
+            _ASource.Play();
             _Rigidbody.detectCollisions = true;
 
             yield return null;
@@ -25,7 +30,16 @@ namespace Overworld
         {
             base.StopFiring();
 
+            _Animator.SetBool("IsRunning",_isFiring);
+            StartCoroutine(nameof(StopSoundIEnum));
             _Rigidbody.detectCollisions = false;
+        }
+
+        IEnumerator StopSoundIEnum()
+        {
+            float remaining = (_ASource.clip.length - _ASource.time) - .05f;
+            yield return new WaitForSeconds(remaining);
+            _ASource.Stop();
         }
 
         internal override void ActivationImplementation() { }
