@@ -18,7 +18,6 @@ namespace Overworld
         [SerializeField] Camera _Cam;
         [SerializeField] Animator _Animator;
         [SerializeField] GameObject _Rotator;
-        [SerializeField] GameObject _DebugCube;
 
         Vector3 _direction
         {
