@@ -6,13 +6,10 @@ namespace Overworld
 {
     public abstract class Tool : MonoBehaviour
     {
-        public string DisplayName => _DisplayName;
-        public string ID => _ID;
+        public ToolData Data => _Data;
+        [SerializeField] ToolData _Data;
 
         [SerializeField, Min(0)] internal float _ShootCooldown = 1;
-        [SerializeField] internal string _DisplayName = GLOBAL.UnassignedString;
-        [SerializeField] internal string _ID = GLOBAL.UnassignedString;
-        [SerializeField] internal GameObject _Prefab;
         [SerializeField] internal Transform _Barrel;
         [SerializeField] internal GameObject[] Visuals;
 

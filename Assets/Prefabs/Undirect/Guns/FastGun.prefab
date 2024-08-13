@@ -77,10 +77,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 434980eb36e26e743b6f73ca17a8fb27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _Data: {fileID: 11400000, guid: 14fac7a17c4a7f146a0ce6e3f6bd1d19, type: 2}
   _ShootCooldown: 0.5
+  _Prefab: {fileID: 0}
   _Barrel: {fileID: 9148875036199989768}
-  _DisplayName: Basic BUT fast gun
-  _ID: gun-basic-however-fast
   Visuals:
   - {fileID: 6841182734437318575}
   _Projectile: {fileID: 4590687476208610346, guid: 6be8f72798af27c4c83128d37a2c660e, type: 3}

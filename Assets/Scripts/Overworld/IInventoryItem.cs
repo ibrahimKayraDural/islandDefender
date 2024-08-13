@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Overworld
 {
@@ -18,7 +19,9 @@ namespace Overworld
         }
         public int RemainingSpace => AUTO_maxItemCount - AUTO_count;
         public bool IsInitialized => AUTO_isInitialized;
+        public Image UIImage => _UIImage;
 
+        Image _UIImage { get; set; }
         int AUTO_MAX_HARDCAP { get; }
         int AUTO_count { get; set; }
         int AUTO_maxItemCount { get; set; }

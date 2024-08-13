@@ -8,6 +8,7 @@ namespace Overworld
     public class Inventory : MonoBehaviour
     {
         public static Inventory Instance = null;
+        public bool IsOpen { get; private set; }
 
         int SlotCount
         {
@@ -41,6 +42,7 @@ namespace Overworld
         [SerializeField] TextMeshProUGUI _DebugText;
 
         IInventoryItem[] _slots;
+        CanvasManager CMInstance;
 
         void Awake()
         {
@@ -48,6 +50,11 @@ namespace Overworld
             else if (Instance != this) Destroy(this);
 
             _slots = new IInventoryItem[5];
+        }
+
+        void Start()
+        {
+            CMInstance = CanvasManager.Instance;
         }
 
         private void Update()
@@ -89,6 +96,24 @@ namespace Overworld
                 _DebugText.text += item.IsInitialized + "<br>";
                 _DebugText.text += "--------------------------<br>";
             }
+        }
+
+        public void OpenInventory()
+        {
+            if (IsOpen) return;
+
+            CMInstance.RefreshInventory(_slots);
+            CMInstance.SetInventoryEnablity(true);
+
+            IsOpen = true;
+        }
+        public void CloseInventory()
+        {
+            if (IsOpen == false) return;
+
+            CanvasManager.Instance?.SetInventoryEnablity(false);
+
+            IsOpen = false;
         }
 
         /// <summary>

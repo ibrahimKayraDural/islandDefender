@@ -80,10 +80,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d957119e4d426f247a47b36ea1f8fc6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _Data: {fileID: 11400000, guid: 2bfaf7cd58f10ae4e8ae0065ab142001, type: 2}
   _ShootCooldown: 0.1
+  _Prefab: {fileID: 0}
   _Barrel: {fileID: 9148875036199989768}
-  _DisplayName: Drill
-  _ID: gun-drill
   Visuals:
   - {fileID: 7819544275235308796}
   _Rigidbody: {fileID: 500343713260558876}

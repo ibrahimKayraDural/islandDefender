@@ -77,10 +77,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d6b7ff0c5471fa47919082dcfe8530a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _Data: {fileID: 11400000, guid: c80ff14a512338d4493558b70b8f726e, type: 2}
   _ShootCooldown: 1
+  _Prefab: {fileID: 0}
   _Barrel: {fileID: 9148875036199989768}
-  _DisplayName: Basic Gun
-  _ID: gun-basic
   Visuals:
   - {fileID: 6841182734437318575}
   _Projectile: {fileID: 4590687476208610346, guid: 6be8f72798af27c4c83128d37a2c660e, type: 3}

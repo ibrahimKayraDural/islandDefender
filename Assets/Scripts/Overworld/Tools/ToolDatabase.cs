@@ -4,7 +4,7 @@ namespace Overworld
     using System.Collections.Generic;
     using UnityEngine;
 
-    [CreateAssetMenu()]
+    [CreateAssetMenu(menuName = "Tool/Tool Database")]
     public class ToolDatabase : ScriptableObject
     {
         public List<GameObject> ToolList => _ToolList;
@@ -25,7 +25,7 @@ namespace Overworld
             {
                 if (x.TryGetComponent(out Tool tool) == false) return false;
 
-                return tool.ID == id;
+                return tool.Data.ID == id;
             });
         }
         public GameObject GetToolByDisplayName(string displayName)
@@ -34,7 +34,7 @@ namespace Overworld
             {
                 if (x.TryGetComponent(out Tool tool) == false) return false;
 
-                return tool.DisplayName == displayName;
+                return tool.Data.DisplayName == displayName;
             });
         }
     }
