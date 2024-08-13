@@ -2203,6 +2203,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: overworldPlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 4612471665001557244, guid: 296de3351f168f9478d7a0e7041b1503, type: 3}
+      propertyPath: _DebugText
+      value: 
+      objectReference: {fileID: 684290046}
     - target: {fileID: 7131293006566525913, guid: 296de3351f168f9478d7a0e7041b1503, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.105
@@ -3499,7 +3503,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TowerDefence;
+using Overworld;
 using UnityEngine;
 
 public static class GLOBAL
@@ -62,5 +63,12 @@ public static class GLOBAL
     {
         if (_swarmDB == null) _swarmDB = Resources.Load<SwarmDatabase>("Databases/SwarmDatabase");
         return _swarmDB;
+    }
+
+    static ToolDatabase _toolDB = null;
+    public static ToolDatabase GetToolDatabase()
+    {
+        if (_toolDB == null) _toolDB = Resources.Load<ToolDatabase>("Databases/ToolDatabase");
+        return _toolDB;
     }
 }

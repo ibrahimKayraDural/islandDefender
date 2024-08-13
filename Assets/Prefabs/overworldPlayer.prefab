@@ -344,7 +344,7 @@ GameObject:
   - component: {fileID: 7131293006566525913}
   - component: {fileID: 6961616835264164479}
   - component: {fileID: 8785126028115196852}
-  - component: {fileID: 3588275090620845602}
+  - component: {fileID: 4612471665001557244}
   - component: {fileID: 6147596811841315391}
   m_Layer: 0
   m_Name: overworldPlayer
@@ -390,7 +390,6 @@ MonoBehaviour:
   _Cam: {fileID: 1361136044001783198}
   _Animator: {fileID: 5627370962928076831}
   _Rotator: {fileID: 1188989895029744529}
-  _DebugCube: {fileID: 0}
 --- !u!114 &8785126028115196852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,12 +402,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 610a9c73374f922489e78ed3cb60f4c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _GunPoint: {fileID: 701844559993100569}
-  _Guns:
+  _ToolPoint: {fileID: 701844559993100569}
+  _Tools:
   - {fileID: 3218449559990595896, guid: 858dc8b09a2c78c40bc390229fff0d64, type: 3}
   - {fileID: 6452433810146732460, guid: f9806c31d03bb3c448058da3fb107898, type: 3}
   - {fileID: 1535015549455893020, guid: 9dc268fd29d04a7429b988669ec73a27, type: 3}
---- !u!114 &3588275090620845602
+--- !u!114 &4612471665001557244
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -421,7 +420,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _slotCount: 5
-  tsext: {fileID: 0}
+  _DebugText: {fileID: 0}
 --- !u!54 &6147596811841315391
 Rigidbody:
   m_ObjectHideFlags: 0

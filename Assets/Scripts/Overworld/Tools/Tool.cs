@@ -10,9 +10,10 @@ namespace Overworld
         public string ID => _ID;
 
         [SerializeField, Min(0)] internal float _ShootCooldown = 1;
-        [SerializeField] internal Transform _Barrel;
         [SerializeField] internal string _DisplayName = GLOBAL.UnassignedString;
         [SerializeField] internal string _ID = GLOBAL.UnassignedString;
+        [SerializeField] internal GameObject _Prefab;
+        [SerializeField] internal Transform _Barrel;
         [SerializeField] internal GameObject[] Visuals;
 
         internal virtual Vector3 _direction => transform.forward;

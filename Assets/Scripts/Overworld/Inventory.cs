@@ -38,7 +38,7 @@ namespace Overworld
         }
 
         [SerializeField, Min(0)] int _slotCount = 5;
-        [SerializeField, Min(0)] TextMeshProUGUI tsext;
+        [SerializeField] TextMeshProUGUI _DebugText;
 
         IInventoryItem[] _slots;
 
@@ -73,21 +73,21 @@ namespace Overworld
             if (Input.GetKeyDown(KeyCode.Alpha2))
                 _slots[2] = null;
 
-            tsext.text = "";
+            _DebugText.text = "";
             foreach (var item in _slots)
             {
                 if (IsNull(item))
                 {
-                    tsext.text += "NULL<br>";
-                    tsext.text += "-------------------------------<br>";
+                    _DebugText.text += "NULL<br>";
+                    _DebugText.text += "-------------------------------<br>";
                     continue;
                 }
 
                 ResourceItem dataaa = (ResourceItem)item;
-                tsext.text += item.Count + "<br>";
-                tsext.text += dataaa.Data.DisplayName + "<br>";
-                tsext.text += item.IsInitialized + "<br>";
-                tsext.text += "--------------------------<br>";
+                _DebugText.text += item.Count + "<br>";
+                _DebugText.text += dataaa.Data.DisplayName + "<br>";
+                _DebugText.text += item.IsInitialized + "<br>";
+                _DebugText.text += "--------------------------<br>";
             }
         }
 
