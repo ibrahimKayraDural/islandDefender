@@ -6,8 +6,10 @@ using UnityEngine;
 public class ResourceData : Data<ResourceData>
 {
     public int StackSize => _stackSize;
+    public Sprite UISprite => _UISprite;
 
     [SerializeField] int _stackSize = 20;
+    [SerializeField] Sprite _UISprite;
 
     public ResourceItem AsItem(int count = 0) => new ResourceItem(this, count);
 }

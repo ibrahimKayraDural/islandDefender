@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _displayName: Iron Ore
   _id: resource-iron
+  _stackSize: 20
+  _UISprite: {fileID: 21300000, guid: ef0294ade8f9c0d4eab000837c290328, type: 3}

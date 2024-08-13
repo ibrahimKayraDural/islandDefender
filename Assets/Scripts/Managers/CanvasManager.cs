@@ -24,6 +24,9 @@ public class CanvasManager : MonoBehaviour
         SetInventoryEnablity(false);
     }
 
+    #region Inventory
+    public void ToggleInventory() => _Inventory.ToggleInventory();
     public void SetInventoryEnablity(bool setTo) => _Inventory.SetInventoryEnablity(setTo);
-    public void RefreshInventory(IInventoryItem[] items) => _Inventory.RefreshInventory(items);
+    public void RefreshInventory() => _Inventory.RefreshInventory();
+    #endregion
 }

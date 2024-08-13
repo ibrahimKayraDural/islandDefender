@@ -8,7 +8,8 @@ namespace Overworld
     public class Inventory : MonoBehaviour
     {
         public static Inventory Instance = null;
-        public bool IsOpen { get; private set; }
+
+        public InventoryItem[] Items => _slots;
 
         int SlotCount
         {
@@ -18,8 +19,8 @@ namespace Overworld
                 value = Mathf.Max(0, value);
                 _slotCount = value;
 
-                IInventoryItem[] temp = _slots;
-                _slots = new IInventoryItem[_slotCount];
+                InventoryItem[] temp = _slots;
+                _slots = new InventoryItem[_slotCount];
 
                 for (int i = 0; i < temp.Length; i++)
                 {
@@ -41,7 +42,7 @@ namespace Overworld
         [SerializeField, Min(0)] int _slotCount = 5;
         [SerializeField] TextMeshProUGUI _DebugText;
 
-        IInventoryItem[] _slots;
+        InventoryItem[] _slots;
         CanvasManager CMInstance;
 
         void Awake()
@@ -49,7 +50,7 @@ namespace Overworld
             if (Instance == null) Instance = this;
             else if (Instance != this) Destroy(this);
 
-            _slots = new IInventoryItem[5];
+            _slots = new InventoryItem[5];
         }
 
         void Start()
@@ -66,19 +67,21 @@ namespace Overworld
             if (Input.GetKeyDown(KeyCode.L))
             {
                 ResourceData datdat = GLOBAL.GetResourceDatabase().GetDataByID("resource-iron");
-                IInventoryItem itemm = datdat.AsItem(15);
+                InventoryItem itemm = datdat.AsItem(15);
                 _slots[_slots.Length - 1] = itemm;
             }
             if (Input.GetKeyDown(KeyCode.M))
             {
                 ResourceData datdat = GLOBAL.GetResourceDatabase().GetDataByID("resource-iron");
-                IInventoryItem itemm = datdat.AsItem(15);
+                InventoryItem itemm = datdat.AsItem(15);
                 TryAddItemWithSpill(itemm);
             }
             if (Input.GetKeyDown(KeyCode.K))
                 _slots[_slots.Length - 1] = null;
             if (Input.GetKeyDown(KeyCode.Alpha2))
                 _slots[2] = null;
+
+            if (Input.anyKeyDown) CanvasManager.Instance.RefreshInventory();
 
             _DebugText.text = "";
             foreach (var item in _slots)
@@ -98,29 +101,11 @@ namespace Overworld
             }
         }
 
-        public void OpenInventory()
-        {
-            if (IsOpen) return;
-
-            CMInstance.RefreshInventory(_slots);
-            CMInstance.SetInventoryEnablity(true);
-
-            IsOpen = true;
-        }
-        public void CloseInventory()
-        {
-            if (IsOpen == false) return;
-
-            CanvasManager.Instance?.SetInventoryEnablity(false);
-
-            IsOpen = false;
-        }
-
         /// <summary>
         /// <para>Tries to add the item to the inventory.</para>
         /// <para>Returns the leftover item (or null if there is no letftover).</para>
         /// </summary>
-        public IInventoryItem TryAddItemWithSpill(IInventoryItem itemToAdd)
+        public InventoryItem TryAddItemWithSpill(InventoryItem itemToAdd)
         {
             //return if slotToAdd is invalid
             if (IsNull(itemToAdd)) return itemToAdd;
@@ -137,7 +122,7 @@ namespace Overworld
                     continue;
                 }
 
-                IInventoryItem slot = _slots[i];
+                InventoryItem slot = _slots[i];
                 if (slot.Compare(itemToAdd))
                 {
                     //and return if all of the item is divided
@@ -169,18 +154,18 @@ namespace Overworld
             return itemToAdd;
         }
 
-        public List<IInventoryItem> TryAddItemWithSpill(IInventoryItem[] itemsToAdd)
+        public List<InventoryItem> TryAddItemWithSpill(InventoryItem[] itemsToAdd)
         {
-            List<IInventoryItem> returnList = new List<IInventoryItem>();
+            List<InventoryItem> returnList = new List<InventoryItem>();
             foreach (var item in itemsToAdd)
             {
-                IInventoryItem temp  = TryAddItemWithSpill(item);
+                InventoryItem temp  = TryAddItemWithSpill(item);
                 if (temp != null) returnList.Add(temp);
             }
             return returnList;
         }
 
-        bool IsNull(IInventoryItem item)
+        bool IsNull(InventoryItem item)
         {
             //since c# is a dumbass it initializes the item as null, but
             //changes it to an unitialized version (which is not null) a frame later.
