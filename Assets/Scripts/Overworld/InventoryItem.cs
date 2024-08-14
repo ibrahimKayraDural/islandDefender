@@ -19,18 +19,21 @@ namespace Overworld
         public int RemainingSpace => _maxItemCount - _count;
         public bool IsInitialized => _isInitialized;
         public Sprite UISprite => _UISprite;
+        public GameObject DroppedItem => _droppedItem;
 
+        internal GameObject _droppedItem;
         internal Sprite _UISprite;
         internal int _maxHardcap = 99;
         internal int _count = 0;
         internal int _maxItemCount = 1;
         internal bool _isInitialized = false;
 
-        public InventoryItem(int count, int maxCount, Sprite uiSprite)
+        public InventoryItem(int count, int maxCount, Sprite uiSprite, GameObject droppedItem)
         {
             _UISprite = uiSprite;
             Count = count;
             MaxItemCount = maxCount;
+            _droppedItem = droppedItem;
 
             _isInitialized = true;
         }
@@ -55,5 +58,35 @@ namespace Overworld
             return amount;
         }
         public abstract bool Compare(InventoryItem otherItem);
+        public void Drop(Vector3 dropAt)
+        {
+            dropAt.y = 100;
+            Ray ray = new Ray(dropAt, -Vector3.up);
+            if (Physics.Raycast(ray, out RaycastHit hit, 200, 1 << 11))
+            {
+                dropAt = hit.point;
+
+                RaycastHit[] hits = Physics.RaycastAll(new Vector3(dropAt.x, -100, dropAt.z), Vector3.up, 200, ~0, QueryTriggerInteraction.Collide);
+                foreach (var h in hits)
+                {
+                    GameObject collidedGo = h.collider.gameObject;
+                    if (collidedGo.TryGetComponent(out DroppedInventoryItem droppedII) == false) continue;
+
+                    droppedII.TryAddItem(this, out int spill);
+                    Count = spill;
+                    if (Count == 0) break;
+                }
+
+                if (Count > 0)
+                {
+                    GameObject go = GameObject.Instantiate(DroppedItem, dropAt, Quaternion.identity) as GameObject;
+
+                    if (go.TryGetComponent(out DroppedInventoryItem dit) == false)
+                    { dit = go.AddComponent<DroppedInventoryItem>(); }
+
+                    dit.Instantiate(this); 
+                }
+            }
+        }
     }
 }

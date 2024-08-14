@@ -18,6 +18,7 @@ public class ResourceItem : InventoryItem
         MaxItemCount = Data.StackSize;
         Count = count;
         _UISprite = Data.UISprite;
+        _droppedItem = data.DroppedItem;
 
         _isInitialized = true;
     }

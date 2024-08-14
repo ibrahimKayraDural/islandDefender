@@ -696,8 +696,6 @@ MonoBehaviour:
   _Tmesh: {fileID: 908098072}
   _Img: {fileID: 1439080306}
   _ShowDebugLogs: 0
-  _Data: {fileID: 11400000, guid: 3893b9cfdf6c85f42918970f563c7f61, type: 2}
-  _RefData: {fileID: 11400000, guid: 9df7600b3b9dde445be30b4403cb4df0, type: 2}
 --- !u!4 &1184687963
 Transform:
   m_ObjectHideFlags: 0

@@ -16,3 +16,4 @@ MonoBehaviour:
   _id: resource-copper
   _stackSize: 20
   _UISprite: {fileID: 21300000, guid: 5eb868d8472692045983ac56235d6a5a, type: 3}
+  _DroppedItem: {fileID: 8977168894385176945, guid: dc21467bff3f80144a0fecc1cda826ed, type: 3}

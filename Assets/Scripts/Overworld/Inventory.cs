@@ -105,7 +105,7 @@ namespace Overworld
         /// <para>Tries to add the item to the inventory.</para>
         /// <para>Returns the leftover item (or null if there is no letftover).</para>
         /// </summary>
-        public InventoryItem TryAddItemWithSpill(InventoryItem itemToAdd)
+        public InventoryItem TryAddItemWithSpill(InventoryItem itemToAdd, bool dropTheSpill = false)
         {
             //return if slotToAdd is invalid
             if (IsNull(itemToAdd)) return itemToAdd;
@@ -148,6 +148,13 @@ namespace Overworld
                         return null;
                     }
                 }
+            }
+
+            //drop the rest if it was asked for
+            if(dropTheSpill)
+            {
+                itemToAdd.Drop(transform.position);
+                return null;
             }
 
             //return the leftover if there are still more items

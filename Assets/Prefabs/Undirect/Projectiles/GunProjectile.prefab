@@ -55,6 +55,7 @@ MonoBehaviour:
   IgnoreTags:
   - OverworldPlayer
   - OverworldGun
+  - DroppedItem
 --- !u!33 &37545966810398415
 MeshFilter:
   m_ObjectHideFlags: 0
