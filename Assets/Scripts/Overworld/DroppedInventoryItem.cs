@@ -6,7 +6,11 @@ namespace Overworld
 
     public class DroppedInventoryItem : MonoBehaviour, IInteractable
     {
-        public string InteractDescription { get; set; } = "Pick up";
+        public string InteractDescription
+        {
+            get => _item == null ? "Pick Up" : "Pick up " + _item.DisplayName + " X " + _item.Count;
+            set { }
+        }
 
         InventoryItem _item;
         bool isInstantiated;
@@ -17,7 +21,6 @@ namespace Overworld
 
             _item = item;
 
-            InteractDescription = "Pick up " + _item.DisplayName;
             gameObject.tag = "DroppedItem";
             SphereCollider col = gameObject.AddComponent<SphereCollider>();
             col.radius = 1;
