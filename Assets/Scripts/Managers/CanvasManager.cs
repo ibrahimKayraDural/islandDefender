@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using GameUI;
 
 public class CanvasManager : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class CanvasManager : MonoBehaviour
 
     [SerializeField] Canvas _MainCanvas;
     [SerializeField] InventoryUIScript _Inventory;
+    [SerializeField] InteractableHelperUI _InteractableHelper;
 
     private void Awake()
     {
@@ -29,4 +31,12 @@ public class CanvasManager : MonoBehaviour
     public void SetInventoryEnablity(bool setTo) => _Inventory.SetInventoryEnablity(setTo);
     public void RefreshInventory() => _Inventory.RefreshInventory();
     #endregion
+
+#nullable enable
+    public void SetInteractionText(string? text)
+    {
+        _InteractableHelper.SetHelperText(text == null ? "" : text);
+        _InteractableHelper.SetHelperEnablity(text != null);
+    }
+#nullable disable
 }

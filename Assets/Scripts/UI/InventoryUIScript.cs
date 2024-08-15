@@ -1,51 +1,54 @@
-using Overworld;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
-
-public class InventoryUIScript : MonoBehaviour
+namespace GameUI
 {
-    public bool IsOpen { get; private set; }
+    using Overworld;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using TMPro;
+    using UnityEngine;
+    using UnityEngine.UI;
 
-    [SerializeField] GameObject _Visuals;
-    [SerializeField] Transform _InventoryCellParent;
-    [SerializeField] GameObject _CellPrefab;
-
-    public void ToggleInventory() => SetInventoryEnablity(!IsOpen);
-    
-    public void SetInventoryEnablity(bool setTo)
+    public class InventoryUIScript : MonoBehaviour
     {
-        if (IsOpen == setTo) return;
+        public bool IsOpen { get; private set; }
 
-        RefreshInventory();
-        _Visuals.SetActive(setTo);
+        [SerializeField] GameObject _Visuals;
+        [SerializeField] Transform _InventoryCellParent;
+        [SerializeField] GameObject _CellPrefab;
 
-        IsOpen = setTo;
-    }
+        public void ToggleInventory() => SetInventoryEnablity(!IsOpen);
 
-    public void RefreshInventory()
-    {
-        InventoryItem[] items = Inventory.Instance.Items;
-
-        List<Transform> temp = _InventoryCellParent.Cast<Transform>().ToList();
-        foreach (var item in temp)
+        public void SetInventoryEnablity(bool setTo)
         {
-            Destroy(item.gameObject);
+            if (IsOpen == setTo) return;
+
+            RefreshInventory();
+            _Visuals.SetActive(setTo);
+
+            IsOpen = setTo;
         }
 
-        for (int i = 0; i < items.Length; i++)
+        public void RefreshInventory()
         {
-            InventoryItem item = items[i];
+            InventoryItem[] items = Inventory.Instance.Items;
 
-            GameObject cell = Instantiate(_CellPrefab, _InventoryCellParent);
+            List<Transform> temp = _InventoryCellParent.Cast<Transform>().ToList();
+            foreach (var item in temp)
+            {
+                Destroy(item.gameObject);
+            }
 
-            if (item == null) continue;
+            for (int i = 0; i < items.Length; i++)
+            {
+                InventoryItem item = items[i];
 
-            cell.transform.Find("CountText").GetComponent<TextMeshProUGUI>().text = item.Count.ToString();
-            cell.transform.Find("UIImage").GetComponent<Image>().sprite = item.UISprite;
+                GameObject cell = Instantiate(_CellPrefab, _InventoryCellParent);
+
+                if (item == null) continue;
+
+                cell.transform.Find("CountText").GetComponent<TextMeshProUGUI>().text = item.Count.ToString();
+                cell.transform.Find("UIImage").GetComponent<Image>().sprite = item.UISprite;
+            }
         }
     }
 }

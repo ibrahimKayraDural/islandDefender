@@ -40,7 +40,6 @@ namespace Overworld
         }
 
         [SerializeField, Min(0)] int _slotCount = 5;
-        [SerializeField] TextMeshProUGUI _DebugText;
 
         InventoryItem[] _slots;
         CanvasManager CMInstance;
@@ -82,23 +81,6 @@ namespace Overworld
                 _slots[2] = null;
 
             if (Input.anyKeyDown) CanvasManager.Instance.RefreshInventory();
-
-            _DebugText.text = "";
-            foreach (var item in _slots)
-            {
-                if (IsNull(item))
-                {
-                    _DebugText.text += "NULL<br>";
-                    _DebugText.text += "-------------------------------<br>";
-                    continue;
-                }
-
-                ResourceItem dataaa = (ResourceItem)item;
-                _DebugText.text += item.Count + "<br>";
-                _DebugText.text += dataaa.Data.DisplayName + "<br>";
-                _DebugText.text += item.IsInitialized + "<br>";
-                _DebugText.text += "--------------------------<br>";
-            }
         }
 
         /// <summary>

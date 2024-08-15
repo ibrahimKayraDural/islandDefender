@@ -19,6 +19,7 @@ public class ResourceItem : InventoryItem
         Count = count;
         _UISprite = Data.UISprite;
         _droppedItem = data.DroppedItem;
+        _displayName = data.DisplayName;
 
         _isInitialized = true;
     }
