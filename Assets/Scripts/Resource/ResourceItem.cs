@@ -20,6 +20,7 @@ public class ResourceItem : InventoryItem
         _UISprite = Data.UISprite;
         _droppedItem = data.DroppedItem;
         _displayName = data.DisplayName;
+        _description = data.Description;
 
         _isInitialized = true;
     }

@@ -21,7 +21,9 @@ namespace Overworld
         public Sprite UISprite => _UISprite;
         public GameObject DroppedItem => _droppedItem;
         public string DisplayName => _displayName;
+        public string Description => _description;
 
+        internal string _description = GLOBAL.UnassignedString;
         internal string _displayName = GLOBAL.UnassignedString;
         internal GameObject _droppedItem;
         internal Sprite _UISprite;
@@ -30,13 +32,14 @@ namespace Overworld
         internal int _maxItemCount = 1;
         internal bool _isInitialized = false;
 
-        public InventoryItem(int count, int maxCount, Sprite uiSprite, GameObject droppedItem, string displayName)
+        public InventoryItem(int count, int maxCount, Sprite uiSprite, GameObject droppedItem, string displayName, string description)
         {
             _UISprite = uiSprite;
             Count = count;
             MaxItemCount = maxCount;
             _droppedItem = droppedItem;
             _displayName = displayName;
+            _description = description;
 
             _isInitialized = true;
         }

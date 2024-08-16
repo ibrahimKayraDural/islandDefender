@@ -17,3 +17,4 @@ MonoBehaviour:
   _stackSize: 20
   _UISprite: {fileID: 21300000, guid: ef0294ade8f9c0d4eab000837c290328, type: 3}
   _DroppedItem: {fileID: 1342506201158450167, guid: 9fc235d1f39b7994c946777174358f55, type: 3}
+  _Description: Used as a strong base for many turrets

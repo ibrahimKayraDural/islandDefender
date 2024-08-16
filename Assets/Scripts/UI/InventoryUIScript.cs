@@ -6,6 +6,7 @@ namespace GameUI
     using System.Linq;
     using TMPro;
     using UnityEngine;
+    using UnityEngine.EventSystems;
     using UnityEngine.UI;
 
     public class InventoryUIScript : MonoBehaviour
@@ -15,6 +16,27 @@ namespace GameUI
         [SerializeField] GameObject _Visuals;
         [SerializeField] Transform _InventoryCellParent;
         [SerializeField] GameObject _CellPrefab;
+        [SerializeField] TextMeshProUGUI _DescriptionTitle;
+        [SerializeField] TextMeshProUGUI _DescriptionText;
+        [SerializeField] GraphicRaycasterScript _GraphicRaycaster;
+
+        private void Start()
+        {
+            _GraphicRaycaster.e_OnEventDataGathered += OnRaycastDataGathered;
+        }
+
+        private void OnRaycastDataGathered(object sender, List<RaycastResult> e)
+        {
+            InventoryCellScript ics = null;
+            RaycastResult result = e.Find(x => x.gameObject.TryGetComponent(out ics));
+
+            //done this way to prevent Null Reference Exception
+            bool targetIsValid = true;
+            if (result.isValid == false || ics.ItemData == null) targetIsValid = false;
+
+            _DescriptionTitle.text = targetIsValid ? ics.ItemData.DisplayName : "";
+            _DescriptionText.text = targetIsValid ? ics.ItemData.Description : "";
+        }
 
         public void ToggleInventory() => SetInventoryEnablity(!IsOpen);
 
@@ -24,6 +46,7 @@ namespace GameUI
 
             RefreshInventory();
             _Visuals.SetActive(setTo);
+            _DescriptionText.text = "";
 
             IsOpen = setTo;
         }
@@ -42,12 +65,13 @@ namespace GameUI
             {
                 InventoryItem item = items[i];
 
-                GameObject cell = Instantiate(_CellPrefab, _InventoryCellParent);
+                //Create empty cell
+                InventoryCellScript cell = Instantiate(_CellPrefab, _InventoryCellParent).GetComponent<InventoryCellScript>();
 
+                //Return if there is no data to fill the cell
                 if (item == null) continue;
 
-                cell.transform.Find("CountText").GetComponent<TextMeshProUGUI>().text = item.Count.ToString();
-                cell.transform.Find("UIImage").GetComponent<Image>().sprite = item.UISprite;
+                cell.Initialize(item);
             }
         }
     }

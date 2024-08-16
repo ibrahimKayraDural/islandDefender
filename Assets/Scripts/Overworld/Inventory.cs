@@ -83,47 +83,56 @@ namespace Overworld
             if (Input.anyKeyDown) CanvasManager.Instance.RefreshInventory();
         }
 
-        /// <summary>
-        /// Try to remove as much as you can from the inventory
-        /// </summary>
-        /// <param name="itemToUse">What item is gonna be searched for</param>
-        /// <returns>The leftover items. Null if none left</returns>
-        public InventoryItem TryUseItem(InventoryItem itemToUse)
+        public int CheckItemCount(InventoryItem itemToCheck)
         {
-            for (int i = 0; i < _slots.Length; i++)
+            int totalCount = 0;
+            foreach (var slot in _slots)
             {
-                InventoryItem slot = _slots[i];
-                if (IsNull(slot)) continue;
+                if (slot.Compare(itemToCheck)) totalCount += slot.Count;
+            }
+            return totalCount;
+        }
 
-                if (slot.Compare(itemToUse))
+        /// <summary>
+        /// Try to remove items from Inventory, if they fully exist
+        /// </summary>
+        /// <param name="itemsToUse">What items to use with what count</param>
+        /// <returns>If items existed and therefore removed</returns>
+        public bool TryUseItems(InventoryItem[] itemsToUse)
+        {
+            foreach (var item in itemsToUse)
+            {
+                if (CheckItemCount(item) < item.Count) return false;
+            }
+
+            foreach (var itemToUse in itemsToUse)
+            {
+                for (int i = 0; i < _slots.Length; i++)
                 {
-                    int itemCount = itemToUse.Count;
-                    itemToUse.Count -= slot.Count;
-                    slot.Count -= itemCount;
+                    InventoryItem slot = _slots[i];
+                    if (IsNull(slot)) continue;
 
-                    if (slot.Count <= 0) _slots[i] = null;
-                    if (itemToUse.Count <= 0) return null; 
+                    if (slot.Compare(itemToUse))
+                    {
+                        int itemCount = itemToUse.Count;
+                        itemToUse.Count -= slot.Count;
+                        slot.Count -= itemCount;
+
+                        if (slot.Count <= 0) _slots[i] = null;
+                        if (itemToUse.Count <= 0) break;
+                    }
                 }
             }
 
-            return itemToUse;
+            return true;
         }
 
         /// <summary>
-        /// Try to remove as much as you can from the inventory
+        /// Try to remove item from Inventory, if it fully exists
         /// </summary>
-        /// <param name="itemsToUse">What items are gonna be searched for</param>
-        /// <returns>The leftover items</returns>
-        public InventoryItem[] TryUseItem(InventoryItem[] itemsToUse)
-        {
-            List<InventoryItem> leftovers = new List<InventoryItem>();
-            foreach (var item in itemsToUse)
-            {
-                InventoryItem leftover = TryUseItem(item);
-                if (leftover != null) leftovers.Add(leftover);
-            }
-            return leftovers.ToArray();
-        }
+        /// <param name="itemToUse">What item to use with what count</param>
+        /// <returns>If item existed and therefore removed</returns>
+        public bool TryUseItems(InventoryItem itemToUse) => TryUseItems(new InventoryItem[] { itemToUse });
 
         /// <summary>
         /// <para>Tries to add the item to the inventory.</para>
@@ -185,6 +194,10 @@ namespace Overworld
             return itemToAdd;
         }
 
+        /// <summary>
+        /// <para>Tries to add the items to the inventory</para>
+        /// <para>Returns the leftover items (or null if there is no letftovers)</para>
+        /// </summary>
         public List<InventoryItem> TryAddItemWithSpill(InventoryItem[] itemsToAdd, bool dropTheSpill = false)
         {
             List<InventoryItem> returnList = new List<InventoryItem>();
@@ -194,6 +207,15 @@ namespace Overworld
                 if (temp != null) returnList.Add(temp);
             }
             return returnList;
+        }
+
+        public void DropItemAtIndex(int index, Vector3 dropPosition)
+        {
+            if (index < 0 || index >= _slots.Length) return;
+
+            InventoryItem item = _slots[index];
+            _slots[index] = null;
+            item.Drop(dropPosition);
         }
 
         bool IsNull(InventoryItem item)
