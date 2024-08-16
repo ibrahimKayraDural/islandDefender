@@ -84,6 +84,48 @@ namespace Overworld
         }
 
         /// <summary>
+        /// Try to remove as much as you can from the inventory
+        /// </summary>
+        /// <param name="itemToUse">What item is gonna be searched for</param>
+        /// <returns>The leftover items. Null if none left</returns>
+        public InventoryItem TryUseItem(InventoryItem itemToUse)
+        {
+            for (int i = 0; i < _slots.Length; i++)
+            {
+                InventoryItem slot = _slots[i];
+                if (IsNull(slot)) continue;
+
+                if (slot.Compare(itemToUse))
+                {
+                    int itemCount = itemToUse.Count;
+                    itemToUse.Count -= slot.Count;
+                    slot.Count -= itemCount;
+
+                    if (slot.Count <= 0) _slots[i] = null;
+                    if (itemToUse.Count <= 0) return null; 
+                }
+            }
+
+            return itemToUse;
+        }
+
+        /// <summary>
+        /// Try to remove as much as you can from the inventory
+        /// </summary>
+        /// <param name="itemsToUse">What items are gonna be searched for</param>
+        /// <returns>The leftover items</returns>
+        public InventoryItem[] TryUseItem(InventoryItem[] itemsToUse)
+        {
+            List<InventoryItem> leftovers = new List<InventoryItem>();
+            foreach (var item in itemsToUse)
+            {
+                InventoryItem leftover = TryUseItem(item);
+                if (leftover != null) leftovers.Add(leftover);
+            }
+            return leftovers.ToArray();
+        }
+
+        /// <summary>
         /// <para>Tries to add the item to the inventory.</para>
         /// <para>Returns the leftover item (or null if there is no letftover).</para>
         /// </summary>
@@ -143,12 +185,12 @@ namespace Overworld
             return itemToAdd;
         }
 
-        public List<InventoryItem> TryAddItemWithSpill(InventoryItem[] itemsToAdd)
+        public List<InventoryItem> TryAddItemWithSpill(InventoryItem[] itemsToAdd, bool dropTheSpill = false)
         {
             List<InventoryItem> returnList = new List<InventoryItem>();
             foreach (var item in itemsToAdd)
             {
-                InventoryItem temp  = TryAddItemWithSpill(item);
+                InventoryItem temp = TryAddItemWithSpill(item, dropTheSpill);
                 if (temp != null) returnList.Add(temp);
             }
             return returnList;
