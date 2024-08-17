@@ -13,6 +13,8 @@ public class PlayerInteractor : MonoBehaviour
     }
     void Update()
     {
+        if (Time.timeScale <= 0) return;
+
         IInteractable currentInteractable = null;
         Vector3 targetOrigin = transform.position;
         targetOrigin.y = -10;

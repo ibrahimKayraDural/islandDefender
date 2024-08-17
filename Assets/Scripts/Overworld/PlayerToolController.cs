@@ -6,8 +6,6 @@ namespace Overworld
 
     public class PlayerToolController : MonoBehaviour
     {
-        public static bool ToolIsAllowed = true;
-
         [SerializeField] Transform _ToolPoint;
         [SerializeField] List<Tool> _Tools = new List<Tool>();
 
@@ -78,13 +76,13 @@ namespace Overworld
 
         void Update()
         {
-            if(ToolIsAllowed)
-            {
-                if (Input.GetButtonDown("Fire1")) _currentTool?.StartFiring();
-                else if (Input.GetButtonUp("Fire1")) _currentTool?.StopFiring();
+            if (Time.timeScale <= 0) return;
 
-                TryChangeTool(Input.GetAxisRaw("ChangeGun"));
-            }
+
+            if (Input.GetButtonDown("Fire1")) _currentTool?.StartFiring();
+            else if (Input.GetButtonUp("Fire1")) _currentTool?.StopFiring();
+
+            TryChangeTool(Input.GetAxisRaw("ChangeGun"));
         }
 
         public bool AddTool(GameObject toolPrefab)

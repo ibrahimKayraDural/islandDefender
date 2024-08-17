@@ -19,23 +19,38 @@ namespace GameUI
         [SerializeField] TextMeshProUGUI _DescriptionTitle;
         [SerializeField] TextMeshProUGUI _DescriptionText;
         [SerializeField] GraphicRaycasterScript _GraphicRaycaster;
+        [SerializeField] GameObject _QuickMenuPrefab;
 
-        private void Start()
+        InventoryCellScript _currentCell;
+
+        void Start()
         {
             _GraphicRaycaster.e_OnEventDataGathered += OnRaycastDataGathered;
         }
-
-        private void OnRaycastDataGathered(object sender, List<RaycastResult> e)
+        void Update()
         {
-            InventoryCellScript ics = null;
-            RaycastResult result = e.Find(x => x.gameObject.TryGetComponent(out ics));
+            if (IsOpen == false) return;
+
+            if(Input.GetMouseButtonDown(1) && _currentCell != null && _currentCell.IsInitialized)
+            {
+                InventoryQuickMenu iqm = Instantiate(_QuickMenuPrefab, Input.mousePosition, Quaternion.identity, _Visuals.transform)
+                    .GetComponent<InventoryQuickMenu>();
+
+                iqm.Initialize(_currentCell, _GraphicRaycaster);
+            }
+        }
+
+        void OnRaycastDataGathered(object sender, List<RaycastResult> e)
+        {
+            _currentCell = null;
+            RaycastResult result = e.Find(x => x.gameObject.TryGetComponent(out _currentCell));
 
             //done this way to prevent Null Reference Exception
             bool targetIsValid = true;
-            if (result.isValid == false || ics.ItemData == null) targetIsValid = false;
+            if (result.isValid == false || _currentCell.ItemData == null) targetIsValid = false;
 
-            _DescriptionTitle.text = targetIsValid ? ics.ItemData.DisplayName : "";
-            _DescriptionText.text = targetIsValid ? ics.ItemData.Description : "";
+            _DescriptionTitle.text = targetIsValid ? _currentCell.ItemData.DisplayName : "";
+            _DescriptionText.text = targetIsValid ? _currentCell.ItemData.Description : "";
         }
 
         public void ToggleInventory() => SetInventoryEnablity(!IsOpen);
@@ -47,13 +62,16 @@ namespace GameUI
             RefreshInventory();
             _Visuals.SetActive(setTo);
             _DescriptionText.text = "";
+            Time.timeScale = setTo ? 0 : 1;
+
+            if (setTo == false) InventoryQuickMenu.Instance?.Close();
 
             IsOpen = setTo;
         }
 
         public void RefreshInventory()
         {
-            InventoryItem[] items = Inventory.Instance.Items;
+            List<InventoryItem> items = Inventory.Instance.Items;
 
             List<Transform> temp = _InventoryCellParent.Cast<Transform>().ToList();
             foreach (var item in temp)
@@ -61,7 +79,7 @@ namespace GameUI
                 Destroy(item.gameObject);
             }
 
-            for (int i = 0; i < items.Length; i++)
+            for (int i = 0; i < items.Count; i++)
             {
                 InventoryItem item = items[i];
 
@@ -71,7 +89,7 @@ namespace GameUI
                 //Return if there is no data to fill the cell
                 if (item == null) continue;
 
-                cell.Initialize(item);
+                cell.Initialize(item, i);
             }
         }
     }

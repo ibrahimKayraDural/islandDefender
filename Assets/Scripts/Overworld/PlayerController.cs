@@ -46,9 +46,10 @@ namespace Overworld
 
         void Update()
         {
-            _Rotator.transform.rotation = Quaternion.Lerp(_Rotator.transform.rotation, _dirAsRot, Time.deltaTime * _TurnSpeed);
-
             if (Input.GetButtonDown("Inventory")) CanvasManager.Instance?.ToggleInventory();
+
+            if(Time.timeScale <= 0) return;
+            _Rotator.transform.rotation = Quaternion.Lerp(_Rotator.transform.rotation, _dirAsRot, Time.deltaTime * _TurnSpeed);
         }
 
         void FixedUpdate()

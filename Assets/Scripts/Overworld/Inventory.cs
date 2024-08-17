@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -9,7 +11,7 @@ namespace Overworld
     {
         public static Inventory Instance = null;
 
-        public InventoryItem[] Items => _slots;
+        public List<InventoryItem> Items => _slots.ToList();
 
         int SlotCount
         {
@@ -19,12 +21,12 @@ namespace Overworld
                 value = Mathf.Max(0, value);
                 _slotCount = value;
 
-                InventoryItem[] temp = _slots;
-                _slots = new InventoryItem[_slotCount];
+                ObservableCollection<InventoryItem> temp = _slots;
+                _slots = new ObservableCollection<InventoryItem>(new InventoryItem[_slotCount]);
 
-                for (int i = 0; i < temp.Length; i++)
+                for (int i = 0; i < temp.Count; i++)
                 {
-                    if (i < _slots.Length)
+                    if (i < _slots.Count)
                     {
                         if (IsNull(temp[i]) == false)
                         {
@@ -36,25 +38,27 @@ namespace Overworld
                         TryAddItemWithSpill(temp[i]);
                     }
                 }
+
+                _canvasManager.RefreshInventory();
             }
         }
 
         [SerializeField, Min(0)] int _slotCount = 5;
 
-        InventoryItem[] _slots;
-        CanvasManager CMInstance;
+        ObservableCollection<InventoryItem> _slots;
+
+        CanvasManager _canvasManager;
 
         void Awake()
         {
             if (Instance == null) Instance = this;
             else if (Instance != this) Destroy(this);
-
-            _slots = new InventoryItem[5];
         }
-
         void Start()
         {
-            CMInstance = CanvasManager.Instance;
+            _canvasManager = CanvasManager.Instance;
+            _slots = new ObservableCollection<InventoryItem>(new InventoryItem[SlotCount]);
+            _slots.CollectionChanged += OnInventoryChanged;
         }
 
         private void Update()
@@ -67,7 +71,7 @@ namespace Overworld
             {
                 ResourceData datdat = GLOBAL.GetResourceDatabase().GetDataByID("resource-iron");
                 InventoryItem itemm = datdat.AsItem(15);
-                _slots[_slots.Length - 1] = itemm;
+                _slots[_slots.Count - 1] = itemm;
             }
             if (Input.GetKeyDown(KeyCode.M))
             {
@@ -76,11 +80,9 @@ namespace Overworld
                 TryAddItemWithSpill(itemm);
             }
             if (Input.GetKeyDown(KeyCode.K))
-                _slots[_slots.Length - 1] = null;
+                _slots[_slots.Count - 1] = null;
             if (Input.GetKeyDown(KeyCode.Alpha2))
                 _slots[2] = null;
-
-            if (Input.anyKeyDown) CanvasManager.Instance.RefreshInventory();
         }
 
         public int CheckItemCount(InventoryItem itemToCheck)
@@ -107,7 +109,7 @@ namespace Overworld
 
             foreach (var itemToUse in itemsToUse)
             {
-                for (int i = 0; i < _slots.Length; i++)
+                for (int i = 0; i < _slots.Count; i++)
                 {
                     InventoryItem slot = _slots[i];
                     if (IsNull(slot)) continue;
@@ -117,6 +119,8 @@ namespace Overworld
                         int itemCount = itemToUse.Count;
                         itemToUse.Count -= slot.Count;
                         slot.Count -= itemCount;
+
+                        _canvasManager.RefreshInventory();
 
                         if (slot.Count <= 0) _slots[i] = null;
                         if (itemToUse.Count <= 0) break;
@@ -146,7 +150,7 @@ namespace Overworld
             int nullIndex = -1;
 
             //try to divide the amount to existing items of the same type
-            for (int i = 0; i < _slots.Length; i++)
+            for (int i = 0; i < _slots.Count; i++)
             {
                 if (IsNull(_slots[i]))
                 {
@@ -160,7 +164,12 @@ namespace Overworld
                 {
                     //and return if all of the item is divided
                     itemToAdd.Count = slot.AddWithSpill(itemToAdd.Count);
-                    if (itemToAdd.Count == 0) return null;
+                    _canvasManager.RefreshInventory();
+
+                    if (itemToAdd.Count == 0)
+                    {
+                        return null;
+                    }
                 }
             }
 
@@ -173,7 +182,7 @@ namespace Overworld
             }
             else
             {
-                for (int i = 0; i < _slots.Length; i++)
+                for (int i = 0; i < _slots.Count; i++)
                 {
                     if (IsNull(_slots[i]))
                     {
@@ -209,13 +218,17 @@ namespace Overworld
             return returnList;
         }
 
-        public void DropItemAtIndex(int index, Vector3 dropPosition)
+        public void DropItemAtIndex(int index, Vector3? dropPosition = null)
         {
-            if (index < 0 || index >= _slots.Length) return;
+            if (index < 0 || index >= _slots.Count) return;
 
             InventoryItem item = _slots[index];
             _slots[index] = null;
-            item.Drop(dropPosition);
+
+            Vector3 targetPos = dropPosition == null ? transform.position : dropPosition.Value;
+            item.Drop(targetPos);
+
+            _canvasManager.RefreshInventory();
         }
 
         bool IsNull(InventoryItem item)
@@ -227,6 +240,10 @@ namespace Overworld
             if (item == null) return true;
             else if (item.IsInitialized == false) return true;
             return false;
+        }
+        void OnInventoryChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            _canvasManager.RefreshInventory();
         }
     }
 }
