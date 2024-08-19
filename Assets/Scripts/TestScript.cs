@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using TowerDefence;
+using Overworld;
 
 public class TestScript : MonoBehaviour
 {
@@ -32,6 +33,8 @@ public class TestScript : MonoBehaviour
         else if (Input.GetMouseButtonDown(0)) LMB_WasPressed();
         else if (Input.GetMouseButtonDown(1)) RMB_WasPressed();
         else if (Input.GetMouseButtonDown(2)) MMB_WasPressed();
+
+        _Tmesh.text = CanvasManager.CurrentInterface?.GetType().Name;
     }
 
     public void TestMethod()//this is hooked up with the button in the inspector

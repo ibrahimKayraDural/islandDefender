@@ -78,11 +78,13 @@ namespace Overworld
         {
             if (Time.timeScale <= 0) return;
 
+            if (CanvasManager.SomethingIsOpen == false)
+            {
+                if (Input.GetButtonDown("Fire1")) _currentTool?.StartFiring();
+                else if (Input.GetButtonUp("Fire1")) _currentTool?.StopFiring();
 
-            if (Input.GetButtonDown("Fire1")) _currentTool?.StartFiring();
-            else if (Input.GetButtonUp("Fire1")) _currentTool?.StopFiring();
-
-            TryChangeTool(Input.GetAxisRaw("ChangeGun"));
+                TryChangeTool(Input.GetAxisRaw("ChangeGun")); 
+            }
         }
 
         public bool AddTool(GameObject toolPrefab)

@@ -29,7 +29,7 @@ namespace Overworld
             isInstantiated = true;
         }
 
-        public void OnInteracted()
+        public void OnInteracted(GameObject interactor)
         {
             _item = Inventory.Instance.TryAddItemWithSpill(_item);
             if (_item == null) Destroy(gameObject);

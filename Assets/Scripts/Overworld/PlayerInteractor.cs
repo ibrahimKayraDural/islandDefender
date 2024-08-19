@@ -13,6 +13,7 @@ public class PlayerInteractor : MonoBehaviour
     }
     void Update()
     {
+        //if (CanvasManager.SomethingIsOpen) return;
         if (Time.timeScale <= 0) return;
 
         IInteractable currentInteractable = null;
@@ -25,7 +26,7 @@ public class PlayerInteractor : MonoBehaviour
         }
 
         if (Input.GetButtonDown("Interact"))
-        { currentInteractable?.OnInteracted(); }
+        { currentInteractable?.OnInteracted(gameObject); }
 
         _canvasManager.SetInteractionText(currentInteractable == null ? null : currentInteractable.InteractDescription);
     }

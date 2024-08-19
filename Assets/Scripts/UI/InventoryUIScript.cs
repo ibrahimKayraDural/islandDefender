@@ -9,9 +9,9 @@ namespace GameUI
     using UnityEngine.EventSystems;
     using UnityEngine.UI;
 
-    public class InventoryUIScript : MonoBehaviour
+    public class InventoryUIScript : MonoBehaviour, UserInterface
     {
-        public bool IsOpen { get; private set; }
+        public bool IsOpen { get; set; }
 
         [SerializeField] GameObject _Visuals;
         [SerializeField] Transform _InventoryCellParent;
@@ -53,20 +53,19 @@ namespace GameUI
             _DescriptionText.text = targetIsValid ? _currentCell.ItemData.Description : "";
         }
 
-        public void ToggleInventory() => SetInventoryEnablity(!IsOpen);
+        public void ToggleInventory() => SetEnablityGetter(!IsOpen);
 
-        public void SetInventoryEnablity(bool setTo)
+        public void OnEnablityChanged(bool changedTo)
         {
-            if (IsOpen == setTo) return;
-
             RefreshInventory();
-            _Visuals.SetActive(setTo);
+            _Visuals.SetActive(changedTo);
             _DescriptionText.text = "";
-            Time.timeScale = setTo ? 0 : 1;
 
-            if (setTo == false) InventoryQuickMenu.Instance?.Close();
-
-            IsOpen = setTo;
+            if (changedTo == false)
+            {
+                InventoryQuickMenu.Instance?.Close();
+            }
+            else { }
         }
 
         public void RefreshInventory()
@@ -91,6 +90,12 @@ namespace GameUI
 
                 cell.Initialize(item, i);
             }
+        }
+
+        public void SetEnablityGetter(bool setTo)
+        {
+            UserInterface ui = this as UserInterface;
+            ui.SetEnablity(setTo);
         }
     }
 }
