@@ -49,6 +49,12 @@ namespace Overworld
         void Start()
         {
             InitializeToolList();
+            CanvasManager.e_OnCurrentInterfaceChanged += OnCanvasInterfaceChanged;
+        }
+
+        void OnCanvasInterfaceChanged(object sender, UserInterface e)
+        {
+            if (e != null) _currentTool?.StopFiring();
         }
 
         void InitializeToolList()

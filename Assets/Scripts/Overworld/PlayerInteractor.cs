@@ -13,7 +13,7 @@ public class PlayerInteractor : MonoBehaviour
     }
     void Update()
     {
-        //if (CanvasManager.SomethingIsOpen) return;
+        if (CanvasManager.SomethingIsOpen) return;
         if (Time.timeScale <= 0) return;
 
         IInteractable currentInteractable = null;

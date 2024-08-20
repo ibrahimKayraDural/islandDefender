@@ -1,3 +1,4 @@
+using GameUI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,17 +22,29 @@ public class ChestScript : MonoBehaviour, IInteractable
     public void OnInteracted(GameObject interactor)
     {
         _currentInteractor = interactor.transform;
-        SetOpennes(!_isOpen);
-    }
 
-    void SetOpennes(bool setTo)
+        if (_canvasManager.TrySetCurrentChestOfChestUI(this))
+        {
+            SetOpennes(true);
+        }
+    }
+    public void SetOpennes(bool setTo)
     {
+        if (_isOpen == setTo) return;
+
         _isOpen = setTo;
-        _Animator?.SetBool("IsOpen", setTo);
+        _Animator.SetBool("IsOpen", setTo);
         _canvasManager.SetChestUIEnablity(setTo);
 
-        if (setTo) StartCoroutine(nameof(CheckForget));
-        else StopCoroutine(nameof(CheckForget));
+        if (setTo)
+        {
+            StartCoroutine(nameof(CheckForget));
+        }
+        else
+        {
+            StopCoroutine(nameof(CheckForget));
+            _canvasManager.TrySetCurrentChestOfChestUI(null);
+        }
     }
 
     IEnumerator CheckForget()

@@ -8,6 +8,8 @@ using System;
 
 public class CanvasManager : MonoBehaviour
 {
+    public static event EventHandler<UserInterface> e_OnCurrentInterfaceChanged;
+
     public static bool SomethingIsOpen => CurrentInterface != null;
     public static UserInterface CurrentInterface
     {
@@ -17,7 +19,8 @@ public class CanvasManager : MonoBehaviour
             if (AUTO_currentInterface == null) AUTO_currentInterface = value;
             else if (value == null) AUTO_currentInterface = null;
             else return;
-            Instance.OnCurrentInterfaceChanged(AUTO_currentInterface);
+
+            e_OnCurrentInterfaceChanged?.Invoke(Instance, AUTO_currentInterface);
         }
     }
     static UserInterface AUTO_currentInterface = null;
@@ -42,11 +45,6 @@ public class CanvasManager : MonoBehaviour
         SetInventoryEnablity(false);
     }
 
-    void OnCurrentInterfaceChanged(UserInterface changedTo)
-    {
-
-    }
-
     #region Inventory
     public void ToggleInventory()
     {
@@ -60,16 +58,27 @@ public class CanvasManager : MonoBehaviour
     public void RefreshInventory() => _Inventory.RefreshInventory();
     #endregion
 
+    #region Interaction Text
 #nullable enable
+
     public void SetInteractionText(string? text)
     {
+        if (SomethingIsOpen) text = null;
+
         _InteractableHelper.SetHelperText(text == null ? "" : text);
         _InteractableHelper.SetHelperEnablity(text != null);
     }
+
 #nullable disable
+    #endregion
+
+    #region Chest UI
 
     public void SetChestUIEnablity(bool setTo)
     {
         _ChestUI.SetEnablityGetter(setTo);
     }
+    public bool TrySetCurrentChestOfChestUI(ChestScript setTo) => _ChestUI.TrySetCurrentChest(setTo);
+
+    #endregion
 }
