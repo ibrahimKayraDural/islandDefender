@@ -231,16 +231,7 @@ namespace Overworld
             _canvasManager.RefreshInventory();
         }
 
-        bool IsNull(InventoryItem item)
-        {
-            //since c# is a dumbass it initializes the item as null, but
-            //changes it to an unitialized version (which is not null) a frame later.
-            //This causes massive issues but a work-around I found is to check both anyways.
-            //This method does that.
-            if (item == null) return true;
-            else if (item.IsInitialized == false) return true;
-            return false;
-        }
+        bool IsNull(InventoryItem item) => GLOBAL.IsNull(item);
         void OnInventoryChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             _canvasManager.RefreshInventory();

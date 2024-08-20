@@ -9,7 +9,7 @@ namespace GameUI
     using UnityEngine.EventSystems;
     using UnityEngine.UI;
 
-    public class InventoryUIScript : MonoBehaviour, UserInterface
+    public class InventoryUIScript : MonoBehaviour, UserInterface, GridUI
     {
         public bool IsOpen { get; set; }
 
@@ -54,6 +54,7 @@ namespace GameUI
         }
 
         public void ToggleInventory() => SetEnablityGetter(!IsOpen);
+        public void RefreshInventory() => (this as GridUI).RefreshInventory(Inventory.Instance.Items.ToArray(), _InventoryCellParent, _CellPrefab);
 
         public void OnEnablityChanged(bool changedTo)
         {
@@ -68,34 +69,6 @@ namespace GameUI
             else { }
         }
 
-        public void RefreshInventory()
-        {
-            List<InventoryItem> items = Inventory.Instance.Items;
-
-            List<Transform> temp = _InventoryCellParent.Cast<Transform>().ToList();
-            foreach (var item in temp)
-            {
-                Destroy(item.gameObject);
-            }
-
-            for (int i = 0; i < items.Count; i++)
-            {
-                InventoryItem item = items[i];
-
-                //Create empty cell
-                InventoryCellScript cell = Instantiate(_CellPrefab, _InventoryCellParent).GetComponent<InventoryCellScript>();
-
-                //Return if there is no data to fill the cell
-                if (item == null) continue;
-
-                cell.Initialize(item, i);
-            }
-        }
-
-        public void SetEnablityGetter(bool setTo)
-        {
-            UserInterface ui = this as UserInterface;
-            ui.SetEnablity(setTo);
-        }
+        public void SetEnablityGetter(bool setTo) => (this as UserInterface).SetEnablity(setTo);
     }
 }

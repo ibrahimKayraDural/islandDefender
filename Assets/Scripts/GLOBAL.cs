@@ -37,6 +37,17 @@ public static class GLOBAL
 
     //-------------------------^
 
+    public static bool IsNull(InventoryItem item)
+    {
+        //since c# is a dumbass it initializes the item as null, but
+        //changes it to an unitialized version (which is not null) a frame later.
+        //This causes massive issues but a work-around I found is to check both anyways.
+        //This method does that.
+        if (item == null) return true;
+        else if (item.IsInitialized == false) return true;
+        return false;
+    }
+
     static TurretDatabase _turretDB = null;
     public static TurretDatabase GetTurretDatabase()
     {

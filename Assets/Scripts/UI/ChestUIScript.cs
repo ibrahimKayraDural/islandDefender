@@ -3,14 +3,17 @@ namespace GameUI
     using Overworld;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
     using UnityEngine;
 
-    public class ChestUIScript : MonoBehaviour, UserInterface
+    public class ChestUIScript : MonoBehaviour, UserInterface, GridUI
     {
         public ChestScript CurrentChest { get; private set; } = null;
         public bool IsOpen { get; set; }
 
         [SerializeField] GameObject _VisualParent;
+        [SerializeField] Transform _CellParent;
+        [SerializeField] GameObject _CellPrefab;
 
         List<KeyCode> ChestCloseKeys = new List<KeyCode>() {
             KeyCode.Escape
@@ -39,19 +42,19 @@ namespace GameUI
         {
             yield return new WaitForSeconds(.1f);
 
-            while(true)
+            while (true)
             {
                 yield return null;
 
                 foreach (var key in ChestCloseKeys)
                 {
-                    if(Input.GetKeyDown(key))
+                    if (Input.GetKeyDown(key))
                     {
                         CurrentChest.SetOpennes(false);
                         goto EndIEnum;
                     }
                 }
-                if(Input.GetButtonDown("Interact"))
+                if (Input.GetButtonDown("Interact"))
                 {
                     CurrentChest.SetOpennes(false);
                     goto EndIEnum;
@@ -60,17 +63,18 @@ namespace GameUI
 
         EndIEnum:;
         }
-
         public void OnEnablityChanged(bool changedTo)
         {
             _VisualParent.SetActive(changedTo);
+
+            if(changedTo == true)
+            {
+                if (CurrentChest == null) Debug.LogError("Can not refresh Chest UI");
+                else (this as GridUI).RefreshInventory(CurrentChest.Slots.ToArray(), _CellParent, _CellPrefab);
+            }
         }
 
-        public void SetEnablityGetter(bool setTo)
-        {
-            UserInterface ui = this as UserInterface;
-            ui.SetEnablity(setTo);
-        }
+        public void SetEnablityGetter(bool setTo) => (this as UserInterface).SetEnablity(setTo);
+
     }
-
 }

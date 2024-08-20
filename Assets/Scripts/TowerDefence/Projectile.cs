@@ -10,6 +10,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] float _LifeTime = 10f;
     [SerializeField] GameObject HitSfx;
     [SerializeField] string[] IgnoreTags = new string[0];
+    [SerializeField] bool _IgnoreTriggers = true;
 
     bool _isInitialized;
     bool _breakUpdate;
@@ -64,6 +65,8 @@ public class Projectile : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if (_IgnoreTriggers && other.isTrigger) return;
+
         foreach (var tag in IgnoreTags)
         {
             if (other.gameObject.tag == tag) return;

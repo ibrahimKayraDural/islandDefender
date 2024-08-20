@@ -28,7 +28,7 @@ public class CanvasManager : MonoBehaviour
     public static CanvasManager Instance { get; private set; }
 
     [SerializeField] Canvas _MainCanvas;
-    [SerializeField] InventoryUIScript _Inventory;
+    [SerializeField] InventoryUIScript _InventoryUI;
     [SerializeField] ChestUIScript _ChestUI;
     [SerializeField] InteractableHelperUI _InteractableHelper;
 
@@ -48,14 +48,14 @@ public class CanvasManager : MonoBehaviour
     #region Inventory
     public void ToggleInventory()
     {
-        _Inventory.ToggleInventory();
+        _InventoryUI.ToggleInventory();
     }
 
     public void SetInventoryEnablity(bool setTo)
     {
-        _Inventory.SetEnablityGetter(setTo);
+        _InventoryUI.SetEnablityGetter(setTo);
     }
-    public void RefreshInventory() => _Inventory.RefreshInventory();
+    public void RefreshInventory() => _InventoryUI.RefreshInventory();
     #endregion
 
     #region Interaction Text

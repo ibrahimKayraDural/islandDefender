@@ -1,15 +1,19 @@
-using GameUI;
+using Overworld;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ChestScript : MonoBehaviour, IInteractable
 {
+    public List<InventoryItem> Slots => _slots;
+
     public string InteractDescription { get => "Open Chest"; set { } }
 
-    [SerializeField] Animator _Animator;
+    [SerializeField, Min(1)] int _Capacity = 14;
     [SerializeField] float _ForgetDistance = 1;
+    [SerializeField] Animator _Animator;
 
+    List<InventoryItem> _slots;
     bool _isOpen = false;
     CanvasManager _canvasManager;
     Transform _currentInteractor = null;
@@ -17,6 +21,8 @@ public class ChestScript : MonoBehaviour, IInteractable
     void Start()
     {
         _canvasManager = CanvasManager.Instance;
+
+        _slots = new List<InventoryItem>(new InventoryItem[_Capacity]);
     }
 
     public void OnInteracted(GameObject interactor)
@@ -52,7 +58,7 @@ public class ChestScript : MonoBehaviour, IInteractable
         Vector3 pos = transform.position;
         while (true)
         {
-            if(Vector3.Distance(_currentInteractor.position, pos) >= _ForgetDistance)
+            if (Vector3.Distance(_currentInteractor.position, pos) >= _ForgetDistance)
             {
                 _currentInteractor = null;
                 SetOpennes(false);
@@ -60,4 +66,5 @@ public class ChestScript : MonoBehaviour, IInteractable
             yield return new WaitForSeconds(.1f);
         }
     }
+    bool IsNull(InventoryItem item) => GLOBAL.IsNull(item);
 }
