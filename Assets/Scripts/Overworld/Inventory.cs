@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Overworld
 {
-    public class Inventory : MonoBehaviour
+    public class Inventory : MonoBehaviour, IContainer<InventoryItem>
     {
         public static Inventory Instance = null;
 
@@ -46,7 +46,6 @@ namespace Overworld
         [SerializeField, Min(0)] int _slotCount = 5;
 
         ObservableCollection<InventoryItem> _slots;
-
         CanvasManager _canvasManager;
 
         void Awake()
@@ -57,7 +56,7 @@ namespace Overworld
         void Start()
         {
             _canvasManager = CanvasManager.Instance;
-            _slots = new ObservableCollection<InventoryItem>(new InventoryItem[SlotCount]);
+            Clean();
             _slots.CollectionChanged += OnInventoryChanged;
         }
 
@@ -82,7 +81,17 @@ namespace Overworld
             if (Input.GetKeyDown(KeyCode.K))
                 _slots[_slots.Count - 1] = null;
             if (Input.GetKeyDown(KeyCode.Alpha2))
-                _slots[2] = null;
+                RemoveAtIndex(1);
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+                DropItemAtIndex(3, transform.position);
+            if (Input.GetKeyDown(KeyCode.C))
+                Clean();
+            if (Input.GetKeyDown(KeyCode.J))
+            {
+                ResourceData datdat = GLOBAL.GetResourceDatabase().GetDataByID("resource-iron");
+                InventoryItem itemm = datdat.AsItem(15);
+                TryAddItemFully(itemm);
+            }
         }
 
         public int CheckItemCount(InventoryItem itemToCheck)
@@ -234,6 +243,47 @@ namespace Overworld
         bool IsNull(InventoryItem item) => GLOBAL.IsNull(item);
         void OnInventoryChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
+            _canvasManager.RefreshInventory();
+        }
+
+        public int CheckEmptySpaceFor(InventoryItem item)
+        {
+            int count = 0;
+            foreach (var slot in _slots)
+            {
+                if(IsNull(slot))
+                {
+                    count += item.MaxItemCount;
+                }
+                else if (slot.Compare(item))
+                {
+                    count += slot.MaxItemCount - slot.Count;
+                }
+            }
+            return count;
+        }
+        public bool TryAddItemFully(InventoryItem item)
+        {
+            if (CheckEmptySpaceFor(item) < item.Count) return false;
+
+            TryAddItemWithSpill(item);
+            _canvasManager?.RefreshInventory();
+            return true;
+        }
+        public void Clean()
+        {
+            _slots = new ObservableCollection<InventoryItem>(new InventoryItem[SlotCount]);
+
+            _canvasManager.RefreshInventory();
+        }
+        public InventoryItem AddWithSpill(InventoryItem item) => TryAddItemWithSpill(item);
+        public void RemoveAtIndex(int index) => SetItemAtIndex(index, null);
+        public void SetItemAtIndex(int index, InventoryItem setTo)
+        {
+            if (index < 0 || index >= _slots.Count) return;
+
+            _slots[index] = setTo;
+
             _canvasManager.RefreshInventory();
         }
     }

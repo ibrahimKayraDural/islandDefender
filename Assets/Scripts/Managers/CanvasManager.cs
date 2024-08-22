@@ -8,10 +8,10 @@ using System;
 
 public class CanvasManager : MonoBehaviour
 {
-    public static event EventHandler<UserInterface> e_OnCurrentInterfaceChanged;
+    public static event EventHandler<IUserInterface> e_OnCurrentInterfaceChanged;
 
     public static bool SomethingIsOpen => CurrentInterface != null;
-    public static UserInterface CurrentInterface
+    public static IUserInterface CurrentInterface
     {
         get => AUTO_currentInterface;
         set
@@ -23,7 +23,7 @@ public class CanvasManager : MonoBehaviour
             e_OnCurrentInterfaceChanged?.Invoke(Instance, AUTO_currentInterface);
         }
     }
-    static UserInterface AUTO_currentInterface = null;
+    static IUserInterface AUTO_currentInterface = null;
 
     public static CanvasManager Instance { get; private set; }
 

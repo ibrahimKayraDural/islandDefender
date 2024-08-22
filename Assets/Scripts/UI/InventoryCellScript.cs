@@ -4,9 +4,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Overworld;
+using GameUI;
 
 public class InventoryCellScript : MonoBehaviour
 {
+    public string ID => _id;
+    public IGridUI Owner => _owner;
     public bool IsInitialized => _isInitialized;
     public int CellIndex = -1;
     public InventoryItem ItemData => _item;
@@ -20,14 +23,18 @@ public class InventoryCellScript : MonoBehaviour
     bool _isHighlighted = false;
     bool _isInitialized = false;
     float _defaultBGAlpha = 0;
+    IGridUI _owner = null;
+    string _id = GLOBAL.UnassignedString;
 
-    public void Initialize(InventoryItem item, int i)
+    public void Initialize(InventoryItem item, int i, IGridUI owner, string id = "")
     {
         _item = item;
         _ItemImage.sprite = item.UISprite;
         _CountTM.text = item.Count.ToString();
         CellIndex = i;
         _defaultBGAlpha = _BackgroundImage.color.a;
+        _owner = owner;
+        if (id != "") _id = id;
         _isInitialized = true;
     }
 

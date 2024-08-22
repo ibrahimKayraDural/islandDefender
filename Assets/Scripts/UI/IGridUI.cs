@@ -5,9 +5,9 @@ namespace GameUI
     using System.Linq;
     using UnityEngine;
 
-    public interface GridUI
+    public interface IGridUI
     {
-        public void RefreshGrid(InventoryItem[] items, Transform cellParent, GameObject cellPrefab)
+        public void RefreshGrid(InventoryItem[] items, Transform cellParent, GameObject cellPrefab, string id = "")
         {
 
             List<Transform> temp = cellParent.Cast<Transform>().ToList();
@@ -26,7 +26,7 @@ namespace GameUI
                 //Return if there is no data to fill the cell
                 if (item == null) continue;
 
-                cell.Initialize(item, i);
+                cell.Initialize(item, i, this, id);
             }
         }
     }

@@ -9,7 +9,7 @@ namespace GameUI
     using UnityEngine;
     using UnityEngine.EventSystems;
 
-    public class ChestUIScript : MonoBehaviour, UserInterface, GridUI
+    public class ChestUIScript : MonoBehaviour, IUserInterface, IGridUI
     {
         public ChestScript CurrentChest { get; private set; } = null;
         public bool IsOpen { get; set; }
@@ -23,13 +23,18 @@ namespace GameUI
         [SerializeField] TextMeshProUGUI _DescriptionText;
 
         List<KeyCode> ChestCloseKeys = new List<KeyCode>() {
-            KeyCode.Escape
+            KeyCode.I
         };
         InventoryCellScript _oldCell;
+        Inventory _inventory;
 
         void Awake()
         {
             _GraphicRaycaster.RunOnUpdate = false;
+        }
+        void Start()
+        {
+            _inventory = Inventory.Instance;
         }
 
         public bool TrySetCurrentChest(ChestScript setTo)
@@ -75,7 +80,7 @@ namespace GameUI
                         goto InputEND;
                     }
                 }
-                if (Input.GetButtonDown("Interact"))
+                if (Input.GetButtonDown("Interact") || Input.GetButtonDown("Exit"))
                 {
                     CurrentChest.SetOpennes(false);
                     goto InputEND;
@@ -94,7 +99,7 @@ namespace GameUI
 
                 if(_oldCell != currentCell)
                 {
-                    _oldCell?.SetHighlight(false);
+                    if (_oldCell != null) _oldCell.SetHighlight(false);
                     if (targetIsValid) currentCell.SetHighlight(true);
                 }
 
@@ -107,15 +112,28 @@ namespace GameUI
             //Update is the inside of the loop above.
             //Code below will run once after the update loop has ended.
 
-            currentCell?.SetHighlight(false);
-            _oldCell?.SetHighlight(false);
+            if (currentCell != null) currentCell.SetHighlight(false);
+            if (_oldCell != null) _oldCell.SetHighlight(false);
 
             _breakChestUpdate = false;
         }
 
         void SwapCell(InventoryCellScript cell)
         {
-            Debug.Log("swapping "+cell.ItemData.DisplayName);
+            if (cell == null || cell.IsInitialized == false) return;
+            if (CurrentChest == null) return;
+            if (_inventory == null) return;
+
+            bool isChest = cell.ID == "chest-cell";
+            IContainer<InventoryItem> from = isChest ? CurrentChest : _inventory;
+            IContainer<InventoryItem> to = isChest ? _inventory : CurrentChest;
+
+            InventoryItem item = cell.ItemData;
+
+            InventoryItem remainingItem = to.AddWithSpill(item);
+            from.SetItemAtIndex(cell.CellIndex, remainingItem);
+            
+            RefreshGrids();
         }
 
         public void OnEnablityChanged(bool changedTo)
@@ -131,14 +149,14 @@ namespace GameUI
         void RefreshGrids()
         {
             if (CurrentChest == null) Debug.LogError("Can not refresh Chest UI");
-            else (this as GridUI).RefreshGrid(CurrentChest.Slots.ToArray(), _ChestCellParent, _CellPrefab);
+            else (this as IGridUI).RefreshGrid(CurrentChest.Items.ToArray(), _ChestCellParent, _CellPrefab, "chest-cell");
 
             InventoryItem[] items = Inventory.Instance.Items.ToArray();
             if (items == null) Debug.LogError("Can not refresh Inventory UI (ChestUIScript)");
-            else (this as GridUI).RefreshGrid(items, _InventoryCellParent, _CellPrefab);
+            else (this as IGridUI).RefreshGrid(items, _InventoryCellParent, _CellPrefab, "inventory-cell");
         }
 
-        public void SetEnablityGetter(bool setTo) => (this as UserInterface).SetEnablity(setTo);
+        public void SetEnablityGetter(bool setTo) => (this as IUserInterface).SetEnablity(setTo);
 
     }
 }

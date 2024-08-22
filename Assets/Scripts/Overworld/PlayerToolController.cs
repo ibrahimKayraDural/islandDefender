@@ -52,7 +52,7 @@ namespace Overworld
             CanvasManager.e_OnCurrentInterfaceChanged += OnCanvasInterfaceChanged;
         }
 
-        void OnCanvasInterfaceChanged(object sender, UserInterface e)
+        void OnCanvasInterfaceChanged(object sender, IUserInterface e)
         {
             if (e != null) _currentTool?.StopFiring();
         }

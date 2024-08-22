@@ -9,7 +9,7 @@ namespace GameUI
     using UnityEngine.EventSystems;
     using UnityEngine.UI;
 
-    public class InventoryUIScript : MonoBehaviour, UserInterface, GridUI
+    public class InventoryUIScript : MonoBehaviour, IUserInterface, IGridUI
     {
         public bool IsOpen { get; set; }
 
@@ -52,7 +52,12 @@ namespace GameUI
                     iqm.Initialize(_currentCell, _GraphicRaycaster); 
                 }
             }
-        //RightClickHandleEND:;
+            //RightClickHandleEND:;
+
+            if(Input.GetButtonDown("Exit"))
+            {
+                SetEnablityGetter(false);
+            }
 
         }
 
@@ -96,7 +101,7 @@ namespace GameUI
         }
 
         public void ToggleInventory() => SetEnablityGetter(!IsOpen);
-        public void RefreshInventory() => (this as GridUI).RefreshGrid(Inventory.Instance.Items.ToArray(), _InventoryCellParent, _CellPrefab);
+        public void RefreshInventory() => (this as IGridUI).RefreshGrid(Inventory.Instance.Items.ToArray(), _InventoryCellParent, _CellPrefab);
 
         public void OnEnablityChanged(bool changedTo)
         {
@@ -113,6 +118,6 @@ namespace GameUI
             else { }
         }
 
-        public void SetEnablityGetter(bool setTo) => (this as UserInterface).SetEnablity(setTo);
+        public void SetEnablityGetter(bool setTo) => (this as IUserInterface).SetEnablity(setTo);
     }
 }

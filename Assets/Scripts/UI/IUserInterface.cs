@@ -1,10 +1,10 @@
 
-public interface UserInterface
+public interface IUserInterface
 {
     public bool IsOpen { get; set; }
     void SetEnablity(bool setTo)
     {
-        UserInterface ui = CanvasManager.CurrentInterface;
+        IUserInterface ui = CanvasManager.CurrentInterface;
 
         if (IsOpen == setTo) return;
         if (ui != null && ui != this) return;
