@@ -7,7 +7,7 @@ namespace GameUI
 
     public interface GridUI
     {
-        public void RefreshInventory(InventoryItem[] items, Transform cellParent, GameObject cellPrefab)
+        public void RefreshGrid(InventoryItem[] items, Transform cellParent, GameObject cellPrefab)
         {
 
             List<Transform> temp = cellParent.Cast<Transform>().ToList();

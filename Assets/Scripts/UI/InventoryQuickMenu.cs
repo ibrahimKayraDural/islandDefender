@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 
 public class InventoryQuickMenu : MonoBehaviour
 {
+    public static bool IsOpen => Instance != null;
     public static InventoryQuickMenu Instance = null;
 
     [SerializeField] TextMeshProUGUI _TitleTM;
