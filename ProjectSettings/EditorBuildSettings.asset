@@ -4,5 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Clean/PersistentPlayer.unity
+    guid: 050f2dd7a063b484f961bb001afa082e
+  - enabled: 1
+    path: Assets/Scenes/Clean/LoadingScene.unity
+    guid: 44f4e4205ce8d174aaa09107d26d0068
+  - enabled: 1
+    path: Assets/Scenes/OverworldTest.unity
+    guid: 5072b1770083f6a41b72bdda2075de8b
   m_configObjects: {}

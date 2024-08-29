@@ -345,6 +345,7 @@ GameObject:
   - component: {fileID: 6961616835264164479}
   - component: {fileID: 8785126028115196852}
   - component: {fileID: 4612471665001557244}
+  - component: {fileID: 9024093362210090674}
   - component: {fileID: 6147596811841315391}
   m_Layer: 0
   m_Name: overworldPlayer
@@ -420,7 +421,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _slotCount: 5
-  _DebugText: {fileID: 0}
+--- !u!114 &9024093362210090674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2253588649053394883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7ca8bd93b618ef43862c3e2bfcf2b77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!54 &6147596811841315391
 Rigidbody:
   m_ObjectHideFlags: 0
