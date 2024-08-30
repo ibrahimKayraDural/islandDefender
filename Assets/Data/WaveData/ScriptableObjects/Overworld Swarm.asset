@@ -25,11 +25,11 @@ MonoBehaviour:
         Count: 1
   - Lanes:
     - Enemies:
-      - Enemy: {fileID: 11400000, guid: c17b7fcb5eb53d34b9cd4601d897cb28, type: 2}
+      - Enemy: {fileID: 11400000, guid: 7c277445233fa32478b7653998c894f7, type: 2}
         Count: 1
   - Lanes:
     - Enemies:
-      - Enemy: {fileID: 11400000, guid: c17b7fcb5eb53d34b9cd4601d897cb28, type: 2}
+      - Enemy: {fileID: 11400000, guid: 7c277445233fa32478b7653998c894f7, type: 2}
         Count: 1
   DefaultEnemyCooldowns:
   - 1

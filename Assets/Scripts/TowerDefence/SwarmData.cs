@@ -77,9 +77,12 @@ namespace TowerDefence
             for (int i = 0; i < diff; i++) DefaultWaveCooldowns.Add(DefaultWaveCooldowns[DefaultWaveCooldowns.Count - 1]);
             DefaultWaveCooldowns = DefaultWaveCooldowns.GetRange(0, waveCount);
 
+
+#if UNITY_EDITOR
             UnityEditor.EditorUtility.SetDirty(this);
             UnityEditor.AssetDatabase.SaveAssets();
             UnityEditor.AssetDatabase.Refresh();
+#endif
 
             if (invokeEvent) e_ValuesHaveChanged?.Invoke(this, AsValue);
         }

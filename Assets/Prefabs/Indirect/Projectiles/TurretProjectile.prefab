@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5472559133796007230}
   - component: {fileID: 1570863667961122989}
   m_Layer: 8
-  m_Name: Projectile
+  m_Name: TurretProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -54,6 +54,7 @@ MonoBehaviour:
   HitSfx: {fileID: 739595196568915160, guid: 0cc49c091004bff4da6016cef73e79a4, type: 3}
   IgnoreTags:
   - Turret
+  _IgnoreTriggers: 0
 --- !u!33 &37545966810398415
 MeshFilter:
   m_ObjectHideFlags: 0
