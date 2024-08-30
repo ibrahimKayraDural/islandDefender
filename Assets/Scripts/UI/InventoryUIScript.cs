@@ -49,7 +49,7 @@ namespace GameUI
                     InventoryQuickMenu iqm = Instantiate(_QuickMenuPrefab, Input.mousePosition, Quaternion.identity, _Visuals.transform)
                                 .GetComponent<InventoryQuickMenu>();
 
-                    iqm.Initialize(_currentCell, _GraphicRaycaster); 
+                    iqm.Initialize(_currentCell, _GraphicRaycaster);
                 }
             }
             //RightClickHandleEND:;
