@@ -206,21 +206,34 @@ void OnGUI()
                 {
                     enemyCount = 1;
                     string enemyID = HandleOption(CommaSeperation);
+                    EnemyData eData = null;
 
-                    EnemyData eData = enemyDB.GetDataByID(enemyID);
-                    if (eData == null)
+                    bool isWildCard = enemyID.StartsWith("wc-");
+
+                    if (isWildCard == false)
                     {
-                        Debug.LogError(CommaSeperation + " is not an enemy");
-                        continue;
+                        eData = enemyDB.GetDataByID(enemyID);
+                        if (eData == null)
+                        {
+                            Debug.LogError(CommaSeperation + " is not an enemy");
+                            continue;
+                        }
                     }
 
                     S_LaneGroup lGroup = new S_LaneGroup();
+                    if (isWildCard)
+                    {
+                        string[] messages = enemyID.Split("-");
+                        S_EnemyWithCount ewc = new S_EnemyWithCount(messages[1], messages[2], enemyCount);
 
-                    S_EnemyWithCount ewc = new S_EnemyWithCount();
-                    ewc.Count = enemyCount;
-                    ewc.Enemy = eData;
+                        lGroup.Enemies = new List<S_EnemyWithCount>() { ewc }; 
+                    }
+                    else
+                    {
+                        S_EnemyWithCount ewc = new S_EnemyWithCount(eData, enemyCount);
 
-                    lGroup.Enemies = new List<S_EnemyWithCount>() { ewc };
+                        lGroup.Enemies = new List<S_EnemyWithCount>() { ewc };
+                    }
 
                     currWave.Lanes.Add(lGroup);
                 }
@@ -358,19 +371,9 @@ void OnGUI()
                     break;
 
                 case "difficulty":
-                    EnemyData data = enemyDB.GetRandomEnemyByDifficulty(GLOBAL.EnemyDifficultyIDs[valueStr]);
-                    if (data != null) return data.ID;
-                    break;
-
                 case "range":
-                    data = enemyDB.GetRandomEnemyByRange(GLOBAL.EnemyRangeIDs[valueStr]);
-                    if (data != null) return data.ID;
-                    break;
-
                 case "type":
-                    data = enemyDB.GetRandomEnemyByEnemyType(GLOBAL.EnemyTypeIDs[valueStr]);
-                    if (data != null) return data.ID;
-                    break;
+                    return $"wc-{message}-{valueStr}";
 
                 default:
                     Debug.Log(message + " is not defined");

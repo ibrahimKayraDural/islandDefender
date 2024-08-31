@@ -128,13 +128,63 @@ namespace TowerDefence
 
     [System.Serializable] public struct S_EnemyWithCount
     {
-        public EnemyData Enemy;
+        public EnemyData Enemy
+        {
+            get
+            {
+                if (_isWildCard) LockEnemyData();
+
+                return _enemy;
+            }
+        }
+
         public int Count;
 
+        EnemyData _enemy;
+        bool _isWildCard;
+        string _wildCardID;
+        string _wildCardValue;
+
+        /// <summary>
+        /// Create this as an enemy
+        /// </summary>
         public S_EnemyWithCount(EnemyData enemyData, int count)
         {
-            Enemy = enemyData;
+            _enemy = enemyData;
             Count = count;
+
+            _isWildCard = false;
+            _wildCardID = GLOBAL.UnassignedString;
+            _wildCardValue = GLOBAL.UnassignedString;
+        }
+
+        /// <summary>
+        /// Create this as a wildcard
+        /// </summary>
+        public S_EnemyWithCount(string wildCardID, string wildCardValue, int count)
+        {
+            _isWildCard = true;
+            _wildCardID = wildCardID;
+            _wildCardValue = wildCardValue;
+            Count = count;
+
+            _enemy = null;
+        }
+
+        void LockEnemyData()
+        {
+            EnemyData data = EnemyData.HandleWildCard(_wildCardID, _wildCardValue);
+
+            if (data == null)
+            {
+                Debug.LogError("Wild card is not valid");
+                return;
+            }
+            _enemy = data;
+
+            _isWildCard = false;
+            _wildCardID = GLOBAL.UnassignedString;
+            _wildCardValue = GLOBAL.UnassignedString;
         }
     }
 }

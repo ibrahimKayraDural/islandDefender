@@ -48,8 +48,10 @@ namespace TowerDefence
             SwarmDatabase sdb = GLOBAL.GetSwarmDatabase();
 
             SwarmData sd = sdb.DataList[0] as SwarmData;
-            sd = ScriptableObject.Instantiate(sd);
-            CurrentSwarm = sd.AsValue;
+            SwarmData temp = ScriptableObject.CreateInstance<SwarmData>();
+            temp.SetSwarmValues(sd.AsValue, false);
+
+            CurrentSwarm = temp.AsValue;
             CurrentSwarm.e_ValuesHaveChanged += OnCurrentSwarmValuesHaveChanged;
 
             e_ActiveEnemiesListIsEmptied += OnWaveEnded;
@@ -100,9 +102,7 @@ namespace TowerDefence
 
         IEnumerator WaveCoroutine()
         {
-
             List<KeyValuePair<S_EnemyWithCount, int>> enemiesWithLanes = new List<KeyValuePair<S_EnemyWithCount, int>>();
-
 
             //instantiating wave data
             List<int> laneIndexes = new List<int>();

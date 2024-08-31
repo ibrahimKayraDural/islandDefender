@@ -28,6 +28,26 @@ namespace TowerDefence
         [SerializeField] List<EnemyType> _EnemyTypes = new List<EnemyType>() { EnemyType.None };
         [SerializeField] AudioClip _AttackSFX;
         [SerializeField] GameObject _enemyPrefab;
+
+        public static EnemyData HandleWildCard(string wildCardID, string wildCardValue)
+        {
+            EnemyDatabase enemyDB = GLOBAL.GetEnemyDatabase();
+            if (enemyDB == null) return null;
+
+            switch (wildCardID)
+            {
+                case "difficulty":
+                    return enemyDB.GetRandomEnemyByDifficulty(GLOBAL.EnemyDifficultyIDs[wildCardValue]);
+
+                case "range":
+                    return enemyDB.GetRandomEnemyByRange(GLOBAL.EnemyRangeIDs[wildCardValue]);
+
+                case "type":
+                    return enemyDB.GetRandomEnemyByEnemyType(GLOBAL.EnemyTypeIDs[wildCardValue]);
+
+                default: return null;
+            }
+        }
     } 
 
     // -- IMPORTANT, WHEN ADDING NEW VALUES: --
