@@ -13,6 +13,7 @@ public class TestScript : MonoBehaviour
     [SerializeField] TextMeshProUGUI _Tmesh;
     [SerializeField] Image _Img;
     [SerializeField] bool _ShowDebugLogs;
+    [SerializeField] S_EnemyWithCount test;
 
     void Awake()
     {

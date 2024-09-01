@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using UnityEditor;
 
 namespace TowerDefence
 {
@@ -140,10 +141,10 @@ namespace TowerDefence
 
         public int Count;
 
-        EnemyData _enemy;
-        bool _isWildCard;
-        string _wildCardID;
-        string _wildCardValue;
+        [SerializeField] EnemyData _enemy;
+        [SerializeField] bool _isWildCard;
+        [SerializeField] string _wildCardID;
+        [SerializeField] string _wildCardValue;
 
         /// <summary>
         /// Create this as an enemy
@@ -156,6 +157,10 @@ namespace TowerDefence
             _isWildCard = false;
             _wildCardID = GLOBAL.UnassignedString;
             _wildCardValue = GLOBAL.UnassignedString;
+
+//#if UNITY_EDITOR
+//            EditorUtility.SetDirty(_enemy);
+//#endif
         }
 
         /// <summary>

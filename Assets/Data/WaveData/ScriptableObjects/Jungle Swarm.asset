@@ -18,21 +18,49 @@ MonoBehaviour:
   - Lanes:
     - Enemies:
       - Count: 1
+        _enemy: {fileID: 0}
+        _isWildCard: 1
+        _wildCardID: range
+        _wildCardValue: melee
     - Enemies:
       - Count: 1
+        _enemy: {fileID: 0}
+        _isWildCard: 1
+        _wildCardID: range
+        _wildCardValue: melee
     - Enemies:
       - Count: 1
+        _enemy: {fileID: 0}
+        _isWildCard: 1
+        _wildCardID: range
+        _wildCardValue: melee
   - Lanes:
     - Enemies:
       - Count: 1
+        _enemy: {fileID: 0}
+        _isWildCard: 1
+        _wildCardID: type
+        _wildCardValue: fast
     - Enemies:
       - Count: 1
+        _enemy: {fileID: 0}
+        _isWildCard: 1
+        _wildCardID: type
+        _wildCardValue: fast
   - Lanes:
     - Enemies:
       - Count: 1
+        _enemy: {fileID: 0}
+        _isWildCard: 1
+        _wildCardID: type
+        _wildCardValue: fast
   - Lanes:
     - Enemies:
       - Count: 1
+        _enemy: {fileID: 0}
+        _isWildCard: 1
+        _wildCardID: type
+        _wildCardValue: fast
   DefaultEnemyCooldowns:
   - 20
   - 21

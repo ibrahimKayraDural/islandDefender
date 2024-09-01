@@ -181,8 +181,8 @@ void OnGUI()
 
         foreach (var NameSeperation in WaveDataList)
         {
-            SwarmData swarmData = ScriptableObject.CreateInstance<SwarmData>();
-            swarmData.Waves = new List<S_Wave>();
+            SwarmDataValueContainer swarmDataVC = new SwarmDataValueContainer();
+            swarmDataVC.Waves = new List<S_Wave>();
 
             targetEnemyCooldowns = defaultEnemyCooldowns;
             targetWaveCooldowns = defaultWaveCooldowns;
@@ -238,13 +238,16 @@ void OnGUI()
                     currWave.Lanes.Add(lGroup);
                 }
 
-                swarmData.Waves.Add(currWave);
+                swarmDataVC.Waves.Add(currWave);
             }
 
             if (isInfo) continue;
 
             string fullPath = ASSET_PATH + sdName + SCOBJ_ASSET_EXTENTION;
 
+            SwarmData swarmData = ScriptableObject.CreateInstance<SwarmData>();
+            EditorUtility.SetDirty(swarmData);
+            swarmData.SetSwarmValues(swarmDataVC, false);
             swarmData.SetNameAndID(sdName);
             swarmData.DefaultEnemyCooldowns = targetEnemyCooldowns;
             swarmData.DefaultWaveCooldowns = targetWaveCooldowns;
@@ -253,6 +256,8 @@ void OnGUI()
 
             EditorUtility.SetDirty(swarmDB);//changes will not be saved if this is not set dirty
             swarmDB.DataListAccess.Add(AssetDatabase.LoadAssetAtPath<SwarmData>(fullPath));
+
+
         }
 
         AssetDatabase.SaveAssets();
