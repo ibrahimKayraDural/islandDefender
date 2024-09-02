@@ -30,6 +30,7 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] Canvas _MainCanvas;
     [SerializeField] InventoryUIScript _InventoryUI;
     [SerializeField] ChestUIScript _ChestUI;
+    [SerializeField] ToolRackUI _ToolRackUI;
     [SerializeField] InteractableHelperUI _InteractableHelper;
 
     private void Awake()
@@ -64,6 +65,7 @@ public class CanvasManager : MonoBehaviour
     public void SetInteractionText(string? text)
     {
         if (SomethingIsOpen) text = null;
+        if (text != null && (text == GLOBAL.UnassignedString || text == "")) text = null; 
 
         _InteractableHelper.SetHelperText(text == null ? "" : text);
         _InteractableHelper.SetHelperEnablity(text != null);
@@ -80,5 +82,15 @@ public class CanvasManager : MonoBehaviour
     }
     public bool TrySetCurrentChestOfChestUI(ChestScript setTo) => _ChestUI.TrySetCurrentChest(setTo);
 
+    #endregion
+
+    #region Tool Rack UI
+
+    public void SetToolRackUIEnablity(bool setTo)
+    {
+        _ToolRackUI.SetEnablityGetter(setTo);
+    }
+
+    public bool TrySetCurrentRackOfToolRackUI(ToolRack setTo) => _ToolRackUI.TrySetCurrentRack(setTo);
     #endregion
 }

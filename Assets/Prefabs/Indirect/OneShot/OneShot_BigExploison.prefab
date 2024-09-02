@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 888882446908721470}
   - component: {fileID: 1785450916016651603}
   m_Layer: 0
-  m_Name: OnShot_BigExploison
+  m_Name: OneShot_BigExploison
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

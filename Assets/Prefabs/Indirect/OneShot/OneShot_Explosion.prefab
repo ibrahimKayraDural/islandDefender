@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 888882446908721470}
   - component: {fileID: 1785450916016651603}
   m_Layer: 0
-  m_Name: OnShotNULL
+  m_Name: OneShot_Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142,4 +142,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _asour: {fileID: 888882446908721470}
-  _clip: {fileID: 0}
+  _clip: {fileID: 8300000, guid: fd68a36b039223549a9e8601ed3d3bf1, type: 3}

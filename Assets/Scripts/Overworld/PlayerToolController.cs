@@ -7,7 +7,6 @@ namespace Overworld
     public class PlayerToolController : MonoBehaviour
     {
         [SerializeField] Transform _ToolPoint;
-        [SerializeField] List<Tool> _Tools = new List<Tool>();
 
         // this is an auto value. do not touch this value. >:(
         int AUTOVALUE_toolIdx = 0;
@@ -18,16 +17,12 @@ namespace Overworld
             get => AUTOVALUE_toolIdx;
             set
             {
-                if (_Tools.Count <= 0)
-                {
-                    Debug.LogError("No guns are in the _Guns list");
-                    return;
-                }
+                if (_activeTools.Count <= 0) return;
 
-                _currentTool?.Unequip();
+                 _currentTool?.Unequip();
 
-                if (value >= _Tools.Count) AUTOVALUE_toolIdx = 0;
-                else if (value < 0) AUTOVALUE_toolIdx = _Tools.Count - 1;
+                if (value >= _activeTools.Count) AUTOVALUE_toolIdx = 0;
+                else if (value < 0) AUTOVALUE_toolIdx = _activeTools.Count - 1;
                 else AUTOVALUE_toolIdx = value;
 
                 _currentTool.Equip();
@@ -37,19 +32,26 @@ namespace Overworld
         {
             get
             {
-                if (_Tools.Count <= 0) return null;
-                try { return _Tools[_toolIndex]; }
+                if (_activeTools.Count <= 0) return null;
+                try { return _activeTools[_toolIndex]; }
                 catch { return null; }
             }
         }
+
+        ToolDatabase _toolDatabase;
+        List<Tool> _activeTools = new List<Tool>();
+        List<Tool> _tools = new List<Tool>();
         bool _anyToolIsEquipped => _currentTool != null;
         float _changeTool_TargetTime = -1;
         float _changeTool_Cooldown = .2f;
 
         void Start()
         {
+            _toolDatabase = GLOBAL.GetToolDatabase();
             InitializeToolList();
             CanvasManager.e_OnCurrentInterfaceChanged += OnCanvasInterfaceChanged;
+
+            _toolIndex = 0;
         }
 
         void OnCanvasInterfaceChanged(object sender, IUserInterface e)
@@ -59,25 +61,12 @@ namespace Overworld
 
         void InitializeToolList()
         {
-            List<Tool> temp = new List<Tool>();
+            List<Tool> toolRefs = _toolDatabase.ToolList;
 
-            foreach (var item in _Tools)
+            foreach (var toolRef in toolRefs)
             {
-                foreach (var typeItem in temp)
-                {
-                    if (typeItem.GetType().IsEquivalentTo(item.GetType())) goto Checkpoint1;
-                }
-
-                Tool tool = Instantiate(item.gameObject).GetComponent<Tool>(); 
-                tool.Initialize(_ToolPoint);
-                temp.Add(tool);
-
-            Checkpoint1:;
+                _tools.Add(toolRef.InstantiatePrefab(_ToolPoint));
             }
-
-            _Tools = temp;
-
-            _toolIndex = 0;
         }
 
         void Update()
@@ -93,17 +82,34 @@ namespace Overworld
             }
         }
 
-        public bool AddTool(GameObject toolPrefab)
+        public void ActivateGunTest(string idOrName) => TryActivateGun(idOrName);
+        public bool TryActivateGun(string idOrName)
         {
-            if (toolPrefab.TryGetComponent(out Tool tool) == false) return false;
+            Tool tool = FindInAllTools(idOrName);
+            if (tool == null) return false;
 
-
-
+            if (_activeTools.Contains(tool) == false) _activeTools.Add(tool);
+            _toolIndex = _toolIndex;//refresh
             return true;
         }
-        public void OnRemoveTool()
+        public bool TryDeactivateGun(string idOrName)
         {
+            Tool tool = FindInActiveTools(idOrName, out int index);
+            if (tool == null) return false;
 
+            _activeTools.RemoveAt(index);
+            return true;
+        }
+        public bool TrySwapTool(string existingTool_idOrName, string newTool_idOrName)
+        {
+            Tool newTool = FindInAllTools(newTool_idOrName);
+            if (newTool == null) return false;
+
+            Tool exisTool = FindInActiveTools(existingTool_idOrName, out int index);
+            if (exisTool == null) return false;;
+
+            _activeTools[index] = newTool;
+            return true;
         }
 
         void TryChangeTool(float v)
@@ -115,6 +121,19 @@ namespace Overworld
             _toolIndex += (int)v;
 
             _changeTool_TargetTime = Time.time + _changeTool_Cooldown;
+        }
+
+        Tool FindInAllTools(string idOrDisplayName) => _tools.Find(x => x.Data.ID == idOrDisplayName || x.Data.DisplayName == idOrDisplayName);
+        Tool FindInActiveTools(string idOrDisplayName) => _activeTools.Find(x => x.Data.ID == idOrDisplayName || x.Data.DisplayName == idOrDisplayName);
+        Tool FindInAllTools(string idOrDisplayName, out int index)
+        {
+            index = _tools.FindIndex(x => x.Data.ID == idOrDisplayName || x.Data.DisplayName == idOrDisplayName);
+            return index == -1 ? null : _tools[index];
+        }
+        Tool FindInActiveTools(string idOrDisplayName, out int index)
+        {
+            index = _activeTools.FindIndex(x => x.Data.ID == idOrDisplayName || x.Data.DisplayName == idOrDisplayName);
+            return index == -1 ? null : _activeTools[index];
         }
     }
 }

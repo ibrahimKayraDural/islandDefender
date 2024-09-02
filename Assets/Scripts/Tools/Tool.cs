@@ -12,6 +12,7 @@ namespace Overworld
         [SerializeField, Min(0)] internal float _ShootCooldown = 1;
         [SerializeField] internal Transform _Barrel;
         [SerializeField] internal GameObject[] Visuals;
+        [SerializeField] internal GameObject _Prefab;
 
         internal virtual Vector3 _direction => transform.forward;
 
@@ -22,13 +23,21 @@ namespace Overworld
         {
             if (_isEquipped && focus == false) StopFiring();
         }
-        virtual public void Initialize(Transform equipPoint)
+
+        virtual public Tool InstantiatePrefab(Transform equipPoint)
+        {
+            Tool tool = Instantiate(_Prefab).GetComponent<Tool>();
+            return tool.AUTO_Initialize(equipPoint);
+        }
+        virtual public Tool AUTO_Initialize(Transform equipPoint)
         {
             transform.parent = equipPoint;
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
 
             foreach (var item in Visuals) item.SetActive(false);
+
+            return this;
         }
         virtual public void Equip()
         {

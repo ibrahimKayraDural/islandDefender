@@ -238,9 +238,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1978028fcbe944d4089ab3037f09b96f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Animator: {fileID: 5694093598345553292}
-  _ForgetDistance: 1
-  _OpenChestWithAnimation: 1
+  b_Animator: {fileID: 5694093598345553292}
+  b_ForgetDistance: 1
+  _Capacity: 14
 --- !u!65 &1046623734337131748
 BoxCollider:
   m_ObjectHideFlags: 0

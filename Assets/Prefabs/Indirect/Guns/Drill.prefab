@@ -82,10 +82,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Data: {fileID: 11400000, guid: 2bfaf7cd58f10ae4e8ae0065ab142001, type: 2}
   _ShootCooldown: 0.1
-  _Prefab: {fileID: 0}
   _Barrel: {fileID: 9148875036199989768}
   Visuals:
   - {fileID: 7819544275235308796}
+  _Prefab: {fileID: 3857859655848943337}
   _Rigidbody: {fileID: 500343713260558876}
   _Animator: {fileID: 5722965935990529045}
   _ASource: {fileID: 8910121739732348337}
