@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _displayName: Basic Gun
   _id: gun-basic
+  _UISprite: {fileID: 21300000, guid: af18933b0a711694db66793ed8fae727, type: 3}
+  _Description: A basic gun

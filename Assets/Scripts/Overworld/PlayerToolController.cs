@@ -37,7 +37,6 @@ namespace Overworld
                 catch { return null; }
             }
         }
-
         ToolDatabase _toolDatabase;
         List<Tool> _activeTools = new List<Tool>();
         List<Tool> _tools = new List<Tool>();
@@ -82,14 +81,18 @@ namespace Overworld
             }
         }
 
-        public void ActivateGunTest(string idOrName) => TryActivateGun(idOrName);
+        void RefreshTools() => _toolIndex = _toolIndex;
+
+        public void ActivateGun_ViaButton(string idOrName) => TryActivateGun(idOrName);
         public bool TryActivateGun(string idOrName)
         {
             Tool tool = FindInAllTools(idOrName);
             if (tool == null) return false;
 
             if (_activeTools.Contains(tool) == false) _activeTools.Add(tool);
-            _toolIndex = _toolIndex;//refresh
+
+            RefreshTools();
+
             return true;
         }
         public bool TryDeactivateGun(string idOrName)

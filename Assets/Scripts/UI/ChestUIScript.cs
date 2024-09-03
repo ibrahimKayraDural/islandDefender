@@ -9,7 +9,7 @@ namespace GameUI
     using UnityEngine;
     using UnityEngine.EventSystems;
 
-    public class ChestUIScript : MonoBehaviour, IUserInterface, IGridUI
+    public class ChestUIScript : MonoBehaviour, IUserInterface, IInventoryCellGrid
     {
         public ChestScript CurrentChest { get; private set; } = null;
         public bool IsOpen { get; set; }
@@ -149,11 +149,11 @@ namespace GameUI
         void RefreshGrids()
         {
             if (CurrentChest == null) Debug.LogError("Can not refresh Chest UI");
-            else (this as IGridUI).RefreshGrid(CurrentChest.Items.ToArray(), _ChestCellParent, _CellPrefab, "chest-cell");
+            else (this as IInventoryCellGrid).RefreshGrid(CurrentChest.Items.ToArray(), _ChestCellParent, _CellPrefab, "chest-cell");
 
             InventoryItem[] items = Inventory.Instance.Items.ToArray();
             if (items == null) Debug.LogError("Can not refresh Inventory UI (ChestUIScript)");
-            else (this as IGridUI).RefreshGrid(items, _InventoryCellParent, _CellPrefab, "inventory-cell");
+            else (this as IInventoryCellGrid).RefreshGrid(items, _InventoryCellParent, _CellPrefab, "inventory-cell");
         }
 
         public void SetEnablityGetter(bool setTo) => (this as IUserInterface).SetEnablity(setTo);

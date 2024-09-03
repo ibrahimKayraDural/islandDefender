@@ -5,7 +5,7 @@ namespace GameUI
     using System.Linq;
     using UnityEngine;
 
-    public interface IGridUI
+    public interface IInventoryCellGrid
     {
         public void RefreshGrid(InventoryItem[] items, Transform cellParent, GameObject cellPrefab, string id = "")
         {

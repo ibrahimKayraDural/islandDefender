@@ -9,7 +9,7 @@ namespace GameUI
     using UnityEngine.EventSystems;
     using UnityEngine.UI;
 
-    public class InventoryUIScript : MonoBehaviour, IUserInterface, IGridUI
+    public class InventoryUIScript : MonoBehaviour, IUserInterface, IInventoryCellGrid
     {
         public bool IsOpen { get; set; }
 
@@ -101,7 +101,7 @@ namespace GameUI
         }
 
         public void ToggleInventory() => SetEnablityGetter(!IsOpen);
-        public void RefreshInventory() => (this as IGridUI).RefreshGrid(Inventory.Instance.Items.ToArray(), _InventoryCellParent, _CellPrefab);
+        public void RefreshInventory() => (this as IInventoryCellGrid).RefreshGrid(Inventory.Instance.Items.ToArray(), _InventoryCellParent, _CellPrefab);
 
         public void OnEnablityChanged(bool changedTo)
         {
