@@ -24,6 +24,7 @@ public class TestScript : MonoBehaviour
     }
     void Update()
     {
+        #region Input
         if (Input.GetKeyDown(KeyCode.P)) P_WasPressed();
         else if (Input.GetKeyDown(KeyCode.O)) O_WasPressed();
         else if (Input.GetKeyDown(KeyCode.W)) W_WasPressed();
@@ -33,6 +34,7 @@ public class TestScript : MonoBehaviour
         else if (Input.GetMouseButtonDown(0)) LMB_WasPressed();
         else if (Input.GetMouseButtonDown(1)) RMB_WasPressed();
         else if (Input.GetMouseButtonDown(2)) MMB_WasPressed();
+        #endregion
     }
 
     public void TestMethod()//this is hooked up with the button in the inspector

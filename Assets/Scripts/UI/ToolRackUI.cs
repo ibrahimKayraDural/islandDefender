@@ -27,18 +27,19 @@ namespace GameUI
         bool _breakUpdate = false;
         ToolCellUI _oldCell;
 
-        List<ToolData> _allToolsDatas = new List<ToolData>();
+        List<ToolData> _allToolDatas { get => _gameplayManager.UnlockedTools; }
         List<ToolData> _playerActiveTools = new List<ToolData>();
+
         PlayerToolController _playerToolController = null;
+        GameplayManager _gameplayManager = null;
 
         const string INVENTORY_ID = "inventory";
         const string RACK_ID = "rack";
 
         void Start()
         {
-            ToolDatabase tdb = GLOBAL.GetToolDatabase();
-            tdb.ToolList.ForEach(x => _allToolsDatas.Add(x.Data));
             _playerToolController = PlayerInstance.Instance.PlayerToolControllerREF;
+            _gameplayManager = GameplayManager.Instance;
 
             Refresh();
         }
@@ -50,7 +51,7 @@ namespace GameUI
             foreach (Transform child in _RackCellParent) Destroy(child.gameObject);
             foreach (Transform child in _InventoryCellParent) Destroy(child.gameObject);
 
-            foreach (var data in _allToolsDatas)
+            foreach (var data in _allToolDatas)
             {
                 bool activateCell = _playerActiveTools.Find(x => x.ID == data.ID) == null;
                 InstantiateCell(data, _RackCellParent, activateCell, RACK_ID);

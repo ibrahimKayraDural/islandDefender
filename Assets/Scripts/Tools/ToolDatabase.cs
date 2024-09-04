@@ -12,5 +12,6 @@ namespace Overworld
 
         public Tool GetToolByID(string id) => ToolList.Find(x => x.Data.ID == id);
         public Tool GetToolByDisplayName(string displayName) => ToolList.Find(x => x.Data.DisplayName == displayName);
+        public Tool GetToolByNameOrID(string nameOrID) => ToolList.Find(x => x.Data.DisplayName == nameOrID || x.Data.ID == nameOrID);
     }
 }
