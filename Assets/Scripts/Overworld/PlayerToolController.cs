@@ -20,10 +20,8 @@ namespace Overworld
         [SerializeField] Transform _ToolPoint;
         [SerializeField] int _MaxToolCount = 3;
 
-        // this is an auto value. do not touch this value. >:(
-        int AUTOVALUE_toolIdx = 0;
 
-        // to change the gun, simply change this value. The value will automatically normalize itself to _Guns array.
+        // To change the gun, simply change this value. The value will automatically normalize itself to _ActiveTools array.
         int _toolIndex
         {
             get => AUTOVALUE_toolIdx;
@@ -49,6 +47,9 @@ namespace Overworld
                 catch { return null; }
             }
         }
+
+        int AUTOVALUE_toolIdx = 0;
+
         ToolDatabase _toolDatabase;
         List<Tool> _activeTools = new List<Tool>();
         List<Tool> _tools = new List<Tool>();
@@ -114,7 +115,7 @@ namespace Overworld
             Tool tool = FindInActiveTools(idOrName, out int index);
             if (tool == null) return false;
 
-            //prevent confusion when list shifts
+            //shift index when list shifts
             if (AUTOVALUE_toolIdx >= index) AUTOVALUE_toolIdx = Mathf.Max(0, AUTOVALUE_toolIdx - 1);
 
             _activeTools[index].Unequip();
