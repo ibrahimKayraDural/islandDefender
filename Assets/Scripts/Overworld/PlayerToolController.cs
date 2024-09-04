@@ -6,7 +6,19 @@ namespace Overworld
 
     public class PlayerToolController : MonoBehaviour
     {
+        public List<ToolData> ActiveTools
+        {
+            get
+            {
+                List<ToolData> temp = new List<ToolData>();
+                _activeTools.ForEach(x => temp.Add(x.Data));
+                return temp;
+            }
+        }
+        public int MaxToolCount => _MaxToolCount;
+
         [SerializeField] Transform _ToolPoint;
+        [SerializeField] int _MaxToolCount = 3;
 
         // this is an auto value. do not touch this value. >:(
         int AUTOVALUE_toolIdx = 0;
@@ -83,9 +95,11 @@ namespace Overworld
 
         void RefreshTools() => _toolIndex = _toolIndex;
 
-        public void ActivateGun_ViaButton(string idOrName) => TryActivateGun(idOrName);
-        public bool TryActivateGun(string idOrName)
+        public void ActivateTool_ViaButton(string idOrName) => TryActivateTool(idOrName);
+        public bool TryActivateTool(string idOrName)
         {
+            if (_activeTools.Count >= _MaxToolCount) return false;
+
             Tool tool = FindInAllTools(idOrName);
             if (tool == null) return false;
 
@@ -95,12 +109,18 @@ namespace Overworld
 
             return true;
         }
-        public bool TryDeactivateGun(string idOrName)
+        public bool TryDeactivateTool(string idOrName)
         {
             Tool tool = FindInActiveTools(idOrName, out int index);
             if (tool == null) return false;
 
+            //prevent confusion when list shifts
+            if (AUTOVALUE_toolIdx >= index) AUTOVALUE_toolIdx = Mathf.Max(0, AUTOVALUE_toolIdx - 1);
+
+            _activeTools[index].Unequip();
             _activeTools.RemoveAt(index);
+            RefreshTools();
+
             return true;
         }
         public bool TrySwapTool(string existingTool_idOrName, string newTool_idOrName)
@@ -111,6 +131,7 @@ namespace Overworld
             Tool exisTool = FindInActiveTools(existingTool_idOrName, out int index);
             if (exisTool == null) return false;;
 
+            _activeTools[index].Unequip();
             _activeTools[index] = newTool;
             return true;
         }

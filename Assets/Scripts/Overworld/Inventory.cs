@@ -9,8 +9,6 @@ namespace Overworld
 {
     public class Inventory : MonoBehaviour, IContainer<InventoryItem>
     {
-        public static Inventory Instance = null;
-
         public List<InventoryItem> Items => _slots.ToList();
 
         int SlotCount
@@ -48,11 +46,6 @@ namespace Overworld
         ObservableCollection<InventoryItem> _slots;
         CanvasManager _canvasManager;
 
-        void Awake()
-        {
-            if (Instance == null) Instance = this;
-            else if (Instance != this) Destroy(this);
-        }
         void Start()
         {
             _canvasManager = CanvasManager.Instance;

@@ -34,7 +34,7 @@ namespace GameUI
         }
         void Start()
         {
-            _inventory = Inventory.Instance;
+            _inventory = PlayerInstance.Instance.InventoryREF;
         }
 
         public bool TrySetCurrentChest(ChestScript setTo)
@@ -151,7 +151,7 @@ namespace GameUI
             if (CurrentChest == null) Debug.LogError("Can not refresh Chest UI");
             else (this as IInventoryCellGrid).RefreshGrid(CurrentChest.Items.ToArray(), _ChestCellParent, _CellPrefab, "chest-cell");
 
-            InventoryItem[] items = Inventory.Instance.Items.ToArray();
+            InventoryItem[] items = PlayerInstance.Instance.InventoryREF.Items.ToArray();
             if (items == null) Debug.LogError("Can not refresh Inventory UI (ChestUIScript)");
             else (this as IInventoryCellGrid).RefreshGrid(items, _InventoryCellParent, _CellPrefab, "inventory-cell");
         }

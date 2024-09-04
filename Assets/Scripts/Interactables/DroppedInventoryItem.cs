@@ -31,7 +31,7 @@ namespace Overworld
 
         public void OnInteracted(GameObject interactor)
         {
-            _item = Inventory.Instance.TryAddItemWithSpill(_item);
+            _item = PlayerInstance.Instance.InventoryREF.TryAddItemWithSpill(_item);
             if (_item == null) Destroy(gameObject);
         }
 

@@ -13,7 +13,6 @@ public class TestScript : MonoBehaviour
     [SerializeField] TextMeshProUGUI _Tmesh;
     [SerializeField] Image _Img;
     [SerializeField] bool _ShowDebugLogs;
-    [SerializeField] S_EnemyWithCount test;
 
     void Awake()
     {
@@ -34,8 +33,6 @@ public class TestScript : MonoBehaviour
         else if (Input.GetMouseButtonDown(0)) LMB_WasPressed();
         else if (Input.GetMouseButtonDown(1)) RMB_WasPressed();
         else if (Input.GetMouseButtonDown(2)) MMB_WasPressed();
-
-        _Tmesh.text = CanvasManager.CurrentInterface == null ? "none" : CanvasManager.CurrentInterface.ToString();
     }
 
     public void TestMethod()//this is hooked up with the button in the inspector

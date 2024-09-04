@@ -3,6 +3,7 @@ namespace GameUI
     using Overworld;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
     using TMPro;
     using UnityEngine;
     using UnityEngine.EventSystems;
@@ -13,7 +14,8 @@ namespace GameUI
         public bool IsOpen { get; set; } = false;
 
         [SerializeField] GameObject _VisualParent;
-        [SerializeField] Transform _CellParent;
+        [SerializeField] Transform _RackCellParent;
+        [SerializeField] Transform _InventoryCellParent;
         [SerializeField] GameObject _CellPrefab;
         [SerializeField] GraphicRaycasterScript _GraphicRaycaster;
         [SerializeField] TextMeshProUGUI _DescriptionTitle;
@@ -25,17 +27,55 @@ namespace GameUI
         bool _breakUpdate = false;
         ToolCellUI _oldCell;
 
-        List<ToolData> AllToolsDatas = new List<ToolData>();
+        List<ToolData> _allToolsDatas = new List<ToolData>();
+        List<ToolData> _playerActiveTools = new List<ToolData>();
+        PlayerToolController _playerToolController = null;
+
+        const string INVENTORY_ID = "inventory";
+        const string RACK_ID = "rack";
 
         void Start()
         {
             ToolDatabase tdb = GLOBAL.GetToolDatabase();
-            tdb.ToolList.ForEach(x => AllToolsDatas.Add(x.Data));
+            tdb.ToolList.ForEach(x => _allToolsDatas.Add(x.Data));
+            _playerToolController = PlayerInstance.Instance.PlayerToolControllerREF;
 
-            foreach (var data in AllToolsDatas)
+            Refresh();
+        }
+
+        void Refresh()
+        {
+            _playerActiveTools = _playerToolController.ActiveTools;
+
+            foreach (Transform child in _RackCellParent) Destroy(child.gameObject);
+            foreach (Transform child in _InventoryCellParent) Destroy(child.gameObject);
+
+            foreach (var data in _allToolsDatas)
             {
-                ToolCellUI temp = Instantiate(_CellPrefab, _CellParent).GetComponent<ToolCellUI>();
-                temp.Initialize(data);
+                bool activateCell = _playerActiveTools.Find(x => x.ID == data.ID) == null;
+                InstantiateCell(data, _RackCellParent, activateCell, RACK_ID);
+            }
+
+            for (int i = 0; i < _playerToolController.MaxToolCount; i++)
+            {
+                if(i < _playerActiveTools.Count)
+                {
+                    InstantiateCell(_playerActiveTools[i], _InventoryCellParent, true, INVENTORY_ID);
+                }
+                else
+                {
+                    InstantiateCell(null, _InventoryCellParent);
+                }
+            }
+
+            void InstantiateCell(ToolData data, Transform parent, bool activateCell = true, string ownerID = null)
+            {
+                ToolCellUI temp = Instantiate(_CellPrefab, parent).GetComponent<ToolCellUI>();
+
+                if (data == null)
+                    temp.Initialize();
+                else
+                    temp.Initialize(data, activateCell, ownerID);
             }
         }
 
@@ -44,6 +84,7 @@ namespace GameUI
             if (CurrentRack == null)//chest is opened
             {
                 CurrentRack = setTo;
+                Refresh();
                 StartCoroutine(nameof(UpdateIEnum));
             }
             else if (setTo == null)//chest is closed
@@ -95,8 +136,14 @@ namespace GameUI
                 bool targetIsValid = true;
                 if (result.isValid == false || currentCell.CellData == null) targetIsValid = false;
 
-                _DescriptionTitle.text = targetIsValid ? currentCell.CellData.DisplayName : "";
-                _DescriptionText.text = targetIsValid ? currentCell.CellData.Description : "";
+                _DescriptionTitle.text = "";
+                _DescriptionText.text = "";
+
+                if (targetIsValid && currentCell.IsInteractable)
+                {
+                    _DescriptionTitle.text = currentCell.CellData.DisplayName;
+                    _DescriptionText.text = currentCell.CellData.Description;
+                }
 
                 if (_oldCell != currentCell)
                 {
@@ -110,7 +157,22 @@ namespace GameUI
                     //implement cell clicking behaviour here
                     //clicked cell is currentCell
 
-                    Debug.Log(currentCell.CellData.DisplayName + " has been clicked");
+                    if (currentCell.IsInteractable == false) goto ClickedEnd;
+
+                    string toolID = currentCell.CellData.ID;
+                    bool refreshNeeded;
+                    if (currentCell.OwnerID == INVENTORY_ID)
+                    {
+                        refreshNeeded = _playerToolController.TryDeactivateTool(toolID);
+                    }
+                    else
+                    {
+                        refreshNeeded = _playerToolController.TryActivateTool(toolID);
+                    }
+
+                    if (refreshNeeded) Refresh();
+
+                ClickedEnd:;
                 }
 
                 _oldCell = currentCell;

@@ -239,7 +239,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   b_Animator: {fileID: 5694093598345553292}
-  b_ForgetDistance: 1
+  b_ForgetDistance: 0.75
   _Capacity: 14
 --- !u!65 &1046623734337131748
 BoxCollider:

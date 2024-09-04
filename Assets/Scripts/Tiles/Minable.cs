@@ -88,7 +88,7 @@ public class Minable : MonoBehaviour
 
         foreach (var item in _Gains)
         {
-            Inventory.Instance?.TryAddItemWithSpill(new ResourceItem(item.Resource, item.Amount), true);
+            PlayerInstance.Instance.InventoryREF?.TryAddItemWithSpill(new ResourceItem(item.Resource, item.Amount), true);
         }
 
         Destroy(gameObject);
