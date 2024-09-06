@@ -11,7 +11,7 @@ namespace TowerDefence
         [SerializeField] LayerMask TowerDefenceLayer;
         [SerializeField] TextMeshProUGUI _CurrentTurretText;
 
-        Camera _camera = null;
+        [SerializeField] Camera _camera = null;
         TowerDefenceTileScript _currentTile = null;
         int currentIndex = 0;
         TurretData[] _turrets;
@@ -21,7 +21,6 @@ namespace TowerDefence
 
         void Awake()
         {
-            _camera = Camera.main;
             if (_camera == null)
             {
                 Debug.LogError("No camera was found");

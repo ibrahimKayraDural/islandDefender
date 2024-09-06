@@ -14,6 +14,7 @@ namespace TowerDefence
         static event EventHandler<string> e_ActiveEnemiesListIsEmptied;
         public static bool WaveIsActive { get; private set; }
 
+        [SerializeField, Min(0)] int _StartCooldown = 2;
         [SerializeField] bool _WaitUntillEnemiesAreDead = true;
         [SerializeField] bool _RepeatLastWave;
         [SerializeField] List<Transform> _spawners = new List<Transform>();
@@ -57,7 +58,8 @@ namespace TowerDefence
             e_ActiveEnemiesListIsEmptied += OnWaveEnded;
             _BaseMngr.e_BaseHasDied += _BaseMngr_e_BaseHasDied;
             _TimeTM.text = "";
-            StartWave();
+
+            StartCoroutine(RunWaveCooldown(_StartCooldown));
         }
 
         void OnCurrentSwarmValuesHaveChanged(object sender, SwarmDataValueContainer e)
@@ -68,6 +70,16 @@ namespace TowerDefence
         void _BaseMngr_e_BaseHasDied(object sender, EventArgs e)
         {
             StopWave();
+
+            foreach (var enemy in ActiveEnemies)
+            {
+                if (enemy.TryGetComponent(out EnemyBase eb))
+                {
+                    eb.Win();
+                }
+            }
+
+            _BaseMngr.e_BaseHasDied -= _BaseMngr_e_BaseHasDied;
         }
 
         public static bool RemoveFromActiveEnemyList(GameObject target)

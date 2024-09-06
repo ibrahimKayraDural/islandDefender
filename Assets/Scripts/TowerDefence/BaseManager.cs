@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.Events;
 
 public class BaseManager : MonoBehaviour, IHealth
 {
@@ -14,6 +15,7 @@ public class BaseManager : MonoBehaviour, IHealth
     [Header("Reference")]
     [SerializeField] TextMeshProUGUI _HealthTM;
     [SerializeField] PlayOneShot _BigExplosionOneShot;
+    [SerializeField] UnityEvent OnDeath;
 
     public float Health => _health;
     float _health;
@@ -43,6 +45,7 @@ public class BaseManager : MonoBehaviour, IHealth
         e_BaseHasDied?.Invoke(this, EventArgs.Empty);
 
         if (_BigExplosionOneShot != null) Instantiate(_BigExplosionOneShot, transform.position, Quaternion.identity);
-        Destroy(gameObject);
+
+        OnDeath?.Invoke();
     }
 }

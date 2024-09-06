@@ -5,7 +5,7 @@ using UnityEngine;
 public interface IHealth
 {
     float Health { get;}
-    public void RemoveHealth(float amount) => SetHealth(Health - amount);
-    public void AddHealth(float amount) => SetHealth(Health + amount);
+    void RemoveHealth(float amount) => SetHealth(Health - amount);
+    void AddHealth(float amount) => SetHealth(Health + amount);
     void SetHealth(float setTo);
 }
