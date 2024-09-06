@@ -59,6 +59,9 @@ public static class GLOBAL
         return false;
     }
 
+    public static bool StringHasValue(string str) => !(str == null || str == "" || str == UnassignedString);
+
+
 # endregion
 
     #region Databases

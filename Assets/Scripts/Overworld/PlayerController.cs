@@ -15,15 +15,17 @@ namespace Overworld
 
         [Header("Reference")]
         [SerializeField] Rigidbody _RB;
-        [SerializeField] Camera _Cam;
         [SerializeField] Animator _Animator;
         [SerializeField] GameObject _Rotator;
+
+        Camera _camera => _cameraManager.CurrentCamera;
+        CameraManager _cameraManager;
 
         Vector3 _direction
         {
             get
             {
-                Ray ray = _Cam.ScreenPointToRay(Input.mousePosition);
+                Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
                 if (MathUtils.InfiniteLinePlaneIntersection
                     (Vector3.up, transform.position, ray.origin, ray.direction,
                     out Vector3 intersection) == false) return transform.forward;
@@ -42,6 +44,8 @@ namespace Overworld
             _RB.angularDrag = 1000000;
             _RB.drag = 1000000;
             _RB.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
+
+            _cameraManager = CameraManager.Instance;
         }
 
         void Update()
@@ -54,7 +58,7 @@ namespace Overworld
 
         void FixedUpdate()
         {
-            Quaternion rotation = Quaternion.AngleAxis(_Cam.transform.rotation.eulerAngles.y, Vector3.up);
+            Quaternion rotation = Quaternion.AngleAxis(_camera.transform.rotation.eulerAngles.y, Vector3.up);
             Vector3 movement = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized * _Speed * Time.deltaTime;
             movement = rotation * movement;
             _currentMovement = Vector3.Lerp(_currentMovement, movement, groundFriction);
@@ -64,7 +68,7 @@ namespace Overworld
             Vector3 normalizedVelocity = _currentMovement / Time.deltaTime / _Speed;
             normalizedVelocity.y = 0;
             float nVelMag = normalizedVelocity.magnitude;
-            Quaternion InverseRotation = Quaternion.AngleAxis(-_Cam.transform.rotation.eulerAngles.y, Vector3.up);
+            Quaternion InverseRotation = Quaternion.AngleAxis(-_camera.transform.rotation.eulerAngles.y, Vector3.up);
 
             normalizedVelocity = InverseRotation * normalizedVelocity;
             Vector3 rotDir = InverseRotation * _direction;
