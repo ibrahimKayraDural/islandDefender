@@ -71,12 +71,15 @@ namespace Overworld
         {
             if (Input.GetButtonDown("Inventory")) CanvasManager.Instance?.ToggleInventory();
 
-            if(Time.timeScale <= 0) return;
+            if(Time.timeScale <= 0 || _camera == null) return;
+
             _Rotator.transform.rotation = Quaternion.Lerp(_Rotator.transform.rotation, _dirAsRot, Time.deltaTime * _TurnSpeed);
         }
 
         void FixedUpdate()
         {
+            if (_camera == null) return;
+
             Vector3 movement = CalculateMovement();
 
             _currentMovement = Vector3.Lerp(_currentMovement, movement, groundFriction);

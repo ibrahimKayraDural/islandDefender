@@ -37,9 +37,9 @@ public class TestScript : MonoBehaviour
         #endregion
 
         _Tmesh.text = "";
-        foreach (var item in PlayerInstance.Instance.PlayerControllerREF._movementModeModifiers)
+        foreach (var item in CameraManager.Instance._camerasWithTag)
         {
-            _Tmesh.text += item.Item1 + " " + item.Item2 + "\n";
+            //_Tmesh.text += item.Value.Key + " " + item.Value.Value.Item1.gameObject + "\n";
         }
     }
 
@@ -65,15 +65,11 @@ public class TestScript : MonoBehaviour
     private void O_WasPressed()
     {
         WriteDebug("O_WasPressed");
-
-        PlayerInstance.Instance.PlayerControllerREF.AddMovementModifierForSeconds("test1", MovementMode.Repeating, 3);
     }
 
     private void P_WasPressed()
     {
         WriteDebug("P_WasPressed");
-
-        PlayerInstance.Instance.PlayerControllerREF.AddMovementModifierForSeconds("test1", MovementMode.Locked, 3);
     }
 
     private void MMB_WasPressed()

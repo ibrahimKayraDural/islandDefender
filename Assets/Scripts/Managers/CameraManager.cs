@@ -8,13 +8,14 @@ public class CameraManager : MonoBehaviour
     public static CameraManager Instance { get; private set; } = null;
 
     public event EventHandler<Camera> e_OnCameraChanged;
-    public Camera CurrentCamera => _camerasWithTag[_currentIndex].Value.Value.Item1;
+    public Camera CurrentCamera => _camerasWithTag.Count > 0 ? _camerasWithTag[_currentIndex].Value.Value.Item1 : null;
 
+    [SerializeField] List<string> _IgnoreTags = new List<string>();
     [SerializeField] string _StartingCameraTag = GLOBAL.UnassignedString;
     [SerializeField,Min(0)] float _WalkDuration = .5f;
     [SerializeField,Min(0)] float _StopDuration = .5f;
 
-    List<KeyValuePair<string, Tuple<Camera, AudioListener>>?> _camerasWithTag = new List<KeyValuePair<string, Tuple<Camera, AudioListener>>?>();
+    public List<KeyValuePair<string, Tuple<Camera, AudioListener>>?> _camerasWithTag = new List<KeyValuePair<string, Tuple<Camera, AudioListener>>?>();
     int _currentIndex = 0;
 
 
@@ -23,17 +24,39 @@ public class CameraManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else if (Instance != this) Destroy(gameObject);
 
+        SceneLoader scLoader = SceneLoader.Instance;
+        if(scLoader != null && scLoader.IsLoadingScenes)
+        {
+            scLoader.e_OnScenesAreLoaded += Initialize;
+        }
+        else
+        {
+            Initialize(this, EventArgs.Empty);
+        }
+    }
+
+    void Initialize(object sender, EventArgs e)
+    {
         Camera[] cameras = FindObjectsByType<Camera>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+
+        if (cameras.Length <= 0)
+        {
+            Debug.LogError("No cameras were found in scene");
+            this.enabled = false;
+            return;
+        }
 
         foreach (var cam in cameras)
         {
             string tag = cam.gameObject.tag;
+            if (_IgnoreTags.Contains(tag)) continue;
+
             cam.gameObject.TryGetComponent(out AudioListener al);
 
             _camerasWithTag.Add(new KeyValuePair<string, Tuple<Camera, AudioListener>>(tag, new Tuple<Camera, AudioListener>(cam, al)));
         }
 
-        if (TrySetCameraWithTag(_StartingCameraTag,false) == false)
+        if (TrySetCameraWithTag(_StartingCameraTag, false) == false)
         {
             int idx = _camerasWithTag.FindIndex(x => x.Value.Value.Item1.enabled);
 
@@ -41,6 +64,12 @@ public class CameraManager : MonoBehaviour
         }
 
         RefreshCameras(false);
+
+        SceneLoader scLoader = SceneLoader.Instance;
+        if (sender != this as object && scLoader != null)
+        {
+            scLoader.e_OnScenesAreLoaded -= Initialize;
+        }
     }
 
     void RefreshCameras(bool runAnimation = true)
@@ -51,6 +80,12 @@ public class CameraManager : MonoBehaviour
 
             Camera cam = _camerasWithTag[i].Value.Value.Item1;
             AudioListener al = _camerasWithTag[i].Value.Value.Item2;
+
+            if(cam == null)
+            {
+                _camerasWithTag.RemoveAt(i);
+                continue;
+            }
 
             cam.enabled = enablity;
             if (al) al.enabled = enablity;
