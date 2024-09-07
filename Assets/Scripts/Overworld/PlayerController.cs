@@ -45,14 +45,15 @@ namespace Overworld
                 return MovementMode.Normal;
             }
         }
-
         Camera _camera => _cameraManager.CurrentCamera;
 
-        List<Tuple<string, MovementMode>> _movementModeModifiers = new List<Tuple<string, MovementMode>>();
         CameraManager _cameraManager;
-        Vector3 _oldInput = Vector3.zero;
+
+        public List<Tuple<string, MovementMode>> _movementModeModifiers = new List<Tuple<string, MovementMode>>();
         bool _acceptMovementModeModifier = true;
+
         Vector3 _currentMovement = Vector3.zero;
+        Vector3 _oldMovement = Vector3.zero;
 
 
         private void Start()
@@ -76,14 +77,37 @@ namespace Overworld
 
         void FixedUpdate()
         {
-            Quaternion rotation = Quaternion.AngleAxis(_camera.transform.rotation.eulerAngles.y, Vector3.up);
-            Vector3 movement = TakeInput() * _Speed * Time.deltaTime;
-            movement = rotation * movement;
-            _currentMovement = Vector3.Lerp(_currentMovement, movement, groundFriction);
+            Vector3 movement = CalculateMovement();
 
+            _currentMovement = Vector3.Lerp(_currentMovement, movement, groundFriction);
             _RB.MovePosition(transform.position + _currentMovement);
 
-            Vector3 normalizedVelocity = _currentMovement / Time.deltaTime / _Speed;
+            CalculateAnimation(Time.deltaTime);
+        }
+
+        Vector3 CalculateMovement()
+        {
+            Vector3 movement;
+
+            if (currentMovementMode == MovementMode.Repeating)
+            {
+                movement = _oldMovement;
+            }
+            else
+            {
+                Quaternion rotation = Quaternion.AngleAxis(_camera.transform.rotation.eulerAngles.y, Vector3.up);
+                movement = TakeInput() * _Speed * Time.deltaTime;
+                movement = rotation * movement;
+
+                _oldMovement = movement;
+            }
+
+            return movement;
+        }
+
+        void CalculateAnimation(float deltaTime)
+        {
+            Vector3 normalizedVelocity = _currentMovement / deltaTime / _Speed;
             normalizedVelocity.y = 0;
             float nVelMag = normalizedVelocity.magnitude;
             Quaternion InverseRotation = Quaternion.AngleAxis(-_camera.transform.rotation.eulerAngles.y, Vector3.up);
@@ -104,14 +128,14 @@ namespace Overworld
 
             switch(currentMovementMode)
             {
-                case MovementMode.Locked: input = Vector3.zero; break;
-                case MovementMode.Repeating: input = _oldInput; break;
+                case MovementMode.Repeating:
+                case MovementMode.Locked:
+                    input = Vector3.zero; break;
+
                 default: //This is MovementMode.Normal
                     input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized; 
                     break;
             }
-
-            _oldInput = input;
 
             return input;
         }
@@ -147,12 +171,25 @@ namespace Overworld
         {
             AddMovementMode(id, mode, @override);
 
-            StartCoroutine(RemoveMMAfterSeconds(id, seconds));
+            IEnumerator IE = RemoveMMAfterSeconds(id, seconds);
+            int index = _startedCoroutines.FindIndex(x => x.Item1 == id);
+
+            if (index != -1)
+            {
+                StopCoroutine(_startedCoroutines[index].Item2);
+                _startedCoroutines.RemoveAt(index);
+            }
+
+            _startedCoroutines.Add(new Tuple<string, IEnumerator>(id, IE));
+            StartCoroutine(IE);
         }
 
+        List<Tuple<string, IEnumerator>> _startedCoroutines = new List<Tuple<string, IEnumerator>>();
         IEnumerator RemoveMMAfterSeconds(string id, float seconds)
         {
             yield return new WaitForSeconds(seconds);
+
+            _startedCoroutines.RemoveAt(_startedCoroutines.FindIndex(x => x.Item1 == id));
             RemoveMovementMode(id);
         }
     }

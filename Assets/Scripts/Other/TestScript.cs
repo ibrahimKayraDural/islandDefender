@@ -35,6 +35,12 @@ public class TestScript : MonoBehaviour
         else if (Input.GetMouseButtonDown(1)) RMB_WasPressed();
         else if (Input.GetMouseButtonDown(2)) MMB_WasPressed();
         #endregion
+
+        _Tmesh.text = "";
+        foreach (var item in PlayerInstance.Instance.PlayerControllerREF._movementModeModifiers)
+        {
+            _Tmesh.text += item.Item1 + " " + item.Item2 + "\n";
+        }
     }
 
     public void TestMethod()//this is hooked up with the button in the inspector
@@ -59,11 +65,15 @@ public class TestScript : MonoBehaviour
     private void O_WasPressed()
     {
         WriteDebug("O_WasPressed");
+
+        PlayerInstance.Instance.PlayerControllerREF.AddMovementModifierForSeconds("test1", MovementMode.Repeating, 3);
     }
 
     private void P_WasPressed()
     {
         WriteDebug("P_WasPressed");
+
+        PlayerInstance.Instance.PlayerControllerREF.AddMovementModifierForSeconds("test1", MovementMode.Locked, 3);
     }
 
     private void MMB_WasPressed()

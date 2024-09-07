@@ -8,27 +8,14 @@ public class CameraManager : MonoBehaviour
     public static CameraManager Instance { get; private set; } = null;
 
     public event EventHandler<Camera> e_OnCameraChanged;
-    public Camera CurrentCamera => _camerasWithTag[CurrentIndex].Value.Value.Item1;
-    public int CurrentIndex 
-    { 
-        get => AUTO_currentIndex;
-        set 
-        {
-            if (value < 0 || value >= _camerasWithTag.Count) return;
-
-            if(AUTO_currentIndex != value)
-            {
-                AUTO_currentIndex = value;
-                RefreshCameras();
-                e_OnCameraChanged?.Invoke(this, CurrentCamera);
-            }
-        }
-    }
+    public Camera CurrentCamera => _camerasWithTag[_currentIndex].Value.Value.Item1;
 
     [SerializeField] string _StartingCameraTag = GLOBAL.UnassignedString;
+    [SerializeField,Min(0)] float _WalkDuration = .5f;
+    [SerializeField,Min(0)] float _StopDuration = .5f;
 
     List<KeyValuePair<string, Tuple<Camera, AudioListener>>?> _camerasWithTag = new List<KeyValuePair<string, Tuple<Camera, AudioListener>>?>();
-    int AUTO_currentIndex = 0;
+    int _currentIndex = 0;
 
 
     void Awake()
@@ -46,21 +33,21 @@ public class CameraManager : MonoBehaviour
             _camerasWithTag.Add(new KeyValuePair<string, Tuple<Camera, AudioListener>>(tag, new Tuple<Camera, AudioListener>(cam, al)));
         }
 
-        if (TrySetCameraWithTag(_StartingCameraTag) == false)
+        if (TrySetCameraWithTag(_StartingCameraTag,false) == false)
         {
             int idx = _camerasWithTag.FindIndex(x => x.Value.Value.Item1.enabled);
 
-            if (idx != -1) CurrentIndex = idx;
+            if (idx != -1) SetCurrentIndex(idx, false);
         }
 
-        RefreshCameras();
+        RefreshCameras(false);
     }
 
-    void RefreshCameras()
+    void RefreshCameras(bool runAnimation = true)
     {
         for (int i = 0; i < _camerasWithTag.Count; i++)
         {
-            bool enablity = CurrentIndex == i;
+            bool enablity = _currentIndex == i;
 
             Camera cam = _camerasWithTag[i].Value.Value.Item1;
             AudioListener al = _camerasWithTag[i].Value.Value.Item2;
@@ -68,19 +55,38 @@ public class CameraManager : MonoBehaviour
             cam.enabled = enablity;
             if (al) al.enabled = enablity;
         }
+
+        if (runAnimation)
+        {
+            Overworld.PlayerController pc = PlayerInstance.Instance.PlayerControllerREF;
+            pc.AddMovementModifierForSeconds("CameraManager2", Overworld.MovementMode.Locked, _WalkDuration + _StopDuration, true);
+            pc.AddMovementModifierForSeconds("CameraManager1", Overworld.MovementMode.Repeating, _WalkDuration, true); 
+        }
     }
 
-    public void IncrementCameraIndex() => SetCameraIndex((CurrentIndex + 1) % _camerasWithTag.Count);
-    public void DecrementCameraIndex() => SetCameraIndex((CurrentIndex - 1) >= 0 ? CurrentIndex - 1 : _camerasWithTag.Count - 1);
-    public void SetCameraIndex(int setTo)=> CurrentIndex = setTo;
-    public bool TrySetCameraWithTag(string tag)
+    public void IncrementCameraIndex() => SetCameraIndex((_currentIndex + 1) % _camerasWithTag.Count);
+    public void DecrementCameraIndex() => SetCameraIndex((_currentIndex - 1) >= 0 ? _currentIndex - 1 : _camerasWithTag.Count - 1);
+    public void SetCameraIndex(int setTo) => SetCurrentIndex(setTo);
+    public bool TrySetCameraWithTag(string tag, bool runAnimation = true)
     {
         if ((GLOBAL.StringHasValue(tag) && _camerasWithTag.Count > 0) == false) return false;
 
         var pair = _camerasWithTag.Find(x => x.Value.Key == tag);
         if (pair.HasValue == false) return false;
 
-        CurrentIndex = _camerasWithTag.FindIndex(x => x.Value.Key == tag);
+        SetCurrentIndex(_camerasWithTag.FindIndex(x => x.Value.Key == tag), runAnimation);
         return true;
+    }
+
+    void SetCurrentIndex(int value, bool runAnimation = true)
+    {
+        if (value < 0 || value >= _camerasWithTag.Count) return;
+
+        if (_currentIndex != value)
+        {
+            _currentIndex = value;
+            RefreshCameras(runAnimation);
+            e_OnCameraChanged?.Invoke(this, CurrentCamera);
+        }
     }
 }

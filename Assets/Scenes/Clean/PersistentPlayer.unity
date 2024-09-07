@@ -228,10 +228,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1361136044001783198, guid: 296de3351f168f9478d7a0e7041b1503, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2253588649053394883, guid: 296de3351f168f9478d7a0e7041b1503, type: 3}
       propertyPath: m_Name
       value: overworldPlayer

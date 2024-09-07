@@ -405,7 +405,6 @@ MonoBehaviour:
   groundFriction: 0.3
   _TurnSpeed: 15
   _RB: {fileID: 6147596811841315391}
-  _Cam: {fileID: 1361136044001783198}
   _Animator: {fileID: 5627370962928076831}
   _Rotator: {fileID: 1188989895029744529}
 --- !u!114 &8785126028115196852
@@ -1451,8 +1450,8 @@ GameObject:
   - component: {fileID: 1361136044001783198}
   - component: {fileID: 7638509863709738594}
   m_Layer: 0
-  m_Name: Main Camera
-  m_TagString: MainCamera
+  m_Name: Player Camera
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
