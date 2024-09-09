@@ -4599,7 +4599,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _MaxHealth: 10
   _HealthTM: {fileID: 881111028}
-  _BigExplosionOneShot: {fileID: 1785450916016651603, guid: 5991d4ee28121084ba61b8d9f437c1f2, type: 3}
+  _ExplosionSFX: {fileID: 8300000, guid: 2c906c6e10b87c04084332abaf74cfbe, type: 3}
   OnDeath:
     m_PersistentCalls:
       m_Calls:

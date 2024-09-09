@@ -9,19 +9,28 @@ namespace Overworld
     {
         [SerializeField] Rigidbody _Rigidbody;
         [SerializeField] Animator _Animator;
-        [SerializeField] AudioSource _ASource;
+        [SerializeField] AudioClip _RunningSFX;
+
+        AudioManager _audioManager;
+        readonly string SFX_ID = "DrillTool_Running";
 
         public void Awake()
         {
             _Rigidbody.detectCollisions = false;
         }
 
+        internal void Start()
+        {
+            _audioManager = AudioManager.Instance;
+        }
+
         internal override IEnumerator FireIEnum()
         {
             _isFiring = true;
             _Animator.SetBool("IsRunning", _isFiring);
-            StopCoroutine(nameof(StopSoundIEnum));
-            _ASource.Play();
+
+            _audioManager.PlayClip(SFX_ID, _RunningSFX, playLooping: true, @override: true);
+
             _Rigidbody.detectCollisions = true;
 
             yield return null;
@@ -31,15 +40,10 @@ namespace Overworld
             base.StopFiring();
 
             _Animator.SetBool("IsRunning",_isFiring);
-            StartCoroutine(nameof(StopSoundIEnum));
-            _Rigidbody.detectCollisions = false;
-        }
 
-        IEnumerator StopSoundIEnum()
-        {
-            float remaining = (_ASource.clip.length - _ASource.time) - .05f;
-            yield return new WaitForSeconds(remaining);
-            _ASource.Stop();
+            _audioManager.StopClip(SFX_ID, true);
+
+            _Rigidbody.detectCollisions = false;
         }
 
         internal override void ActivationImplementation() { }

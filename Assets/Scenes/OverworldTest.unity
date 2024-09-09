@@ -2754,6 +2754,14 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 6695095318579369660, guid: d71663077ded6ed4a8425ba26b855aa5, type: 3}
+      propertyPath: clip1
+      value: 
+      objectReference: {fileID: 8300000, guid: da51225feb1d1a84f925d2ff1ecccef1, type: 3}
+    - target: {fileID: 6695095318579369660, guid: d71663077ded6ed4a8425ba26b855aa5, type: 3}
+      propertyPath: clip2
+      value: 
+      objectReference: {fileID: 8300000, guid: 7a20eae449e1e194eba729821a468867, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

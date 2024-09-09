@@ -14,7 +14,7 @@ public class BaseManager : MonoBehaviour, IHealth
     [SerializeField, Min(.1f)] float _MaxHealth = 10;
     [Header("Reference")]
     [SerializeField] TextMeshProUGUI _HealthTM;
-    [SerializeField] PlayOneShot _BigExplosionOneShot;
+    [SerializeField] AudioClip _ExplosionSFX;
     [SerializeField] UnityEvent OnDeath;
 
     public float Health => _health;
@@ -44,7 +44,7 @@ public class BaseManager : MonoBehaviour, IHealth
     {
         e_BaseHasDied?.Invoke(this, EventArgs.Empty);
 
-        if (_BigExplosionOneShot != null) Instantiate(_BigExplosionOneShot, transform.position, Quaternion.identity);
+        AudioManager.Instance?.PlayClip(this + "_explosion", _ExplosionSFX);
 
         OnDeath?.Invoke();
     }

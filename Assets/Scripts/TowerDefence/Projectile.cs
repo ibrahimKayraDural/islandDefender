@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] float _Damage = 1;
     [SerializeField] float _IterationDuration = .05f;
     [SerializeField] float _LifeTime = 10f;
-    [SerializeField] GameObject HitSfx;
+    [SerializeField] AudioClip HitSfx;
     [SerializeField] string[] IgnoreTags = new string[0];
     [SerializeField] bool _IgnoreTriggers = true;
 
@@ -57,8 +57,7 @@ public class Projectile : MonoBehaviour
         _breakUpdate = true;
         StopAllCoroutines();
 
-        if (HitSfx != null && playSFX)
-            Instantiate(HitSfx, transform.position, Quaternion.identity);
+        AudioManager.Instance?.PlayClip(this + "_hit", HitSfx);
 
         Destroy(gameObject);
     }

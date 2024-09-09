@@ -140,6 +140,8 @@ namespace Overworld
 
         void CheckChangeTool()
         {
+            if (_activeTools.Count <= 1) return;
+
             float v = Input.GetAxisRaw("ChangeGun");
 
             int number = -1;
