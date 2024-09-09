@@ -22,7 +22,7 @@ namespace Overworld
 
 
         // To change the gun, simply change this value. The value will automatically normalize itself to _ActiveTools array.
-        int _toolIndex
+        int _ToolIndex
         {
             get => AUTOVALUE_toolIdx;
             set
@@ -43,7 +43,7 @@ namespace Overworld
             get
             {
                 if (_activeTools.Count <= 0) return null;
-                try { return _activeTools[_toolIndex]; }
+                try { return _activeTools[_ToolIndex]; }
                 catch { return null; }
             }
         }
@@ -53,6 +53,7 @@ namespace Overworld
         ToolDatabase _toolDatabase;
         List<Tool> _activeTools = new List<Tool>();
         List<Tool> _tools = new List<Tool>();
+        List<KeyCode> _numberKeys = GLOBAL.AlphaNumberKeys;
         bool _anyToolIsEquipped => _currentTool != null;
         float _changeTool_TargetTime = -1;
         float _changeTool_Cooldown = .2f;
@@ -63,7 +64,7 @@ namespace Overworld
             InitializeToolList();
             CanvasManager.e_OnCurrentInterfaceChanged += OnCanvasInterfaceChanged;
 
-            _toolIndex = 0;
+            _ToolIndex = 0;
         }
 
         void OnCanvasInterfaceChanged(object sender, IUserInterface e)
@@ -90,11 +91,11 @@ namespace Overworld
                 if (Input.GetButtonDown("Fire1")) _currentTool?.StartFiring();
                 else if (Input.GetButtonUp("Fire1")) _currentTool?.StopFiring();
 
-                TryChangeTool(Input.GetAxisRaw("ChangeGun")); 
+                CheckChangeTool(); 
             }
         }
 
-        void RefreshTools() => _toolIndex = _toolIndex;
+        void RefreshTools() => _ToolIndex = _ToolIndex;
 
         public void ActivateTool_ViaButton(string idOrName) => TryActivateTool(idOrName);
         public bool TryActivateTool(string idOrName)
@@ -137,15 +138,51 @@ namespace Overworld
             return true;
         }
 
-        void TryChangeTool(float v)
+        void CheckChangeTool()
         {
-            if (v == 0) return;
-            if (_changeTool_TargetTime >= Time.time) return;
+            float v = Input.GetAxisRaw("ChangeGun");
 
-            v = v > 0 ? 1 : -1;
-            _toolIndex += (int)v;
+            int number = -1;
 
-            _changeTool_TargetTime = Time.time + _changeTool_Cooldown;
+            if(Input.anyKeyDown)
+            {
+                foreach (var key in _numberKeys)
+                {
+                    if (Input.GetKeyDown(key))
+                    {
+                        string keyStr = key.ToString();
+
+                        if (keyStr.Contains("Alpha"))
+                        {
+                            try { number = int.Parse(key.ToString().Replace("Alpha", "")); }
+                            catch { number = -1; };
+                        }
+
+                        if (number != -1) break;
+                    }
+                }
+            }
+
+            if (v != 0)
+            {
+                if (_changeTool_TargetTime >= Time.time) return;
+
+                v = v > 0 ? 1 : -1;
+                _ToolIndex += (int)v;
+
+                _changeTool_TargetTime = Time.time + _changeTool_Cooldown;
+            }
+            else if (number != -1)
+            {
+                if (number == 0)
+                { number = 10; }
+                number--;
+
+                if (_ToolIndex == number) return;
+                if (number >= _activeTools.Count) return;
+
+                _ToolIndex = number;
+            }
         }
 
         Tool FindInAllTools(string idOrDisplayName) => _tools.Find(x => x.Data.ID == idOrDisplayName || x.Data.DisplayName == idOrDisplayName);

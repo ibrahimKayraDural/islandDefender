@@ -101,7 +101,7 @@ namespace GameUI
         }
 
         public void ToggleInventory() => SetEnablityGetter(!IsOpen);
-        public void RefreshInventory() => (this as IInventoryCellGrid).RefreshGrid(PlayerInstance.Instance.InventoryREF.Items.ToArray(), _InventoryCellParent, _CellPrefab);
+        public void RefreshInventory() => (this as IInventoryCellGrid).RefreshGrid(PlayerInstance.Instance.Inventory_Ref.Items.ToArray(), _InventoryCellParent, _CellPrefab);
 
         public void OnEnablityChanged(bool changedTo)
         {

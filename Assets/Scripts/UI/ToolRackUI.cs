@@ -38,7 +38,7 @@ namespace GameUI
 
         void Start()
         {
-            _playerToolController = PlayerInstance.Instance.PlayerToolControllerREF;
+            _playerToolController = PlayerInstance.Instance.PlayerToolController_Ref;
             _gameplayManager = GameplayManager.Instance;
 
             Refresh();

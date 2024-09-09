@@ -93,7 +93,7 @@ public class CameraManager : MonoBehaviour
 
         if (runAnimation)
         {
-            Overworld.PlayerController pc = PlayerInstance.Instance.PlayerControllerREF;
+            Overworld.PlayerController pc = PlayerInstance.Instance.PlayerController_Ref;
             pc.AddMovementModifierForSeconds("CameraManager2", Overworld.MovementMode.Locked, _WalkDuration + _StopDuration, true);
             pc.AddMovementModifierForSeconds("CameraManager1", Overworld.MovementMode.Repeating, _WalkDuration, true); 
         }

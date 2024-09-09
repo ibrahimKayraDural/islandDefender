@@ -55,6 +55,12 @@ namespace Overworld
 
         private void Update()
         {
+            //Delete this before taking a final build
+            Debugmethod();
+        }
+
+        void Debugmethod()
+        {
             if (Input.GetKeyDown(KeyCode.P))
                 SlotCount++;
             if (Input.GetKeyDown(KeyCode.O))
@@ -73,10 +79,7 @@ namespace Overworld
             }
             if (Input.GetKeyDown(KeyCode.K))
                 _slots[_slots.Count - 1] = null;
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-                RemoveAtIndex(1);
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-                DropItemAtIndex(3, transform.position);
+
             if (Input.GetKeyDown(KeyCode.C))
                 Clean();
             if (Input.GetKeyDown(KeyCode.J))

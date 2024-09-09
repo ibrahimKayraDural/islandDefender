@@ -35,12 +35,6 @@ public class TestScript : MonoBehaviour
         else if (Input.GetMouseButtonDown(1)) RMB_WasPressed();
         else if (Input.GetMouseButtonDown(2)) MMB_WasPressed();
         #endregion
-
-        _Tmesh.text = "";
-        foreach (var item in CameraManager.Instance._camerasWithTag)
-        {
-            //_Tmesh.text += item.Value.Key + " " + item.Value.Value.Item1.gameObject + "\n";
-        }
     }
 
     public void TestMethod()//this is hooked up with the button in the inspector

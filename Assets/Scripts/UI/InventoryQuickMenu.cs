@@ -124,7 +124,7 @@ public class InventoryQuickMenu : MonoBehaviour
 
     public void DropSelectedItem()
     {
-        PlayerInstance.Instance.InventoryREF.DropItemAtIndex(_item.CellIndex);
+        PlayerInstance.Instance.Inventory_Ref.DropItemAtIndex(_item.CellIndex);
         Close();
     }
 

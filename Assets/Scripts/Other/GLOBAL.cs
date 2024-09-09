@@ -14,6 +14,14 @@ public static class GLOBAL
     public readonly static float BaseProjectileSpeed = 5;
     public readonly static List<float> FailsafeEnemyCooldowns = new List<float>() { 5, 5, 5, 3, 3, 3, 2.5f, 2.5f, 2, 2, 2, 1 };
     public readonly static List<int> FailsafeWaveCooldowns = new List<int>() { 10, 8, 5, 5, 5, 3 };
+    public readonly static List<KeyCode> AlphaNumberKeys = new List<KeyCode>()
+    {
+        KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5, KeyCode.Alpha6, KeyCode.Alpha7, KeyCode.Alpha8, KeyCode.Alpha9, KeyCode.Alpha0,
+    };
+    public readonly static List<KeyCode> KeypadNumberKeys = new List<KeyCode>()
+    {
+        KeyCode.Keypad1, KeyCode.Keypad2, KeyCode.Keypad3, KeyCode.Keypad4, KeyCode.Keypad5, KeyCode.Keypad6, KeyCode.Keypad7, KeyCode.Keypad8, KeyCode.Keypad9, KeyCode.Keypad0,
+    };
 
     #endregion
 
