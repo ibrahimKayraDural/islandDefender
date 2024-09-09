@@ -18,17 +18,12 @@ namespace TowerDefence
         internal float _health;
         internal Rigidbody _rb;
         internal float _nextAttack_TargetTime = -1;
-        internal AudioManager _audioManager;
+        internal AudioManager _audioManager => AudioManager.Instance;
 
         virtual public void Awake()
         {
             _health = _data.MaxHealth;
             _rb = GetComponent<Rigidbody>();
-        }
-
-        virtual internal void Start()
-        {
-            _audioManager = AudioManager.Instance;
         }
 
         virtual internal void FixedUpdate()

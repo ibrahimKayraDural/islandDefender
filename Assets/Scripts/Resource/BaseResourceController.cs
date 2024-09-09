@@ -6,7 +6,7 @@ using TMPro;
 
 public class BaseResourceController : MonoBehaviour
 {
-    public static BaseResourceController Instance = null;
+    public static BaseResourceController Instance { get; private set; } = null;
 
     [SerializeField] TextMeshProUGUI _resourceText;
 

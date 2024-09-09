@@ -37,18 +37,29 @@ namespace Overworld
                     }
                 }
 
-                _canvasManager.RefreshInventory();
+                _CanvasManager.RefreshInventory();
             }
         }
 
         [SerializeField, Min(0)] int _slotCount = 5;
 
         ObservableCollection<InventoryItem> _slots;
-        CanvasManager _canvasManager;
+
+        CanvasManager _CanvasManager
+        {
+            get
+            {
+                if (AUTO_canvasManager == null)
+                    AUTO_canvasManager = CanvasManager.Instance;
+
+                return AUTO_canvasManager;
+            }
+        }
+        CanvasManager AUTO_canvasManager = null;
 
         void Start()
         {
-            _canvasManager = CanvasManager.Instance;
+            AUTO_canvasManager = CanvasManager.Instance;
             Clean();
             _slots.CollectionChanged += OnInventoryChanged;
         }
@@ -125,7 +136,7 @@ namespace Overworld
                         itemToUse.Count -= slot.Count;
                         slot.Count -= itemCount;
 
-                        _canvasManager.RefreshInventory();
+                        _CanvasManager.RefreshInventory();
 
                         if (slot.Count <= 0) _slots[i] = null;
                         if (itemToUse.Count <= 0) break;
@@ -169,7 +180,7 @@ namespace Overworld
                 {
                     //and return if all of the item is divided
                     itemToAdd.Count = slot.AddWithSpill(itemToAdd.Count);
-                    _canvasManager.RefreshInventory();
+                    _CanvasManager.RefreshInventory();
 
                     if (itemToAdd.Count == 0)
                     {
@@ -233,13 +244,13 @@ namespace Overworld
             Vector3 targetPos = dropPosition == null ? transform.position : dropPosition.Value;
             item.Drop(targetPos);
 
-            _canvasManager.RefreshInventory();
+            _CanvasManager.RefreshInventory();
         }
 
         bool IsNull(InventoryItem item) => GLOBAL.IsNull(item);
         void OnInventoryChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            _canvasManager.RefreshInventory();
+            _CanvasManager.RefreshInventory();
         }
 
         public int CheckEmptySpaceFor(InventoryItem item)
@@ -263,14 +274,14 @@ namespace Overworld
             if (CheckEmptySpaceFor(item) < item.Count) return false;
 
             TryAddItemWithSpill(item);
-            _canvasManager?.RefreshInventory();
+            _CanvasManager?.RefreshInventory();
             return true;
         }
         public void Clean()
         {
             _slots = new ObservableCollection<InventoryItem>(new InventoryItem[SlotCount]);
 
-            _canvasManager.RefreshInventory();
+            _CanvasManager.RefreshInventory();
         }
         public InventoryItem AddWithSpill(InventoryItem item) => TryAddItemWithSpill(item);
         public void RemoveAtIndex(int index) => SetItemAtIndex(index, null);
@@ -280,7 +291,7 @@ namespace Overworld
 
             _slots[index] = setTo;
 
-            _canvasManager.RefreshInventory();
+            _CanvasManager.RefreshInventory();
         }
     }
 }

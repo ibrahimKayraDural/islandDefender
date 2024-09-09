@@ -7,10 +7,30 @@ public class PlayerInteractor : MonoBehaviour
 {
     CanvasManager _canvasManager;
 
-    void Start()
+    void Awake()
+    {
+        SceneLoader scLoader = SceneLoader.Instance;
+        if (scLoader != null && scLoader.IsLoadingScenes)
+        {
+            scLoader.e_OnScenesAreLoaded += OnScenesAreLoaded;
+        }
+        else
+        {
+            OnScenesAreLoaded(this, System.EventArgs.Empty);
+        }
+    }
+
+    void OnScenesAreLoaded(object sender, System.EventArgs e)
     {
         _canvasManager = CanvasManager.Instance;
+
+        SceneLoader scLoader = SceneLoader.Instance;
+        if (sender != this as object && scLoader != null)
+        {
+            scLoader.e_OnScenesAreLoaded -= OnScenesAreLoaded;
+        }
     }
+
     void Update()
     {
         if (CanvasManager.SomethingIsOpen) return;
@@ -28,6 +48,6 @@ public class PlayerInteractor : MonoBehaviour
         if (Input.GetButtonDown("Interact"))
         { currentInteractable?.OnInteracted(gameObject); }
 
-        _canvasManager.SetInteractionText(currentInteractable == null ? null : currentInteractable.InteractDescription);
+        _canvasManager?.SetInteractionText(currentInteractable == null ? null : currentInteractable.InteractDescription);
     }
 }

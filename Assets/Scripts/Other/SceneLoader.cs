@@ -61,4 +61,28 @@ public class SceneLoader : MonoBehaviour
         yield return new WaitForSeconds(.1f);
         SceneManager.UnloadSceneAsync(_LoadingScene);
     }
+
+    //void Awake()// or Start
+    //{
+    //    SceneLoader scLoader = SceneLoader.Instance;
+    //    if (scLoader != null && scLoader.IsLoadingScenes)
+    //    {
+    //        scLoader.e_OnScenesAreLoaded += OnScenesAreLoaded;
+    //    }
+    //    else
+    //    {
+    //        OnScenesAreLoaded(this, System.EventArgs.Empty);
+    //    }
+    //}
+
+    //void OnScenesAreLoaded(object sender, System.EventArgs e)
+    //{
+    //    //Run Code Here
+
+    //    SceneLoader scLoader = SceneLoader.Instance;
+    //    if (sender != this as object && scLoader != null)
+    //    {
+    //        scLoader.e_OnScenesAreLoaded -= OnScenesAreLoaded;
+    //    }
+    //}
 }

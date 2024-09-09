@@ -26,15 +26,22 @@ namespace GameUI
             KeyCode.I
         };
         InventoryCellScript _oldCell;
-        Inventory _inventory;
+
+        Inventory _Inventory
+        {
+            get
+            {
+                if(AUTO_inventory == null)
+                    AUTO_inventory = PlayerInstance.Instance.Inventory_Ref;
+
+                return AUTO_inventory;
+            }
+        }
+        Inventory AUTO_inventory = null;
 
         void Awake()
         {
             _GraphicRaycaster.RunOnUpdate = false;
-        }
-        void Start()
-        {
-            _inventory = PlayerInstance.Instance.Inventory_Ref;
         }
 
         public bool TrySetCurrentChest(ChestScript setTo)
@@ -122,11 +129,11 @@ namespace GameUI
         {
             if (cell == null || cell.IsInitialized == false) return;
             if (CurrentChest == null) return;
-            if (_inventory == null) return;
+            if (_Inventory == null) return;
 
             bool isChest = cell.ID == "chest-cell";
-            IContainer<InventoryItem> from = isChest ? CurrentChest : _inventory;
-            IContainer<InventoryItem> to = isChest ? _inventory : CurrentChest;
+            IContainer<InventoryItem> from = isChest ? CurrentChest : _Inventory;
+            IContainer<InventoryItem> to = isChest ? _Inventory : CurrentChest;
 
             InventoryItem item = cell.ItemData;
 

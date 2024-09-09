@@ -21,7 +21,11 @@ public class GameplayManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        else if (Instance != this) Destroy(gameObject);
+        else if (Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
         _toolDatabase = GLOBAL.GetToolDatabase();
     }

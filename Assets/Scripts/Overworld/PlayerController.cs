@@ -45,9 +45,31 @@ namespace Overworld
                 return MovementMode.Normal;
             }
         }
-        Camera _camera => _cameraManager.CurrentCamera;
+        Camera _camera => _CameraManager.CurrentCamera;
 
-        CameraManager _cameraManager;
+        CameraManager _CameraManager
+        {
+            get
+            {
+                if (AUTO_cameraManager == null)
+                    AUTO_cameraManager = CameraManager.Instance;
+
+                return AUTO_cameraManager;
+            }
+        }
+        CameraManager AUTO_cameraManager = null;
+
+        CanvasManager _CanvasManager
+        {
+            get
+            {
+                if (AUTO_canvasManager == null)
+                    AUTO_canvasManager = CanvasManager.Instance;
+
+                return AUTO_canvasManager;
+            }
+        }
+        CanvasManager AUTO_canvasManager = null;
 
         public List<Tuple<string, MovementMode>> _movementModeModifiers = new List<Tuple<string, MovementMode>>();
         bool _acceptMovementModeModifier = true;
@@ -63,13 +85,11 @@ namespace Overworld
             _RB.angularDrag = 1000000;
             _RB.drag = 1000000;
             _RB.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
-
-            _cameraManager = CameraManager.Instance;
         }
 
         void Update()
         {
-            if (Input.GetButtonDown("Inventory")) CanvasManager.Instance?.ToggleInventory();
+            if (Input.GetButtonDown("Inventory")) _CanvasManager?.ToggleInventory();
 
             if(Time.timeScale <= 0 || _camera == null) return;
 

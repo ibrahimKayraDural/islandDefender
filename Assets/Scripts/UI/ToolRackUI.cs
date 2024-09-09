@@ -38,10 +38,29 @@ namespace GameUI
 
         void Start()
         {
+            SceneLoader scLoader = SceneLoader.Instance;
+            if (scLoader != null && scLoader.IsLoadingScenes)
+            {
+                scLoader.e_OnScenesAreLoaded += OnScenesAreLoaded;
+            }
+            else
+            {
+                OnScenesAreLoaded(this, System.EventArgs.Empty);
+            }
+        }
+
+        void OnScenesAreLoaded(object sender, System.EventArgs e)
+        {
             _playerToolController = PlayerInstance.Instance.PlayerToolController_Ref;
             _gameplayManager = GameplayManager.Instance;
 
             Refresh();
+
+            SceneLoader scLoader = SceneLoader.Instance;
+            if (sender != this as object && scLoader != null)
+            {
+                scLoader.e_OnScenesAreLoaded -= OnScenesAreLoaded;
+            }
         }
 
         void Refresh()

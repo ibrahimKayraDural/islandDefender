@@ -10,12 +10,7 @@ namespace Overworld
         [SerializeField] internal float speedMultiplier = 1;
         [SerializeField] internal AudioClip ShootSFX;
 
-        AudioManager _audioManager;
-
-        void Start()
-        {
-            _audioManager = AudioManager.Instance;
-        }
+        AudioManager _audioManager => AudioManager.Instance;
 
         internal override void ActivationImplementation()
         {

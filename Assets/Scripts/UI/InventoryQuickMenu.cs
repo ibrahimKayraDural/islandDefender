@@ -11,7 +11,7 @@ using UnityEngine.UI;
 public class InventoryQuickMenu : MonoBehaviour
 {
     public static bool IsOpen => Instance != null;
-    public static InventoryQuickMenu Instance = null;
+    public static InventoryQuickMenu Instance { get; private set; } = null;
 
     [SerializeField] TextMeshProUGUI _TitleTM;
     [SerializeField] Transform _ButtonParent;

@@ -15,7 +15,7 @@ public class MainMenuUI : MonoBehaviour
 
     public void Play()
     {
-        SceneLoader.Instance.LoadScenes(new List<string>() { PlayerScene, StartLevel });
+        SceneLoader.Instance.LoadScenes(new List<string>() { StartLevel, PlayerScene });
     }
     public void ToDefaultCanvas()
     {

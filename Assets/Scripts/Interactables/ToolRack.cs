@@ -6,16 +6,21 @@ public class ToolRack : ProximityInteractable
 {
     public override string InteractDescription { get => "Change Your Tools"; set { } }
 
-    CanvasManager _canvasManager;
-
-    void Start()
+    CanvasManager CanvasManagerGetter
     {
-        _canvasManager = CanvasManager.Instance;
+        get
+        {
+            if (AUTO_canvasManager == null)
+                AUTO_canvasManager = CanvasManager.Instance;
+
+            return AUTO_canvasManager;
+        }
     }
+    CanvasManager AUTO_canvasManager = null;
 
     public override void OnInteracted(GameObject interactor)
     {
-        if (_canvasManager.TrySetCurrentRackOfToolRackUI(this))
+        if (CanvasManagerGetter.TrySetCurrentRackOfToolRackUI(this))
         {
             base.OnInteracted(interactor);
         }
@@ -25,7 +30,7 @@ public class ToolRack : ProximityInteractable
     {
         if (setTo == b_isOpen) return;
 
-        _canvasManager.SetToolRackUIEnablity(setTo);
+        CanvasManagerGetter.SetToolRackUIEnablity(setTo);
 
         base.SetOpennes(setTo);
     }
@@ -33,6 +38,6 @@ public class ToolRack : ProximityInteractable
     internal override void OnClosed()
     {
         base.OnClosed();
-        _canvasManager.TrySetCurrentRackOfToolRackUI(null);
+        CanvasManagerGetter.TrySetCurrentRackOfToolRackUI(null);
     }
 }

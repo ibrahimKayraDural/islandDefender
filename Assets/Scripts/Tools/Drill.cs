@@ -11,17 +11,12 @@ namespace Overworld
         [SerializeField] Animator _Animator;
         [SerializeField] AudioClip _RunningSFX;
 
-        AudioManager _audioManager;
+        AudioManager _audioManager => AudioManager.Instance;
         readonly string SFX_ID = "DrillTool_Running";
 
         public void Awake()
         {
             _Rigidbody.detectCollisions = false;
-        }
-
-        internal void Start()
-        {
-            _audioManager = AudioManager.Instance;
         }
 
         internal override IEnumerator FireIEnum()

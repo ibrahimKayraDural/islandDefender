@@ -7,20 +7,26 @@ public class CameraTrigger : MonoBehaviour
     [SerializeField] string _TagToEnter = GLOBAL.UnassignedString;
     [SerializeField] List<string> _TagsToInteract;
 
-    CameraManager _camManager;
-    string _tagToReturn = null;
-
-    void Start()
+    CameraManager _CamManager
     {
-        _camManager = CameraManager.Instance;
+        get
+        {
+            if (AUTO_camManager == null)
+                AUTO_camManager = CameraManager.Instance;
+
+            return AUTO_camManager;
+        }
     }
+    CameraManager AUTO_camManager =null;
+
+    string _tagToReturn = null;
 
     void OnTriggerEnter(Collider other)
     {
         if (_TagsToInteract.Contains(other.gameObject.tag) == false) return;
 
-        _tagToReturn = _camManager.CurrentCamera.gameObject.tag;
-        _camManager.TrySetCameraWithTag(_TagToEnter);
+        _tagToReturn = _CamManager.CurrentCamera.gameObject.tag;
+        _CamManager.TrySetCameraWithTag(_TagToEnter);
     }
 
     void OnTriggerExit(Collider other)
@@ -28,7 +34,7 @@ public class CameraTrigger : MonoBehaviour
         if (_tagToReturn == null) return;
         if (_TagsToInteract.Contains(other.gameObject.tag) == false) return;
 
-        _camManager.TrySetCameraWithTag(_tagToReturn);
+        _CamManager.TrySetCameraWithTag(_tagToReturn);
         _tagToReturn = null;
     }
 }
