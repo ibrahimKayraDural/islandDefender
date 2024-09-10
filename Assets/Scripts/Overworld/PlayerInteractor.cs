@@ -16,8 +16,15 @@ public class PlayerInteractor : MonoBehaviour
         }
         else
         {
-            OnScenesAreLoaded(this, System.EventArgs.Empty);
+            StartCoroutine(DelayedSceneLoaded(.2f));
         }
+    }
+
+    IEnumerator DelayedSceneLoaded(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        OnScenesAreLoaded(this, System.EventArgs.Empty);
     }
 
     void OnScenesAreLoaded(object sender, System.EventArgs e)
