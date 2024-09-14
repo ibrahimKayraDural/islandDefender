@@ -24,3 +24,4 @@ MonoBehaviour:
   _EnemyTypes: 00000000
   _AttackSFX: {fileID: 8300000, guid: da51225feb1d1a84f925d2ff1ecccef1, type: 3}
   _enemyPrefab: {fileID: 8660632794050134643, guid: be09744632801184cac5d13379f3b84a, type: 3}
+  _EnemyUISprite: {fileID: 21300000, guid: 8089711a481317e4cbd6a03be772ede6, type: 3}

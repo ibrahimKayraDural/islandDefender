@@ -17,6 +17,7 @@ namespace TowerDefence
         public List<EnemyType> EnemyTypes => _EnemyTypes;
         public AudioClip AttackSFX => _AttackSFX;
         public GameObject EnemyPrefab => _enemyPrefab;
+        public Sprite EnemyUISprite => _EnemyUISprite;
 
         [SerializeField, Min(.1f)] float _MaxHealth = 1;
         [SerializeField, Min(0)] float _Speed = 1;
@@ -28,6 +29,8 @@ namespace TowerDefence
         [SerializeField] List<EnemyType> _EnemyTypes = new List<EnemyType>() { EnemyType.None };
         [SerializeField] AudioClip _AttackSFX;
         [SerializeField] GameObject _enemyPrefab;
+        [SerializeField] Sprite _EnemyUISprite;
+
 
         public static EnemyData HandleWildCard(string wildCardID, string wildCardValue)
         {

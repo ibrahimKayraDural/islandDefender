@@ -17,7 +17,8 @@ namespace TowerDefence
         [SerializeField, Min(0)] int _StartCooldown = 2;
         [SerializeField] bool _WaitUntillEnemiesAreDead = true;
         [SerializeField] bool _RepeatLastWave;
-        [SerializeField] List<Transform> _spawners = new List<Transform>();
+        [SerializeField] List<Spawner> _spawners = new List<Spawner>();
+        [SerializeField] GameObject _SpawnerPrefab = null;
         [SerializeField] BaseManager _BaseMngr;
         [SerializeField] TextMeshProUGUI _TimeTM;
 
@@ -33,7 +34,6 @@ namespace TowerDefence
             }
         }
         int _waveCount => CurrentSwarm.Waves.Count;
-        string spawnerName = "EnemySpawner";
         SwarmDataValueContainer _changedSwarm = null;
         List<int> _waveCooldownArr = GLOBAL.FailsafeWaveCooldowns;
         int _currentWaveCooldown
@@ -41,6 +41,14 @@ namespace TowerDefence
             get
             {
                 return _currentWaveIndex < _waveCooldownArr.Count && _currentWaveIndex >= 0 ? _waveCooldownArr[_currentWaveIndex] : _waveCooldownArr[_waveCooldownArr.Count - 1];
+            }
+        }
+
+        void Awake()
+        {
+            foreach (var item in _spawners)
+            {
+                item.SetEnemyIndicators(null);
             }
         }
 
@@ -156,7 +164,7 @@ namespace TowerDefence
 
             for (int i = 0; i < uniqueLaneIndexes.Count; i++)
             {
-                int randomIndex = UnityEngine.Random.Range(0,spawnerIndexes.Count);
+                int randomIndex = UnityEngine.Random.Range(0, spawnerIndexes.Count);
 
                 for (int n = 0; n < enemiesWithLanes.Count; n++)
                 {
@@ -181,7 +189,7 @@ namespace TowerDefence
             {
                 SpawnNextWave(ref enemiesWithLanes);
 
-                yield return new WaitForSeconds(enemyCooldownArrCount > i ? enemyCooldownArr[i] : enemyCooldownArr[enemyCooldownArrCount-1]);
+                yield return new WaitForSeconds(enemyCooldownArrCount > i ? enemyCooldownArr[i] : enemyCooldownArr[enemyCooldownArrCount - 1]);
 
                 if (i == 10000) Debug.LogError("Failsafe cap was reached while spawning waves");
             }
@@ -209,7 +217,7 @@ namespace TowerDefence
             int selectedIndex = currentWave.FindIndex(new Predicate<KeyValuePair<S_EnemyWithCount, int>>(x => x.Key.Equals(selectedEnemy) && x.Value == laneInt));
 
             GameObject prefab = selectedEnemy.Enemy.EnemyPrefab;
-            prefab = Instantiate(prefab, _spawners[laneInt].position, prefab.transform.rotation);
+            prefab = Instantiate(prefab, _spawners[laneInt].Position, prefab.transform.rotation);
             ActiveEnemies.Add(prefab);
 
             currentWave[selectedIndex] = new KeyValuePair<S_EnemyWithCount, int>(new S_EnemyWithCount(selectedEnemy.Enemy, selectedEnemy.Count - 1), laneInt);
@@ -244,7 +252,8 @@ namespace TowerDefence
 
         IEnumerator RunWaveCooldown(int cooldown)
         {
-            while(true)
+
+            while (true)
             {
                 if (cooldown <= 0) break;
                 _TimeTM.text = $"Untill Next Wave : {cooldown}";
@@ -252,6 +261,7 @@ namespace TowerDefence
                 cooldown--;
             }
             _TimeTM.text = "";
+
             StartWave();
         }
 
@@ -271,9 +281,11 @@ namespace TowerDefence
 
         public void SpawnSpawnerAt(Vector3 position, Transform parent = null)
         {
-            Transform temp = new GameObject(spawnerName).transform;
+            Transform temp = Instantiate(_SpawnerPrefab).transform;
             if (parent != null) temp.parent = parent;
             temp.position = position;
+
+            _spawners.Add(temp.GetComponent<Spawner>());
         }
         public void DeleteSpawners()
         {
@@ -286,7 +298,7 @@ namespace TowerDefence
                 else
                     Destroy(target.gameObject);
             }
-            _spawners = new List<Transform>();
+            _spawners = new List<Spawner>();
         }
-    } 
+    }
 }

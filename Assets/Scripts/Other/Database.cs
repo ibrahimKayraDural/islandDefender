@@ -7,7 +7,12 @@ public abstract class Database<T> : ScriptableObject where T : Data<T>
     public List<T> DataList => GetDataAsType();
     [SerializeField] internal List<Data<T>> _DataList = new List<Data<T>>();
 
-    public T GetDataByID(string id) => DataList.Find(x => x.ID == id);
+    public T GetDataByID(string id)
+    {
+        if (id == null) return null;
+
+        return DataList.Find(x => x.ID == id);
+    }
     public T GetDataByDisplayName(string displayName) => DataList.Find(x => x.DisplayName == displayName);
 
     List<T> GetDataAsType()
