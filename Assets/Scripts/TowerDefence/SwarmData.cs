@@ -176,8 +176,10 @@ namespace TowerDefence
             _enemy = null;
         }
 
-        void LockEnemyData()
+        public void LockEnemyData()
         {
+            if (_isWildCard == false) return;
+
             EnemyData data = EnemyData.HandleWildCard(_wildCardID, _wildCardValue);
 
             if (data == null)

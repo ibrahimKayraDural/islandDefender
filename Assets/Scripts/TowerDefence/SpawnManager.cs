@@ -120,9 +120,27 @@ namespace TowerDefence
             WaveIsActive = false;
         }
 
+
+        List<KeyValuePair<S_EnemyWithCount, int>> _enemiesWithLanes = new List<KeyValuePair<S_EnemyWithCount, int>>();
+        List<float> _enemyCooldownArr = new List<float>();
+        int _enemyCooldownArrCount;
         IEnumerator WaveCoroutine()
         {
-            List<KeyValuePair<S_EnemyWithCount, int>> enemiesWithLanes = new List<KeyValuePair<S_EnemyWithCount, int>>();
+            //looping untill either no data is left in wave data or the failsafe cap is reached
+            for (int i = 0; _enemiesWithLanes.Count > 0 && i <= 10000; i++)
+            {
+                SpawnNextWave(ref _enemiesWithLanes);
+
+                yield return new WaitForSeconds(_enemyCooldownArrCount > i ? _enemyCooldownArr[i] : _enemyCooldownArr[_enemyCooldownArrCount - 1]);
+
+                if (i == 10000) Debug.LogError("Failsafe cap was reached while spawning waves");
+            }
+
+            if (ActiveEnemies.Count <= 0 || _WaitUntillEnemiesAreDead == false) OnWaveEnded(this, "waveEnd");
+        }
+        void SetWaveUp()
+        {
+            _enemiesWithLanes = new List<KeyValuePair<S_EnemyWithCount, int>>();
 
             //instantiating wave data
             List<int> laneIndexes = new List<int>();
@@ -132,9 +150,18 @@ namespace TowerDefence
 
                 for (int n = 0; n < lane.Enemies.Count; n++)
                 {
+
+                    //locking enemies
+
+                    lane.Enemies[n] = new S_EnemyWithCount(lane.Enemies[n].Enemy, lane.Enemies[n].Count);
+
+                    //locking enemies end
+
+
                     if (lane.Enemies[n].Count <= 0) continue;
                     if (lane.Enemies[n].Enemy == null) continue;
-                    enemiesWithLanes.Add(new KeyValuePair<S_EnemyWithCount, int>(lane.Enemies[n], i));
+
+                    _enemiesWithLanes.Add(new KeyValuePair<S_EnemyWithCount, int>(lane.Enemies[n], i));
                     if (laneIndexes.Contains(i) == false) laneIndexes.Add(i);
                 }
             }
@@ -144,7 +171,7 @@ namespace TowerDefence
             for (int i = 0; i < laneIndexes.Count - _spawners.Count; i++)
             {
                 int randomIndex = UnityEngine.Random.Range(0, laneIndexes.Count);
-                enemiesWithLanes.FindAll(x => x.Value == randomIndex).ForEach(y => enemiesWithLanes.Remove(y));
+                _enemiesWithLanes.FindAll(x => x.Value == randomIndex).ForEach(y => _enemiesWithLanes.Remove(y));
             }
 
 
@@ -153,12 +180,12 @@ namespace TowerDefence
             List<int> oldLaneIndexes = new List<int>();
             List<int> uniqueLaneIndexes = new List<int>();
             for (int i = 0; i < _spawners.Count; i++) spawnerIndexes.Add(i);
-            for (int i = 0; i < enemiesWithLanes.Count; i++) oldLaneIndexes.Add(enemiesWithLanes[i].Value);
-            for (int i = 0; i < enemiesWithLanes.Count; i++)
+            for (int i = 0; i < _enemiesWithLanes.Count; i++) oldLaneIndexes.Add(_enemiesWithLanes[i].Value);
+            for (int i = 0; i < _enemiesWithLanes.Count; i++)
             {
-                if (uniqueLaneIndexes.Contains(enemiesWithLanes[i].Value) == false)
+                if (uniqueLaneIndexes.Contains(_enemiesWithLanes[i].Value) == false)
                 {
-                    uniqueLaneIndexes.Add(enemiesWithLanes[i].Value);
+                    uniqueLaneIndexes.Add(_enemiesWithLanes[i].Value);
                 }
             }
 
@@ -166,35 +193,21 @@ namespace TowerDefence
             {
                 int randomIndex = UnityEngine.Random.Range(0, spawnerIndexes.Count);
 
-                for (int n = 0; n < enemiesWithLanes.Count; n++)
+                for (int n = 0; n < _enemiesWithLanes.Count; n++)
                 {
                     if (oldLaneIndexes[n] == uniqueLaneIndexes[i])
                     {
-                        enemiesWithLanes[n] = new KeyValuePair<S_EnemyWithCount, int>(enemiesWithLanes[n].Key, spawnerIndexes[randomIndex]);
+                        _enemiesWithLanes[n] = new KeyValuePair<S_EnemyWithCount, int>(_enemiesWithLanes[n].Key, spawnerIndexes[randomIndex]);
                     }
                 }
 
                 spawnerIndexes.RemoveAt(randomIndex);
             }
 
-
             //registering cooldown values
-            List<float> enemyCooldownArr = CurrentSwarm.DefaultEnemyCooldowns;
-            if (enemyCooldownArr == null || enemyCooldownArr.Count <= 0) enemyCooldownArr = GLOBAL.FailsafeEnemyCooldowns;
-            int enemyCooldownArrCount = enemyCooldownArr.Count;
-
-
-            //looping untill either no data is left in wave data or the failsafe cap is reached
-            for (int i = 0; enemiesWithLanes.Count > 0 && i <= 10000; i++)
-            {
-                SpawnNextWave(ref enemiesWithLanes);
-
-                yield return new WaitForSeconds(enemyCooldownArrCount > i ? enemyCooldownArr[i] : enemyCooldownArr[enemyCooldownArrCount - 1]);
-
-                if (i == 10000) Debug.LogError("Failsafe cap was reached while spawning waves");
-            }
-
-            if (ActiveEnemies.Count <= 0 || _WaitUntillEnemiesAreDead == false) OnWaveEnded(this, "waveEnd");
+            _enemyCooldownArr = CurrentSwarm.DefaultEnemyCooldowns;
+            if (_enemyCooldownArr == null || _enemyCooldownArr.Count <= 0) _enemyCooldownArr = GLOBAL.FailsafeEnemyCooldowns;
+            _enemyCooldownArrCount = _enemyCooldownArr.Count;
         }
 
         void SpawnNextWave(ref List<KeyValuePair<S_EnemyWithCount, int>> currentWave)
@@ -250,8 +263,50 @@ namespace TowerDefence
             StartCoroutine(nameof(RunWaveCooldown), cooldown);
         }
 
+        void SetIndicatorValues(bool toNull = false)
+        {
+            if(toNull)
+            {
+                foreach (var item in _spawners) item.SetEnemyIndicators(null);
+
+                return;
+            }
+
+            //First is lane second is enemies in it
+            List<List<EnemyData>> enemies = new List<List<EnemyData>>();
+
+            for (int i = 0; i < _spawners.Count; i++)
+            {
+                enemies.Add(null);
+            }
+
+            foreach (var item in _enemiesWithLanes)
+            {
+                int laneInt = item.Value;
+                if (laneInt >= enemies.Count) continue;
+
+                EnemyData data = item.Key.Enemy;
+
+                if(enemies[laneInt] == null)
+                {
+                    enemies[laneInt] = new List<EnemyData>();
+                }
+
+                if(enemies[laneInt].Contains(data) == false)
+                {
+                    enemies[laneInt].Add(data);
+                }
+            }
+
+            for (int i = 0; i < _spawners.Count; i++)
+            {
+                _spawners[i].SetEnemyIndicators(enemies[i]?.ToArray());
+            }
+        }
         IEnumerator RunWaveCooldown(int cooldown)
         {
+            SetWaveUp();
+            SetIndicatorValues();
 
             while (true)
             {
@@ -262,6 +317,7 @@ namespace TowerDefence
             }
             _TimeTM.text = "";
 
+            SetIndicatorValues(true);
             StartWave();
         }
 

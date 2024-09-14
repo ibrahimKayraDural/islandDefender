@@ -14,6 +14,7 @@ public class TestScript : MonoBehaviour
     [SerializeField] Image _Img;
     [SerializeField] bool _ShowDebugLogs;
 
+    [SerializeField] S_EnemyWithCount data;
     void Awake()
     {
         WriteDebug("Awake ran");
@@ -59,6 +60,8 @@ public class TestScript : MonoBehaviour
     private void O_WasPressed()
     {
         WriteDebug("O_WasPressed");
+
+        Debug.Log(data.Enemy);
     }
 
     private void P_WasPressed()
