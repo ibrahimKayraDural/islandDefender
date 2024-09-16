@@ -6,10 +6,12 @@ namespace TowerDefence
 {
     public class Turret_BasicShooter : TurretUnit
     {
-        [SerializeField] Transform ShootPoint;
-        [SerializeField] float rayLenght = 100;
-        [SerializeField] internal LayerMask _enemyMask = 1 << 7;  //7th layer which is TowerDefenceEnemy
+        [SerializeField] Transform _VisualBarrel;
+        [SerializeField] float _RayLenght = 100;
+        [SerializeField] internal LayerMask _EnemyMask = 1 << 7;
+
         Ray _ray;
+        Vector3 _shootPoint;
 
         public override void Initialize(TurretData data, TowerDefenceTileScript tile)
         {
@@ -21,8 +23,9 @@ namespace TowerDefence
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
             _health = _MaxHealth;
+            _shootPoint = transform.position + Vector3.up * GLOBAL.TDColliderElevation;
 
-            _ray = new Ray(ShootPoint.position, transform.forward);
+            _ray = new Ray(_shootPoint, transform.forward);
 
             tile.SetOccupied(this);
             StartCoroutine(nameof(ActivationLoop), _data.ActivationCooldown);
@@ -32,7 +35,7 @@ namespace TowerDefence
 
         internal override void ActivationMethod()
         {
-            if (Physics.Raycast(_ray, rayLenght, _enemyMask))
+            if (Physics.Raycast(_ray, _RayLenght, _EnemyMask))
             {
                 Shoot();
             }
@@ -41,14 +44,17 @@ namespace TowerDefence
         void Shoot()
         {
             if (_data.ProjectilePrefab.TryGetComponent<Projectile>(out _) == false) return;
-            Projectile proj = Instantiate(_data.ProjectilePrefab, ShootPoint.position, Quaternion.identity).GetComponent<Projectile>();
-            proj.Initialize(transform.forward, _data.ProjectileSpeedMultiplier);
+
+            Vector3 displacement = _VisualBarrel.position - _shootPoint;
+
+            Projectile proj = Instantiate(_data.ProjectilePrefab, _shootPoint, Quaternion.identity).GetComponent<Projectile>();
+            proj.Initialize(transform.forward, displacement, _data.ProjectileSpeedMultiplier);
         }
 
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawLine(_ray.origin, _ray.origin + _ray.direction * rayLenght);
+            Gizmos.DrawLine(_ray.origin, _ray.origin + _ray.direction * _RayLenght);
         }
     }
 }

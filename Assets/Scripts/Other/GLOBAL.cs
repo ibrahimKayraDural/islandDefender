@@ -10,6 +10,7 @@ public static class GLOBAL
     #region Variables
 
     public readonly static string UnassignedString = "UNASSIGNED";
+    public readonly static float TDColliderElevation = 1f;
 
     public readonly static float BaseProjectileSpeed = 5;
     public readonly static List<float> FailsafeEnemyCooldowns = new List<float>() { 5, 5, 5, 3, 3, 3, 2.5f, 2.5f, 2, 2, 2, 1 };

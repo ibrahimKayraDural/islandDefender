@@ -15,7 +15,7 @@ namespace Overworld
         internal override void ActivationImplementation()
         {
             Projectile proj = Instantiate(_Projectile.gameObject, _Barrel.position, Quaternion.identity).GetComponent<Projectile>();
-            proj.Initialize(_direction, speedMultiplier);
+            proj.Initialize(_direction, speedMultiplier: speedMultiplier);
 
             _audioManager?.PlayClip(this + "_shooting", ShootSFX);
         }
