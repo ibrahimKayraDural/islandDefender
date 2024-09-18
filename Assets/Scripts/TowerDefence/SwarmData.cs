@@ -15,10 +15,13 @@ namespace TowerDefence
         {
             get
             {
-                List<S_Wave> tempWave = Waves;
-                List<float> tempDEC = DefaultEnemyCooldowns;
-                List<int> tempDWC = DefaultWaveCooldowns;
-                return new SwarmDataValueContainer(tempWave, tempDEC, tempDWC);
+                List<S_Wave> waves = new List<S_Wave>();
+                for (int i = 0; i < Waves.Count; i++)
+                {
+                    waves.Add((S_Wave)Waves[i].Clone());
+                }
+
+                return new SwarmDataValueContainer(waves, DefaultEnemyCooldowns, DefaultWaveCooldowns);
             }
         }
 
@@ -60,7 +63,12 @@ namespace TowerDefence
         {
             if (setTo.Waves == null || setTo.Waves.Count <= 0) return;
 
-            Waves = setTo.Waves;
+            Waves = new List<S_Wave>();
+            for (int i = 0; i < setTo.Waves.Count; i++)
+            {
+                Waves.Add((S_Wave)setTo.Waves[i].Clone());
+            }
+
             DefaultEnemyCooldowns = setTo.DefaultEnemyCooldowns;
             DefaultWaveCooldowns = setTo.DefaultWaveCooldowns;
 
@@ -91,7 +99,7 @@ namespace TowerDefence
         public void Refresh() => SetSwarmValues(AsValue, false);
     }
 
-    [System.Serializable] public struct S_Wave
+    [System.Serializable] public struct S_Wave : ICloneable
     {
         public List<S_LaneGroup> Lanes;
 
@@ -107,9 +115,20 @@ namespace TowerDefence
                 return count;
             }
         }
+
+        public object Clone()
+        {
+            S_Wave wave = (S_Wave)this.MemberwiseClone();
+            wave.Lanes = new List<S_LaneGroup>();
+            for (int i = 0; i < Lanes.Count; i++)
+            {
+                wave.Lanes.Add((S_LaneGroup)Lanes[i].Clone());
+            }
+            return wave as object;
+        }
     }
 
-    [System.Serializable] public struct S_LaneGroup
+    [System.Serializable] public struct S_LaneGroup : ICloneable
     {
         public List<S_EnemyWithCount> Enemies;
 
@@ -125,9 +144,20 @@ namespace TowerDefence
                 return count;
             }
         }
+
+        public object Clone()
+        {
+            S_LaneGroup lane = (S_LaneGroup)this.MemberwiseClone();
+            lane.Enemies = new List<S_EnemyWithCount>();
+            for (int i = 0; i < Enemies.Count; i++)
+            {
+                lane.Enemies.Add((S_EnemyWithCount)Enemies[i].Clone());
+            }
+            return lane as object;
+        }
     }
 
-    [System.Serializable] public struct S_EnemyWithCount
+    [System.Serializable] public struct S_EnemyWithCount : ICloneable
     {
         public EnemyData Enemy
         {
@@ -192,6 +222,11 @@ namespace TowerDefence
             _isWildCard = false;
             _wildCardID = GLOBAL.UnassignedString;
             _wildCardValue = GLOBAL.UnassignedString;
+        }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
         }
     }
 }
