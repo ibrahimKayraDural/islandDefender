@@ -61,7 +61,8 @@ public class Projectile : MonoBehaviour
         _breakUpdate = true;
         StopAllCoroutines();
 
-        AudioManager.Instance?.PlayClip(this + "_hit", HitSfx);
+        if (playSFX)
+            AudioManager.Instance?.PlayClip(this + "_hit", HitSfx);
 
         Destroy(gameObject);
     }

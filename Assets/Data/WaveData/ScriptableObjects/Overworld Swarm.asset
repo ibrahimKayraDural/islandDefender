@@ -32,17 +32,17 @@ MonoBehaviour:
   - Lanes:
     - Enemies:
       - Count: 1
-        _enemy: {fileID: 0}
-        _isWildCard: 1
+        _enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
+        _isWildCard: 0
         _wildCardID: difficulty
-        _wildCardValue: weak
+        _wildCardValue: UNASSIGNED
   - Lanes:
     - Enemies:
       - Count: 1
-        _enemy: {fileID: 0}
-        _isWildCard: 1
-        _wildCardID: difficulty
-        _wildCardValue: weak
+        _enemy: {fileID: 11400000, guid: c17b7fcb5eb53d34b9cd4601d897cb28, type: 2}
+        _isWildCard: 0
+        _wildCardID: UNASSIGNED
+        _wildCardValue: UNASSIGNED
   DefaultEnemyCooldowns:
   - 1
   - 1
