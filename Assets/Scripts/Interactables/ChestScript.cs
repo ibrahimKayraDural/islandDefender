@@ -11,17 +11,6 @@ public class ChestScript : ProximityInteractable, IContainer<InventoryItem>
     [SerializeField, Min(1)] int _Capacity = 14;
 
     List<InventoryItem> _slots;
-    CanvasManager _CanvasManager
-    {
-        get
-        {
-            if(AUTO_canvasManager == null)
-             AUTO_canvasManager = CanvasManager.Instance;
-
-            return AUTO_canvasManager;
-        }
-    }
-    CanvasManager AUTO_canvasManager = null;
 
     void Start()
     {
@@ -116,25 +105,5 @@ public class ChestScript : ProximityInteractable, IContainer<InventoryItem>
         _slots = new List<InventoryItem>(new InventoryItem[_Capacity]);
     }
 
-    public override void OnInteracted(GameObject interactor)
-    {
-        if (_CanvasManager.TrySetCurrentChestOfChestUI(this))
-        {
-            base.OnInteracted(interactor);
-        }
-    }
-    public override void SetOpennes(bool setTo)
-    {
-        if (setTo == b_isOpen) return;
-
-        _CanvasManager.SetChestUIEnablity(setTo);
-
-        base.SetOpennes(setTo);
-    }
-    internal override void OnClosed()
-    {
-        base.OnClosed();
-        _CanvasManager.TrySetCurrentChestOfChestUI(null);
-    }
     bool IsNull(InventoryItem item) => GLOBAL.IsNull(item);
 }

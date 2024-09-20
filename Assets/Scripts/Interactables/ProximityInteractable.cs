@@ -1,6 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+// -----  IMPORTANT INFO  -----
+
+//Do not forget to register new proximityInteractables at CanvasManager/TrySetCurrentProximityInteractabe()
 
 public abstract class ProximityInteractable : MonoBehaviour, IInteractable
 {
@@ -9,11 +14,25 @@ public abstract class ProximityInteractable : MonoBehaviour, IInteractable
     [SerializeField] internal Animator b_Animator;
     [SerializeField] internal float b_ForgetDistance = 1;
 
+    internal CanvasManager CanvasManagerGetter
+    {
+        get
+        {
+            if (AUTO_canvasManager == null)
+                AUTO_canvasManager = CanvasManager.Instance;
+
+            return AUTO_canvasManager;
+        }
+    }
+    CanvasManager AUTO_canvasManager = null;
+
     internal Transform b_currentInteractor = null;
     internal bool b_isOpen = false;
 
     virtual public void OnInteracted(GameObject interactor)
     {
+        if (CanvasManagerGetter.TrySetCurrentProximityInteractabe(this) == false) return;
+
         b_currentInteractor = interactor.transform;
         SetOpennes(true);
     }
@@ -21,13 +40,15 @@ public abstract class ProximityInteractable : MonoBehaviour, IInteractable
     {
         if (b_isOpen == setTo) return;
 
-        b_isOpen = setTo;
+        CanvasManagerGetter.SetProximityInteractableUIEnablity(this, setTo);
 
         if (b_Animator == false) Debug.LogError("an Animator is not assigned");
         else b_Animator.SetBool("IsOpen", setTo);
 
         if (setTo) OnOpened();
         else OnClosed();
+
+        b_isOpen = setTo;
     }
 
     virtual internal void OnOpened()
@@ -38,6 +59,8 @@ public abstract class ProximityInteractable : MonoBehaviour, IInteractable
     {
         StopCoroutine(nameof(CheckForget));
         b_currentInteractor = null;
+
+        CanvasManagerGetter.TrySetCurrentProximityInteractabe(this, true);
     }
     virtual internal IEnumerator CheckForget()
     {

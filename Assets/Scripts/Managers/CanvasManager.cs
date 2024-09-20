@@ -46,6 +46,33 @@ public class CanvasManager : MonoBehaviour
         SetInventoryEnablity(false);
     }
 
+    //Do not forget to register new Proximity Interactables here
+    #region ProximityInteractable
+
+    public bool TrySetCurrentProximityInteractabe(ProximityInteractable sender, bool setToNull = false)
+    {
+        if (sender == null) return false;
+
+        Type type = sender.GetType();
+
+        if (type == typeof(ChestScript)) return _ChestUI.TrySetCurrentChest(setToNull ? null : sender as ChestScript);
+        else if (type == typeof(ToolRack)) return _ToolRackUI.TrySetCurrentRack(setToNull ? null : sender as ToolRack);
+
+        return false;
+    }
+
+    public void SetProximityInteractableUIEnablity(ProximityInteractable sender, bool setTo)
+    {
+        if (sender == null) return;
+
+        Type type = sender.GetType();
+
+        if (type == typeof(ChestScript)) _ChestUI.SetEnablityGetter(setTo);
+        else if (type == typeof(ToolRack)) _ToolRackUI.SetEnablityGetter(setTo);
+    }
+
+    #endregion
+
     #region Inventory
     public void ToggleInventory()
     {
@@ -72,25 +99,5 @@ public class CanvasManager : MonoBehaviour
     }
 
 #nullable disable
-    #endregion
-
-    #region Chest UI
-
-    public void SetChestUIEnablity(bool setTo)
-    {
-        _ChestUI.SetEnablityGetter(setTo);
-    }
-    public bool TrySetCurrentChestOfChestUI(ChestScript setTo) => _ChestUI.TrySetCurrentChest(setTo);
-
-    #endregion
-
-    #region Tool Rack UI
-
-    public void SetToolRackUIEnablity(bool setTo)
-    {
-        _ToolRackUI.SetEnablityGetter(setTo);
-    }
-
-    public bool TrySetCurrentRackOfToolRackUI(ToolRack setTo) => _ToolRackUI.TrySetCurrentRack(setTo);
     #endregion
 }
