@@ -13,7 +13,7 @@ public interface IUserInterface
         CanvasManager.CurrentInterface = setTo ? this : null;
         OnEnablityChanged(setTo);
     }
-    void OnEnablityChanged(bool changedTo);
+    abstract void OnEnablityChanged(bool changedTo);
     void SetEnablityGetter(bool setTo);
     //public void SetEnablityGetter(bool setTo)
     //{

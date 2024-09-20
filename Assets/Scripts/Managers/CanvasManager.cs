@@ -51,24 +51,30 @@ public class CanvasManager : MonoBehaviour
 
     public bool TrySetCurrentProximityInteractabe(ProximityInteractable sender, bool setToNull = false)
     {
-        if (sender == null) return false;
+        ProximityInteractableUI PIUI = GetProximityInteractorUI(sender);
+        if (PIUI == null) return false;
 
-        Type type = sender.GetType();
-
-        if (type == typeof(ChestScript)) return _ChestUI.TrySetCurrentChest(setToNull ? null : sender as ChestScript);
-        else if (type == typeof(ToolRack)) return _ToolRackUI.TrySetCurrentRack(setToNull ? null : sender as ToolRack);
-
-        return false;
+        return PIUI.TrySetProximityInteractor(setToNull ? null : sender);
     }
 
     public void SetProximityInteractableUIEnablity(ProximityInteractable sender, bool setTo)
     {
-        if (sender == null) return;
+        ProximityInteractableUI PIUI = GetProximityInteractorUI(sender);
+        if (PIUI == null) return;
+
+        PIUI.SetEnablityGetter(setTo);
+    }
+
+    ProximityInteractableUI GetProximityInteractorUI(ProximityInteractable sender)
+    {
+        if (sender == null) return null;
 
         Type type = sender.GetType();
 
-        if (type == typeof(ChestScript)) _ChestUI.SetEnablityGetter(setTo);
-        else if (type == typeof(ToolRack)) _ToolRackUI.SetEnablityGetter(setTo);
+        if (type == typeof(ChestScript)) return _ChestUI;
+        else if (type == typeof(ToolRack)) return _ToolRackUI;
+
+        return null;
     }
 
     #endregion

@@ -8,10 +8,9 @@ namespace GameUI
     using UnityEngine;
     using UnityEngine.EventSystems;
 
-    public class ToolRackUI : MonoBehaviour, IUserInterface
+    public class ToolRackUI : ProximityInteractableUI, IUserInterface
     {
-        public ToolRack CurrentRack { get; private set; } = null;
-        public bool IsOpen { get; set; } = false;
+        public ToolRack _currentRack => CurrentPI as ToolRack;
 
         [SerializeField] GameObject _VisualParent;
         [SerializeField] Transform _RackCellParent;
@@ -24,7 +23,6 @@ namespace GameUI
         List<KeyCode> CloseKeys = new List<KeyCode>() {
             KeyCode.I
         };
-        bool _breakUpdate = false;
         ToolCellUI _oldCell;
 
         List<ToolData> _allToolDatas { get => _gameplayManager.UnlockedTools; }
@@ -86,125 +84,98 @@ namespace GameUI
             }
         }
 
-        public bool TrySetCurrentRack(ToolRack setTo)
+        void Close()
         {
-            if (CurrentRack == null)//chest is opened
-            {
-                CurrentRack = setTo;
-                Refresh();
-                StartCoroutine(nameof(UpdateIEnum));
-            }
-            else if (setTo == null)//chest is closed
-            {
-                CurrentRack = null;
-                _breakUpdate = true;
-            }
-            else
-            {
-                return false;
-            }
-
-            return true;
+            _currentRack.SetOpennes(false);
         }
 
-        IEnumerator UpdateIEnum()
+        public override void OnEnablityChanged(bool changedTo)
         {
-            yield return new WaitForSeconds(.1f);
+            _VisualParent.SetActive(changedTo);
+        }
 
+        ToolCellUI _currentCell = null;
+        internal override void OnPIUpdate_Start()
+        {
             _DescriptionTitle.text = "";
             _DescriptionText.text = "";
 
-            ToolCellUI currentCell = null;
+            _currentCell = null;
+        }
 
-            //Update is the inside of this loop.
-            //Code above will run once before the update loop.
-            while (_breakUpdate == false)
+        internal override void OnPIUpdate_Loop()
+        {
+            foreach (var key in CloseKeys)
             {
-                //Input start
-                foreach (var key in CloseKeys)
-                {
-                    if (Input.GetKeyDown(key))
-                    {
-                        Close();
-                        goto InputEND;
-                    }
-                }
-                if (Input.GetButtonDown("Interact") || Input.GetButtonDown("Exit"))
+                if (Input.GetKeyDown(key))
                 {
                     Close();
                     goto InputEND;
                 }
-            InputEND:;//input end
+            }
+            if (Input.GetButtonDown("Interact") || Input.GetButtonDown("Exit"))
+            {
+                Close();
+                goto InputEND;
+            }
+        InputEND:;//input end
 
-                currentCell = null;
-                RaycastResult result = _GraphicRaycaster.Raycast().Find(x => x.gameObject.TryGetComponent(out currentCell));
+            _currentCell = null;
+            RaycastResult result = _GraphicRaycaster.Raycast().Find(x => x.gameObject.TryGetComponent(out _currentCell));
 
-                //done this way to prevent Null Reference Exception
-                bool targetIsValid = true;
-                if (result.isValid == false || currentCell.CellData == null) targetIsValid = false;
+            //done this way to prevent Null Reference Exception
+            bool targetIsValid = true;
+            if (result.isValid == false || _currentCell.CellData == null) targetIsValid = false;
 
-                _DescriptionTitle.text = "";
-                _DescriptionText.text = "";
+            _DescriptionTitle.text = "";
+            _DescriptionText.text = "";
 
-                if (targetIsValid && currentCell.IsInteractable)
+            if (targetIsValid && _currentCell.IsInteractable)
+            {
+                _DescriptionTitle.text = _currentCell.CellData.DisplayName;
+                _DescriptionText.text = _currentCell.CellData.Description;
+            }
+
+            if (_oldCell != _currentCell)
+            {
+                if (_oldCell != null) _oldCell.SetHighlight(false);
+                if (targetIsValid) _currentCell.SetHighlight(true);
+            }
+
+            if (targetIsValid && Input.GetMouseButtonDown(0))
+            {
+                //A CELL HAS BEEN CLICKED
+                //implement cell clicking behaviour here
+                //clicked cell is currentCell
+
+                if (_currentCell.IsInteractable == false) goto ClickedEnd;
+
+                string toolID = _currentCell.CellData.ID;
+                bool refreshNeeded;
+                if (_currentCell.OwnerID == INVENTORY_ID)
                 {
-                    _DescriptionTitle.text = currentCell.CellData.DisplayName;
-                    _DescriptionText.text = currentCell.CellData.Description;
+                    refreshNeeded = _playerToolController.TryDeactivateTool(toolID);
+                }
+                else
+                {
+                    refreshNeeded = _playerToolController.TryActivateTool(toolID);
                 }
 
-                if (_oldCell != currentCell)
-                {
-                    if (_oldCell != null) _oldCell.SetHighlight(false);
-                    if (targetIsValid) currentCell.SetHighlight(true);
-                }
-
-                if (targetIsValid && Input.GetMouseButtonDown(0))
-                {
-                    //A CELL HAS BEEN CLICKED
-                    //implement cell clicking behaviour here
-                    //clicked cell is currentCell
-
-                    if (currentCell.IsInteractable == false) goto ClickedEnd;
-
-                    string toolID = currentCell.CellData.ID;
-                    bool refreshNeeded;
-                    if (currentCell.OwnerID == INVENTORY_ID)
-                    {
-                        refreshNeeded = _playerToolController.TryDeactivateTool(toolID);
-                    }
-                    else
-                    {
-                        refreshNeeded = _playerToolController.TryActivateTool(toolID);
-                    }
-
-                    if (refreshNeeded) Refresh();
+                if (refreshNeeded) Refresh();
 
                 ClickedEnd:;
-                }
-
-                _oldCell = currentCell;
-
-                yield return null;
             }
-            //Update is the inside of the loop above.
-            //Code below will run once after the update loop has ended.
 
-            if (currentCell != null) currentCell.SetHighlight(false);
+            _oldCell = _currentCell;
+        }
+
+        internal override void OnPIUpdate_End()
+        {
+            if (_currentCell != null) _currentCell.SetHighlight(false);
             if (_oldCell != null) _oldCell.SetHighlight(false);
 
-            _breakUpdate = false;
+            _currentCell = null;
         }
-
-        void Close()
-        {
-            CurrentRack.SetOpennes(false);
-        }
-
-        public void OnEnablityChanged(bool changedTo)
-        {
-            _VisualParent.SetActive(changedTo);
-        }
-        public void SetEnablityGetter(bool setTo) => (this as IUserInterface).SetEnablity(setTo);
     }
 
 }

@@ -9,11 +9,8 @@ namespace GameUI
     using UnityEngine;
     using UnityEngine.EventSystems;
 
-    public class ChestUIScript : MonoBehaviour, IUserInterface, IInventoryCellGrid
+    public class ChestUIScript : ProximityInteractableUI, IInventoryCellGrid
     {
-        public ChestScript CurrentChest { get; private set; } = null;
-        public bool IsOpen { get; set; }
-
         [SerializeField] GameObject _VisualParent;
         [SerializeField] Transform _ChestCellParent;
         [SerializeField] Transform _InventoryCellParent;
@@ -39,101 +36,21 @@ namespace GameUI
         }
         Inventory AUTO_inventory = null;
 
+        ChestScript _currentChest => CurrentPI as ChestScript;
+
         void Awake()
         {
             _GraphicRaycaster.RunOnUpdate = false;
         }
-
-        public bool TrySetCurrentChest(ChestScript setTo)
-        {
-            if (CurrentChest == null)//chest is opened
-            {
-                CurrentChest = setTo;
-                StartCoroutine(nameof(ChestUpdate));
-            }
-            else if (setTo == null)//chest is closed
-            {
-                CurrentChest = null;
-                _breakChestUpdate = true;
-            }
-            else
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        bool _breakChestUpdate = false;
-        IEnumerator ChestUpdate()
-        {
-            yield return new WaitForSeconds(.1f);
-
-            _DescriptionTitle.text = "";
-            _DescriptionText.text = "";
-
-            InventoryCellScript currentCell = null;
-
-            //Update is the inside of this loop.
-            //Code above will run once before the update loop.
-            while (_breakChestUpdate == false)
-            {
-                //Input start
-                foreach (var key in ChestCloseKeys)
-                {
-                    if (Input.GetKeyDown(key))
-                    {
-                        CurrentChest.SetOpennes(false);
-                        goto InputEND;
-                    }
-                }
-                if (Input.GetButtonDown("Interact") || Input.GetButtonDown("Exit"))
-                {
-                    CurrentChest.SetOpennes(false);
-                    goto InputEND;
-                }
-            InputEND:;//input end
-
-                currentCell = null;
-                RaycastResult result = _GraphicRaycaster.Raycast().Find(x => x.gameObject.TryGetComponent(out currentCell));
-
-                //done this way to prevent Null Reference Exception
-                bool targetIsValid = true;
-                if (result.isValid == false || currentCell.ItemData == null) targetIsValid = false;
-
-                _DescriptionTitle.text = targetIsValid ? currentCell.ItemData.DisplayName : "";
-                _DescriptionText.text = targetIsValid ? currentCell.ItemData.Description : "";
-
-                if(_oldCell != currentCell)
-                {
-                    if (_oldCell != null) _oldCell.SetHighlight(false);
-                    if (targetIsValid) currentCell.SetHighlight(true);
-                }
-
-                if (targetIsValid && Input.GetMouseButtonDown(0)) SwapCell(currentCell);
-
-                _oldCell = currentCell;
-
-                yield return null;
-            }
-            //Update is the inside of the loop above.
-            //Code below will run once after the update loop has ended.
-
-            if (currentCell != null) currentCell.SetHighlight(false);
-            if (_oldCell != null) _oldCell.SetHighlight(false);
-
-            _breakChestUpdate = false;
-        }
-
         void SwapCell(InventoryCellScript cell)
         {
             if (cell == null || cell.IsInitialized == false) return;
-            if (CurrentChest == null) return;
+            if (_currentChest == null) return;
             if (_Inventory == null) return;
 
             bool isChest = cell.ID == "chest-cell";
-            IContainer<InventoryItem> from = isChest ? CurrentChest : _Inventory;
-            IContainer<InventoryItem> to = isChest ? _Inventory : CurrentChest;
+            IContainer<InventoryItem> from = isChest ? _currentChest : _Inventory;
+            IContainer<InventoryItem> to = isChest ? _Inventory : _currentChest;
 
             InventoryItem item = cell.ItemData;
 
@@ -143,7 +60,7 @@ namespace GameUI
             RefreshGrids();
         }
 
-        public void OnEnablityChanged(bool changedTo)
+        public override void OnEnablityChanged(bool changedTo)
         {
             _VisualParent.SetActive(changedTo);
 
@@ -155,15 +72,69 @@ namespace GameUI
 
         void RefreshGrids()
         {
-            if (CurrentChest == null) Debug.LogError("Can not refresh Chest UI");
-            else (this as IInventoryCellGrid).RefreshGrid(CurrentChest.Items.ToArray(), _ChestCellParent, _CellPrefab, "chest-cell");
+            if (_currentChest == null) Debug.LogError("Can not refresh Chest UI");
+            else (this as IInventoryCellGrid).RefreshGrid(_currentChest.Items.ToArray(), _ChestCellParent, _CellPrefab, "chest-cell");
 
             InventoryItem[] items = PlayerInstance.Instance.Inventory_Ref.Items.ToArray();
             if (items == null) Debug.LogError("Can not refresh Inventory UI (ChestUIScript)");
             else (this as IInventoryCellGrid).RefreshGrid(items, _InventoryCellParent, _CellPrefab, "inventory-cell");
         }
 
-        public void SetEnablityGetter(bool setTo) => (this as IUserInterface).SetEnablity(setTo);
 
+        InventoryCellScript _currentCell = null;
+        internal override void OnPIUpdate_Start()
+        {
+            _DescriptionTitle.text = "";
+            _DescriptionText.text = "";
+
+            _currentCell = null;
+        }
+
+        internal override void OnPIUpdate_Loop()
+        {
+            //Input start
+            foreach (var key in ChestCloseKeys)
+            {
+                if (Input.GetKeyDown(key))
+                {
+                    CurrentPI.SetOpennes(false);
+                    goto InputEND;
+                }
+            }
+            if (Input.GetButtonDown("Interact") || Input.GetButtonDown("Exit"))
+            {
+                CurrentPI.SetOpennes(false);
+                goto InputEND;
+            }
+        InputEND:;//input end
+
+            _currentCell = null;
+            RaycastResult result = _GraphicRaycaster.Raycast().Find(x => x.gameObject.TryGetComponent(out _currentCell));
+
+            //done this way to prevent Null Reference Exception
+            bool targetIsValid = true;
+            if (result.isValid == false || _currentCell.ItemData == null) targetIsValid = false;
+
+            _DescriptionTitle.text = targetIsValid ? _currentCell.ItemData.DisplayName : "";
+            _DescriptionText.text = targetIsValid ? _currentCell.ItemData.Description : "";
+
+            if (_oldCell != _currentCell)
+            {
+                if (_oldCell != null) _oldCell.SetHighlight(false);
+                if (targetIsValid) _currentCell.SetHighlight(true);
+            }
+
+            if (targetIsValid && Input.GetMouseButtonDown(0)) SwapCell(_currentCell);
+
+            _oldCell = _currentCell;
+        }
+
+        internal override void OnPIUpdate_End()
+        {
+            if (_currentCell != null) _currentCell.SetHighlight(false);
+            if (_oldCell != null) _oldCell.SetHighlight(false);
+
+            _currentCell = null;
+        }
     }
 }
