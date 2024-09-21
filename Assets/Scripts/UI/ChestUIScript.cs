@@ -9,7 +9,7 @@ namespace GameUI
     using UnityEngine;
     using UnityEngine.EventSystems;
 
-    public class ChestUIScript : ProximityInteractableUI, IInventoryCellGrid
+    public class ChestUIScript : ProximityInteractableUI, IInventoryCellGrid, IUICellOwner
     {
         const string INVENTORY_ID = "inventory-cell";
         const string CHEST_ID = "chest-cell";
@@ -18,11 +18,10 @@ namespace GameUI
         [SerializeField] Transform _ChestCellParent;
         [SerializeField] Transform _InventoryCellParent;
         [SerializeField] GameObject _CellPrefab;
+
         [SerializeField] GraphicRaycasterScript _GraphicRaycaster;
         [SerializeField] TextMeshProUGUI _DescriptionTitle;
         [SerializeField] TextMeshProUGUI _DescriptionText;
-
-        InventoryCellScript _oldCell;
 
         Inventory _Inventory
         {
@@ -37,6 +36,15 @@ namespace GameUI
         Inventory AUTO_inventory = null;
 
         ChestScript _currentChest => CurrentPI as ChestScript;
+
+        public UICell OldCell { get; set ; }
+        public UICell CurrentCell { get; set; }
+
+        GraphicRaycasterScript IUICellOwner.GraphicRaycasterS => _GraphicRaycaster;
+
+        TextMeshProUGUI IUICellOwner.DescriptionTitle => _DescriptionTitle;
+
+        TextMeshProUGUI IUICellOwner.DescriptionText => _DescriptionText;
 
         void Awake()
         {
@@ -81,44 +89,31 @@ namespace GameUI
         }
 
 
-        InventoryCellScript _currentCell = null;
         internal override void OnPIUpdate_Start()
         {
-            _DescriptionTitle.text = "";
-            _DescriptionText.text = "";
-
-            _currentCell = null;
+            (this as IUICellOwner).OnStart();
         }
 
         internal override void OnPIUpdate_Loop()
         {
-            _currentCell = null;
-            RaycastResult result = _GraphicRaycaster.Raycast().Find(x => x.gameObject.TryGetComponent(out _currentCell));
+            (this as IUICellOwner).OnLoop();
 
-            //done this way to prevent Null Reference Exception
-            bool targetIsValid = true;
-            if (result.isValid == false || _currentCell.ItemData == null) targetIsValid = false;
-
-            _DescriptionTitle.text = targetIsValid ? _currentCell.ItemData.DisplayName : "";
-            _DescriptionText.text = targetIsValid ? _currentCell.ItemData.Description : "";
-
-            if (_oldCell != _currentCell)
-            {
-                if (_oldCell != null) _oldCell.SetHighlight(false);
-                if (targetIsValid) _currentCell.SetHighlight(true);
-            }
-
-            if (targetIsValid && Input.GetMouseButtonDown(0)) SwapCell(_currentCell);
-
-            _oldCell = _currentCell;
         }
 
         internal override void OnPIUpdate_End()
         {
-            if (_currentCell != null) _currentCell.SetHighlight(false);
-            if (_oldCell != null) _oldCell.SetHighlight(false);
+            (this as IUICellOwner).OnEnd();
+        }
 
-            _currentCell = null;
+        void IUICellOwner.OnCellClicked(UICell cell)
+        {
+            SwapCell(cell as InventoryCellScript);
+        }
+
+        bool IUICellOwner.CellIsValid(UICell cell)
+        {
+            var newCell = cell as InventoryCellScript;
+            return newCell.ItemData != null;
         }
     }
 }

@@ -14,6 +14,6 @@ public class ToolCellUI : UICell
     {
         _data = data;
 
-        Initialize(_data.UISprite, isInteractable, ownerID);
+        Initialize(_data.UISprite, _data.DisplayName, _data.Description, isInteractable, ownerID);
     }
 }

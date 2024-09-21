@@ -3,12 +3,10 @@ namespace GameUI
     using Overworld;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
     using TMPro;
     using UnityEngine;
-    using UnityEngine.EventSystems;
 
-    public class ToolRackUI : ProximityInteractableUI, IUserInterface
+    public class ToolRackUI : ProximityInteractableUI, IUserInterface, IUICellOwner
     {
         public ToolRack _currentRack => CurrentPI as ToolRack;
 
@@ -16,15 +14,20 @@ namespace GameUI
         [SerializeField] Transform _RackCellParent;
         [SerializeField] Transform _InventoryCellParent;
         [SerializeField] GameObject _CellPrefab;
+
         [SerializeField] GraphicRaycasterScript _GraphicRaycaster;
         [SerializeField] TextMeshProUGUI _DescriptionTitle;
         [SerializeField] TextMeshProUGUI _DescriptionText;
 
-        ToolCellUI _oldCell;
-
         List<ToolData> _allToolDatas { get => _gameplayManager.UnlockedTools; }
-        List<ToolData> _playerActiveTools = new List<ToolData>();
 
+        public UICell OldCell { get; set; }
+        public UICell CurrentCell { get; set; }
+        GraphicRaycasterScript IUICellOwner.GraphicRaycasterS => _GraphicRaycaster;
+        TextMeshProUGUI IUICellOwner.DescriptionTitle => _DescriptionTitle;
+        TextMeshProUGUI IUICellOwner.DescriptionText => _DescriptionText;
+
+        List<ToolData> _playerActiveTools = new List<ToolData>();
         PlayerToolController _playerToolController = null;
         GameplayManager _gameplayManager = null;
 
@@ -91,72 +94,43 @@ namespace GameUI
             _VisualParent.SetActive(changedTo);
         }
 
-        ToolCellUI _currentCell = null;
         internal override void OnPIUpdate_Start()
         {
-            _DescriptionTitle.text = "";
-            _DescriptionText.text = "";
-
-            _currentCell = null;
+            (this as IUICellOwner).OnStart();
         }
 
         internal override void OnPIUpdate_Loop()
         {
-            _currentCell = null;
-            RaycastResult result = _GraphicRaycaster.Raycast().Find(x => x.gameObject.TryGetComponent(out _currentCell));
-
-            //done this way to prevent Null Reference Exception
-            bool targetIsValid = true;
-            if (result.isValid == false || _currentCell.CellData == null) targetIsValid = false;
-
-            _DescriptionTitle.text = "";
-            _DescriptionText.text = "";
-
-            if (targetIsValid && _currentCell.IsInteractable)
-            {
-                _DescriptionTitle.text = _currentCell.CellData.DisplayName;
-                _DescriptionText.text = _currentCell.CellData.Description;
-            }
-
-            if (_oldCell != _currentCell)
-            {
-                if (_oldCell != null) _oldCell.SetHighlight(false);
-                if (targetIsValid) _currentCell.SetHighlight(true);
-            }
-
-            if (targetIsValid && Input.GetMouseButtonDown(0))
-            {
-                //A CELL HAS BEEN CLICKED
-                //implement cell clicking behaviour here
-                //clicked cell is currentCell
-
-                if (_currentCell.IsInteractable == false) goto ClickedEnd;
-
-                string toolID = _currentCell.CellData.ID;
-                bool refreshNeeded;
-                if (_currentCell.OwnerID == INVENTORY_ID)
-                {
-                    refreshNeeded = _playerToolController.TryDeactivateTool(toolID);
-                }
-                else
-                {
-                    refreshNeeded = _playerToolController.TryActivateTool(toolID);
-                }
-
-                if (refreshNeeded) Refresh();
-
-                ClickedEnd:;
-            }
-
-            _oldCell = _currentCell;
+            (this as IUICellOwner).OnLoop();
         }
 
         internal override void OnPIUpdate_End()
         {
-            if (_currentCell != null) _currentCell.SetHighlight(false);
-            if (_oldCell != null) _oldCell.SetHighlight(false);
+            (this as IUICellOwner).OnEnd();
+        }
 
-            _currentCell = null;
+        void IUICellOwner.OnCellClicked(UICell cell)
+        {
+            if (CurrentCell.IsInteractable == false) return;
+
+            string toolID = (cell as ToolCellUI).CellData.ID;
+            bool refreshNeeded;
+            if (CurrentCell.OwnerID == INVENTORY_ID)
+            {
+                refreshNeeded = _playerToolController.TryDeactivateTool(toolID);
+            }
+            else
+            {
+                refreshNeeded = _playerToolController.TryActivateTool(toolID);
+            }
+
+            if (refreshNeeded) Refresh();
+        }
+
+        bool IUICellOwner.CellIsValid(UICell cell)
+        {
+            ToolCellUI newCell = cell as ToolCellUI;
+            return newCell.CellData != null;
         }
     }
 

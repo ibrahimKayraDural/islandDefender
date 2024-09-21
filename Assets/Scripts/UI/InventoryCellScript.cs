@@ -18,9 +18,16 @@ public class InventoryCellScript : UICell
     public void Initialize(InventoryItem item, int i, bool isInteractable = true, string ownerID = null)
     {
         _item = item;
-        _CountTM.text = item.Count.ToString();
+
+        int count = item.Count;
+        if (count > 0)
+        {
+            _CountTM.text = count.ToString();
+            _CountTM.gameObject.SetActive(true);
+        }
+
         CellIndex = i;
 
-        Initialize(item.UISprite, isInteractable,ownerID);
+        Initialize(item.UISprite, _item.DisplayName, _item.Description, isInteractable, ownerID);
     }
 }

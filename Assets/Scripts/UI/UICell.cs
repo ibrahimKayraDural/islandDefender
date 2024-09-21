@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class UICell : MonoBehaviour
 {
+    public string DisplayName => _displayName;
+    public string DisplayDescription => _displayDescription;
     public bool IsInitialized => _isInitialized;
     public string OwnerID => _ownerID;
     public bool IsInteractable
@@ -35,10 +37,14 @@ public class UICell : MonoBehaviour
     internal bool _isHighlighted = false;
     internal bool _isInitialized = false;
     internal string _ownerID = GLOBAL.UnassignedString;
+    internal string _displayName = GLOBAL.UnassignedString;
+    internal string _displayDescription = GLOBAL.UnassignedString;
 
-    public virtual void Initialize(Sprite uiSprite ,bool isInteractable = true, string ownerID = null)
+    public virtual void Initialize(Sprite uiSprite, string displayName, string displayDescription, bool isInteractable = true, string ownerID = null)
     {
         _UIImage.sprite = uiSprite;
+        _displayName = displayName;
+        _displayDescription = displayDescription;
         IsInteractable = isInteractable;
         if (ownerID != null) _ownerID = ownerID;
 
