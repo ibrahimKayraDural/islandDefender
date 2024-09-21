@@ -20,9 +20,6 @@ namespace GameUI
         [SerializeField] TextMeshProUGUI _DescriptionTitle;
         [SerializeField] TextMeshProUGUI _DescriptionText;
 
-        List<KeyCode> CloseKeys = new List<KeyCode>() {
-            KeyCode.I
-        };
         ToolCellUI _oldCell;
 
         List<ToolData> _allToolDatas { get => _gameplayManager.UnlockedTools; }
@@ -105,21 +102,6 @@ namespace GameUI
 
         internal override void OnPIUpdate_Loop()
         {
-            foreach (var key in CloseKeys)
-            {
-                if (Input.GetKeyDown(key))
-                {
-                    Close();
-                    goto InputEND;
-                }
-            }
-            if (Input.GetButtonDown("Interact") || Input.GetButtonDown("Exit"))
-            {
-                Close();
-                goto InputEND;
-            }
-        InputEND:;//input end
-
             _currentCell = null;
             RaycastResult result = _GraphicRaycaster.Raycast().Find(x => x.gameObject.TryGetComponent(out _currentCell));
 

@@ -166,10 +166,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 558781078503706960}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 120, y: 120}
+  m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4800274383837716464
 CanvasRenderer:
@@ -270,7 +270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 0, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -299,8 +299,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bc49710b06c40b49b1eb98e7f7c2ab4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CellIndex: -1
-  _ItemImage: {fileID: 5474076494862184091}
   _BackgroundImage: {fileID: 2463461380850768598}
+  _UIImage: {fileID: 5474076494862184091}
+  DefaultItemImage: {r: 1, g: 1, b: 1, a: 1}
+  DisabledItemImage: {r: 1, g: 1, b: 1, a: 0.2}
+  DefaultBG: {r: 0.39607847, g: 0.39607847, b: 0.39607847, a: 1}
+  HighlightedBG: {r: 1, g: 1, b: 0, a: 0.101960786}
+  DisabledBG: {r: 0, g: 0, b: 0, a: 0.5019608}
+  CellIndex: -1
   _CountTM: {fileID: 5221879234850029862}
-  _highlightAmount: 0.05

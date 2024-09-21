@@ -5,8 +5,11 @@ using UnityEngine;
 public abstract class ProximityInteractableUI : MonoBehaviour, IUserInterface
 {
     public ProximityInteractable CurrentPI { get; private set; } = null;
-
     public bool IsOpen { get; set; }
+
+    internal List<KeyCode> UICloseKeys = new List<KeyCode>() {
+            KeyCode.I
+        };
 
     public abstract void OnEnablityChanged(bool changedTo);
 
@@ -48,6 +51,7 @@ public abstract class ProximityInteractableUI : MonoBehaviour, IUserInterface
         //Code above will run once before the update loop.
         while (_breakChestUpdate == false)
         {
+            HandleInput();
             OnPIUpdate_Loop();
 
             yield return null;
@@ -58,5 +62,22 @@ public abstract class ProximityInteractableUI : MonoBehaviour, IUserInterface
         OnPIUpdate_End();
 
         _breakChestUpdate = false;
+    }
+
+    internal virtual void HandleInput()
+    {
+        foreach (var key in UICloseKeys)
+        {
+            if (Input.GetKeyDown(key))
+            {
+                CurrentPI.SetOpennes(false);
+                return;
+            }
+        }
+        if (Input.GetButtonDown("Interact") || Input.GetButtonDown("Exit"))
+        {
+            CurrentPI.SetOpennes(false);
+            return;
+        }
     }
 }

@@ -11,6 +11,9 @@ namespace GameUI
 
     public class ChestUIScript : ProximityInteractableUI, IInventoryCellGrid
     {
+        const string INVENTORY_ID = "inventory-cell";
+        const string CHEST_ID = "chest-cell";
+
         [SerializeField] GameObject _VisualParent;
         [SerializeField] Transform _ChestCellParent;
         [SerializeField] Transform _InventoryCellParent;
@@ -19,9 +22,6 @@ namespace GameUI
         [SerializeField] TextMeshProUGUI _DescriptionTitle;
         [SerializeField] TextMeshProUGUI _DescriptionText;
 
-        List<KeyCode> ChestCloseKeys = new List<KeyCode>() {
-            KeyCode.I
-        };
         InventoryCellScript _oldCell;
 
         Inventory _Inventory
@@ -48,7 +48,7 @@ namespace GameUI
             if (_currentChest == null) return;
             if (_Inventory == null) return;
 
-            bool isChest = cell.ID == "chest-cell";
+            bool isChest = cell.OwnerID == CHEST_ID;
             IContainer<InventoryItem> from = isChest ? _currentChest : _Inventory;
             IContainer<InventoryItem> to = isChest ? _Inventory : _currentChest;
 
@@ -73,11 +73,11 @@ namespace GameUI
         void RefreshGrids()
         {
             if (_currentChest == null) Debug.LogError("Can not refresh Chest UI");
-            else (this as IInventoryCellGrid).RefreshGrid(_currentChest.Items.ToArray(), _ChestCellParent, _CellPrefab, "chest-cell");
+            else (this as IInventoryCellGrid).RefreshGrid(_currentChest.Items.ToArray(), _ChestCellParent, _CellPrefab, CHEST_ID);
 
             InventoryItem[] items = PlayerInstance.Instance.Inventory_Ref.Items.ToArray();
             if (items == null) Debug.LogError("Can not refresh Inventory UI (ChestUIScript)");
-            else (this as IInventoryCellGrid).RefreshGrid(items, _InventoryCellParent, _CellPrefab, "inventory-cell");
+            else (this as IInventoryCellGrid).RefreshGrid(items, _InventoryCellParent, _CellPrefab, INVENTORY_ID);
         }
 
 
@@ -92,22 +92,6 @@ namespace GameUI
 
         internal override void OnPIUpdate_Loop()
         {
-            //Input start
-            foreach (var key in ChestCloseKeys)
-            {
-                if (Input.GetKeyDown(key))
-                {
-                    CurrentPI.SetOpennes(false);
-                    goto InputEND;
-                }
-            }
-            if (Input.GetButtonDown("Interact") || Input.GetButtonDown("Exit"))
-            {
-                CurrentPI.SetOpennes(false);
-                goto InputEND;
-            }
-        InputEND:;//input end
-
             _currentCell = null;
             RaycastResult result = _GraphicRaycaster.Raycast().Find(x => x.gameObject.TryGetComponent(out _currentCell));
 

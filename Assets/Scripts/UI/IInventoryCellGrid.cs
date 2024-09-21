@@ -7,7 +7,7 @@ namespace GameUI
 
     public interface IInventoryCellGrid
     {
-        public void RefreshGrid(InventoryItem[] items, Transform cellParent, GameObject cellPrefab, string id = "")
+        public void RefreshGrid(InventoryItem[] items, Transform cellParent, GameObject cellPrefab, string ownerID = "")
         {
 
             List<Transform> temp = cellParent.Cast<Transform>().ToList();
@@ -23,10 +23,8 @@ namespace GameUI
                 //Create empty cell
                 InventoryCellScript cell = MonoBehaviour.Instantiate(cellPrefab, cellParent).GetComponent<InventoryCellScript>();
 
-                //Return if there is no data to fill the cell
-                if (item == null) continue;
-
-                cell.Initialize(item, i, this, id);
+                if (item == null) cell.Initialize();
+                else cell.Initialize(item, i, true, ownerID);
             }
         }
     }
