@@ -31,7 +31,6 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] InventoryUIScript _InventoryUI;
     [SerializeField] ChestUIScript _ChestUI;
     [SerializeField] ToolRackUI _ToolRackUI;
-    [SerializeField] RequirementUI _RequirementUI;
     [SerializeField] InteractableHelperUI _InteractableHelper;
 
     private void Awake()
@@ -75,7 +74,6 @@ public class CanvasManager : MonoBehaviour
 
         if (type == typeof(ChestScript)) return _ChestUI;
         else if (type == typeof(ToolRack)) return _ToolRackUI;
-        else if (type == typeof(RequirementInteractable)) return _RequirementUI;
 
         //register it above --^
         Debug.LogError(type + " is not a registered proximity interactable. If you want to use it, register it HERE (<- click that)");
