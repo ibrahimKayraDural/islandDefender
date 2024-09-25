@@ -12,27 +12,41 @@ public class CameraManager : MonoBehaviour
 
     [SerializeField] List<string> _IgnoreTags = new List<string>();
     [SerializeField] string _StartingCameraTag = GLOBAL.UnassignedString;
-    [SerializeField,Min(0)] float _WalkDuration = .5f;
-    [SerializeField,Min(0)] float _StopDuration = .5f;
+    [SerializeField, Min(0)] float _WalkDuration = .5f;
+    [SerializeField, Min(0)] float _StopDuration = .5f;
 
     public List<KeyValuePair<string, Tuple<Camera, AudioListener>>?> _camerasWithTag = new List<KeyValuePair<string, Tuple<Camera, AudioListener>>?>();
     int _currentIndex = 0;
 
-
+    bool _runLateStart = false;
     void Awake()
     {
         if (Instance == null) Instance = this;
         else if (Instance != this) Destroy(gameObject);
 
         SceneLoader scLoader = SceneLoader.Instance;
-        if(scLoader != null && scLoader.IsLoadingScenes)
+        if (scLoader != null && scLoader.IsLoadingScenes)
         {
             scLoader.e_OnScenesAreLoaded += Initialize;
         }
         else
         {
-            Initialize(this, EventArgs.Empty);
+            _runLateStart = true;
         }
+    }
+
+    void Start()
+    {
+        if (_runLateStart)
+        {
+            _runLateStart = false;
+            Invoke(nameof(LateStart), .2f);
+        }
+    }
+
+    void LateStart()
+    {
+        Initialize(null, EventArgs.Empty);
     }
 
     void Initialize(object sender, EventArgs e)
@@ -66,7 +80,7 @@ public class CameraManager : MonoBehaviour
         RefreshCameras(false);
 
         SceneLoader scLoader = SceneLoader.Instance;
-        if (sender != this as object && scLoader != null)
+        if (sender != null && scLoader != null)
         {
             scLoader.e_OnScenesAreLoaded -= Initialize;
         }
@@ -81,7 +95,7 @@ public class CameraManager : MonoBehaviour
             Camera cam = _camerasWithTag[i].Value.Value.Item1;
             AudioListener al = _camerasWithTag[i].Value.Value.Item2;
 
-            if(cam == null)
+            if (cam == null)
             {
                 _camerasWithTag.RemoveAt(i);
                 continue;
@@ -95,7 +109,7 @@ public class CameraManager : MonoBehaviour
         {
             Overworld.PlayerController pc = PlayerInstance.Instance.PlayerController_Ref;
             pc.AddMovementModifierForSeconds("CameraManager2", Overworld.MovementMode.Locked, _WalkDuration + _StopDuration, true);
-            pc.AddMovementModifierForSeconds("CameraManager1", Overworld.MovementMode.Repeating, _WalkDuration, true); 
+            pc.AddMovementModifierForSeconds("CameraManager1", Overworld.MovementMode.Repeating, _WalkDuration, true);
         }
     }
 
