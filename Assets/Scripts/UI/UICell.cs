@@ -7,6 +7,7 @@ public class UICell : MonoBehaviour
 {
     public string DisplayName => _displayName;
     public string DisplayDescription => _displayDescription;
+    public Sprite UISprite => _displayIcon;
     public bool IsInitialized => _isInitialized;
     public string OwnerID => _ownerID;
     public bool IsInteractable
@@ -39,10 +40,12 @@ public class UICell : MonoBehaviour
     internal string _ownerID = GLOBAL.UnassignedString;
     internal string _displayName = GLOBAL.UnassignedString;
     internal string _displayDescription = GLOBAL.UnassignedString;
+    internal Sprite _displayIcon = null;
 
     public virtual void Initialize(Sprite uiSprite, string displayName, string displayDescription, bool isInteractable = true, string ownerID = null)
     {
-        _UIImage.sprite = uiSprite;
+        _displayIcon = uiSprite;
+        _UIImage.sprite = _displayIcon;
         _displayName = displayName;
         _displayDescription = displayDescription;
         IsInteractable = isInteractable;

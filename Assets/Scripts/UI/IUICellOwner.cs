@@ -22,6 +22,8 @@ public interface IUICellOwner
     }
     internal virtual void OnLoop()
     {
+        DescriptionTitle.text = "";
+        DescriptionText.text = "";
         CurrentCell = null;
         UICell tempCell = null;
         RaycastResult result = GraphicRaycasterS.Raycast().Find(x => x.gameObject.TryGetComponent(out tempCell));
@@ -31,13 +33,11 @@ public interface IUICellOwner
         bool targetIsValid = true;
         if (result.isValid == false || CellIsValid(CurrentCell) == false) targetIsValid = false;
 
-        DescriptionTitle.text = "";
-        DescriptionText.text = "";
-
         if (targetIsValid && CurrentCell.IsInteractable)
         {
             DescriptionTitle.text = CurrentCell.DisplayName;
             DescriptionText.text = CurrentCell.DisplayDescription;
+            OnHoverInteractableCell(CurrentCell);
         }
 
         if (OldCell != CurrentCell)
@@ -50,6 +50,9 @@ public interface IUICellOwner
 
         OldCell = CurrentCell;
     }
+
+    abstract void OnHoverInteractableCell(UICell currentCell);
+
     internal virtual void OnEnd()
     {
         if (CurrentCell != null) CurrentCell.SetHighlight(false);

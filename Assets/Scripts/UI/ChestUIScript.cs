@@ -8,6 +8,7 @@ namespace GameUI
     using TMPro;
     using UnityEngine;
     using UnityEngine.EventSystems;
+    using UnityEngine.UI;
 
     public class ChestUIScript : ProximityInteractableUI, IInventoryCellGrid, IUICellOwner
     {
@@ -22,12 +23,13 @@ namespace GameUI
         [SerializeField] GraphicRaycasterScript _GraphicRaycaster;
         [SerializeField] TextMeshProUGUI _DescriptionTitle;
         [SerializeField] TextMeshProUGUI _DescriptionText;
+        [SerializeField] Image _DescriptionIcon;
 
         Inventory _Inventory
         {
             get
             {
-                if(AUTO_inventory == null)
+                if (AUTO_inventory == null)
                     AUTO_inventory = PlayerInstance.Instance.Inventory_Ref;
 
                 return AUTO_inventory;
@@ -37,7 +39,7 @@ namespace GameUI
 
         ChestScript _currentChest => CurrentPI as ChestScript;
 
-        public UICell OldCell { get; set ; }
+        public UICell OldCell { get; set; }
         public UICell CurrentCell { get; set; }
 
         GraphicRaycasterScript IUICellOwner.GraphicRaycasterS => _GraphicRaycaster;
@@ -64,7 +66,7 @@ namespace GameUI
 
             InventoryItem remainingItem = to.AddWithSpill(item);
             from.SetItemAtIndex(cell.CellIndex, remainingItem);
-            
+
             RefreshGrids();
         }
 
@@ -88,20 +90,27 @@ namespace GameUI
             else (this as IInventoryCellGrid).RefreshGrid(items, _InventoryCellParent, _CellPrefab, INVENTORY_ID);
         }
 
+        void HandeDescriptionSprite(Sprite setTo)
+        {
+            _DescriptionIcon.sprite = setTo;
+            _DescriptionIcon.color = setTo != null ? Color.white : Color.clear;
+        }
 
         internal override void OnPIUpdate_Start()
         {
+            HandeDescriptionSprite(null);
             (this as IUICellOwner).OnStart();
         }
 
         internal override void OnPIUpdate_Loop()
         {
+            HandeDescriptionSprite(null);
             (this as IUICellOwner).OnLoop();
-
         }
 
         internal override void OnPIUpdate_End()
         {
+            HandeDescriptionSprite(null);
             (this as IUICellOwner).OnEnd();
         }
 
@@ -114,6 +123,11 @@ namespace GameUI
         {
             var newCell = cell as InventoryCellScript;
             return newCell.ItemData != null;
+        }
+
+        public void OnHoverInteractableCell(UICell currentCell)
+        {
+            HandeDescriptionSprite(currentCell.UISprite);
         }
     }
 }

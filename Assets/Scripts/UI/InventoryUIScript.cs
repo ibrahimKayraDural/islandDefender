@@ -1,6 +1,7 @@
 namespace GameUI
 {
     using Overworld;
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
@@ -18,6 +19,7 @@ namespace GameUI
         [SerializeField] GameObject _CellPrefab;
         [SerializeField] TextMeshProUGUI _DescriptionTitle;
         [SerializeField] TextMeshProUGUI _DescriptionText;
+        [SerializeField] Image _DescriptionIcon;
         [SerializeField] GraphicRaycasterScript _GraphicRaycaster;
         [SerializeField] GameObject _QuickMenuPrefab;
 
@@ -85,6 +87,14 @@ namespace GameUI
 
             _DescriptionTitle.text = targetIsValid ? _currentCell.ItemData.DisplayName : "";
             _DescriptionText.text = targetIsValid ? _currentCell.ItemData.Description : "";
+            HandeDescriptionSprite(_currentCell?.ItemData, targetIsValid);
+        }
+
+        void HandeDescriptionSprite(InventoryItem data, bool targetIsValid)
+        {
+            if (data == null) targetIsValid = false;
+            _DescriptionIcon.sprite = targetIsValid ? data.UISprite : null;
+            _DescriptionIcon.color = targetIsValid ? Color.white : Color.clear;
         }
 
         bool CheckCell(List<RaycastResult> resultList, out InventoryCellScript cell)
@@ -107,7 +117,10 @@ namespace GameUI
         {
             RefreshInventory();
             _Visuals.SetActive(changedTo);
+
             _DescriptionText.text = "";
+            _DescriptionTitle.text = "";
+            HandeDescriptionSprite(null, false);
 
             if (changedTo == false)
             {

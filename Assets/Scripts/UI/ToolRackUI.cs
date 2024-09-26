@@ -5,6 +5,7 @@ namespace GameUI
     using System.Collections.Generic;
     using TMPro;
     using UnityEngine;
+    using UnityEngine.UI;
 
     public class ToolRackUI : ProximityInteractableUI, IUserInterface, IUICellOwner
     {
@@ -18,6 +19,7 @@ namespace GameUI
         [SerializeField] GraphicRaycasterScript _GraphicRaycaster;
         [SerializeField] TextMeshProUGUI _DescriptionTitle;
         [SerializeField] TextMeshProUGUI _DescriptionText;
+        [SerializeField] Image _DescriptionIcon;
 
         List<ToolData> _allToolDatas { get => _gameplayManager.UnlockedTools; }
 
@@ -30,7 +32,6 @@ namespace GameUI
         List<ToolData> _playerActiveTools = new List<ToolData>();
         PlayerToolController _playerToolController = null;
         GameplayManager _gameplayManager = null;
-
         const string INVENTORY_ID = "inventory";
         const string RACK_ID = "rack";
 
@@ -89,6 +90,12 @@ namespace GameUI
             _currentRack.SetOpennes(false);
         }
 
+        void HandeDescriptionSprite(Sprite setTo)
+        {
+            _DescriptionIcon.sprite = setTo;
+            _DescriptionIcon.color = setTo != null ? Color.white : Color.clear;
+        }
+
         public override void OnEnablityChanged(bool changedTo)
         {
             _VisualParent.SetActive(changedTo);
@@ -96,16 +103,19 @@ namespace GameUI
 
         internal override void OnPIUpdate_Start()
         {
+            HandeDescriptionSprite(null);
             (this as IUICellOwner).OnStart();
         }
 
         internal override void OnPIUpdate_Loop()
         {
+            HandeDescriptionSprite(null);
             (this as IUICellOwner).OnLoop();
         }
 
         internal override void OnPIUpdate_End()
         {
+            HandeDescriptionSprite(null);
             (this as IUICellOwner).OnEnd();
         }
 
@@ -131,6 +141,11 @@ namespace GameUI
         {
             ToolCellUI newCell = cell as ToolCellUI;
             return newCell.CellData != null;
+        }
+
+        public void OnHoverInteractableCell(UICell currentCell)
+        {
+            HandeDescriptionSprite(currentCell.UISprite);
         }
     }
 
