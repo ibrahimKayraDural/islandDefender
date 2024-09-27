@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class MainMenuUI : MonoBehaviour
 {
-    [SerializeField] SceneField PlayerScene;
-    [SerializeField] SceneField StartLevel;
+    [SerializeField] List<SceneField> _ScenesToLoad;
 
     [SerializeField] GameObject _DefaultCanvas;
     [SerializeField] GameObject _SettingsCanvas;
@@ -15,7 +14,10 @@ public class MainMenuUI : MonoBehaviour
 
     public void Play()
     {
-        SceneLoader.Instance.LoadScenes(new List<string>() { StartLevel, PlayerScene });
+        List<string> sceneStrings = new List<string>();
+        foreach (var item in _ScenesToLoad) sceneStrings.Add(item);
+
+        SceneLoader.Instance.LoadScenes(sceneStrings);
     }
     public void ToDefaultCanvas()
     {

@@ -3090,12 +3090,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d5eeff2ed4ff5d44a0f4e4eef8251bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerScene:
-    m_SceneAsset: {fileID: 102900000, guid: 050f2dd7a063b484f961bb001afa082e, type: 3}
+  _ScenesToLoad:
+  - m_SceneAsset: {fileID: 102900000, guid: 050f2dd7a063b484f961bb001afa082e, type: 3}
     m_SceneName: PersistentPlayer
-  StartLevel:
-    m_SceneAsset: {fileID: 102900000, guid: 5072b1770083f6a41b72bdda2075de8b, type: 3}
+  - m_SceneAsset: {fileID: 102900000, guid: 5072b1770083f6a41b72bdda2075de8b, type: 3}
     m_SceneName: OverworldTest
+  - m_SceneAsset: {fileID: 102900000, guid: 9fc0d4010bbf28b4594072e72b8655ab, type: 3}
+    m_SceneName: TowerDefenceTest
   _DefaultCanvas: {fileID: 1008225426}
   _SettingsCanvas: {fileID: 1948838713}
   _CreditsCanvas: {fileID: 100996171}
