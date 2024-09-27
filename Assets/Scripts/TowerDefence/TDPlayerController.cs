@@ -10,6 +10,7 @@ namespace TowerDefence
     {
         [SerializeField] LayerMask TowerDefenceLayer;
         [SerializeField] TextMeshProUGUI _CurrentTurretText;
+        [SerializeField] BattleComputer _BattleComputer;
 
         [SerializeField] Camera _camera = null;
         TowerDefenceTileScript _currentTile = null;
@@ -56,9 +57,16 @@ namespace TowerDefence
 
             if (Input.GetButtonDown("PlaceTurret")) TryPlaceTurret();
             else if (Input.GetButtonDown("DeleteTurret")) DeleteTurret();
+            else if (Input.GetButtonDown("Exit")) ExitBattle();
+
             TryChangeTurret(Input.GetAxisRaw("ChangeTurret"));
         }
-
+        
+        public void ExitBattle()
+        {
+            DeselectCurrentTile();
+            _BattleComputer.SetBattleEnablity(false);
+        }
         void TryChangeTurret(float v)
         {
             if (v == 0) return;
