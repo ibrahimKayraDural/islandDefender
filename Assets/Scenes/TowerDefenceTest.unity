@@ -18859,6 +18859,7 @@ GameObject:
   - component: {fileID: 827960775667527793}
   - component: {fileID: 6124813221741092143}
   - component: {fileID: 1314569453106581761}
+  - component: {fileID: 6124813221741092144}
   m_Layer: 0
   m_Name: TriggerCollider
   m_TagString: Untagged
@@ -19173,6 +19174,36 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.9403563, y: 1, z: 3.7381258}
   m_Center: {x: 0.022082329, y: 0.57513523, z: -0.0883286}
+--- !u!114 &6124813221741092144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3156694552143325055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1db469b22aee8747b6fc2f60d0a1c7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnEntered:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1616719897}
+        m_TargetAssemblyTypeName: BaseResourceController, Assembly-CSharp
+        m_MethodName: TransferInventory
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnExited:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6189443385329080118
 GameObject:
   m_ObjectHideFlags: 0

@@ -30,7 +30,7 @@ public class SceneLoader : MonoBehaviour
     {
         List<AsyncOperation> operations = new List<AsyncOperation>();
 
-        operations.Add(SceneManager.LoadSceneAsync(_LoadingScene));
+        SceneManager.LoadSceneAsync(_LoadingScene);
 
         foreach (var scene in scenes)
         {
@@ -46,19 +46,31 @@ public class SceneLoader : MonoBehaviour
     {
         for (int i = 0; i < operations.Count; i++)
         {
-            while(operations[i].isDone == false)
+            AsyncOperation op = operations[i];
+            op.allowSceneActivation = false;
+
+            while (operations[i].progress < .9f)
             {
                 yield return null;
             }
         }
 
-        //All scenes are loaded
+        //All scenes are ready, load them
+
+        for (int i = 0; i < operations.Count; i++)
+        {
+            AsyncOperation op = operations[i];
+            op.allowSceneActivation = true;
+
+            while (operations[i].isDone == false)
+            {
+                yield return null;
+            }
+        }
 
         IsLoadingScenes = false;
         e_OnScenesAreLoaded?.Invoke(this, EventArgs.Empty);
 
-        //Wait a moment for good measure
-        yield return new WaitForSeconds(.1f);
         SceneManager.UnloadSceneAsync(_LoadingScene);
     }
 

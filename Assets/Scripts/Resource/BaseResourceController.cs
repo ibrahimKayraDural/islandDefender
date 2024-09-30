@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using TMPro;
+using Overworld;
 
 public class BaseResourceController : MonoBehaviour
 {
@@ -11,6 +12,16 @@ public class BaseResourceController : MonoBehaviour
     [SerializeField] TextMeshProUGUI _resourceText;
 
     Dictionary<ResourceData, int> _resourceDictionary = new Dictionary<ResourceData, int>();
+    PlayerInstance playerInstance
+    {
+        get
+        {
+            if (AUTO_playerInstance == null)
+                AUTO_playerInstance = PlayerInstance.Instance;
+            return AUTO_playerInstance;
+        }
+    }
+    PlayerInstance AUTO_playerInstance = null;
 
     void Awake()
     {
@@ -41,6 +52,26 @@ public class BaseResourceController : MonoBehaviour
         //DEBUG
     }
 
+    public void TransferInventory()
+    {
+        List<ResourceItem> rItems = new List<ResourceItem>();
+        List<InventoryItem> items = playerInstance.Inventory_Ref.Items;
+
+        foreach (var item in items)
+        {
+            if(item is ResourceItem)
+            {
+                rItems.Add(item as ResourceItem);
+            }
+        }
+
+        playerInstance.Inventory_Ref.Clean();
+        AddResource(rItems.ToArray());
+    }
+    public void AddResource(ResourceItem[] items)
+    {
+        foreach (var item in items) AddResource(item);
+    }
     public void AddResource(ResourceData data, int amount)
     {
         amount = Mathf.Max(amount, 0);//clamp if negative
@@ -51,6 +82,7 @@ public class BaseResourceController : MonoBehaviour
 
         RefreshText();
     }
+    public void AddResource(ResourceItem item) => AddResource(item.Data, item.Count);
     public bool TryBuyTurret(TowerDefence.TurretData data) => TrySpendResource(data.Costs);
     public bool TrySpendResource(ResourceData data, int amount)
     {
