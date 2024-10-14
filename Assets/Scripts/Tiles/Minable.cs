@@ -91,6 +91,11 @@ public class Minable : MonoBehaviour
             PlayerInstance.Instance.Inventory_Ref?.TryAddItemWithSpill(new ResourceItem(item.Resource, item.Amount), true);
         }
 
-        Destroy(gameObject);
+        TilemapManager tm = TilemapManager.Instance;
+        if (tm != null)
+        {
+            if(tm.DeleteTile(transform.position, "objects") == false) Destroy(gameObject);
+        }
+        else Destroy(gameObject);
     }
 }
