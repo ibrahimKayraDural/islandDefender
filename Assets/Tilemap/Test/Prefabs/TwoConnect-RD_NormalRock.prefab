@@ -173,6 +173,7 @@ MonoBehaviour:
   _Gains: []
   _MineDuration: 2
   _ForgetDuration: 0.5
+  _DeleteFromTilemap: 1
   _ProgressBar: {fileID: 8661369745268479938}
 --- !u!1 &1457136911094017164
 GameObject:

@@ -10,6 +10,7 @@ public class Minable : MonoBehaviour
 
     [SerializeField] float _MineDuration = 2;
     [SerializeField] float _ForgetDuration = .5f;
+    [SerializeField] bool _DeleteFromTilemap;
 
     [SerializeField] Slider _ProgressBar;
 
@@ -92,7 +93,7 @@ public class Minable : MonoBehaviour
         }
 
         TilemapManager tm = TilemapManager.Instance;
-        if (tm != null)
+        if (tm != null && _DeleteFromTilemap)
         {
             if(tm.DeleteTile(transform.position, "objects") == false) Destroy(gameObject);
         }
