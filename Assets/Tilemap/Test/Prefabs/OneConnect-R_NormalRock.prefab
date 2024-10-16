@@ -390,8 +390,8 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7330628572192712928}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
@@ -435,6 +435,7 @@ GameObject:
   - component: {fileID: 1866067064480318652}
   - component: {fileID: 1039617916695332051}
   - component: {fileID: 522881355269587874}
+  - component: {fileID: 406703903006492336}
   m_Layer: 0
   m_Name: OneConnect-R_NormalRock
   m_TagString: Untagged
@@ -497,6 +498,21 @@ MonoBehaviour:
   _ForgetDuration: 0.5
   _DeleteFromTilemap: 1
   _ProgressBar: {fileID: 3197893125358519869}
+--- !u!114 &406703903006492336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7420305957899385809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db91e894d1e067740a30e173a811322a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Meshes:
+  - {fileID: -1784184526832488215, guid: a2b86af5109da794d9e1f3a33a3189e7, type: 3}
+  - {fileID: -4646092523109141837, guid: 52cd5965f0f04b046b7cf249972f26d9, type: 3}
 --- !u!1 &8239206363372811284
 GameObject:
   m_ObjectHideFlags: 0
