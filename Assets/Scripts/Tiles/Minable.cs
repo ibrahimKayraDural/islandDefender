@@ -2,7 +2,6 @@ using Overworld;
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Minable : MonoBehaviour
 {
@@ -12,15 +11,12 @@ public class Minable : MonoBehaviour
     [SerializeField] float _ForgetDuration = .5f;
     [SerializeField] bool _DeleteFromTilemap;
 
-    [SerializeField] Slider _ProgressBar;
-
     float CurrentAmount {
         get=> AUTO_currentAmount;
         set
         {
             value = Mathf.Clamp(value, 0, _MineDuration);
             AUTO_currentAmount = value;
-            _ProgressBar.value = value;
         }
     }
     float AUTO_currentAmount  =0;
@@ -28,17 +24,12 @@ public class Minable : MonoBehaviour
 
     void Start()
     {
-        _ProgressBar.maxValue = _MineDuration;
-        _ProgressBar.minValue = 0;
         CurrentAmount = 0;
-        SetProgressBarVisibility(0);
     }
 
     public void StartMining()
     {
         if (_isMining) return;
-
-        SetProgressBarVisibility(1);
 
         StopCoroutine(nameof(ForgetIEnum));
         StartCoroutine(nameof(MineIEnum));
@@ -70,18 +61,6 @@ public class Minable : MonoBehaviour
     {
         yield return new WaitForSeconds(_ForgetDuration);
         CurrentAmount = 0;
-        SetProgressBarVisibility(0);
-    }
-    void SetProgressBarVisibility(float setTo)
-    {
-        Image[] images = _ProgressBar.GetComponentsInChildren<Image>();
-
-        foreach (var img in images)
-        {
-            Color color = img.color;
-            color.a = Mathf.Clamp(setTo, 0, 1);
-            img.color = color;
-        }
     }
     void MineSuccessful()
     {
