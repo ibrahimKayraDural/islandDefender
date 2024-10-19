@@ -372,6 +372,7 @@ namespace UnityEditor
             RuleTile.TilingRule rule = new RuleTile.TilingRule();
             rule.m_Output = RuleTile.TilingRuleOutput.OutputSprite.Single;
             rule.m_Sprites[0] = tile.m_DefaultSprite;
+            //rule.m_RandomGameObjects[0] = tile.m_DefaultGameObject;
             rule.m_GameObject = tile.m_DefaultGameObject;
             rule.m_ColliderType = tile.m_DefaultColliderType;
 
@@ -864,10 +865,14 @@ namespace UnityEditor
         /// <param name="tilingRule">Rule to draw Inspector for</param>
         public void RuleInspectorOnGUI(Rect rect, RuleTile.TilingRuleOutput tilingRule)
         {
-            float y = rect.yMin;
-            GUI.Label(new Rect(rect.xMin, y, k_LabelWidth, k_SingleLineHeight), Styles.tilingRulesGameObject);
-            tilingRule.m_GameObject = (GameObject)EditorGUI.ObjectField(new Rect(rect.xMin + k_LabelWidth, y, rect.width - k_LabelWidth, k_SingleLineHeight), "", tilingRule.m_GameObject, typeof(GameObject), false);
-            y += k_SingleLineHeight;
+                float y = rect.yMin;
+
+            if (tilingRule.m_Output != RuleTile.TilingRuleOutput.OutputSprite.Random)
+            {
+                GUI.Label(new Rect(rect.xMin, y, k_LabelWidth, k_SingleLineHeight), Styles.tilingRulesGameObject);
+                tilingRule.m_GameObject = (GameObject)EditorGUI.ObjectField(new Rect(rect.xMin + k_LabelWidth, y, rect.width - k_LabelWidth, k_SingleLineHeight), "", tilingRule.m_GameObject, typeof(GameObject), false);
+                y += k_SingleLineHeight;
+            }
             GUI.Label(new Rect(rect.xMin, y, k_LabelWidth, k_SingleLineHeight), Styles.tilingRulesCollider);
             tilingRule.m_ColliderType = (Tile.ColliderType)EditorGUI.EnumPopup(new Rect(rect.xMin + k_LabelWidth, y, rect.width - k_LabelWidth, k_SingleLineHeight), tilingRule.m_ColliderType);
             y += k_SingleLineHeight;
@@ -903,11 +908,14 @@ namespace UnityEditor
                 int newLength = EditorGUI.DelayedIntField(new Rect(rect.xMin + k_LabelWidth, y, rect.width - k_LabelWidth, k_SingleLineHeight), tilingRule.m_Sprites.Length);
                 if (EditorGUI.EndChangeCheck())
                     Array.Resize(ref tilingRule.m_Sprites, Math.Max(newLength, 1));
+                    Array.Resize(ref tilingRule.m_RandomGameObjects, Math.Max(newLength, 1));
                 y += k_SingleLineHeight;
 
                 for (int i = 0; i < tilingRule.m_Sprites.Length; i++)
                 {
-                    tilingRule.m_Sprites[i] = EditorGUI.ObjectField(new Rect(rect.xMin + k_LabelWidth, y, rect.width - k_LabelWidth, k_SingleLineHeight), tilingRule.m_Sprites[i], typeof(Sprite), false) as Sprite;
+                    float width = (rect.width - k_LabelWidth) / 2;
+                    tilingRule.m_Sprites[i] = EditorGUI.ObjectField(new Rect(rect.xMin + k_LabelWidth, y, width, k_SingleLineHeight), tilingRule.m_Sprites[i], typeof(Sprite), false) as Sprite;
+                    tilingRule.m_RandomGameObjects[i] = (GameObject)EditorGUI.ObjectField(new Rect(rect.xMin + k_LabelWidth + width, y, width, k_SingleLineHeight), "", tilingRule.m_RandomGameObjects[i], typeof(GameObject), false);
                     y += k_SingleLineHeight;
                 }
             }

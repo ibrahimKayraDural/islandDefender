@@ -70,6 +70,8 @@ namespace UnityEngine
             /// The output Sprites for this Rule.
             /// </summary>
             public Sprite[] m_Sprites = new Sprite[1];
+            public GameObject[] m_RandomGameObjects = new GameObject[1];
+
             /// <summary>
             /// The output GameObject for this Rule.
             /// </summary>
@@ -419,6 +421,8 @@ namespace UnityEngine
             {
                 if (RuleMatches(rule, position, tilemap, ref transform))
                 {
+                    bool isGameobjectRandom = false;
+
                     switch (rule.m_Output)
                     {
                         case TilingRuleOutput.OutputSprite.Single:
@@ -428,12 +432,14 @@ namespace UnityEngine
                         case TilingRuleOutput.OutputSprite.Random:
                             int index = Mathf.Clamp(Mathf.FloorToInt(GetPerlinValue(position, rule.m_PerlinScale, 100000f) * rule.m_Sprites.Length), 0, rule.m_Sprites.Length - 1);
                             tileData.sprite = rule.m_Sprites[index];
+                            tileData.gameObject = rule.m_RandomGameObjects[index];
+                            isGameobjectRandom = true;
                             if (rule.m_RandomTransform != TilingRuleOutput.Transform.Fixed)
                                 transform = ApplyRandomTransform(rule.m_RandomTransform, transform, rule.m_PerlinScale, position);
                             break;
                     }
                     tileData.transform = transform;
-                    tileData.gameObject = rule.m_GameObject;
+                    if (isGameobjectRandom == false) tileData.gameObject = rule.m_GameObject;
                     tileData.colliderType = rule.m_ColliderType;
                     break;
                 }
