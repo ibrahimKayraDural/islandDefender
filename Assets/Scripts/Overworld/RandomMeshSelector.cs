@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RandomMeshSelecter : MonoBehaviour
+public class RandomMeshSelector : MonoBehaviour
 {
     [SerializeField] Mesh[] _Meshes;
     [SerializeField] MeshFilter _Filter = null;
