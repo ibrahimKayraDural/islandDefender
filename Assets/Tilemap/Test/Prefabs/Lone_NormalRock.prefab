@@ -94,7 +94,6 @@ GameObject:
   - component: {fileID: 4653151667086924141}
   - component: {fileID: 480182804444758934}
   - component: {fileID: 3810400988626932866}
-  - component: {fileID: 2010207025329049760}
   m_Layer: 0
   m_Name: Lone_NormalRock
   m_TagString: Untagged
@@ -155,20 +154,3 @@ MonoBehaviour:
   _MineDuration: 2
   _ForgetDuration: 0.5
   _DeleteFromTilemap: 1
-  _ProgressBar: {fileID: 0}
---- !u!114 &2010207025329049760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3256139692136339259}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db91e894d1e067740a30e173a811322a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Meshes:
-  - {fileID: 313432463382740076, guid: a2b86af5109da794d9e1f3a33a3189e7, type: 3}
-  - {fileID: -6761685532101908064, guid: 52cd5965f0f04b046b7cf249972f26d9, type: 3}
-  _Filter: {fileID: 0}

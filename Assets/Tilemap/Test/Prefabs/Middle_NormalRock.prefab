@@ -94,7 +94,6 @@ GameObject:
   - component: {fileID: 5151787650510566029}
   - component: {fileID: 7040938251589718962}
   - component: {fileID: 4189670423683041182}
-  - component: {fileID: -6216439084959165339}
   m_Layer: 0
   m_Name: Middle_NormalRock
   m_TagString: Untagged
@@ -155,20 +154,3 @@ MonoBehaviour:
   _MineDuration: 2
   _ForgetDuration: 0.5
   _DeleteFromTilemap: 1
-  _ProgressBar: {fileID: 0}
---- !u!114 &-6216439084959165339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2642758212021755097}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db91e894d1e067740a30e173a811322a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Meshes:
-  - {fileID: 1385279003812690709, guid: a2b86af5109da794d9e1f3a33a3189e7, type: 3}
-  - {fileID: 1385279003812690709, guid: 52cd5965f0f04b046b7cf249972f26d9, type: 3}
-  _Filter: {fileID: 0}

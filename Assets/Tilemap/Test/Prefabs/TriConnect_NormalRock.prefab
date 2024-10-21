@@ -94,7 +94,6 @@ GameObject:
   - component: {fileID: 3102198138565879802}
   - component: {fileID: 2530400457962885134}
   - component: {fileID: 1609123516386165591}
-  - component: {fileID: 4028007203896958264}
   m_Layer: 0
   m_Name: TriConnect_NormalRock
   m_TagString: Untagged
@@ -155,20 +154,3 @@ MonoBehaviour:
   _MineDuration: 2
   _ForgetDuration: 0.5
   _DeleteFromTilemap: 1
-  _ProgressBar: {fileID: 0}
---- !u!114 &4028007203896958264
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8530297003905759960}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db91e894d1e067740a30e173a811322a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Meshes:
-  - {fileID: 2612099726324491767, guid: a2b86af5109da794d9e1f3a33a3189e7, type: 3}
-  - {fileID: 2612099726324491767, guid: 52cd5965f0f04b046b7cf249972f26d9, type: 3}
-  _Filter: {fileID: 0}
