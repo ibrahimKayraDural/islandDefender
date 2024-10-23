@@ -10,6 +10,7 @@ public class Minable : MonoBehaviour
     [SerializeField] float _MineDuration = 2;
     [SerializeField] float _ForgetDuration = .5f;
     [SerializeField] bool _DeleteFromTilemap;
+    [SerializeField] ShaderProgressbarScript _SPS;
 
     float CurrentAmount {
         get=> AUTO_currentAmount;
@@ -17,9 +18,10 @@ public class Minable : MonoBehaviour
         {
             value = Mathf.Clamp(value, 0, _MineDuration);
             AUTO_currentAmount = value;
+            _SPS?.SetValue(CurrentAmount, _MineDuration);
         }
     }
-    float AUTO_currentAmount  =0;
+    float AUTO_currentAmount = 0;
     bool _isMining = false;
 
     void Start()
@@ -62,13 +64,14 @@ public class Minable : MonoBehaviour
         yield return new WaitForSeconds(_ForgetDuration);
         CurrentAmount = 0;
     }
+
     void MineSuccessful()
     {
         StopAllCoroutines();
 
         foreach (var item in _Gains)
         {
-            PlayerInstance.Instance.Inventory_Ref?.TryAddItemWithSpill(new ResourceItem(item.Resource, item.Amount), true);
+            PlayerInstance.Instance?.Inventory_Ref?.TryAddItemWithSpill(new ResourceItem(item.Resource, item.Amount), true);
         }
 
         TilemapManager tm = TilemapManager.Instance;

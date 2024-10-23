@@ -11,10 +11,10 @@ PrefabInstance:
     - target: {fileID: 834686844473739334, guid: ca2c5681ff9391347af48cd45564640e, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 7948604201909105798, guid: a2b86af5109da794d9e1f3a33a3189e7, type: 3}
+      objectReference: {fileID: 313432463382740076, guid: a2b86af5109da794d9e1f3a33a3189e7, type: 3}
     - target: {fileID: 3256139692136339259, guid: ca2c5681ff9391347af48cd45564640e, type: 3}
       propertyPath: m_Name
-      value: Tunnel_NormalRock
+      value: Lone_NormalRock Variant
       objectReference: {fileID: 0}
     - target: {fileID: 4653151667086924141, guid: ca2c5681ff9391347af48cd45564640e, type: 3}
       propertyPath: m_LocalPosition.x

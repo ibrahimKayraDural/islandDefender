@@ -28,6 +28,7 @@ public class ShaderProgressbarScript : MonoBehaviour
         _currentFill = setTo;
         _mat.SetFloat("_Fill", _currentFill);
     }
+    public void SetValue(float currentAmount, float maxAmount) => SetValue(currentAmount / maxAmount);
 
     public void AddValue(float addition) => SetValue(addition + _currentFill);
 }
