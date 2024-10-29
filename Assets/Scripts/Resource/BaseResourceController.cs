@@ -76,6 +76,8 @@ public class BaseResourceController : MonoBehaviour
     {
         amount = Mathf.Max(amount, 0);//clamp if negative
 
+        InfoLogUI.Instance.AddToLog($"{data.DisplayName} X {amount} has been transfered to the base.", Color.yellow);
+
         if (_resourceDictionary.TryAdd(data, amount)) return;//add it and quit if value is not present
 
         _resourceDictionary[data] += amount;//increase amount if value is present
