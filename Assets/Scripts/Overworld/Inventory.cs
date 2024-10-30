@@ -281,7 +281,7 @@ namespace Overworld
         {
             _slots = new ObservableCollection<InventoryItem>(new InventoryItem[SlotCount]);
 
-            _CanvasManager.RefreshInventory();
+            _CanvasManager?.RefreshInventory();
         }
         public InventoryItem AddWithSpill(InventoryItem item) => TryAddItemWithSpill(item);
         public void RemoveAtIndex(int index) => SetItemAtIndex(index, null);
