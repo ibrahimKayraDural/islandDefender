@@ -170,7 +170,11 @@ namespace Overworld
             //check for override
             if (@override)
             {
+                int sameIDIndex = _movementModeModifiers.FindIndex(x => x.Item1 == id);
+                if (sameIDIndex != -1) _movementModeModifiers.RemoveAt(sameIDIndex);
+
                 _movementModeModifiers.Insert(0, value);
+                
             }
             else
             {
