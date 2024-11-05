@@ -6,21 +6,6 @@ public class BattleComputer : MonoBehaviour, IInteractable
 {
     public string InteractDescription { get => "Manage battlefield"; set { } }
 
-    [SerializeField] GameObject[] BattleGameObjects;
-    [SerializeField] string _TargetCameraTag = GLOBAL.UnassignedString;
-    [SerializeField] string _ReturnCameraTag = GLOBAL.UnassignedString;
-
-    PlayerInstance _playerInstance
-    {
-        get
-        {
-            if(AUTO_playerInstance == null)
-                AUTO_playerInstance = PlayerInstance.Instance;
-            return AUTO_playerInstance;
-        }
-    }
-    PlayerInstance AUTO_playerInstance = null;
-
     CameraManager _cameraManager
     {
         get
@@ -32,29 +17,19 @@ public class BattleComputer : MonoBehaviour, IInteractable
     }
     CameraManager AUTO_cameraManager = null;
 
-    CanvasManager _canvasManager
+    BattleManager _battleManager
     {
         get
         {
-            if (AUTO_canvasManager == null)
-                AUTO_canvasManager = CanvasManager.Instance;
-            return AUTO_canvasManager;
+            if (AUTO_battleManager == null)
+                AUTO_battleManager = BattleManager.Instance;
+            return AUTO_battleManager;
         }
     }
-    CanvasManager AUTO_canvasManager = null;
+    BattleManager AUTO_battleManager = null;
 
     public void OnInteracted(GameObject interactor)
     {
-        SetBattleEnablity(true);
-    }
-
-    public void SetBattleEnablity(bool setTo)
-    {
-        foreach (var item in BattleGameObjects) item.SetActive(setTo);
-        _playerInstance.PlayerController_Ref.enabled = !setTo;
-        _playerInstance.PlayerInteractor_Ref.enabled = !setTo;
-        _playerInstance.PlayerToolController_Ref.enabled = !setTo;
-        _canvasManager.gameObject.SetActive(!setTo);
-        _cameraManager.TrySetCameraWithTag(setTo ? _TargetCameraTag : _ReturnCameraTag, false);
+        _battleManager.EnterBattle();
     }
 }

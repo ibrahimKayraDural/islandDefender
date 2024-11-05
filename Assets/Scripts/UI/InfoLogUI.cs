@@ -79,7 +79,7 @@ public class InfoLogUI : MonoBehaviour
         GameObject obj = new GameObject("LogMessage", new System.Type[] { typeof(TextMeshProUGUI) });
         TextMeshProUGUI tm = obj.GetComponent<TextMeshProUGUI>();
 
-        obj.transform.parent = _LogParent;
+        obj.transform.SetParent(_LogParent);
         tm.text = text;
         tm.color = color.HasValue ? color.Value : _DefaultColor;
 

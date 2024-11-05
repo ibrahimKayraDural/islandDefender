@@ -389,6 +389,7 @@ MonoBehaviour:
   _PlayerInteractor: {fileID: 9024093362210090674}
   _Inventory: {fileID: 4612471665001557244}
   _PlayerToolController: {fileID: 8785126028115196852}
+  _CanvasManager: {fileID: 0}
 --- !u!114 &6961616835264164479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1510,7 +1511,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4087
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

@@ -10,9 +10,20 @@ namespace TowerDefence
     {
         [SerializeField] LayerMask TowerDefenceLayer;
         [SerializeField] TextMeshProUGUI _CurrentTurretText;
-        [SerializeField] BattleComputer _BattleComputer;
 
         [SerializeField] Camera _camera = null;
+
+        BattleManager _battleManager
+        {
+            get
+            {
+                if (AUTO_battleManager == null)
+                    AUTO_battleManager = BattleManager.Instance;
+                return AUTO_battleManager;
+            }
+        }
+        BattleManager AUTO_battleManager = null;
+
         TowerDefenceTileScript _currentTile = null;
         int currentIndex = 0;
         TurretData[] _turrets;
@@ -65,7 +76,7 @@ namespace TowerDefence
         public void ExitBattle()
         {
             DeselectCurrentTile();
-            _BattleComputer.SetBattleEnablity(false);
+            _battleManager.ExitBattle();
         }
         void TryChangeTurret(float v)
         {

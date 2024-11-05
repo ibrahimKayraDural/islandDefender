@@ -32,6 +32,7 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] ChestUIScript _ChestUI;
     [SerializeField] ToolRackUI _ToolRackUI;
     [SerializeField] InteractableHelperUI _InteractableHelper;
+    [SerializeField] RemoteScreenController _RemoteScreenController;
 
     private void Awake()
     {
@@ -44,6 +45,12 @@ public class CanvasManager : MonoBehaviour
         _MainCanvas.worldCamera = Camera.main;
 
         SetInventoryEnablity(false);
+    }
+
+    public void SetEnablity(bool setTo)
+    {
+        _RemoteScreenController.SetSmallScreenEnablity(false);
+        gameObject.SetActive(setTo);
     }
 
     //Do not forget to register new Proximity Interactables here
