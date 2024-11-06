@@ -20,6 +20,7 @@ public class InfoLogUI : MonoBehaviour
     [SerializeField] float _ShowDuration = 1f;
     [SerializeField] int _MessageCapacity = 20;
     [SerializeField] Color _DefaultColor = Color.white;
+    [SerializeField] float _FontSize = 16f;
 
     [Space(10)]
     [Header("References")]
@@ -28,6 +29,7 @@ public class InfoLogUI : MonoBehaviour
 
     Queue<GameObject> _log;
     bool _invalidateDurationDisable = false;
+    bool _isEnabled = true;
 
     void Awake()
     {
@@ -36,6 +38,17 @@ public class InfoLogUI : MonoBehaviour
 
         _log = new Queue<GameObject>();
         CanvasManager.e_OnCurrentInterfaceChanged += OnCanvasManagerInterfaceChanged;
+    }
+    private void OnEnable()
+    {
+        _isEnabled = true;
+    }
+    void OnDisable()
+    {
+        if (CloseAfterDuration_Handler != null)
+            StopCoroutine(CloseAfterDuration_Handler);
+        SetEnablity(false);
+        _isEnabled = false;
     }
 
     void OnCanvasManagerInterfaceChanged(object sender, IUserInterface e)
@@ -76,12 +89,15 @@ public class InfoLogUI : MonoBehaviour
 
     public void AddToLog(string text, Color? color = null)
     {
+        if (_isEnabled == false) return;
+
         GameObject obj = new GameObject("LogMessage", new System.Type[] { typeof(TextMeshProUGUI) });
         TextMeshProUGUI tm = obj.GetComponent<TextMeshProUGUI>();
 
         obj.transform.SetParent(_LogParent);
         tm.text = text;
         tm.color = color.HasValue ? color.Value : _DefaultColor;
+        tm.fontSize = _FontSize;
 
         AddToQueue(obj);
 

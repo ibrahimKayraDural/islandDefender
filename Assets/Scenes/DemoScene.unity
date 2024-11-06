@@ -4345,17 +4345,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e254374e6ff56b545926e3b1f2f77bb5, type: 3}
---- !u!114 &522113943 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1063319128716807942, guid: e254374e6ff56b545926e3b1f2f77bb5, type: 3}
-  m_PrefabInstance: {fileID: 522113942}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f6b1b4a73f6aab4d95448831ff8e44f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &522113944 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8627522180039400849, guid: e254374e6ff56b545926e3b1f2f77bb5, type: 3}
@@ -5563,6 +5552,10 @@ PrefabInstance:
     - target: {fileID: 8167448166108572445, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8959757345852614881, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _FontSize
+      value: 24
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6052130334948703448, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
@@ -7378,7 +7371,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _CurrentTurretText: {fileID: 1933146799}
-  _BattleComputer: {fileID: 522113943}
   _camera: {fileID: 1029340719}
 --- !u!4 &844957254
 Transform:
@@ -11718,6 +11710,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1253525822}
   m_CullTransparentMesh: 1
+--- !u!114 &1257278952 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5020041392954565497, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+  m_PrefabInstance: {fileID: 601166315}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5747369e16bc237428229d19f4e7a0e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1266504380
 GameObject:
   m_ObjectHideFlags: 0
@@ -13512,6 +13515,54 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1487180027}
   m_Mesh: {fileID: 5062246478642505140, guid: 36a200b0aa2061d43bb4c62c180093b5, type: 3}
+--- !u!1 &1490290565
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1490290567}
+  - component: {fileID: 1490290566}
+  m_Layer: 0
+  m_Name: BattlManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1490290566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1490290565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e30af9da6a62dfe4aaae822c054757a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _BattleGameObjects:
+  - {fileID: 770313978}
+  - {fileID: 844957252}
+  _TargetCameraTag: TowerDefencePlayground
+--- !u!4 &1490290567
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1490290565}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1497896803
 GameObject:
   m_ObjectHideFlags: 0
@@ -15006,6 +15057,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1626627553}
   - component: {fileID: 1626627554}
+  - component: {fileID: 1626627555}
   m_Layer: 5
   m_Name: RemoteScreenController
   m_TagString: Untagged
@@ -15045,6 +15097,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Animator: {fileID: 979262319}
+  _FullscreenHoldDuration: 0.5
+--- !u!114 &1626627555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626627552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e20c58656323ec540879c8cc3181e5e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _EventToRun:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1788297440}
+        m_TargetAssemblyTypeName: RemoteScreenController, Assembly-CSharp
+        m_MethodName: EnterBattleScreen
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1638520685
 GameObject:
   m_ObjectHideFlags: 0
@@ -16790,6 +16870,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1774174052}
   m_CullTransparentMesh: 1
+--- !u!114 &1788297440 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2351501440477275869, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+  m_PrefabInstance: {fileID: 601166315}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de18b6f24da224e4abb2264373e75557, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1791257878
 GameObject:
   m_ObjectHideFlags: 0
@@ -17000,6 +17091,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7996554242888988019, guid: 296de3351f168f9478d7a0e7041b1503, type: 3}
+      propertyPath: _CanvasManager
+      value: 
+      objectReference: {fileID: 1257278952}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -20671,3 +20766,4 @@ SceneRoots:
   - {fileID: 844957254}
   - {fileID: 814457047}
   - {fileID: 181861422}
+  - {fileID: 1490290567}
