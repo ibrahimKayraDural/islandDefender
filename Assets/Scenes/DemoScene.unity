@@ -17244,7 +17244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87aac4c00f1495841b7a189ac38c53a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _StartCooldown: 3
+  _StartCooldown: 10
   _WaitUntillEnemiesAreDead: 1
   _RepeatLastWave: 0
   _spawners:

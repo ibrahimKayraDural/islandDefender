@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace TowerDefence
 {
+    public enum TowerDefenceGameplayMode { Play, Edit}
     public class TDPlayerController : MonoBehaviour
     {
         [SerializeField] LayerMask TowerDefenceLayer;
@@ -31,6 +32,8 @@ namespace TowerDefence
         float _changeTurret_TargetTime = -1;
         float _changeTurret_Cooldown = .2f;
 
+        TowerDefenceGameplayMode _currentMode = TowerDefenceGameplayMode.Edit;
+
         void Awake()
         {
             if (_camera == null)
@@ -44,6 +47,63 @@ namespace TowerDefence
         }
 
         void Update()
+        {
+            SetCurrentTile();
+
+            switch (_currentMode)
+            {
+                case TowerDefenceGameplayMode.Play: HandlePlayMode(); break;
+                case TowerDefenceGameplayMode.Edit: HandleEditMode(); break;
+            }
+
+            if (Input.GetButtonDown("Exit")) ExitBattle();
+        }
+
+        public void SetGameplayMode(TowerDefenceGameplayMode setTo)
+        {
+            TowerDefenceGameplayMode oldMode = _currentMode;
+            _currentMode = setTo;
+
+            //Run exit behaviour of mode
+            switch (oldMode)
+            {
+                case TowerDefenceGameplayMode.Play:
+                    //Reset all remote control turrets' animations
+                    break;
+                case TowerDefenceGameplayMode.Edit:
+                    break;
+            }
+
+            //Run enter behaviour of mode
+            switch (_currentMode)
+            {
+                case TowerDefenceGameplayMode.Play:
+                    break;
+                case TowerDefenceGameplayMode.Edit:
+                    break;
+            }
+        }
+
+        public void ExitBattle()
+        {
+            DeselectCurrentTile();
+            _battleManager.ExitBattle();
+        }
+
+        void HandleEditMode()
+        {
+            if (Input.GetButtonDown("PlaceTurret")) TryPlaceTurret();
+            else if (Input.GetButtonDown("DeleteTurret")) DeleteTurret();
+
+            TryChangeTurret(Input.GetAxisRaw("ChangeTurret"));
+        }
+
+        void HandlePlayMode()
+        {
+
+        }
+
+        void SetCurrentTile()
         {
             Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
             Physics.Raycast(ray, out RaycastHit hit, 100, TowerDefenceLayer);
@@ -65,19 +125,8 @@ namespace TowerDefence
                     SelectTile(tdts);
                 }
             }
-
-            if (Input.GetButtonDown("PlaceTurret")) TryPlaceTurret();
-            else if (Input.GetButtonDown("DeleteTurret")) DeleteTurret();
-            else if (Input.GetButtonDown("Exit")) ExitBattle();
-
-            TryChangeTurret(Input.GetAxisRaw("ChangeTurret"));
         }
         
-        public void ExitBattle()
-        {
-            DeselectCurrentTile();
-            _battleManager.ExitBattle();
-        }
         void TryChangeTurret(float v)
         {
             if (v == 0) return;
@@ -94,20 +143,6 @@ namespace TowerDefence
             _changeTurret_TargetTime = Time.time + _changeTurret_Cooldown;
         }
 
-        void SelectTile(TowerDefenceTileScript tdts)
-        {
-            _currentTile = tdts;
-            _currentTile.GetHighlighted();
-        }
-
-        void DeselectCurrentTile()
-        {
-            if (_currentTile == null) return;
-
-            _currentTile.GetUnhighlighted();
-            _currentTile = null;
-        }
-
         void TryPlaceTurret()
         {
             if (_currentTile == null) return;
@@ -122,6 +157,20 @@ namespace TowerDefence
         void DeleteTurret()
         {
             _currentTile?.OccupyingTurret?.KillSelf();
+        }
+
+        void SelectTile(TowerDefenceTileScript tdts)
+        {
+            _currentTile = tdts;
+            _currentTile.GetHighlighted();
+        }
+
+        void DeselectCurrentTile()
+        {
+            if (_currentTile == null) return;
+
+            _currentTile.GetUnhighlighted();
+            _currentTile = null;
         }
     }
 }

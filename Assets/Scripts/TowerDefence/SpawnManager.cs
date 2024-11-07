@@ -17,12 +17,21 @@ namespace TowerDefence
         [SerializeField, Min(0)] int _StartCooldown = 2;
         [SerializeField] bool _WaitUntillEnemiesAreDead = true;
         [SerializeField] bool _RepeatLastWave;
+        [SerializeField] bool _StartPaused;
         [SerializeField] List<Spawner> _spawners = new List<Spawner>();
         [SerializeField] GameObject _SpawnerPrefab = null;
         [SerializeField] BaseManager _BaseMngr;
         [SerializeField] TextMeshProUGUI _TimeTM;
 
-        int _currentWaveIndex;
+        bool _isPaused => _cooldownSpeedMultiplier == 0;
+        int _waveCount => CurrentSwarm.Waves.Count;
+        int _currentWaveCooldown
+        {
+            get
+            {
+                return _currentWaveIndex < _waveCooldownArr.Count && _currentWaveIndex >= 0 ? _waveCooldownArr[_currentWaveIndex] : _waveCooldownArr[_waveCooldownArr.Count - 1];
+            }
+        }
         S_Wave? _currentWave
         {
             get
@@ -33,16 +42,15 @@ namespace TowerDefence
                 return CurrentSwarm.Waves[_currentWaveIndex];
             }
         }
-        int _waveCount => CurrentSwarm.Waves.Count;
-        SwarmDataValueContainer _changedSwarm = null;
+
+        List<KeyValuePair<S_EnemyWithCount, int>> _enemiesWithLanes = new List<KeyValuePair<S_EnemyWithCount, int>>();
+        List<float> _enemyCooldownArr = new List<float>();
+        int _enemyCooldownArrCount;
+
         List<int> _waveCooldownArr = GLOBAL.FailsafeWaveCooldowns;
-        int _currentWaveCooldown
-        {
-            get
-            {
-                return _currentWaveIndex < _waveCooldownArr.Count && _currentWaveIndex >= 0 ? _waveCooldownArr[_currentWaveIndex] : _waveCooldownArr[_waveCooldownArr.Count - 1];
-            }
-        }
+        SwarmDataValueContainer _changedSwarm = null;
+        int _currentWaveIndex;
+        float _cooldownSpeedMultiplier = 1;
 
         void Awake()
         {
@@ -68,6 +76,7 @@ namespace TowerDefence
             _TimeTM.text = "";
 
             StartCoroutine(RunWaveCooldown(_StartCooldown));
+            SetCooldownIsPaused(_StartPaused);
         }
 
         void OnCurrentSwarmValuesHaveChanged(object sender, SwarmDataValueContainer e)
@@ -93,7 +102,10 @@ namespace TowerDefence
         public static bool RemoveFromActiveEnemyList(GameObject target)
         {
             bool didRemove = ActiveEnemies.Remove(target);
-            if (ActiveEnemies.Count <= 0) e_ActiveEnemiesListIsEmptied?.Invoke(typeof(SpawnManager), "listEmpty");
+            if (ActiveEnemies.Count <= 0)
+            {
+                e_ActiveEnemiesListIsEmptied?.Invoke(typeof(SpawnManager), "listEmpty");
+            }
             return didRemove;
         }
 
@@ -119,11 +131,9 @@ namespace TowerDefence
             StopCoroutine(nameof(WaveCoroutine));
             WaveIsActive = false;
         }
+        public void SetCooldownIsPaused(bool setTo) => _cooldownSpeedMultiplier = setTo ? 0 : 1;
 
 
-        List<KeyValuePair<S_EnemyWithCount, int>> _enemiesWithLanes = new List<KeyValuePair<S_EnemyWithCount, int>>();
-        List<float> _enemyCooldownArr = new List<float>();
-        int _enemyCooldownArrCount;
         IEnumerator WaveCoroutine()
         {
             //looping untill either no data is left in wave data or the failsafe cap is reached
@@ -263,9 +273,9 @@ namespace TowerDefence
             StartCoroutine(nameof(RunWaveCooldown), cooldown);
         }
 
-        void SetIndicatorValues(bool toNull = false)
+        void SetIndicatorValues(bool? toNull = false)
         {
-            if(toNull)
+            if(toNull == null || toNull.Value)
             {
                 foreach (var item in _spawners) item.SetEnemyIndicators(null);
 
@@ -308,16 +318,21 @@ namespace TowerDefence
             SetWaveUp();
             SetIndicatorValues();
 
+            float currentCooldown = cooldown;
+
             while (true)
             {
-                if (cooldown <= 0) break;
-                _TimeTM.text = $"Untill Next Wave : {cooldown}";
-                yield return new WaitForSeconds(1);
-                cooldown--;
+                if (currentCooldown <= 0) break;
+
+                string timerStr = $"Untill Next Wave : {Mathf.CeilToInt(currentCooldown)}";
+                _TimeTM.text = _isPaused ? "PAUSED" : timerStr;
+
+                yield return new WaitForFixedUpdate();
+                currentCooldown -= Time.fixedDeltaTime * _cooldownSpeedMultiplier;
             }
             _TimeTM.text = "";
 
-            SetIndicatorValues(true);
+            SetIndicatorValues(null);
             StartWave();
         }
 

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8034,7 +8034,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
@@ -13822,9 +13822,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87aac4c00f1495841b7a189ac38c53a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _StartCooldown: 3
+  _StartCooldown: 8
   _WaitUntillEnemiesAreDead: 1
   _RepeatLastWave: 0
+  _StartPaused: 0
   _spawners:
   - {fileID: 566298939}
   - {fileID: 244867536}
@@ -16700,7 +16701,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1924322099
 Transform:
   m_ObjectHideFlags: 0
@@ -18393,7 +18394,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2129767041
 Transform:
   m_ObjectHideFlags: 0
@@ -19487,11 +19488,11 @@ SceneRoots:
   - {fileID: 6893189577758625377}
   - {fileID: 963194228}
   - {fileID: 2062594021}
-  - {fileID: 1924322099}
   - {fileID: 681299533}
   - {fileID: 989514689}
-  - {fileID: 2129767041}
   - {fileID: 1616719898}
   - {fileID: 1600570452}
   - {fileID: 1511585766}
   - {fileID: 2026150112}
+  - {fileID: 2129767041}
+  - {fileID: 1924322099}
