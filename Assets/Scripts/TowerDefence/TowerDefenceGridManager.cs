@@ -12,7 +12,7 @@ namespace TowerDefence
         [SerializeField, Min(1)] int _Height = 1;
         [SerializeField] Material _FirstTileMaterial;
         [SerializeField] Material _SecondTileMaterial;
-        [SerializeField, Min(0)] float _BoundingBoxHeight = 1;
+        [SerializeField, Min(0)] float _BoundingBoxHeight = .01f;
         [SerializeField] Vector3 _SpawnerOffset;
 
         [Header("Reference")]
