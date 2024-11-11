@@ -6,13 +6,19 @@ using UnityEngine;
 
 namespace TowerDefence
 {
-    public enum TowerDefenceGameplayMode { Play, Edit}
+    public enum TowerDefenceControlMode { None, Remote, Full }
+    public enum TowerDefenceGameplayMode { Idle, Play, Edit }
     public class TDPlayerController : MonoBehaviour
     {
         [SerializeField] LayerMask TowerDefenceLayer;
         [SerializeField] TextMeshProUGUI _CurrentTurretText;
+        [SerializeField] TextMeshProUGUI _CurrentModeText;
+        [SerializeField] TDCanvasManager _TDCanvasManager;
+        [SerializeField] SpawnManager _SpawnManager;
 
         [SerializeField] Camera _camera = null;
+
+        TurretData _currentTurret => _turrets[currentIndex];
 
         BattleManager _battleManager
         {
@@ -26,13 +32,14 @@ namespace TowerDefence
         BattleManager AUTO_battleManager = null;
 
         TowerDefenceTileScript _currentTile = null;
-        int currentIndex = 0;
         TurretData[] _turrets;
-        TurretData _currentTurret => _turrets[currentIndex];
+        Turret_Remote _selectedTurret = null;
+        int currentIndex = 0;
         float _changeTurret_TargetTime = -1;
         float _changeTurret_Cooldown = .2f;
 
-        TowerDefenceGameplayMode _currentMode = TowerDefenceGameplayMode.Edit;
+        TowerDefenceGameplayMode _currentGameplayMode = TowerDefenceGameplayMode.Edit;
+        TowerDefenceControlMode _currentControlMode = TowerDefenceControlMode.None;
 
         void Awake()
         {
@@ -48,57 +55,151 @@ namespace TowerDefence
 
         void Update()
         {
-            SetCurrentTile();
+            if (_currentControlMode == TowerDefenceControlMode.None) return;
 
-            switch (_currentMode)
+            switch (_currentGameplayMode)
             {
                 case TowerDefenceGameplayMode.Play: HandlePlayMode(); break;
                 case TowerDefenceGameplayMode.Edit: HandleEditMode(); break;
+                case TowerDefenceGameplayMode.Idle: HandleIdleMode(); break;
             }
 
-            if (Input.GetButtonDown("Exit")) ExitBattle();
+            if (Input.GetButtonDown("Exit")) _battleManager.ExitBattle();
+
+            _CurrentModeText.text = _currentGameplayMode.ToString();
         }
 
-        public void SetGameplayMode(TowerDefenceGameplayMode setTo)
+        public void EvaluateGameplayMode(bool WaveIsActive)
         {
-            TowerDefenceGameplayMode oldMode = _currentMode;
-            _currentMode = setTo;
+            if (WaveIsActive == false)
+            {
+                switch (_currentControlMode)
+                {
+                    case TowerDefenceControlMode.None:
+                    case TowerDefenceControlMode.Remote: SetGameplayMode(TowerDefenceGameplayMode.Idle); break;
+
+                    case TowerDefenceControlMode.Full: SetGameplayMode(TowerDefenceGameplayMode.Edit); break;
+                }
+            }
+
+            else
+            {
+                switch (_currentControlMode)
+                {
+                    case TowerDefenceControlMode.None: SetGameplayMode(TowerDefenceGameplayMode.Idle); break;
+
+                    case TowerDefenceControlMode.Remote:
+                    case TowerDefenceControlMode.Full: SetGameplayMode(TowerDefenceGameplayMode.Play); break;
+                }
+            }
+        }
+
+        void SetGameplayMode(TowerDefenceGameplayMode setTo)
+        {
+            TowerDefenceGameplayMode oldMode = _currentGameplayMode;
+            _currentGameplayMode = setTo;
 
             //Run exit behaviour of mode
             switch (oldMode)
             {
                 case TowerDefenceGameplayMode.Play:
-                    //Reset all remote control turrets' animations
+                    DeselectTurret();
                     break;
                 case TowerDefenceGameplayMode.Edit:
+                    break;
+                case TowerDefenceGameplayMode.Idle:
                     break;
             }
 
             //Run enter behaviour of mode
-            switch (_currentMode)
+            switch (_currentGameplayMode)
             {
                 case TowerDefenceGameplayMode.Play:
                     break;
                 case TowerDefenceGameplayMode.Edit:
                     break;
+                case TowerDefenceGameplayMode.Idle:
+                    break;
             }
+
+            if (_TDCanvasManager.gameObject.activeInHierarchy == true)
+                _TDCanvasManager.SetCanvas(_currentGameplayMode);
         }
 
+        public void EnterBattle(TowerDefenceControlMode mode)
+        {
+            _currentControlMode = mode;
+            EvaluateGameplayMode(SpawnManager.WaveIsActive);
+            _TDCanvasManager.gameObject.SetActive(true);
+        }
         public void ExitBattle()
         {
+            _currentControlMode = TowerDefenceControlMode.None;
             DeselectCurrentTile();
-            _battleManager.ExitBattle();
+            EvaluateGameplayMode(SpawnManager.WaveIsActive);
+            _TDCanvasManager.gameObject.SetActive(false);
         }
 
         void HandleEditMode()
         {
+            SetCurrentTile();
+
             if (Input.GetButtonDown("PlaceTurret")) TryPlaceTurret();
             else if (Input.GetButtonDown("DeleteTurret")) DeleteTurret();
 
             TryChangeTurret(Input.GetAxisRaw("ChangeTurret"));
         }
 
+        bool _selectedTurretActivationNeedsReset = false;
         void HandlePlayMode()
+        {
+            //handle remote control turrets
+            SetCurrentTile();
+
+            bool _selectedTurretThisFrame = false;
+
+            if (Input.GetButtonDown("DeselectTurret")) DeselectTurret();
+
+            if (_selectedTurret == null)
+            {
+                if (Input.GetButtonDown("SelectTurret"))
+                {
+                    Turret_Remote turret = _currentTile != null ? _currentTile.OccupyingTurret as Turret_Remote : null;
+                    SelectTurret(turret);
+                    _selectedTurretThisFrame = true;
+                    _selectedTurretActivationNeedsReset = true;
+                }
+            }
+            else if (_selectedTurretActivationNeedsReset == false && _selectedTurret != null && Input.GetButton("UseSelectedTurret"))
+            {
+                _selectedTurret.UseTurret();
+            }
+
+            if (Input.GetButtonDown("UseSelectedTurret") && _selectedTurretThisFrame == false) _selectedTurretActivationNeedsReset = false;
+
+
+            void SelectTurret(Turret_Remote turret)
+            {
+                if (turret == null) return;
+                else if (_selectedTurret != null)
+                {
+                    if (_selectedTurret == turret) return;
+                    DeselectTurret();
+                }
+
+                turret.SetSelected(true);
+                _selectedTurret = turret;
+            }
+        }
+        void DeselectTurret()
+        {
+            if (_selectedTurret == null) return;
+
+            _selectedTurret.SetSelected(false);
+            _selectedTurret = null;
+        }
+
+        void HandleIdleMode()
         {
 
         }
@@ -126,7 +227,7 @@ namespace TowerDefence
                 }
             }
         }
-        
+
         void TryChangeTurret(float v)
         {
             if (v == 0) return;

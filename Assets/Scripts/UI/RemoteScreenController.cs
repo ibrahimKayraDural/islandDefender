@@ -65,6 +65,6 @@ public class RemoteScreenController : MonoBehaviour
 
     public void EnterBattleScreen()
     {
-        _battleManager.EnterBattle();
+        _battleManager.EnterBattle(TowerDefence.TowerDefenceControlMode.Remote);
     }
 }

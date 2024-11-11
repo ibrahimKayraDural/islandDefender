@@ -6,17 +6,6 @@ public class BattleComputer : MonoBehaviour, IInteractable
 {
     public string InteractDescription { get => "Manage battlefield"; set { } }
 
-    CameraManager _cameraManager
-    {
-        get
-        {
-            if (AUTO_cameraManager == null)
-                AUTO_cameraManager = CameraManager.Instance;
-            return AUTO_cameraManager;
-        }
-    }
-    CameraManager AUTO_cameraManager = null;
-
     BattleManager _battleManager
     {
         get
@@ -30,6 +19,6 @@ public class BattleComputer : MonoBehaviour, IInteractable
 
     public void OnInteracted(GameObject interactor)
     {
-        _battleManager.EnterBattle();
+        _battleManager.EnterBattle(TowerDefence.TowerDefenceControlMode.Full);
     }
 }

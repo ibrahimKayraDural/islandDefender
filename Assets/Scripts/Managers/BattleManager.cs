@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TowerDefence;
 
 public class BattleManager : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class BattleManager : MonoBehaviour
         else if (Instance != this) Destroy(this);
     }
 
-    [SerializeField] GameObject[] _BattleGameObjects;
+    [SerializeField] TDPlayerController _TDPlayerController;
     [SerializeField] string _TargetCameraTag = GLOBAL.UnassignedString;
 
     CameraManager _cameraManager
@@ -27,19 +28,21 @@ public class BattleManager : MonoBehaviour
 
     string _returnCameraTag = GLOBAL.UnassignedString;
 
-    public void EnterBattle() => EnterBattle(_cameraManager.CurrentCamera.gameObject.tag);
-    public void EnterBattle(string cameraTagToReturn)
+    public void EnterBattle(TowerDefenceControlMode mode) => EnterBattle(_cameraManager.CurrentCamera.gameObject.tag, mode);
+    public void EnterBattle(string cameraTagToReturn, TowerDefenceControlMode mode)
     {
         _returnCameraTag = cameraTagToReturn;
 
-        foreach (var item in _BattleGameObjects) item.SetActive(true);
+        _TDPlayerController.EnterBattle(mode);
+
         _cameraManager.TrySetCameraWithTag(_TargetCameraTag, false, true);
     }
     public void ExitBattle()
     {
         if (_returnCameraTag == GLOBAL.UnassignedString) return;
 
-        foreach (var item in _BattleGameObjects) item.SetActive(false);
+        _TDPlayerController.ExitBattle();
+
         _cameraManager.TrySetCameraWithTag(_returnCameraTag, false, false);
 
         _returnCameraTag = GLOBAL.UnassignedString;

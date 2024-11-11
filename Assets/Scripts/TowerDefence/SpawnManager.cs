@@ -22,6 +22,7 @@ namespace TowerDefence
         [SerializeField] GameObject _SpawnerPrefab = null;
         [SerializeField] BaseManager _BaseMngr;
         [SerializeField] TextMeshProUGUI _TimeTM;
+        [SerializeField] TDPlayerController _TDPlayerController;
 
         bool _isPaused => _cooldownSpeedMultiplier == 0;
         int _waveCount => CurrentSwarm.Waves.Count;
@@ -122,6 +123,7 @@ namespace TowerDefence
             if (_waveCooldownArr == null || _waveCooldownArr.Count <= 0) _waveCooldownArr = GLOBAL.FailsafeWaveCooldowns;
 
             WaveIsActive = true;
+            _TDPlayerController.EvaluateGameplayMode(true);
             StartCoroutine(nameof(WaveCoroutine));
         }
         public void StopWave()
@@ -317,6 +319,7 @@ namespace TowerDefence
         {
             SetWaveUp();
             SetIndicatorValues();
+            _TDPlayerController.EvaluateGameplayMode(false);
 
             float currentCooldown = cooldown;
 
