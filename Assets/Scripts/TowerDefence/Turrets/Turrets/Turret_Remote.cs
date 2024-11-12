@@ -9,29 +9,26 @@ namespace TowerDefence
         internal IEnumerator IEnumUpdate_Handle = null;
         internal bool _isSelected = false;
         internal float _nextUse_TargetTime = -1;
+        internal Transform _lookTransform = null;
 
-        public void SetSelected(bool setTo)
-        {
-            if (setTo) AUTO_OnSelected();
-            else AUTO_OnDeselected();
-        }
-
-        internal void AUTO_OnSelected()
+        public void SelectTurret(Transform lookTransform = null)
         {
             if (_isSelected) return;
 
+            _lookTransform = lookTransform;
             IEnumUpdate_Handle = IEnumUpdate();
             StartCoroutine(IEnumUpdate_Handle);
             OnSelected();
 
             _isSelected = true;
         }
-        abstract internal void OnSelected();
+        internal abstract void OnSelected(Transform lookPosition = null);
 
-        internal void AUTO_OnDeselected()
+        public void DeselectTurret()
         {
             if (_isSelected == false) return;
 
+            _lookTransform = null;
             if (IEnumUpdate_Handle != null)
             {
                 StopCoroutine(IEnumUpdate_Handle);

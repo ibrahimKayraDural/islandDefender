@@ -15,6 +15,7 @@ namespace TowerDefence
         [SerializeField] TextMeshProUGUI _CurrentModeText;
         [SerializeField] TDCanvasManager _TDCanvasManager;
         [SerializeField] SpawnManager _SpawnManager;
+        [SerializeField] Transform _MouseTracker;
 
         [SerializeField] Camera _camera = null;
 
@@ -150,44 +151,34 @@ namespace TowerDefence
             TryChangeTurret(Input.GetAxisRaw("ChangeTurret"));
         }
 
-        bool _selectedTurretActivationNeedsReset = false;
         void HandlePlayMode()
         {
-            //handle remote control turrets
             SetCurrentTile();
 
-            bool _selectedTurretThisFrame = false;
-
-            if (Input.GetButtonDown("DeselectTurret")) DeselectTurret();
-
-            if (_selectedTurret == null)
+            if (Input.GetButtonDown("ToggleSelectRemoteTurret"))
             {
-                if (Input.GetButtonDown("SelectTurret"))
-                {
-                    Turret_Remote turret = _currentTile != null ? _currentTile.OccupyingTurret as Turret_Remote : null;
-                    SelectTurret(turret);
-                    _selectedTurretThisFrame = true;
-                    _selectedTurretActivationNeedsReset = true;
-                }
+                Turret_Remote turret = _currentTile != null ? _currentTile.OccupyingTurret as Turret_Remote : null;
+                EvaluateTurret(turret);
             }
-            else if (_selectedTurretActivationNeedsReset == false && _selectedTurret != null && Input.GetButton("UseSelectedTurret"))
+            if (_selectedTurret != null && Input.GetButton("UseSelectedRemoteTurret"))
             {
                 _selectedTurret.UseTurret();
             }
 
-            if (Input.GetButtonDown("UseSelectedTurret") && _selectedTurretThisFrame == false) _selectedTurretActivationNeedsReset = false;
-
-
-            void SelectTurret(Turret_Remote turret)
+            void EvaluateTurret(Turret_Remote turret)
             {
-                if (turret == null) return;
+                if (turret == null)
+                {
+                    DeselectTurret();
+                    return;
+                }
                 else if (_selectedTurret != null)
                 {
                     if (_selectedTurret == turret) return;
                     DeselectTurret();
                 }
 
-                turret.SetSelected(true);
+                turret.SelectTurret(_MouseTracker);
                 _selectedTurret = turret;
             }
         }
@@ -195,7 +186,7 @@ namespace TowerDefence
         {
             if (_selectedTurret == null) return;
 
-            _selectedTurret.SetSelected(false);
+            _selectedTurret.DeselectTurret();
             _selectedTurret = null;
         }
 
@@ -206,7 +197,8 @@ namespace TowerDefence
 
         void SetCurrentTile()
         {
-            Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
+            Vector3 mousePos = Input.mousePosition;
+            Ray ray = _camera.ScreenPointToRay(mousePos);
             Physics.Raycast(ray, out RaycastHit hit, 100, TowerDefenceLayer);
 
             GameObject hitGo = hit.transform?.gameObject;
@@ -226,6 +218,10 @@ namespace TowerDefence
                     SelectTile(tdts);
                 }
             }
+
+            Vector3 trackerPos = _camera.ScreenToWorldPoint(mousePos);
+            trackerPos.y = 0;
+            _MouseTracker.position = trackerPos;
         }
 
         void TryChangeTurret(float v)

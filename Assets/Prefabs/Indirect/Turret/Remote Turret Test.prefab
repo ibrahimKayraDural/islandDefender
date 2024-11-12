@@ -217,6 +217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _MaxHealth: 1
   _MeshParent: {fileID: 1053329366064751066}
+  _RotatingHead: {fileID: 2525121416066741122}
 --- !u!1 &8987809130070256994
 GameObject:
   m_ObjectHideFlags: 0
