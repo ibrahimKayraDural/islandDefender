@@ -48,6 +48,16 @@ namespace TowerDefence
             boundingBox.GetComponent<BoxCollider>().isTrigger = true;
             boundingBox.tag = "TowerDefencePlayground";
 
+            GameObject collisionPlane = new GameObject("collision plane", new System.Type[] { typeof(BoxCollider) });
+            Transform cpTrans = collisionPlane.transform;
+            BoxCollider cpCol = collisionPlane.GetComponent<BoxCollider>();
+            cpTrans.parent = tempParent;
+            cpTrans.localPosition = new Vector3(0, -.25f, 0);
+            cpTrans.localRotation = Quaternion.identity;
+            cpTrans.localScale = new Vector3(50, .1f, 50);
+            cpCol.isTrigger = true;
+            collisionPlane.layer = 13;
+
             for (int y = 0; y < _Height; y++)
             {
                 for (int x = 0; x < _Width; x++)

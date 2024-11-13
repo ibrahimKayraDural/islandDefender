@@ -219,9 +219,7 @@ namespace TowerDefence
                 }
             }
 
-            Vector3 trackerPos = _camera.ScreenToWorldPoint(mousePos);
-            trackerPos.y = 0;
-            _MouseTracker.position = trackerPos;
+            _MouseTracker.position = hit.point;
         }
 
         void TryChangeTurret(float v)
