@@ -8,21 +8,9 @@ namespace TowerDefence
     {
         internal bool _breakActivationLoop;
 
-        override public void Initialize(TurretData data, TowerDefenceTileScript tile)
+        internal override void OnInitialized()
         {
-            if (_isInitialized) return;
-
-            _data = data;
-            _parentTile = tile;
-            transform.parent = tile.transform;
-            transform.localPosition = Vector3.zero;
-            transform.localRotation = Quaternion.identity;
-            SetHealth(_MaxHealth);
-
-            tile.SetOccupied(this);
             StartCoroutine(nameof(ActivationLoop), _data.ActivationCooldown);
-
-            _isInitialized = true;
         }
 
         virtual internal IEnumerator ActivationLoop(float interval)

@@ -19,7 +19,7 @@ public class Projectile : MonoBehaviour
     Vector3 _dir;
     Rigidbody _rb;
 
-    public void Initialize(Vector3 direction, Vector3? visualDisplacement = null, float speedMultiplier = 1)
+    public void Initialize(Vector3 direction, float speedMultiplier = 1)
     {
         if (_isInitialized) return;
 
@@ -31,11 +31,8 @@ public class Projectile : MonoBehaviour
         _rb.drag = 0;
         transform.forward = direction;
 
-        if (visualDisplacement != null)
-            _VisualParent.localPosition = visualDisplacement.Value;
-
         StartCoroutine(nameof(UpdateLoop));
-        StartCoroutine(LifeTimeEnum());
+        StartCoroutine(LifeTimeIEnum());
 
         _isInitialized = true;
     }
@@ -50,7 +47,7 @@ public class Projectile : MonoBehaviour
             yield return new WaitForSeconds(_IterationDuration);
         }
     }
-    IEnumerator LifeTimeEnum()
+    IEnumerator LifeTimeIEnum()
     {
         yield return new WaitForSeconds(_LifeTime);
         DestroyProjectile(false);

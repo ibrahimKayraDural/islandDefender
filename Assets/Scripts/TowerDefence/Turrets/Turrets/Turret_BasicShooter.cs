@@ -6,31 +6,16 @@ namespace TowerDefence
 {
     public class Turret_BasicShooter : Turret_Auto
     {
-        [SerializeField] Transform _VisualBarrel;
+        [SerializeField] Transform _Barrel;
         [SerializeField] float _RayLenght = 100;
         [SerializeField] internal LayerMask _EnemyMask = 1 << 7;
 
         Ray _ray;
-        Vector3 _shootPoint;
 
-        public override void Initialize(TurretData data, TowerDefenceTileScript tile)
+        internal override void OnInitialized()
         {
-            if (_isInitialized) return;
-
-            _data = data;
-            _parentTile = tile;
-            transform.parent = tile.transform;
-            transform.localPosition = Vector3.zero;
-            transform.localRotation = Quaternion.identity;
-            _health = _MaxHealth;
-            _shootPoint = transform.position + Vector3.up * GLOBAL.TDColliderElevation;
-
-            _ray = new Ray(_shootPoint, transform.forward);
-
-            tile.SetOccupied(this);
-            StartCoroutine(nameof(ActivationLoop), _data.ActivationCooldown);
-
-            _isInitialized = true;
+            base.OnInitialized();
+            _ray = new Ray(_Barrel.position, transform.forward);
         }
 
         internal override void ActivationMethod()
@@ -45,10 +30,8 @@ namespace TowerDefence
         {
             if (_data.ProjectilePrefab.TryGetComponent<Projectile>(out _) == false) return;
 
-            Vector3 displacement = _VisualBarrel.position - _shootPoint;
-
-            Projectile proj = Instantiate(_data.ProjectilePrefab, _shootPoint, Quaternion.identity).GetComponent<Projectile>();
-            proj.Initialize(transform.forward, displacement, _data.ProjectileSpeedMultiplier);
+            Projectile proj = Instantiate(_data.ProjectilePrefab, _Barrel.position, Quaternion.identity).GetComponent<Projectile>();
+            proj.Initialize(transform.forward, _data.ProjectileSpeedMultiplier);
         }
 
         private void OnDrawGizmosSelected()

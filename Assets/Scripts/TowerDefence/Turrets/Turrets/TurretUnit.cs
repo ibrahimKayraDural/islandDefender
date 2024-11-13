@@ -25,13 +25,16 @@ namespace TowerDefence
             _parentTile = tile;
             transform.parent = tile.transform;
             transform.localPosition = Vector3.zero;
-            transform.localRotation = Quaternion.identity;
+            transform.rotation = Quaternion.identity;
             SetHealth(_MaxHealth);
 
             tile.SetOccupied(this);
+            OnInitialized();
 
             _isInitialized = true;
         }
+
+        abstract internal void OnInitialized();
 
         abstract internal void ActivationMethod();
 

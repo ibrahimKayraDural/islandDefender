@@ -40,5 +40,7 @@ namespace TowerDefence
         {
             Debug.Log(gameObject.name + " is activated.");
         }
+
+        internal override void OnInitialized() { }
     }
 }
