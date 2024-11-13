@@ -8,8 +8,8 @@ public class CameraManager : MonoBehaviour
     public static CameraManager Instance { get; private set; } = null;
 
     public event EventHandler<Camera> e_OnCameraChanged;
-    public Camera CurrentCamera => _camerasWithTag.Count > 0 ? _camerasWithTag[_currentIndex].Value.Value.Item1 : null;
-    public List<KeyValuePair<string, Tuple<Camera, AudioListener>>?> _camerasWithTag = new List<KeyValuePair<string, Tuple<Camera, AudioListener>>?>();
+    public Camera CurrentCamera => _camerasWithTagg.Count > 0 ? _camerasWithTagg[_currentIndex].Value : null;
+    public List<KeyValuePair<string, Camera>> _camerasWithTagg = new List<KeyValuePair<string, Camera>>();
 
     [SerializeField] List<string> _IgnoreTags = new List<string>();
     [SerializeField] string _StartingCameraTag = GLOBAL.UnassignedString;
@@ -76,14 +76,12 @@ public class CameraManager : MonoBehaviour
             string tag = cam.gameObject.tag;
             if (_IgnoreTags.Contains(tag)) continue;
 
-            cam.gameObject.TryGetComponent(out AudioListener al);
-
-            _camerasWithTag.Add(new KeyValuePair<string, Tuple<Camera, AudioListener>>(tag, new Tuple<Camera, AudioListener>(cam, al)));
+            _camerasWithTagg.Add(new KeyValuePair<string, Camera>(tag, cam));
         }
 
         if (TrySetCameraWithTag(_StartingCameraTag, false) == false)
         {
-            int idx = _camerasWithTag.FindIndex(x => x.Value.Value.Item1.enabled);
+            int idx = _camerasWithTagg.FindIndex(x => x.Value.gameObject.activeInHierarchy);
 
             if (idx != -1) SetCurrentIndex(idx, false);
         }
@@ -99,21 +97,9 @@ public class CameraManager : MonoBehaviour
 
     void RefreshCameras(bool runAnimation = true, bool? lockPlayer = null)
     {
-        for (int i = 0; i < _camerasWithTag.Count; i++)
+        for (int i = 0; i < _camerasWithTagg.Count; i++)
         {
-            bool enablity = _currentIndex == i;
-
-            Camera cam = _camerasWithTag[i].Value.Value.Item1;
-            AudioListener al = _camerasWithTag[i].Value.Value.Item2;
-
-            if (cam == null)
-            {
-                _camerasWithTag.RemoveAt(i);
-                continue;
-            }
-
-            cam.enabled = enablity;
-            if (al) al.enabled = enablity;
+            _camerasWithTagg[i].Value.gameObject.SetActive(_currentIndex == i);
         }
 
         if (lockPlayer != null) _playerInstance.SetPlayerIsLocked(lockPlayer.Value);
@@ -128,17 +114,17 @@ public class CameraManager : MonoBehaviour
 
     public bool TrySetCameraWithTag(string tag, bool runAnimation = true, bool? lockPlayer = null)
     {
-        if ((GLOBAL.StringHasValue(tag) && _camerasWithTag.Count > 0) == false) return false;
+        if ((GLOBAL.StringHasValue(tag) && _camerasWithTagg.Count > 0) == false) return false;
 
-        var pair = _camerasWithTag.Find(x => x.Value.Key == tag);
-        if (pair.HasValue == false) return false;
+        var i = _camerasWithTagg.FindIndex(x => x.Key == tag);
+        if (i == -1) return false;
 
-        return SetCurrentIndex(_camerasWithTag.FindIndex(x => x.Value.Key == tag), runAnimation, lockPlayer);
+        return SetCurrentIndex(i, runAnimation, lockPlayer);
     }
 
     bool SetCurrentIndex(int value, bool runAnimation = true, bool? lockPlayer = null)
     {
-        if (value < 0 || value >= _camerasWithTag.Count) return false;
+        if (value < 0 || value >= _camerasWithTagg.Count) return false;
 
         if (_currentIndex != value)
         {
