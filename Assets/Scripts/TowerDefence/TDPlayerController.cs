@@ -16,6 +16,7 @@ namespace TowerDefence
         [SerializeField] TDCanvasManager _TDCanvasManager;
         [SerializeField] SpawnManager _SpawnManager;
         [SerializeField] Transform _MouseTracker;
+        [SerializeField] ManualTurretManager _ManualTurretManager;
 
         [SerializeField] Camera _camera = null;
 
@@ -160,9 +161,13 @@ namespace TowerDefence
                 Turret_Remote turret = _currentTile != null ? _currentTile.OccupyingTurret as Turret_Remote : null;
                 EvaluateTurret(turret);
             }
-            if (_selectedTurret != null && Input.GetButton("UseSelectedRemoteTurret"))
+            if (_selectedTurret != null)
             {
-                _selectedTurret.UseTurret();
+                if (Input.GetButton("UseSelectedRemoteTurret")) _selectedTurret.UseTurret();
+            }
+            else if(Input.GetButton("UseManualTurret"))
+            {
+                _ManualTurretManager.UseCurrentTurret();
             }
 
             void EvaluateTurret(Turret_Remote turret)

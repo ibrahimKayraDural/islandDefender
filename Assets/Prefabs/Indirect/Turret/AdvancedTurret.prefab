@@ -53,6 +53,7 @@ MonoBehaviour:
   _EnemyMask:
     serializedVersion: 2
     m_Bits: 128
+  _ProjectilePrefab: {fileID: 665859162509387241, guid: 001a401080937344bb4b906cb0679a15, type: 3}
 --- !u!65 &1570492643580887878
 BoxCollider:
   m_ObjectHideFlags: 0

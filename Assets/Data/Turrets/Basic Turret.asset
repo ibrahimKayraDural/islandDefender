@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _displayName: Basic Turret
   _id: turret-basic
+  _Description: A slow shooting test turret
   _activationCooldown: 1
+  _costs: []
   _prefabObject: {fileID: 906911832218085558, guid: 6ee021627a986004c9b4e919b056b6fd, type: 3}
   _projectilePrefab: {fileID: 665859162509387241, guid: 001a401080937344bb4b906cb0679a15, type: 3}
+  _uiSprite: {fileID: 21300000, guid: fd53a86796260aa4ca32c68f3b06384f, type: 3}
   _projectileSpeedMultiplier: 1

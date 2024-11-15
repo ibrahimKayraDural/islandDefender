@@ -8,6 +8,7 @@ public class TriggerScript : MonoBehaviour
 {
     [SerializeField] UnityEvent<Collider> OnEntered;
     [SerializeField] UnityEvent<Collider> OnExited;
+    [SerializeField] UnityEvent<Collider> OnStay;
 
     void Awake()
     {
@@ -22,5 +23,9 @@ public class TriggerScript : MonoBehaviour
     void OnTriggerExit(Collider other)
     {
         OnExited?.Invoke(other);
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        OnStay?.Invoke(other);
     }
 }
