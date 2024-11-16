@@ -106,6 +106,7 @@ namespace TowerDefence
             {
                 case TowerDefenceGameplayMode.Play:
                     DeselectTurret();
+                    _ManualTurretManager.DeselectCurrentTurret();
                     break;
                 case TowerDefenceGameplayMode.Edit:
                     break;
@@ -163,11 +164,13 @@ namespace TowerDefence
             }
             if (_selectedTurret != null)
             {
+                _ManualTurretManager.DeselectCurrentTurret();
                 if (Input.GetButton("UseSelectedRemoteTurret")) _selectedTurret.UseTurret();
             }
-            else if(Input.GetButton("UseManualTurret"))
+            else
             {
-                _ManualTurretManager.UseCurrentTurret();
+                _ManualTurretManager.SelectCurrentTurret(_MouseTracker);
+                if (Input.GetButton("UseManualTurret")) _ManualTurretManager.UseCurrentTurret();
             }
 
             void EvaluateTurret(Turret_Remote turret)

@@ -9,5 +9,5 @@ public class BaseWall : MonoBehaviour, IHealth
     public float Health { get; }
 
     public void SetHealth(float setTo) => _BaseManager.SetHealth(setTo);
-    void RemoveHealth(float amount) => _BaseManager.RemoveHealth(amount);
+    public virtual void RemoveHealth(float amount) => _BaseManager.RemoveHealth(amount);
 }

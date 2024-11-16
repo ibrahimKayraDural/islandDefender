@@ -466,7 +466,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Raycaster: {fileID: 3886040488359480165}
-  _EventSystem: {fileID: 3043428066938545722}
+  _EventSystem: {fileID: 0}
 --- !u!1 &428592501689774738
 GameObject:
   m_ObjectHideFlags: 0
@@ -1474,7 +1474,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Raycaster: {fileID: 5158001761336177790}
-  _EventSystem: {fileID: 3043428066938545722}
+  _EventSystem: {fileID: 0}
 --- !u!1 &2391943574225098413
 GameObject:
   m_ObjectHideFlags: 0
@@ -1552,74 +1552,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &2428672539058054824
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5828058291045714540}
-  - component: {fileID: 3043428066938545722}
-  - component: {fileID: 7352273482100079808}
-  m_Layer: 0
-  m_Name: EventSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5828058291045714540
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2428672539058054824}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -960, y: -540, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6507577181427640600}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3043428066938545722
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2428672539058054824}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 10
---- !u!114 &7352273482100079808
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2428672539058054824}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
 --- !u!1 &2633457474894483637
 GameObject:
   m_ObjectHideFlags: 0
@@ -1733,7 +1665,6 @@ RectTransform:
   - {fileID: 5997417075154072458}
   - {fileID: 4714943475110967554}
   - {fileID: 3997712384516219475}
-  - {fileID: 5828058291045714540}
   - {fileID: 4274715060382912643}
   - {fileID: 602504900425849243}
   m_Father: {fileID: 0}
@@ -3464,6 +3395,7 @@ MonoBehaviour:
   _ShowDuration: 1
   _MessageCapacity: 20
   _DefaultColor: {r: 1, g: 1, b: 1, a: 1}
+  _FontSize: 16
   _VisualParent: {fileID: 8226411183426408742}
   _LogParent: {fileID: 6259863627072979864}
 --- !u!1 &6395605981051072975
@@ -3727,7 +3659,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Raycaster: {fileID: 3833443290156385889}
-  _EventSystem: {fileID: 3043428066938545722}
+  _EventSystem: {fileID: 0}
 --- !u!114 &3833443290156385889
 MonoBehaviour:
   m_ObjectHideFlags: 0

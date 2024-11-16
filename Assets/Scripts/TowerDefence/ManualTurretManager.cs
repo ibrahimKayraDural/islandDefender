@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace TowerDefence
@@ -9,7 +10,7 @@ namespace TowerDefence
     public class ManualTurretManager : MonoBehaviour
     {
         [System.Serializable]
-        struct ManualTurretData
+        class ManualTurretData
         {
             public TurretData Data => _data;
             public ManualTurretStatus Status => _status;
@@ -28,8 +29,12 @@ namespace TowerDefence
 
         [SerializeField] List<ManualTurretData> _Datas;
         [SerializeField] Transform _TurretParent;
+        [SerializeField] ManualTurretUI _UICellPrefab;
+        [SerializeField] Transform _UIParent;
 
         Turret_Manual _currentTurret = null;
+        List<ManualTurretUI> _uiPieces = new List<ManualTurretUI>();
+
 
         void OnValidate()
         {
@@ -42,36 +47,72 @@ namespace TowerDefence
                 GameObject prefab = item.Data.PrefabObject;
                 if (prefab == null || prefab.TryGetComponent(out Turret_Manual _) == false)
                 {
-                    _Datas[i] = new ManualTurretData();
+                    _Datas[i] = new ManualTurretData(null, ManualTurretStatus.Locked);
                 }
             }
         }
         void Awake()
         {
+            //Put Datas array to order
             var templist = new List<ManualTurretData>();
             for (int i = 0; i < _Datas.Count; i++) if (_Datas[i].Data != null) templist.Add(_Datas[i]);
             _Datas = templist;
 
-            //Set UI
+            //Clean UIParent's children
+            var temp = _UIParent.Cast<Transform>();
+            foreach (var child in temp) Destroy(child);
+
+            //Instantiate and Initialize new UI pieces
+            for (int i = 0; i < _Datas.Count; i++)
+            {
+                ManualTurretUI mtu = Instantiate(_UICellPrefab.gameObject, _UIParent).GetComponent<ManualTurretUI>();
+                mtu.Initialize(_Datas[i].Data, i, this);
+                _uiPieces.Add(mtu);
+            }
+        }
+        void Start()
+        {
+            GM_OnLockedTurretListChanged(null, GameplayManager.Instance.UnlockedTurrets);
+
+            GameplayManager.e_OnUnlockedTurretListChanged += GM_OnLockedTurretListChanged;
+        }
+
+        void GM_OnLockedTurretListChanged(object sender, List<TurretData> e)
+        {
+            foreach (var p in _uiPieces)
+            {
+                if (e.Contains(_Datas[p.Index].Data))
+                {
+                    if (_Datas[p.Index].Status == ManualTurretStatus.Locked)
+                    {
+                        _Datas[p.Index].SetStatus(ManualTurretStatus.Buyable);
+                        p.SetStatus("buyable");
+                    }
+                }
+                else
+                {
+                    _Datas[p.Index].SetStatus(ManualTurretStatus.Locked);
+                    p.SetStatus("locked");
+                }
+            }
         }
 
         public void UseCurrentTurret() => _currentTurret?.UseTurret();
-        public void SelectCurrentTurret() => _currentTurret?.SelectTurret();
+        public void SelectCurrentTurret(Transform lookTransform) => _currentTurret?.SelectTurret(lookTransform);
         public void DeselectCurrentTurret() => _currentTurret?.DeselectTurret();
         public bool TryBuyTurret(int index)
         {
-            if (TryGetValidTurretByIndex(index, out TurretData _) == false) return false;
+            if (TryGetValidTurretByIndex(index, out TurretData data) == false) return false;
+            if (_Datas[index].Status != ManualTurretStatus.Buyable) return false;
+            if (BaseResourceController.Instance.TryBuyTurret(data) == false) return false;
 
-            ManualTurretData data = _Datas[index];
-            if (data.Status != ManualTurretStatus.Buyable) return false;
-            if (BaseResourceController.Instance.TryBuyTurret(data.Data) == false) return false;
-
-            data.SetStatus(ManualTurretStatus.Unlocked);
+            _Datas[index].SetStatus(ManualTurretStatus.Unlocked);
             return true;
         }
         public void PlaceTurret(int index)
         {
             if (TryGetValidTurretByIndex(index, out TurretData data) == false) return;
+            if (_Datas[index].Status != ManualTurretStatus.Unlocked) return;
 
             RemoveTurret();
             _currentTurret = Instantiate(data.PrefabObject).GetComponent<Turret_Manual>();

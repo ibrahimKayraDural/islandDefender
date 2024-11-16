@@ -14,6 +14,7 @@ public abstract class Database<T> : ScriptableObject where T : Data<T>
         return DataList.Find(x => x.ID == id);
     }
     public T GetDataByDisplayName(string displayName) => DataList.Find(x => x.DisplayName == displayName);
+    public T GetDataByDisplayNameOrID(string nameOrID) => DataList.Find(x => x.DisplayName == nameOrID || x.ID == nameOrID);
 
     List<T> GetDataAsType()
     {

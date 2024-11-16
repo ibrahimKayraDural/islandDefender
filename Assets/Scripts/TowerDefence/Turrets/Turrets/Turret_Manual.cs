@@ -47,7 +47,7 @@ namespace TowerDefence
 
         internal abstract void OnInitialized();
 
-        public void SelectTurret(Transform lookTransform = null)
+        public void SelectTurret(Transform lookTransform)
         {
             if (_isSelected) return;
 
