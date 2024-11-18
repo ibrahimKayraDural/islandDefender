@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _displayName: Easy enemy
   _id: enemy-easy
+  _Description: Weakest of them all. Test enemy
+  _UISprite: {fileID: 21300000, guid: f0efc0ce91820e745ae12be9b778c226, type: 3}
   _MaxHealth: 1
   _Speed: 2
   _Damage: 1
@@ -24,4 +26,3 @@ MonoBehaviour:
   _EnemyTypes: 02000000
   _AttackSFX: {fileID: 8300000, guid: da51225feb1d1a84f925d2ff1ecccef1, type: 3}
   _enemyPrefab: {fileID: 8660632794050134643, guid: b29ccf065c5e6294e88ab9a3eddc600b, type: 3}
-  _EnemyUISprite: {fileID: 21300000, guid: f0efc0ce91820e745ae12be9b778c226, type: 3}

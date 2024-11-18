@@ -28,7 +28,7 @@ public class EnemyIndicator : MonoBehaviour
 
     void Open(EnemyData data)
     {
-        _EnemyImage.sprite = data.EnemyUISprite;
+        _EnemyImage.sprite = data.UISprite;
         _Parent.SetActive(true);
     }
 }

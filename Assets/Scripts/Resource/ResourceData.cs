@@ -3,17 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Resource/Resource Data")]
-public class ResourceData : Data<ResourceData>
+public class ResourceData : GameplayElementData<ResourceData>
 {
     public int StackSize => _stackSize;
-    public Sprite UISprite => _UISprite;
     public GameObject DroppedItem => _DroppedItem;
-    public string Description => _Description;
 
     [SerializeField] int _stackSize = 20;
-    [SerializeField] Sprite _UISprite;
     [SerializeField] GameObject _DroppedItem;
-    [SerializeField,TextArea] string _Description = GLOBAL.UnassignedString;
 
     public ResourceItem AsItem(int count = 0) => new ResourceItem(this, count);
 }
