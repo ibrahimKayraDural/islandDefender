@@ -16,6 +16,7 @@ MonoBehaviour:
   _id: turret-manual-basic
   _Description: Manual test turret
   _UISprite: {fileID: 21300000, guid: e3b452649c0914e468ae4ffaaeb3f744, type: 3}
+  _Type: 2
   _activationCooldown: 0.5
   _costs:
   - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}

@@ -4,14 +4,18 @@ using UnityEngine;
 
 namespace TowerDefence
 {
+    public enum TurretControlType { Automatic, Remote, Manual }
+
     [CreateAssetMenu(menuName = "Tower Defence/Turret Data")]
     public class TurretData : GameplayElementData<TurretData>
     {
+        public TurretControlType Type => _Type;
         public float ActivationCooldown => _activationCooldown;
         public Cost[] Costs => _costs;
         public GameObject PrefabObject => _prefabObject;
         public float ProjectileSpeedMultiplier => _projectileSpeedMultiplier;
 
+        [SerializeField] TurretControlType _Type;
         [SerializeField] float _activationCooldown = 1;
         [SerializeField] Cost[] _costs = new Cost[0];
         [SerializeField,Tooltip("Main body of the turret, with turret unit script")] GameObject _prefabObject;

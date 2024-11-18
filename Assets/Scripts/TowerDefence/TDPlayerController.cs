@@ -51,7 +51,7 @@ namespace TowerDefence
                 this.enabled = false;
             }
 
-            _turrets = GLOBAL.GetTurretDatabase().DataList.ToArray();
+            _turrets = GLOBAL.GetTurretDatabase().GetFieldTurrets().ToArray();
             _CurrentTurretText.text = _currentTurret.DisplayName;
         }
 
