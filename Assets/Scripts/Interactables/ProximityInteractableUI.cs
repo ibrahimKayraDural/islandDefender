@@ -25,7 +25,7 @@ public abstract class ProximityInteractableUI : MonoBehaviour, IUserInterface
         else if (setTo == null)//Proximity Interactable is closed
         {
             CurrentPI = null;
-            _breakChestUpdate = true;
+            _breakLoopUpdate = true;
         }
         else
         {
@@ -35,7 +35,7 @@ public abstract class ProximityInteractableUI : MonoBehaviour, IUserInterface
         return true;
     }
 
-    internal bool _breakChestUpdate = false;
+    internal bool _breakLoopUpdate = false;
 
     internal abstract void OnPIUpdate_Start();
     internal abstract void OnPIUpdate_Loop();
@@ -49,7 +49,7 @@ public abstract class ProximityInteractableUI : MonoBehaviour, IUserInterface
 
         //Update is the inside of this loop.
         //Code above will run once before the update loop.
-        while (_breakChestUpdate == false)
+        while (_breakLoopUpdate == false)
         {
             HandleInput();
             OnPIUpdate_Loop();
@@ -61,7 +61,7 @@ public abstract class ProximityInteractableUI : MonoBehaviour, IUserInterface
 
         OnPIUpdate_End();
 
-        _breakChestUpdate = false;
+        _breakLoopUpdate = false;
     }
 
     internal virtual void HandleInput()

@@ -90,7 +90,7 @@ namespace GameUI
             else (this as IInventoryCellGrid).RefreshGrid(items, _InventoryCellParent, _CellPrefab, INVENTORY_ID);
         }
 
-        void HandeDescriptionSprite(Sprite setTo)
+        void HandleDescriptionSprite(Sprite setTo)
         {
             _DescriptionIcon.sprite = setTo;
             _DescriptionIcon.color = setTo != null ? Color.white : Color.clear;
@@ -98,19 +98,19 @@ namespace GameUI
 
         internal override void OnPIUpdate_Start()
         {
-            HandeDescriptionSprite(null);
+            HandleDescriptionSprite(null);
             (this as IUICellOwner).OnStart();
         }
 
         internal override void OnPIUpdate_Loop()
         {
-            HandeDescriptionSprite(null);
+            HandleDescriptionSprite(null);
             (this as IUICellOwner).OnLoop();
         }
 
         internal override void OnPIUpdate_End()
         {
-            HandeDescriptionSprite(null);
+            HandleDescriptionSprite(null);
             (this as IUICellOwner).OnEnd();
         }
 
@@ -127,7 +127,7 @@ namespace GameUI
 
         public void OnHoverInteractableCell(UICell currentCell)
         {
-            HandeDescriptionSprite(currentCell.UISprite);
+            HandleDescriptionSprite(currentCell.UISprite);
         }
     }
 }

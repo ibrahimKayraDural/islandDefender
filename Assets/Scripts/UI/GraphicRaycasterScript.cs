@@ -29,7 +29,7 @@ public class GraphicRaycasterScript : MonoBehaviour
     {
         if (_Raycaster == null || _EventSystem == null)
         {
-            Debug.LogError("No raycaster/eventSystem was assigned");
+            Debug.LogError("No raycaster/eventSystem was assigned to " + gameObject.name);
             this.enabled = false;
         }
 

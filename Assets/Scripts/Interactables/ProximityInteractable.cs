@@ -42,8 +42,7 @@ public abstract class ProximityInteractable : MonoBehaviour, IInteractable
 
         CanvasManagerGetter.SetProximityInteractableUIEnablity(this, setTo);
 
-        if (b_Animator == false) Debug.LogError("an Animator is not assigned");
-        else b_Animator.SetBool("IsOpen", setTo);
+        if (b_Animator) b_Animator.SetBool("IsOpen", setTo);
 
         if (setTo) OnOpened();
         else OnClosed();
