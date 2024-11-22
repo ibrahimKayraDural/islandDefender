@@ -13,19 +13,22 @@ public class Projectile : MonoBehaviour
     [SerializeField] string[] IgnoreTags = new string[0];
     [SerializeField] bool _IgnoreTriggers = true;
 
+    int _penetrationCount = 0;
     bool _isInitialized;
     bool _breakUpdate;
     float _speed;
     Vector3 _dir;
     Rigidbody _rb;
 
-    public void Initialize(Vector3 direction, float? damage = null, float speedMultiplier = 1)
+    public void Initialize(Vector3 direction, float? damage = null, float speedMultiplier = 1, int penetrationCount = 0)
     {
         if (_isInitialized) return;
 
         _dir = direction;
         if (damage.HasValue) _Damage = damage.Value;
         _speed = GLOBAL.BaseProjectileSpeed * speedMultiplier;
+        _penetrationCount = Mathf.Max(penetrationCount, 0);
+
         _rb = GetComponent<Rigidbody>();
         _rb.useGravity = false;
         _rb.angularDrag = 0;
@@ -79,6 +82,8 @@ public class Projectile : MonoBehaviour
             ih.RemoveHealth(_Damage);
         }
 
-        DestroyProjectile();
+        _penetrationCount--;
+
+        if(_penetrationCount <= 0) DestroyProjectile();
     }
 }
