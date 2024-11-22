@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f668a1441eb51ad46ac03f32cd815cc9, type: 3}
+  m_Name: Remote Cannon
+  m_EditorClassIdentifier: 
+  _displayName: Remote Cannon
+  _id: turret-remote-cannon
+  _Description: Shoots at the selected target and deals damage in a small area
+  _UISprite: {fileID: 21300000, guid: 8f7b2146f0f14f445b0728e0d26b101a, type: 3}
+  _Type: 1
+  _Attributes: 
+  _Health: 250
+  _Damage: 200
+  _activationCooldown: 20
+  _costs:
+  - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
+    _amount: 40
+  _prefabObject: {fileID: 2416957650022208111, guid: e32dd9da37108a44fa025d820c4bb842, type: 3}
+  _projectilePrefab: {fileID: 665859162509387241, guid: 001a401080937344bb4b906cb0679a15, type: 3}
+  _projectileSpeedMultiplier: 1

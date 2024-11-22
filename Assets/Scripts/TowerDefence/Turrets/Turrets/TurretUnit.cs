@@ -10,8 +10,7 @@ namespace TowerDefence
         public float MaxHealth => _MaxHealth;
         public float Health => _health;
 
-        [SerializeField,Min(.1f)] internal float _MaxHealth = 1;
-
+        internal float _MaxHealth;
         internal TurretData _data;
         internal TowerDefenceTileScript _parentTile;
         internal float _health;
@@ -22,6 +21,7 @@ namespace TowerDefence
             if (_isInitialized) return;
 
             _data = data;
+            _MaxHealth = data.Health;
             _parentTile = tile;
             transform.parent = tile.transform;
             transform.localPosition = Vector3.zero;

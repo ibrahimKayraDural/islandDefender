@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] float _Damage = 1;
+    [SerializeField,Tooltip("Default damage of projectile. Can be overriden by data")] float _Damage = 1;
     [SerializeField] float _IterationDuration = .05f;
     [SerializeField] float _LifeTime = 10f;
     [SerializeField] Transform _VisualParent;
@@ -19,11 +19,12 @@ public class Projectile : MonoBehaviour
     Vector3 _dir;
     Rigidbody _rb;
 
-    public void Initialize(Vector3 direction, float speedMultiplier = 1)
+    public void Initialize(Vector3 direction, float? damage = null, float speedMultiplier = 1)
     {
         if (_isInitialized) return;
 
         _dir = direction;
+        if (damage.HasValue) _Damage = damage.Value;
         _speed = GLOBAL.BaseProjectileSpeed * speedMultiplier;
         _rb = GetComponent<Rigidbody>();
         _rb.useGravity = false;

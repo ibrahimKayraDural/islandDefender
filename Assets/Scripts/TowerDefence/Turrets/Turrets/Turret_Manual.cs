@@ -10,8 +10,7 @@ namespace TowerDefence
         public float MaxHealth => _MaxHealth;
         public float Health => _health;
 
-        [SerializeField, Min(.1f)] internal float _MaxHealth = 1;
-
+        internal float _MaxHealth;
         internal TurretData _data;
         internal Transform _lookTransform = null;
         internal IEnumerator IEnumUpdate_Handle = null;
@@ -25,6 +24,7 @@ namespace TowerDefence
             if (_isInitialized) return;
 
             _data = data;
+            _MaxHealth = data.Health;
             transform.parent = parent;
             transform.localPosition = Vector3.zero;
             transform.rotation = Quaternion.identity;

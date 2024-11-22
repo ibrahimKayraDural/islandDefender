@@ -19,5 +19,5 @@ namespace Overworld
 
             _audioManager?.PlayClip(this + "_shooting", ShootSFX);
         }
-    } 
+    }
 }
