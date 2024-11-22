@@ -13,7 +13,7 @@ public class InventoryCellScript : UICell
     public InventoryItem ItemData => _item;
     InventoryItem _item = null;
 
-    [SerializeField] TextMeshProUGUI _CountTM;
+    [SerializeField] internal TextMeshProUGUI _CountTM;
 
     public void Initialize(InventoryItem item, int i, bool isInteractable = true, string ownerID = null)
     {

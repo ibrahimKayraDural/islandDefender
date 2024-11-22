@@ -9,12 +9,12 @@ public class DoorInteractable : ProximityInteractable
 {
     public override string InteractDescription { get => "Check possible descent point"; set { } }
 
-    public InventoryItem[] Items
+    public ResourceItem[] Items
     {
         get
         {
-            List<InventoryItem> items = new List<InventoryItem>();
-            foreach (var i in _items) items.Add(new ResourceItem(i.Key, i.Value));
+            List<ResourceItem> items = new List<ResourceItem>();
+            foreach (var i in _items) items.Add(i.Key.AsItem(i.Value));
             return items.ToArray();
         }
     }

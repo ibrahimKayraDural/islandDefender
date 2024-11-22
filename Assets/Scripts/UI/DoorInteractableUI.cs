@@ -3,11 +3,12 @@ using Overworld;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DoorInteractableUI : ProximityInteractableUI, IInventoryCellGrid, IUICellOwner
+public class DoorInteractableUI : ProximityInteractableUI, IUICellOwner
 {
     public UICell OldCell { get; set; }
     public UICell CurrentCell { get; set; }
@@ -22,6 +23,15 @@ public class DoorInteractableUI : ProximityInteractableUI, IInventoryCellGrid, I
     [SerializeField] Image _DescriptionIcon;
 
     DoorInteractable _currentDoor => CurrentPI as DoorInteractable;
+    Inventory _InventoryInstance
+    {
+        get
+        {
+            if (AUTO_InventoryInstance == null) AUTO_InventoryInstance = PlayerInstance.Instance.Inventory_Ref;
+            return AUTO_InventoryInstance;
+        }
+    }
+    Inventory AUTO_InventoryInstance = null;
 
     GraphicRaycasterScript IUICellOwner.GraphicRaycasterS => _GraphicRaycaster;
     TextMeshProUGUI IUICellOwner.DescriptionTitle => _DescriptionTitle;
@@ -38,13 +48,28 @@ public class DoorInteractableUI : ProximityInteractableUI, IInventoryCellGrid, I
 
         if (changedTo == true)
         {
-            RefreshGrids();
+            RefreshGrid();
         }
     }
 
-    void RefreshGrids()
+    void RefreshGrid()
     {
-        (this as IInventoryCellGrid).RefreshGrid(_currentDoor.Items, _CellParent, _CellPrefab);
+        foreach (var item in _CellParent.Cast<Transform>()) MonoBehaviour.Destroy(item.gameObject);
+
+        ResourceItem[] requiredItems = _currentDoor.Items;
+        ResourceItem[] inventoryItems = _currentDoor.Items;
+
+        for (int i = 0; i < requiredItems.Length; i++)
+        {
+            ResourceItem item = requiredItems[i];
+            int currentAmount = _InventoryInstance.CheckItemCount(item);
+
+            //Create empty cell
+            DoorIngredientCell cell = Instantiate(_CellPrefab, _CellParent).GetComponent<DoorIngredientCell>();
+
+            if (item == null) cell.Initialize();
+            else cell.Initialize(item.Data, item.Count, currentAmount, i, "DoorInteractable");
+        }
     }
 
     void HandleDescriptionSprite(Sprite setTo)
@@ -71,10 +96,7 @@ public class DoorInteractableUI : ProximityInteractableUI, IInventoryCellGrid, I
         (this as IUICellOwner).OnEnd();
     }
 
-    void IUICellOwner.OnCellClicked(UICell cell)
-    {
-        //SwapCell(cell as InventoryCellScript);
-    }
+    void IUICellOwner.OnCellClicked(UICell cell) { }
 
     bool IUICellOwner.CellIsValid(UICell cell)
     {

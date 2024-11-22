@@ -106,6 +106,7 @@ namespace Overworld
             int totalCount = 0;
             foreach (var slot in _slots)
             {
+                if (slot == null) continue;
                 if (slot.Compare(itemToCheck)) totalCount += slot.Count;
             }
             return totalCount;
