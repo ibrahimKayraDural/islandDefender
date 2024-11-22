@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TowerDefence
 {
-    public class Turret_BasicShooter : TurretUnit
+    public class Turret_BasicShooter : Turret_Auto
     {
         [SerializeField] Transform _VisualBarrel;
         [SerializeField] float _RayLenght = 100;

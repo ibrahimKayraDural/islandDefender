@@ -4,21 +4,11 @@ using UnityEngine;
 
 namespace TowerDefence
 {
-    public class TurretUnit : MonoBehaviour, IHealth
+    public abstract class Turret_Auto : TurretUnit
     {
-        public TurretData Data => _data;
-        public float MaxHealth => _MaxHealth;
-        public float Health => _health;
-
-        [SerializeField,Min(.1f)] internal float _MaxHealth = 1;
-
-        internal TurretData _data;
-        internal TowerDefenceTileScript _parentTile;
-        internal float _health;
         internal bool _breakActivationLoop;
-        internal bool _isInitialized;
 
-        virtual public void Initialize(TurretData data, TowerDefenceTileScript tile)
+        override public void Initialize(TurretData data, TowerDefenceTileScript tile)
         {
             if (_isInitialized) return;
 
@@ -37,7 +27,7 @@ namespace TowerDefence
 
         virtual internal IEnumerator ActivationLoop(float interval)
         {
-            while(_breakActivationLoop == false)
+            while (_breakActivationLoop == false)
             {
                 yield return new WaitForSeconds(interval);
                 ActivationMethod();
@@ -45,28 +35,17 @@ namespace TowerDefence
             _breakActivationLoop = false;
         }
 
-        virtual internal void ActivationMethod()
-        {
-            Debug.Log(gameObject.name + " is activated, based");
-        }
-
         virtual internal void BreakActivationLoop()
         {
             _breakActivationLoop = true;
             StopCoroutine(nameof(ActivationLoop));
         }
-        virtual public void SetHealth(float setTo)
-        {
-            _health = Mathf.Clamp(setTo, 0, _MaxHealth);
 
-            if (_health == 0) KillSelf();
-        }
-        virtual public void KillSelf()
+        public override void KillSelf()
         {
-            _parentTile.UnOccupy();
-            BreakActivationLoop();
             StopAllCoroutines();
-            Destroy(gameObject);
+            BreakActivationLoop();
+            base.KillSelf();
         }
     } 
 }
