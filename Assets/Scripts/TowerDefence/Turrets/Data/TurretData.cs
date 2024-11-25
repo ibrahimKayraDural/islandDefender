@@ -5,12 +5,13 @@ using UnityEngine;
 namespace TowerDefence
 {
     public enum TurretControlType { Automatic, Remote, Manual }
-    public enum TurretAttribute { Penetrater, Buffer }
+    public enum TurretAttribute { Penetrater, Buffer, AreaOfEffect }
 
     [CreateAssetMenu(menuName = "Tower Defence/Turret Data")]
     public class TurretData : GameplayElementData<TurretData>
     {
         [HideInInspector] public int PenetrationCount = 0;
+        [HideInInspector] public int AOE_Radius = 0;
 
         public TurretControlType Type => _Type;
         public List<TurretAttribute> Attributes => _Attributes;

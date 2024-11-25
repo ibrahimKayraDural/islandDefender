@@ -15,6 +15,7 @@ public class Editor_TurretData : Editor
         List<TurretAttribute> attributes = td.Attributes;
 
         if (attributes.Contains(TurretAttribute.Penetrater) == false) td.PenetrationCount = 0;
+        if (attributes.Contains(TurretAttribute.AreaOfEffect) == false) td.AOE_Radius = 0;
 
         if(attributes.Count > 0)
         {
@@ -24,6 +25,10 @@ public class Editor_TurretData : Editor
             if (attributes.Contains(TurretAttribute.Penetrater))
             {
                 td.PenetrationCount = EditorGUILayout.IntField("Penetration count", td.PenetrationCount);
+            }
+            if (attributes.Contains(TurretAttribute.AreaOfEffect))
+            {
+                td.AOE_Radius = EditorGUILayout.IntField("Area of Effect (tile reach)", td.AOE_Radius);
             }
         }
     }
