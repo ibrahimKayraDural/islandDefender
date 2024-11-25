@@ -16,7 +16,7 @@ MonoBehaviour:
   _id: enemy-easy
   _Description: Weakest of them all. Test enemy
   _UISprite: {fileID: 21300000, guid: f0efc0ce91820e745ae12be9b778c226, type: 3}
-  _MaxHealth: 1
+  _MaxHealth: 20
   _Speed: 2
   _Damage: 1
   _AttackCooldown: 1
