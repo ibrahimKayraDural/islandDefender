@@ -31,23 +31,16 @@ public class BaseResourceController : MonoBehaviour
         GLOBAL.GetResourceDatabase().DataList.ForEach(x => _resourceDictionary.TryAdd(x, 0));
         RefreshText();
     }
-    int debug1 = 0;
     private void Update()
     {
-
         //DEBUG
-
-        if (Input.GetKeyDown(KeyCode.Keypad1)) debug1 = 1;
-        if (Input.GetKeyDown(KeyCode.Keypad0)) debug1 = 10;
-        if(debug1 != 0)
+        if(Input.GetKeyDown(KeyCode.Keypad0))
         {
             List<ResourceData> temp = _resourceDictionary.Keys.ToList();
             foreach (var data in temp)
             {
-                AddResource(data, debug1);
+                AddResource(data, 100);
             }
-
-            debug1 = 0;
         }
         //DEBUG
     }

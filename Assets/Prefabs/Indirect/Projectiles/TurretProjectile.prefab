@@ -55,6 +55,9 @@ MonoBehaviour:
   IgnoreTags:
   - Turret
   - Unhittable
+  - Base
+  - ProjectionPlane
+  - TowerDefencePlayground
   _IgnoreTriggers: 0
 --- !u!135 &5472559133796007230
 SphereCollider:

@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Projectile : MonoBehaviour
 {
-    [SerializeField,Tooltip("Default damage of projectile. Can be overriden by data")] float _Damage = 1;
+    [SerializeField, Tooltip("Default damage of projectile. Can be overriden by data")] float _Damage = 1;
     [SerializeField] float _IterationDuration = .05f;
     [SerializeField] float _LifeTime = 10f;
     [SerializeField] Transform _VisualParent;
@@ -24,7 +24,7 @@ public class Projectile : MonoBehaviour
     {
         if (_isInitialized) return;
 
-        _dir = direction;
+        _dir = direction.normalized;
         if (damage.HasValue) _Damage = damage.Value;
         _speed = GLOBAL.BaseProjectileSpeed * speedMultiplier;
         _penetrationCount = Mathf.Max(penetrationCount, 0);
@@ -40,10 +40,12 @@ public class Projectile : MonoBehaviour
 
         _isInitialized = true;
     }
+    public void Initialize(Vector3 direction, TowerDefence.TurretData data)
+        => Initialize(direction, data.Damage, data.ProjectileSpeedMultiplier, data.PenetrationCount);
 
     IEnumerator UpdateLoop()
     {
-        while(_breakUpdate == false)
+        while (_breakUpdate == false)
         {
             Vector3 targetPos = transform.position + _dir * _speed * _IterationDuration;
             _rb.MovePosition(targetPos);
@@ -84,6 +86,6 @@ public class Projectile : MonoBehaviour
 
         _penetrationCount--;
 
-        if(_penetrationCount <= 0) DestroyProjectile();
+        if (_penetrationCount <= 0) DestroyProjectile();
     }
 }
