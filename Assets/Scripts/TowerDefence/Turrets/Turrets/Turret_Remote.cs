@@ -58,7 +58,7 @@ namespace TowerDefence
 
             ActivationMethod();
 
-            _nextUse_TargetTime = Time.time + Data.ActivationCooldown;
+            _nextUse_TargetTime = Time.time + ActiveActivationCooldown;
         }
     }
 }

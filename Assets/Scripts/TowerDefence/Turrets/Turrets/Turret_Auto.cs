@@ -10,14 +10,14 @@ namespace TowerDefence
 
         internal override void OnInitialized()
         {
-            StartCoroutine(nameof(ActivationLoop), _data.ActivationCooldown);
+            StartCoroutine(nameof(ActivationLoop));
         }
 
-        virtual internal IEnumerator ActivationLoop(float interval)
+        virtual internal IEnumerator ActivationLoop()
         {
             while (_breakActivationLoop == false)
             {
-                yield return new WaitForSeconds(interval);
+                yield return new WaitForSeconds(ActiveActivationCooldown);
                 ActivationMethod();
             }
             _breakActivationLoop = false;

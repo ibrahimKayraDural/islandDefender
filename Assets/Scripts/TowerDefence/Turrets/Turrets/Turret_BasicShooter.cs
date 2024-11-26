@@ -38,7 +38,8 @@ namespace TowerDefence
             if (_projectileIsValid == false) return;
 
             Projectile proj = Instantiate(_ProjectilePrefab, _Barrel.position, Quaternion.identity).GetComponent<Projectile>();
-            proj.Initialize(transform.forward, _data);
+            proj.Initialize(transform.forward, damage: ActiveDamage, speedMultiplier: Data.ProjectileSpeedMultiplier,
+                penetrationCount: Data.PenetrationCount);
         }
 
         private void OnDrawGizmosSelected()

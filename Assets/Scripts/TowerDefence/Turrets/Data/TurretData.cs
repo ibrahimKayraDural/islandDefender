@@ -15,8 +15,8 @@ namespace TowerDefence
 
         public TurretControlType Type => _Type;
         public List<TurretAttribute> Attributes => _Attributes;
-        public int Health => _Health;
-        public int Damage => _Damage;
+        public float Health => _Health;
+        public float Damage => _Damage;
         public float ActivationCooldown => _activationCooldown;
         public Cost[] Costs => _costs;
         public GameObject PrefabObject => _prefabObject;
