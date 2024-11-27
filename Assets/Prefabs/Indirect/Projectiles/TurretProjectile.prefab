@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7581886661022587545}
   - component: {fileID: 4590687476208610346}
-  - component: {fileID: 5472559133796007230}
   - component: {fileID: 1570863667961122989}
+  - component: {fileID: 4702220338190506493}
   m_Layer: 8
   m_Name: TurretProjectile
   m_TagString: Untagged
@@ -59,27 +59,6 @@ MonoBehaviour:
   - ProjectionPlane
   - TowerDefencePlayground
   _IgnoreTriggers: 0
---- !u!135 &5472559133796007230
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 665859162509387241}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.25
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &1570863667961122989
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -107,6 +86,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!136 &4702220338190506493
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 665859162509387241}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.096873924
+  m_Height: 0.47295296
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6611437584750773856
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,8 +136,8 @@ Transform:
   m_GameObject: {fileID: 6611437584750773856}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 0, y: 0, z: -0.09}
+  m_LocalScale: {x: 7.1425, y: 7.1425, z: 7.1425}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7581886661022587545}
@@ -147,7 +149,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6611437584750773856}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -7387706064836869012, guid: 211530d35ffebe44fac15fac43c65613, type: 3}
 --- !u!23 &3326433447026422324
 MeshRenderer:
   m_ObjectHideFlags: 0

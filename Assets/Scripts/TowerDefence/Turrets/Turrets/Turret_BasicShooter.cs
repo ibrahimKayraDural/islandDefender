@@ -6,13 +6,13 @@ namespace TowerDefence
 {
     public class Turret_BasicShooter : Turret_Auto
     {
-        [SerializeField] Transform _Barrel;
-        [SerializeField] float _RayLenght = 100;
+        [SerializeField] internal Transform _Barrel;
+        [SerializeField] internal float _RayLenght = 100;
         [SerializeField] internal LayerMask _EnemyMask = 1 << 7;
         [SerializeField] internal GameObject _ProjectilePrefab;
 
-        Ray _ray;
-        bool _projectileIsValid;
+        internal Ray _ray;
+        internal bool _projectileIsValid;
 
         private void Awake()
         {
@@ -33,7 +33,7 @@ namespace TowerDefence
             }
         }
 
-        void Shoot()
+        public virtual void Shoot()
         {
             if (_projectileIsValid == false) return;
 
