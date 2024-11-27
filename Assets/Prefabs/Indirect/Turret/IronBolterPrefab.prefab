@@ -53,9 +53,10 @@ MonoBehaviour:
   _EnemyMask:
     serializedVersion: 2
     m_Bits: 128
+  ShootSFX: {fileID: 8300000, guid: 3f85834c565c9714cace31cfd69b6f9a, type: 3}
+  ShootID: BolterShoot
   _Animator: {fileID: 8838078100149930584}
   _SecondBarrel: {fileID: 1206650994141714028}
-  ShootSFX: {fileID: 8300000, guid: 3f85834c565c9714cace31cfd69b6f9a, type: 3}
 --- !u!65 &9109603514146515946
 BoxCollider:
   m_ObjectHideFlags: 0

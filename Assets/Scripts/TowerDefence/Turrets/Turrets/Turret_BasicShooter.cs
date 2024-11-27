@@ -10,6 +10,10 @@ namespace TowerDefence
         [SerializeField] internal float _RayLenght = 100;
         [SerializeField] internal LayerMask _EnemyMask = 1 << 7;
 
+        [SerializeField] AudioClip ShootSFX;
+        AudioManager _audioManager => AudioManager.Instance;
+        [SerializeField] string ShootID = "BasicShooterShoot";
+
         internal Ray _ray;
         internal bool _projectileIsValid = false;
         internal Projectile _projectile = null;
@@ -32,6 +36,9 @@ namespace TowerDefence
         public virtual void Shoot()
         {
             if (_projectileIsValid == false) return;
+
+
+            _audioManager?.PlayClip(ShootID, ShootSFX);
 
             Projectile proj = Instantiate(_projectile.gameObject, _Barrel.position, Quaternion.identity).GetComponent<Projectile>();
             proj.Initialize(transform.forward, _data);

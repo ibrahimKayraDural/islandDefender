@@ -8,9 +8,6 @@ namespace TowerDefence
     {
         [SerializeField] Animator _Animator;
         [SerializeField] Transform _SecondBarrel;
-        [SerializeField] AudioClip ShootSFX;
-        AudioManager _audioManager => AudioManager.Instance;
-        readonly string ShootID = "BolterShoot";
 
 
         bool _isRight;
@@ -22,7 +19,6 @@ namespace TowerDefence
                 _isRight = !_isRight;
                 _Animator.SetBool("isRight", _isRight);
                 _Animator.SetTrigger("shoot");
-                _audioManager.PlayClip(ShootID, ShootSFX);
             }
         }
 

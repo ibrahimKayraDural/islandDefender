@@ -52,6 +52,8 @@ MonoBehaviour:
   _EnemyMask:
     serializedVersion: 2
     m_Bits: 128
+  ShootSFX: {fileID: 8300000, guid: 4aef6a73781008b4fbc5a88bd046733f, type: 3}
+  ShootID: PenetratorShot
   _Animator: {fileID: 684489907878872190}
 --- !u!65 &9109603514146515946
 BoxCollider:
