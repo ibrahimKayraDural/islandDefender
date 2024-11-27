@@ -109,14 +109,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1001616015785523210}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.00000011920929, y: -0.1443905, z: -0.000000014901161, w: 0.9895208}
-  m_LocalPosition: {x: -0.001593402, y: -0.0010794593, z: 0.037964933}
+  m_LocalRotation: {x: 0.006250292, y: -0.14425516, z: -0.042833447, w: 0.98859334}
+  m_LocalPosition: {x: -0.001593402, y: -0.001079459, z: 0.03796493}
   m_LocalScale: {x: 1.2331414, y: 1.0515817, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3698600496352107570}
   m_Father: {fileID: 2976461462679749747}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -16.604, z: -4.962}
 --- !u!33 &6498675347722252587
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -178,6 +178,7 @@ GameObject:
   - component: {fileID: 2976461462679749747}
   - component: {fileID: 2820464518173295679}
   - component: {fileID: 8564900123269343484}
+  - component: {fileID: 4326077790125711011}
   m_Layer: 0
   m_Name: RemoteCannon
   m_TagString: Untagged
@@ -193,14 +194,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5438324562147614199}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: -0.7069834, y: 0, z: 0, w: 0.7072302}
   m_LocalPosition: {x: -3.81, y: -0.010000536, z: -22.47}
   m_LocalScale: {x: 100, y: 99.999985, z: 99.999985}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3884857595190868975}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: 0}
 --- !u!33 &2820464518173295679
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -251,3 +252,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!95 &4326077790125711011
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5438324562147614199}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 17ba913d4b8342a44b03e96a94d53567, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
