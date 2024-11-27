@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4946378082670027083}
   - component: {fileID: 5277945014874459044}
   - component: {fileID: 7429807102681576075}
+  - component: {fileID: 3994558404565163869}
   m_Layer: 9
   m_Name: ManualBolterPrefab
   m_TagString: Turret
@@ -32,7 +33,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6582182012675760318}
-  - {fileID: 5125405960231805102}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &5277945014874459044
@@ -65,13 +65,68 @@ MonoBehaviour:
   m_GameObject: {fileID: 2416957650022208111}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ae6db00df9418f49a1fe5d1c4594ec4, type: 3}
+  m_Script: {fileID: 11500000, guid: e4ecc3b6d0eed7e44b463f1609e208fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _RotatingHead: {fileID: 7710361542877398594}
   _Barrel: {fileID: 5125405960231805102}
   _ProjectilePrefab: {fileID: 665859162509387241, guid: 001a401080937344bb4b906cb0679a15, type: 3}
   _ProjectileElevation: 0.5
+  _TurnAxis: 2
+  _Animator: {fileID: 3994558404565163869}
+  _RightBarrel: {fileID: 3016952080885974765}
+--- !u!95 &3994558404565163869
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2416957650022208111}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9702834c8e6be4141b957b20e5ff1b20, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &5232287550680547388
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3016952080885974765}
+  m_Layer: 9
+  m_Name: secondBarrel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3016952080885974765
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5232287550680547388}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.7072302, z: -0.7069834, w: 0}
+  m_LocalPosition: {x: -0.005094902, y: 0.028876696, z: 0.00844099}
+  m_LocalScale: {x: 0.027411595, y: 0.027411604, z: 0.027411604}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7710361542877398594}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6481309995606175666
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,12 +151,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6481309995606175666}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.032, y: 0.343, z: 1.002}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0.7072302, z: -0.7069834, w: 0}
+  m_LocalPosition: {x: 0.00378646, y: 0.029424928, z: 0.008440798}
+  m_LocalScale: {x: 0.027411595, y: 0.027411604, z: 0.027411604}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4946378082670027083}
+  m_Father: {fileID: 7710361542877398594}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &8260534007270209101
 PrefabInstance:
@@ -114,6 +169,14 @@ PrefabInstance:
     - target: {fileID: 1497554866897439946, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
       propertyPath: m_Name
       value: ManualBolter
+      objectReference: {fileID: 0}
+    - target: {fileID: 3013148692947509545, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3017964324471671101, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 3025244961065850611, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
       propertyPath: m_LocalScale.x
@@ -167,9 +230,39 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4528624300183900105, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.00390773
+      objectReference: {fileID: 0}
+    - target: {fileID: 4528624300183900105, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.008266093
+      objectReference: {fileID: 0}
+    - target: {fileID: 5792029484146602463, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 8729245028131695436, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 8729245028131695436, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8877449769168708665, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.00503
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1847596322640998415, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5125405960231805102}
+    - targetCorrespondingSourceObject: {fileID: 1847596322640998415, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3016952080885974765}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
 --- !u!4 &6582182012675760318 stripped

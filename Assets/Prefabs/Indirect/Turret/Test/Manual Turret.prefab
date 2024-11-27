@@ -217,6 +217,8 @@ MonoBehaviour:
   _RotatingHead: {fileID: 2525121416066741122}
   _Barrel: {fileID: 1016004704167664239}
   _ProjectilePrefab: {fileID: 665859162509387241, guid: 001a401080937344bb4b906cb0679a15, type: 3}
+  _ProjectileElevation: 0.5
+  _TurnAxis: 1
 --- !u!1 &8987809130070256994
 GameObject:
   m_ObjectHideFlags: 0

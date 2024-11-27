@@ -7,14 +7,26 @@ namespace TowerDefence
     public class Turret_BasicManualDoubleBarrelAnimationControlled : Turret_BasicManual
     {
         [SerializeField] Animator _Animator;
+        [SerializeField] Transform _RightBarrel;
+
+        bool _isRight;
 
         internal override void ActivationMethod()
         {
             if (_projectileIsValid == false) return;
             if (_isInitialized == false) return;
 
+            _isRight = !_isRight;
+            _Animator.SetBool("isRight", _isRight);
+            _Animator.SetTrigger("shoot");
+        }
+
+        public void Shoot()
+        {
             Vector3 targetPoint = _lookTransform.position;
-            Ray ray = new Ray(_Barrel.position, -_plane.normal);
+            Transform currentBarrel = _isRight ? _RightBarrel : _Barrel;
+            Ray ray = new Ray(currentBarrel.position, -_plane.normal);
+
             if (_plane.Raycast(ray, out float enter))
             {
                 Vector3 hitPoint = ray.GetPoint(enter);

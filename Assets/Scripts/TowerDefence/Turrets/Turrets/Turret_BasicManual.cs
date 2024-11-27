@@ -6,10 +6,13 @@ namespace TowerDefence
 {
     public class Turret_BasicManual : Turret_Manual
     {
+        internal enum TurnAxis { X, Y, Z }
+
         [SerializeField] internal Transform _RotatingHead;
         [SerializeField] internal Transform _Barrel;
         [SerializeField] internal GameObject _ProjectilePrefab;
         [SerializeField] internal float _ProjectileElevation = .5f;
+        [SerializeField] internal TurnAxis _TurnAxis = TurnAxis.Y;
 
         internal Plane _plane;
         internal bool _projectileIsValid = false;
@@ -26,7 +29,18 @@ namespace TowerDefence
             if (_lookTransform != null)
             {
                 Quaternion rot = Quaternion.LookRotation(_lookTransform.position - _RotatingHead.position, Vector3.up);
-                _RotatingHead.localEulerAngles = new Vector3(0, rot.eulerAngles.y, 0);
+                float targetRot = rot.eulerAngles.y;
+                Vector3 targetVector = Vector3.zero;
+
+                switch (_TurnAxis)
+                {
+                    case TurnAxis.X: targetVector.x = targetRot; break;
+                    case TurnAxis.Y: targetVector.y = targetRot; break;
+                    case TurnAxis.Z: targetVector.z = targetRot; break;
+                }
+
+
+                _RotatingHead.localEulerAngles = targetVector;
             }
         }
 
