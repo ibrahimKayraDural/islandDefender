@@ -28,7 +28,7 @@ public class BaseManager : MonoBehaviour, IHealth
     public void RemoveHealth(float amount)
     {
         float targetHealth = Mathf.Clamp(Health - amount, 0, _MaxHealth);
-        e_BaseIsAttacked.Invoke(this, targetHealth);
+        e_BaseIsAttacked?.Invoke(this, targetHealth);
         SetHealth(targetHealth);
     }
 

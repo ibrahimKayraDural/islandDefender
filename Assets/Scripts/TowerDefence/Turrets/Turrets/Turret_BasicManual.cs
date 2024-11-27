@@ -6,13 +6,13 @@ namespace TowerDefence
 {
     public class Turret_BasicManual : Turret_Manual
     {
-        [SerializeField] Transform _RotatingHead;
-        [SerializeField] Transform _Barrel;
-        [SerializeField] GameObject _ProjectilePrefab;
-        [SerializeField] float _ProjectileElevation = .5f;
+        [SerializeField] internal Transform _RotatingHead;
+        [SerializeField] internal Transform _Barrel;
+        [SerializeField] internal GameObject _ProjectilePrefab;
+        [SerializeField] internal float _ProjectileElevation = .5f;
 
-        Plane _plane;
-        bool _projectileIsValid = false;
+        internal Plane _plane;
+        internal bool _projectileIsValid = false;
 
         internal override void OnDeselected()
         {
