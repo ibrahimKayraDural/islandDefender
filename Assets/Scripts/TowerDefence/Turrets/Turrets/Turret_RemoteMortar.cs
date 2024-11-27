@@ -9,6 +9,7 @@ namespace TowerDefence
         [SerializeField] LayerMask _TileMask = 1 << 6;
         [SerializeField] ProjectileExplosive _ProjectilePrefab;
         [SerializeField] GameObject _MeshParent;
+        [SerializeField] Animator _Animator;
 
         Vector3 _origin = Vector3.zero;
 
@@ -22,6 +23,7 @@ namespace TowerDefence
             Ray ray = new Ray(_lookTransform.position + Vector3.up, Vector3.down);
             if(Physics.Raycast(ray, out RaycastHit hit, 10, _TileMask))
             {
+                _Animator.SetTrigger("shoot");
                 Vector3 point = hit.collider.transform.position;
                 ProjectileExplosive p = Instantiate(_ProjectilePrefab, point, Quaternion.identity).GetComponent<ProjectileExplosive>();
                 p.Activate(Data.AOE_Radius, Data.Damage);
