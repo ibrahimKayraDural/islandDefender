@@ -15,8 +15,9 @@ MonoBehaviour:
   _displayName: Penetrator
   _id: turret-penetrator
   _Description: "Penetrates and hits up to 4 enemies\r"
-  _UISprite: {fileID: 21300000, guid: 8f7b2146f0f14f445b0728e0d26b101a, type: 3}
+  _UISprite: {fileID: 21300000, guid: 603ef7fb2e4f55b4ab45b546dc20f580, type: 3}
   PenetrationCount: 4
+  AOE_Radius: 0
   _Type: 0
   _Attributes: 00000000
   _Health: 250

@@ -15,7 +15,7 @@ MonoBehaviour:
   _displayName: Remote Cannon
   _id: turret-remote-cannon
   _Description: Shoots at the selected target and deals damage in a small area
-  _UISprite: {fileID: 21300000, guid: 8f7b2146f0f14f445b0728e0d26b101a, type: 3}
+  _UISprite: {fileID: 21300000, guid: 9758f2786fa7f824296a4937ad8e074e, type: 3}
   PenetrationCount: 0
   AOE_Radius: 1
   _Type: 1
