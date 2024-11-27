@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1953962676890956290}
   - component: {fileID: 7550702893515181527}
   m_Layer: 0
-  m_Name: IronBolter
+  m_Name: IronBolterMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
