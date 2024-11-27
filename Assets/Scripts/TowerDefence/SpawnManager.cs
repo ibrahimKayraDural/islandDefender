@@ -315,29 +315,33 @@ namespace TowerDefence
                 _spawners[i].SetEnemyIndicators(enemies[i]?.ToArray());
             }
         }
+
+        float _currentCooldown = -1;
         IEnumerator RunWaveCooldown(int cooldown)
         {
             SetWaveUp();
             SetIndicatorValues();
             _TDPlayerController.EvaluateGameplayMode(false);
 
-            float currentCooldown = cooldown;
+            _currentCooldown = cooldown;
 
             while (true)
             {
-                if (currentCooldown <= 0) break;
+                if (_currentCooldown <= 0) break;
 
-                string timerStr = $"Untill Next Wave : {Mathf.CeilToInt(currentCooldown)}";
+                string timerStr = $"Untill Next Wave : {Mathf.CeilToInt(_currentCooldown)}";
                 _TimeTM.text = _isPaused ? "PAUSED" : timerStr;
 
                 yield return new WaitForFixedUpdate();
-                currentCooldown -= Time.fixedDeltaTime * _cooldownSpeedMultiplier;
+                _currentCooldown -= Time.fixedDeltaTime * _cooldownSpeedMultiplier;
             }
+            _currentCooldown = -1;
             _TimeTM.text = "";
 
             SetIndicatorValues(null);
             StartWave();
         }
+        public void SkipWaveCooldown() => _currentCooldown = -1;
 
         void AllWavesEnded()
         {
