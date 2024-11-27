@@ -1013,7 +1013,6 @@ MonoBehaviour:
   _Tmesh: {fileID: 908098072}
   _Img: {fileID: 1439080306}
   _ShowDebugLogs: 0
-  _Tilemap: {fileID: 1587774}
 --- !u!4 &1184687963
 Transform:
   m_ObjectHideFlags: 0
