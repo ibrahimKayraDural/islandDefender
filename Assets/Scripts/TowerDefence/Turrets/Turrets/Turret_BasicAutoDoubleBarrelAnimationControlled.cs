@@ -6,7 +6,7 @@ namespace TowerDefence
 {
     public class Turret_BasicAutoDoubleBarrelAnimationControlled : Turret_BasicShooter
     {
-        [SerializeField] Animator _Animator;
+        [SerializeField] new Animator _Animator;
         [SerializeField] Transform _SecondBarrel;
 
         bool _isRight;
@@ -26,7 +26,7 @@ namespace TowerDefence
             if (_projectileIsValid == false) return;
 
             Transform CurrentBarrel = _isRight ? _SecondBarrel : _Barrel;
-            Projectile proj = Instantiate(_ProjectilePrefab, CurrentBarrel.position, Quaternion.identity).GetComponent<Projectile>();
+            Projectile proj = Instantiate(_projectile.gameObject, CurrentBarrel.position, Quaternion.identity).GetComponent<Projectile>();
             proj.Initialize(transform.forward, _data);
         }
     }

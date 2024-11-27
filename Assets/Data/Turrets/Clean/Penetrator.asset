@@ -26,6 +26,6 @@ MonoBehaviour:
   _costs:
   - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
     _amount: 130
-  _prefabObject: {fileID: 906911832218085558, guid: 6ee021627a986004c9b4e919b056b6fd, type: 3}
-  _projectilePrefab: {fileID: 665859162509387241, guid: 001a401080937344bb4b906cb0679a15, type: 3}
-  _projectileSpeedMultiplier: 1
+  _prefabObject: {fileID: 906911832218085558, guid: 1e4a680c1472bcf4f8d02d9523aa7555, type: 3}
+  _projectilePrefab: {fileID: 665859162509387241, guid: 39242c3aa2e891b41bb7227d9856dda7, type: 3}
+  _projectileSpeedMultiplier: 2.5

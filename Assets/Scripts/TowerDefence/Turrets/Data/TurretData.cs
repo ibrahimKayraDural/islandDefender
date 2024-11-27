@@ -20,6 +20,7 @@ namespace TowerDefence
         public float ActivationCooldown => _activationCooldown;
         public Cost[] Costs => _costs;
         public GameObject PrefabObject => _prefabObject;
+        public GameObject ProjectilePrefab => _projectilePrefab;
         public float ProjectileSpeedMultiplier => _projectileSpeedMultiplier;
 
         [SerializeField] TurretControlType _Type;

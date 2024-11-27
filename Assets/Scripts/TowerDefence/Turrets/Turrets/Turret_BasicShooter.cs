@@ -9,20 +9,16 @@ namespace TowerDefence
         [SerializeField] internal Transform _Barrel;
         [SerializeField] internal float _RayLenght = 100;
         [SerializeField] internal LayerMask _EnemyMask = 1 << 7;
-        [SerializeField] internal GameObject _ProjectilePrefab;
 
         internal Ray _ray;
-        internal bool _projectileIsValid;
-
-        private void Awake()
-        {
-            _projectileIsValid = _ProjectilePrefab.TryGetComponent<Projectile>(out _);
-        }
+        internal bool _projectileIsValid = false;
+        internal Projectile _projectile = null;
 
         internal override void OnInitialized()
         {
             base.OnInitialized();
             _ray = new Ray(_Barrel.position, transform.forward);
+            _projectileIsValid = Data.ProjectilePrefab.TryGetComponent(out _projectile);
         }
 
         internal override void ActivationMethod()
@@ -37,7 +33,7 @@ namespace TowerDefence
         {
             if (_projectileIsValid == false) return;
 
-            Projectile proj = Instantiate(_ProjectilePrefab, _Barrel.position, Quaternion.identity).GetComponent<Projectile>();
+            Projectile proj = Instantiate(_projectile.gameObject, _Barrel.position, Quaternion.identity).GetComponent<Projectile>();
             proj.Initialize(transform.forward, _data);
         }
 
