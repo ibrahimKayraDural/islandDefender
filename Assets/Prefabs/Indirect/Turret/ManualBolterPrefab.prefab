@@ -73,6 +73,8 @@ MonoBehaviour:
   _ProjectilePrefab: {fileID: 665859162509387241, guid: 001a401080937344bb4b906cb0679a15, type: 3}
   _ProjectileElevation: 0.5
   _TurnAxis: 2
+  _ShootClip: {fileID: 8300000, guid: 3f85834c565c9714cace31cfd69b6f9a, type: 3}
+  _shootClipID: ManualBolter_ShootingSFX
   _Animator: {fileID: 3994558404565163869}
   _RightBarrel: {fileID: 3016952080885974765}
 --- !u!95 &3994558404565163869

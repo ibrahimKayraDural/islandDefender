@@ -8,6 +8,7 @@ namespace TowerDefence
     {
         [SerializeField] Animator _Animator;
         [SerializeField] Transform _RightBarrel;
+        [SerializeField] float _SFXPitch = .8f;
 
         bool _isRight;
 
@@ -19,10 +20,13 @@ namespace TowerDefence
             _isRight = !_isRight;
             _Animator.SetBool("isRight", _isRight);
             _Animator.SetTrigger("shoot");
+            _audioManager.PlayClip(_shootClipID, _ShootClip, pitch: _SFXPitch);
         }
 
         public void Shoot()
         {
+            if (_lookTransform == null) return;
+
             Vector3 targetPoint = _lookTransform.position;
             Transform currentBarrel = _isRight ? _RightBarrel : _Barrel;
             Ray ray = new Ray(currentBarrel.position, -_plane.normal);

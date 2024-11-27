@@ -20,6 +20,7 @@ namespace TowerDefence
         {
             if (_projectileIsValid == false) return;
 
+            _audioManager?.PlayClip(ShootID, ShootSFX);
             Projectile proj = Instantiate(_projectile.gameObject, _Barrel.position, Quaternion.identity).GetComponent<Projectile>();
             proj.Initialize(transform.forward, _data);
         }
