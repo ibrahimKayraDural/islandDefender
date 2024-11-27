@@ -1723,7 +1723,7 @@ PrefabInstance:
     - target: {fileID: -1759124331840812377, guid: aae013c99148265468dd99467dee821e, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 34e87fed01fca014d8d4cbcd7627b393, type: 2}
+      objectReference: {fileID: 2100000, guid: 371f7ea1464d7e84c8874bc1f7cc4039, type: 2}
     - target: {fileID: 919132149155446097, guid: aae013c99148265468dd99467dee821e, type: 3}
       propertyPath: m_Name
       value: Astrounat

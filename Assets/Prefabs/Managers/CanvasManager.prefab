@@ -4718,6 +4718,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Animator: {fileID: 5663466228027944557}
   _FullscreenHoldDuration: 0.5
+  WooshSFX: {fileID: 8300000, guid: 5c6a3f3a13988764fab6405c56258104, type: 3}
+  UIOpenSFX: {fileID: 8300000, guid: 7ad7b9fa183409842b7ce5eb616a6530, type: 3}
 --- !u!1 &6594445363583871081
 GameObject:
   m_ObjectHideFlags: 0

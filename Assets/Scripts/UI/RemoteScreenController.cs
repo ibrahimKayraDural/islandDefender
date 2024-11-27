@@ -6,7 +6,12 @@ public class RemoteScreenController : MonoBehaviour
 {
     [SerializeField] Animator _Animator;
     [SerializeField] float _FullscreenHoldDuration = .5f;
+    [SerializeField] AudioClip WooshSFX;
+    [SerializeField] AudioClip UIOpenSFX;
+    AudioManager _audioManager => AudioManager.Instance;
 
+    readonly string Woosh_ID = "Woosh_Screen_Controller";
+    readonly string UIOpen_ID = "UIOpen_Screen_Controller";
     BattleManager _battleManager
     {
         get
@@ -33,6 +38,7 @@ public class RemoteScreenController : MonoBehaviour
         {
             if (timerIsDone)
             {
+                _audioManager.PlayClip(UIOpen_ID, UIOpenSFX);
                 _isSmallScreenOpen = false;
                 _Animator.SetInteger("Status", 2);
 
@@ -58,6 +64,7 @@ public class RemoteScreenController : MonoBehaviour
     public void SetSmallScreenEnablity(bool setTo)
     {
         if (CanvasManager.SomethingIsOpen) setTo = false;
+
 
         _Animator.SetInteger("Status", setTo ? 1 : 0);
         _isSmallScreenOpen = setTo;
