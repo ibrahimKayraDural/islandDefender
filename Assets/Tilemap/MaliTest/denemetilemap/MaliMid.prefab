@@ -11,10 +11,14 @@ PrefabInstance:
     - target: {fileID: 834686844473739334, guid: 4cd01fc2534e4ed48be00f59f3dbe249, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 1385279003812690709, guid: a0860776713bbdf47b75051468cfed40, type: 3}
+      objectReference: {fileID: 1385279003812690709, guid: 4f4eecc533039804aa8444cfebf46516, type: 3}
     - target: {fileID: 3256139692136339259, guid: 4cd01fc2534e4ed48be00f59f3dbe249, type: 3}
       propertyPath: m_Name
       value: MaliMid
+      objectReference: {fileID: 0}
+    - target: {fileID: 3636336214070951761, guid: 4cd01fc2534e4ed48be00f59f3dbe249, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4653151667086924141, guid: 4cd01fc2534e4ed48be00f59f3dbe249, type: 3}
       propertyPath: m_LocalPosition.x

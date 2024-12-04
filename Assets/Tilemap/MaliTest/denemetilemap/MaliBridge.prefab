@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: 834686844473739334, guid: 4cd01fc2534e4ed48be00f59f3dbe249, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: -812471814040796887, guid: 31202c495eb093f47865721365224493, type: 3}
+      objectReference: {fileID: 7948604201909105798, guid: 4f4eecc533039804aa8444cfebf46516, type: 3}
     - target: {fileID: 2988102151920176507, guid: 4cd01fc2534e4ed48be00f59f3dbe249, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
@@ -19,6 +19,18 @@ PrefabInstance:
     - target: {fileID: 3256139692136339259, guid: 4cd01fc2534e4ed48be00f59f3dbe249, type: 3}
       propertyPath: m_Name
       value: MaliBridge
+      objectReference: {fileID: 0}
+    - target: {fileID: 3636336214070951761, guid: 4cd01fc2534e4ed48be00f59f3dbe249, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3636336214070951761, guid: 4cd01fc2534e4ed48be00f59f3dbe249, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3636336214070951761, guid: 4cd01fc2534e4ed48be00f59f3dbe249, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4653151667086924141, guid: 4cd01fc2534e4ed48be00f59f3dbe249, type: 3}
       propertyPath: m_LocalPosition.x
