@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 3810400988626932866}
   - component: {fileID: 388764624761527905}
   m_Layer: 0
-  m_Name: NormalRock
+  m_Name: MaliRock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
