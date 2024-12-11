@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 4522923523943852693, guid: a2b86af5109da794d9e1f3a33a3189e7, type: 3}
+    - target: {fileID: 1303754552080749686, guid: ca2c5681ff9391347af48cd45564640e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.125
+      objectReference: {fileID: 0}
     - target: {fileID: 3256139692136339259, guid: ca2c5681ff9391347af48cd45564640e, type: 3}
       propertyPath: m_Name
       value: OneConnect_NormalRock
