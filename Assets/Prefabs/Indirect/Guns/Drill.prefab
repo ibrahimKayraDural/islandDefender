@@ -87,7 +87,7 @@ MonoBehaviour:
   _Prefab: {fileID: 3857859655848943337}
   _Rigidbody: {fileID: 500343713260558876}
   _Animator: {fileID: 5722965935990529045}
-  _RunningSFX: {fileID: 8300000, guid: cfa32a96a8eaef44a860eb49a3a16e23, type: 3}
+  _RunningSFX: {fileID: 8300000, guid: fd3f3277bb8af9d49b9df21009959edb, type: 3}
 --- !u!54 &500343713260558876
 Rigidbody:
   m_ObjectHideFlags: 0

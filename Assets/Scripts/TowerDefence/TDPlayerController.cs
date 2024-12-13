@@ -134,6 +134,7 @@ namespace TowerDefence
             _currentControlMode = mode;
             EvaluateGameplayMode(SpawnManager.WaveIsActive);
             _TDCanvasManager.gameObject.SetActive(true);
+            _TDCanvasManager.SetCanvas(_currentGameplayMode);
         }
         public void ExitBattle()
         {
