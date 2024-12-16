@@ -26,6 +26,7 @@ namespace TowerDefence
         {
             if (_projectileIsValid == false) return;
 
+            _audioManager?.PlayClip(ShootID, ShootSFX);
             Transform CurrentBarrel = _isRight ? _SecondBarrel : _Barrel;
             Projectile proj = Instantiate(_projectile.gameObject, CurrentBarrel.position, Quaternion.identity).GetComponent<Projectile>();
             proj.Initialize(transform.forward, _data);

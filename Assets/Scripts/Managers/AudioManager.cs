@@ -110,7 +110,7 @@ public class AudioManager : MonoBehaviour
     }
     static AudioManager AUTO_instance = null;
 
-    [SerializeField] int AudioSourceCount = 15;
+    [SerializeField] int AudioSourceCount = 50;
 
     List<ManagableSource> _audioSources = new List<ManagableSource>();
     bool _isInitialized = false;

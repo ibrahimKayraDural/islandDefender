@@ -10,10 +10,19 @@ namespace TowerDefence
         [SerializeField] internal float _RayLenght = 100;
         [SerializeField] internal LayerMask _EnemyMask = 1 << 7;
 
-        [SerializeField] AudioClip ShootSFX;
-        AudioManager _audioManager => AudioManager.Instance;
-        [SerializeField] string ShootID = "BasicShooterShoot";
+        [SerializeField] internal AudioClip ShootSFX;
+        [SerializeField] internal string ShootID = "BasicShooterShoot";
 
+        internal AudioManager _audioManager
+        {
+            get
+            {
+                if (AUTO_audioManager == null) 
+                    AUTO_audioManager = AudioManager.Instance;
+                return AUTO_audioManager;
+            }
+        }
+        AudioManager AUTO_audioManager = null;
         internal Ray _ray;
         internal bool _projectileIsValid = false;
         internal Projectile _projectile = null;

@@ -97,3 +97,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LifeTime: 1
+  _Clip: {fileID: 8300000, guid: cf4d8a89533172e468531533528cd44c, type: 3}

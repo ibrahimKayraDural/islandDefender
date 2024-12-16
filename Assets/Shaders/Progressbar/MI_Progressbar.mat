@@ -31,24 +31,38 @@ Material:
         m_Texture: {fileID: 2800000, guid: e656697a53e14aa4f9d35cec5ecbdc18, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Normalmap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _ObjectTex:
         m_Texture: {fileID: 2800000, guid: 8c5055addff338d429f215490e0bf9ae, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AmbientOcclusion: 2
     - _AnimSpeed: 5
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
-    - _EmissionPower: 1
+    - _Blend: 1000
+    - _EmissionPower: 0.5
     - _Fill: 0
+    - _FillTextureScale: 5
+    - _Metallic: 0
+    - _NormalStrength: 5
     - _OverlayPower: 0.2
+    - _Smoothness: 0
+    - _TextureBlend: 1000
     - _TextureScale: 4
+    - _TextureTiling: 0.5
+    - _Tiling: 1
     - _XMax: 752.6914
     - _XMin: 651.23346
     m_Colors:
     - _Color: {r: 0, g: 0.7176821, b: 1, a: 1}
     - _ObjectBounds: {r: 0, g: 1, b: 0, a: 0}
+    - _OverlayColor: {r: 0, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &6777136472979646265
 MonoBehaviour:

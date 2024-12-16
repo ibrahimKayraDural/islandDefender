@@ -13,9 +13,22 @@ namespace TowerDefence
         [SerializeField] internal GameObject _ProjectilePrefab;
         [SerializeField] internal float _ProjectileElevation = .5f;
         [SerializeField] internal TurnAxis _TurnAxis = TurnAxis.Y;
+        [SerializeField] internal AudioClip _ShootClip;
+        [SerializeField] internal string _shootClipID = "BasicManual_ShootingSFX";
 
         internal Plane _plane;
         internal bool _projectileIsValid = false;
+
+        internal AudioManager _audioManager
+        {
+            get
+            {
+                if (AUTO_audioManager == null)
+                    AUTO_audioManager = AudioManager.Instance;
+                return AUTO_audioManager;
+            }
+        }
+        AudioManager AUTO_audioManager = null;
 
         internal override void OnDeselected()
         {
@@ -60,6 +73,8 @@ namespace TowerDefence
 
                 GameObject go = Instantiate(_ProjectilePrefab, hitPoint, Quaternion.identity);
                 go.GetComponent<Projectile>().Initialize(targetPoint - hitPoint, _data);
+
+                _audioManager.PlayClip(_shootClipID, _ShootClip);
             }
         }
 
