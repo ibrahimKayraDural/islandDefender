@@ -16,7 +16,7 @@ namespace TowerDefence
         {
             if (TryGetComponent(out MeshRenderer mr))
             {
-                _material = mr.sharedMaterial;
+                _material = mr.material;
             }
         }
 

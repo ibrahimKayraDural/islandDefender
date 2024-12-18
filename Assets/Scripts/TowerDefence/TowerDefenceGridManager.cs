@@ -10,8 +10,7 @@ namespace TowerDefence
         [Header("Variables")]
         [SerializeField, Min(1)] int _Width = 1;
         [SerializeField, Min(1)] int _Height = 1;
-        [SerializeField] Material _FirstTileMaterial;
-        [SerializeField] Material _SecondTileMaterial;
+        [SerializeField] Material _TowerDefenceTileMaterial;
         [SerializeField, Min(0)] float _BoundingBoxHeight = .01f;
         [SerializeField] Vector3 _SpawnerOffset;
 
@@ -67,7 +66,9 @@ namespace TowerDefence
                     instGo.transform.position = targetPos;
 
                     if (instGo.TryGetComponent(out MeshRenderer mr))
-                    { mr.sharedMaterial = (((y % 2) + (x % 2)) % 2) == 0 ? new Material(_FirstTileMaterial) : new Material(_SecondTileMaterial); }
+                    { mr.sharedMaterial = _TowerDefenceTileMaterial; }
+
+                    //{ mr.sharedMaterial = (((y % 2) + (x % 2)) % 2) == 0 ? new Material(_FirstTileMaterial) : new Material(_SecondTileMaterial); }
 
                     instGo.layer = (int)Mathf.Log(_TileLayer.value, 2);
                     //Aptal unity layermask'ý layere dönüþtüremiyo o yüzden elle yazdým
