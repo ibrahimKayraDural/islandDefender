@@ -81,13 +81,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4946378082670027083}
     m_Modifications:
+    - target: {fileID: 196165561222533613, guid: 8d523b26624c38747a86156908a5cc0f, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 214957278660287516, guid: 8d523b26624c38747a86156908a5cc0f, type: 3}
       propertyPath: m_Layer
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 584094434449191449, guid: 8d523b26624c38747a86156908a5cc0f, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1001616015785523210, guid: 8d523b26624c38747a86156908a5cc0f, type: 3}
       propertyPath: m_Layer
       value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2693052146657642340, guid: 8d523b26624c38747a86156908a5cc0f, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2693052146657642340, guid: 8d523b26624c38747a86156908a5cc0f, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 6.69
       objectReference: {fileID: 0}
     - target: {fileID: 2976461462679749747, guid: 8d523b26624c38747a86156908a5cc0f, type: 3}
       propertyPath: m_LocalScale.x
@@ -144,6 +160,10 @@ PrefabInstance:
     - target: {fileID: 2976461462679749747, guid: 8d523b26624c38747a86156908a5cc0f, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3258197050836106498, guid: 8d523b26624c38747a86156908a5cc0f, type: 3}
+      propertyPath: looping
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5438324562147614199, guid: 8d523b26624c38747a86156908a5cc0f, type: 3}
       propertyPath: m_Name
