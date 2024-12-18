@@ -41,7 +41,7 @@ namespace TowerDefence
             Ray ray = new Ray(_AttackPoint.position, transform.forward);
             if (Physics.Raycast(ray, out RaycastHit hit, _data.AttackRange, _AttackLayer))
             {
-                _Animator.SetBool("IsMoving", false);
+                if (_Animator) _Animator?.SetBool("IsMoving", false);
 
                 if (_nextAttack_TargetTime <= Time.time)
                 {
@@ -50,7 +50,7 @@ namespace TowerDefence
                         ih.RemoveHealth(_data.Damage);
 
                         _audioManager.PlayClip(this + "_attack", Data.AttackSFX);
-                        _Animator.SetTrigger("Attack");
+                        if (_Animator) _Animator?.SetTrigger("Attack");
 
                         _nextAttack_TargetTime = Time.time + _data.AttackCooldown;
                     }
@@ -58,7 +58,7 @@ namespace TowerDefence
             }
             else
             {
-                _Animator.SetBool("IsMoving", true);
+                if (_Animator) _Animator.SetBool("IsMoving", true);
                 _rb.MovePosition(transform.position + transform.forward * _data.Speed * Time.deltaTime);
             }
         }
@@ -75,6 +75,7 @@ namespace TowerDefence
         {
             SpawnManager.RemoveFromActiveEnemyList(gameObject);
             _isDead = true;
+            if (_Animator) _Animator?.SetBool("IsDead", true);
             OnDeath?.Invoke();
             StartCoroutine(DeathAnim());
         }
