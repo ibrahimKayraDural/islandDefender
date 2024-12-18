@@ -62,6 +62,11 @@ namespace TowerDefence
                 _rb.MovePosition(transform.position + transform.forward * _data.Speed * Time.deltaTime);
             }
         }
+        virtual public void RemoveHealth(float amount)
+        {
+            PlayDamagedAnim();
+            SetHealth(Health - amount);
+        }
         virtual public void SetHealth(float setTo)
         {
             if (_isDead) return;
@@ -95,6 +100,32 @@ namespace TowerDefence
 
             mat.SetFloat("_Fill", 1);
             Destroy(gameObject);
+        }
+
+        void PlayDamagedAnim()
+        {
+            Material mat = _Renderer.material;
+            mat.SetFloat("_DamageFill", 0);
+
+            if (HANDLE_GetDamaged != null) StopCoroutine(HANDLE_GetDamaged);
+            HANDLE_GetDamaged = IENUM_GetDamaged(mat);
+            StartCoroutine(HANDLE_GetDamaged);
+        }
+        IEnumerator HANDLE_GetDamaged = null;
+        IEnumerator IENUM_GetDamaged(Material mat)
+        {
+            float step = .2f;
+            float speed = 20;
+            float progress = 0;
+
+            while (progress < 2)
+            {
+                progress += step;
+                mat.SetFloat("_DamageFill", progress);
+                yield return new WaitForSeconds(step / speed);
+            }
+
+            mat.SetFloat("_DamageFill", 0);
         }
 
         virtual internal void Win()
