@@ -32,6 +32,9 @@ namespace TowerDefence
             public void SetStatus(ManualTurretStatus setTo) => _status = setTo;
         }
 
+        [SerializeField] float _TurretMoveSpeed = 1;
+        [SerializeField] float _MoveRange = 1;
+        [SerializeField] Transform _TurretRoot;
         [SerializeField] Transform _TurretParent;
         [SerializeField] ManualTurretUI _UICellPrefab;
         [SerializeField] Transform _UIParent;
@@ -39,6 +42,7 @@ namespace TowerDefence
         Turret_Manual _currentTurret = null;
         List<ManualTurretData> _datas = new List<ManualTurretData>();
         List<ManualTurretUI> _uiPieces = new List<ManualTurretUI>();
+        Transform _lookTransform;
 
         void Awake()
         {
@@ -62,6 +66,30 @@ namespace TowerDefence
 
             GameplayManager.e_OnUnlockedTurretListChanged += GM_OnLockedTurretListChanged;
         }
+        void FixedUpdate()
+        {
+            if (_lookTransform == null) return;
+
+            if (SpawnManager.WaveIsActive)
+            {
+                Vector3 targetPos = _lookTransform.position;
+                Vector3 rootPos = _TurretRoot.position;
+                targetPos.z = _TurretParent.position.z;
+                targetPos = Vector3.Lerp(_TurretParent.position, targetPos, Time.fixedDeltaTime * _TurretMoveSpeed);
+
+                if (Vector3.Distance(targetPos, rootPos) > _MoveRange)
+                {
+                    Vector3 dir = (targetPos - rootPos).normalized;
+                    targetPos = rootPos + dir * _MoveRange;
+                }
+
+                _TurretParent.position = targetPos;
+            }
+            else
+            {
+                _TurretParent.localPosition = Vector3.Lerp(_TurretParent.localPosition, Vector3.zero, Time.fixedDeltaTime * _TurretMoveSpeed);
+            }
+        }
 
         void GM_OnLockedTurretListChanged(object sender, List<TurretData> e)
         {
@@ -84,7 +112,11 @@ namespace TowerDefence
         }
 
         public void UseCurrentTurret() => _currentTurret?.UseTurret();
-        public void SelectCurrentTurret(Transform lookTransform) => _currentTurret?.SelectTurret(lookTransform);
+        public void SelectCurrentTurret(Transform lookTransform)
+        {
+            _lookTransform = lookTransform;
+            _currentTurret?.SelectTurret();
+        }
         public void DeselectCurrentTurret() => _currentTurret?.DeselectTurret();
         public bool TryBuyTurret(int index)
         {
@@ -119,6 +151,12 @@ namespace TowerDefence
 
             data = mData.Data;
             return true;
+        }
+
+        void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(_TurretRoot.position, _MoveRange);
         }
     }
 }

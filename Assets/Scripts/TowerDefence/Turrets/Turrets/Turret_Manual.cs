@@ -12,7 +12,7 @@ namespace TowerDefence
 
         internal float _MaxHealth;
         internal TurretData _data;
-        internal Transform _lookTransform = null;
+        //internal Transform _lookTransform = null;
         internal IEnumerator IEnumUpdate_Handle = null;
         internal bool _isSelected = false;
         internal float _nextUse_TargetTime = -1;
@@ -47,11 +47,11 @@ namespace TowerDefence
 
         internal abstract void OnInitialized();
 
-        public void SelectTurret(Transform lookTransform)
+        public void SelectTurret()//Transform lookTransform)
         {
             if (_isSelected) return;
 
-            _lookTransform = lookTransform;
+            //_lookTransform = lookTransform;
             IEnumUpdate_Handle = IEnumUpdate();
             StartCoroutine(IEnumUpdate_Handle);
             OnSelected();
@@ -64,7 +64,7 @@ namespace TowerDefence
         {
             if (_isSelected == false) return;
 
-            _lookTransform = null;
+            //_lookTransform = null;
             if (IEnumUpdate_Handle != null)
             {
                 StopCoroutine(IEnumUpdate_Handle);

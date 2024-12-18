@@ -10,7 +10,7 @@ public class RemoteScreenController : MonoBehaviour
     [SerializeField] AudioClip UIOpenSFX;
     AudioManager _audioManager => AudioManager.Instance;
 
-    readonly string Woosh_ID = "Woosh_Screen_Controller";
+    //readonly string Woosh_ID = "Woosh_Screen_Controller";
     readonly string UIOpen_ID = "UIOpen_Screen_Controller";
     BattleManager _battleManager
     {
