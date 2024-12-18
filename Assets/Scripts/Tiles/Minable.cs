@@ -10,7 +10,7 @@ public class Minable : MonoBehaviour
     [SerializeField] float _MineDuration = 2;
     [SerializeField] float _ForgetDuration = .5f;
     [SerializeField] bool _DeleteFromTilemap;
-    [SerializeField] ShaderProgressbarScript _SPS;
+    [SerializeField] ShaderFillScript _SPS;
 
     float CurrentAmount {
         get=> AUTO_currentAmount;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShaderProgressbarScript : MonoBehaviour
+public class ShaderFillScript : MonoBehaviour
 {
     [SerializeField] MeshRenderer _Renderer;
 
