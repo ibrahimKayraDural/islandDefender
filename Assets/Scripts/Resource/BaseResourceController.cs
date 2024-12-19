@@ -34,7 +34,7 @@ public class BaseResourceController : MonoBehaviour
     private void Update()
     {
         //DEBUG
-        if(Input.GetKeyDown(KeyCode.Keypad0))
+        if (Input.GetKeyDown(KeyCode.Keypad0))
         {
             List<ResourceData> temp = _resourceDictionary.Keys.ToList();
             foreach (var data in temp)
@@ -52,7 +52,7 @@ public class BaseResourceController : MonoBehaviour
 
         foreach (var item in items)
         {
-            if(item is ResourceItem)
+            if (item is ResourceItem)
             {
                 rItems.Add(item as ResourceItem);
             }
@@ -120,6 +120,16 @@ public class BaseResourceController : MonoBehaviour
             _resourceDictionary[data] = 0;
         }
         RefreshText();
+    }
+    public int CheckItemCount(ResourceItem itemToCheck)
+    {
+        if (itemToCheck == null) return 0;
+
+        ResourceData data = itemToCheck.Data;
+        if (data == null) return 0;
+        if (_resourceDictionary.ContainsKey(data) == false) return 0;
+
+        return _resourceDictionary[data];
     }
 
     void RefreshText()

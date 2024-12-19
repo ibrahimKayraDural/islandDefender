@@ -33,9 +33,21 @@ public class DoorInteractableUI : ProximityInteractableUI, IUICellOwner
     }
     Inventory AUTO_InventoryInstance = null;
 
+    BaseResourceController _BaseResourceController
+    {
+        get
+        {
+            if (AUTO_BaseResourceController == null) AUTO_BaseResourceController = BaseResourceController.Instance;
+            return AUTO_BaseResourceController;
+        }
+    }
+    BaseResourceController AUTO_BaseResourceController = null;
+
     GraphicRaycasterScript IUICellOwner.GraphicRaycasterS => _GraphicRaycaster;
     TextMeshProUGUI IUICellOwner.DescriptionTitle => _DescriptionTitle;
     TextMeshProUGUI IUICellOwner.DescriptionText => _DescriptionText;
+
+    Dictionary<ResourceData, Vector2Int> _itemsInInventoryAndBase = new Dictionary<ResourceData, Vector2Int>();
 
     void Awake()
     {
@@ -57,18 +69,22 @@ public class DoorInteractableUI : ProximityInteractableUI, IUICellOwner
         foreach (var item in _CellParent.Cast<Transform>()) MonoBehaviour.Destroy(item.gameObject);
 
         ResourceItem[] requiredItems = _currentDoor.Items;
-        ResourceItem[] inventoryItems = _currentDoor.Items;
+        //ResourceItem[] inventoryItems = _currentDoor.Items;
+        _itemsInInventoryAndBase = new Dictionary<ResourceData, Vector2Int>();
 
         for (int i = 0; i < requiredItems.Length; i++)
         {
             ResourceItem item = requiredItems[i];
-            int currentAmount = _InventoryInstance.CheckItemCount(item);
+            int currentAmountInventory = _InventoryInstance.CheckItemCount(item);
+            int currentAmountBase = _BaseResourceController.CheckItemCount(item);
+
+            _itemsInInventoryAndBase.Add(item.Data, new Vector2Int(currentAmountInventory, currentAmountBase));
 
             //Create empty cell
             DoorIngredientCell cell = Instantiate(_CellPrefab, _CellParent).GetComponent<DoorIngredientCell>();
 
             if (item == null) cell.Initialize();
-            else cell.Initialize(item.Data, item.Count, currentAmount, i, "DoorInteractable");
+            else cell.Initialize(item.Data, item.Count, currentAmountInventory + currentAmountBase, i, "DoorInteractable");
         }
     }
 
@@ -107,5 +123,26 @@ public class DoorInteractableUI : ProximityInteractableUI, IUICellOwner
     public void OnHoverInteractableCell(UICell currentCell)
     {
         HandleDescriptionSprite(currentCell.UISprite);
+    }
+
+    public void OnFinished()
+    {
+        ResourceItem[] requiredItems = _currentDoor.Items;
+
+        foreach (var item in requiredItems)
+        {
+            Vector2Int inventoryAndBaseCount = _itemsInInventoryAndBase[item.Data];
+            if (inventoryAndBaseCount.x + inventoryAndBaseCount.y < item.Count) return;
+        }
+
+        foreach (var item in requiredItems)
+        {
+            Vector2Int inventoryAndBaseCount = _itemsInInventoryAndBase[item.Data];
+            if (_InventoryInstance.TryUseItems(item.Data.AsItem(inventoryAndBaseCount.x)) == false) return;
+            _BaseResourceController.TrySpendResource(item.Data, inventoryAndBaseCount.y);
+        }
+
+        _currentDoor.OnBought();
+        SetEnablityGetter(false);
     }
 }

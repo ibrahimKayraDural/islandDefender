@@ -8,6 +8,7 @@ using UnityEngine;
 public class DoorInteractable : ProximityInteractable
 {
     public override string InteractDescription { get => "Check possible descent point"; set { } }
+    [SerializeField] GameObject DescentPointPrefab;
 
     public ResourceItem[] Items
     {
@@ -19,5 +20,11 @@ public class DoorInteractable : ProximityInteractable
         }
     }
 
-    [SerializeField, SerializedDictionary("Data","Amount")] SerializedDictionary<ResourceData, int> _items;
+    [SerializeField, SerializedDictionary("Data", "Amount")] SerializedDictionary<ResourceData, int> _items;
+
+    public void OnBought()
+    {
+        Instantiate(DescentPointPrefab, transform.position, Quaternion.identity);
+        Destroy(gameObject);
+    }
 }
