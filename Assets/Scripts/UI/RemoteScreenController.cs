@@ -6,7 +6,7 @@ public class RemoteScreenController : MonoBehaviour
 {
     [SerializeField] Animator _Animator;
     [SerializeField] float _FullscreenHoldDuration = .5f;
-    //[SerializeField] AudioClip WooshSFX;
+    [SerializeField] AudioClip WooshSFX;
     [SerializeField] AudioClip PhoneUpSFX;
     [SerializeField] AudioClip PhoneDownSFX;
     [SerializeField] AudioClip UIOpenSFX;
