@@ -1136,7 +1136,7 @@
     "m_RefNameGeneratedByDisplayName": "OldNormalMap",
     "m_DefaultReferenceName": "_OldNormalMap",
     "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
+    "m_GeneratePropertyBlock": false,
     "m_UseCustomSlotLabel": false,
     "m_CustomSlotLabel": "",
     "m_DismissedVersion": 0,
@@ -1179,7 +1179,7 @@
     "m_RefNameGeneratedByDisplayName": "OldMainTex",
     "m_DefaultReferenceName": "_OldMainTex",
     "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
+    "m_GeneratePropertyBlock": false,
     "m_UseCustomSlotLabel": false,
     "m_CustomSlotLabel": "",
     "m_DismissedVersion": 0,
@@ -1277,7 +1277,7 @@
     "m_RefNameGeneratedByDisplayName": "OldNormalStrength",
     "m_DefaultReferenceName": "_OldNormalStrength",
     "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
+    "m_GeneratePropertyBlock": false,
     "m_UseCustomSlotLabel": false,
     "m_CustomSlotLabel": "",
     "m_DismissedVersion": 0,
@@ -1351,11 +1351,11 @@
     "m_Guid": {
         "m_GuidSerialized": "2710e61a-66d3-48e9-bfeb-9235264f32c2"
     },
-    "m_Name": "Fill",
+    "m_Name": "Fill (Keep at 1)",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Fill",
-    "m_DefaultReferenceName": "_Fill",
-    "m_OverrideReferenceName": "",
+    "m_RefNameGeneratedByDisplayName": "Fill (Keep at 1)",
+    "m_DefaultReferenceName": "_Fill_Keep_at_1",
+    "m_OverrideReferenceName": "_Fill",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
     "m_CustomSlotLabel": "",
@@ -2447,7 +2447,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "759ec985ec8f468f8c738e41792a2096",
     "m_Id": 0,
-    "m_DisplayName": "Fill",
+    "m_DisplayName": "Fill (Keep at 1)",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -2924,7 +2924,7 @@
     "m_RefNameGeneratedByDisplayName": "OldMetallic",
     "m_DefaultReferenceName": "_OldMetallic",
     "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
+    "m_GeneratePropertyBlock": false,
     "m_UseCustomSlotLabel": false,
     "m_CustomSlotLabel": "",
     "m_DismissedVersion": 0,
@@ -3482,7 +3482,7 @@
     "m_RefNameGeneratedByDisplayName": "OldTiling",
     "m_DefaultReferenceName": "_OldTiling",
     "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
+    "m_GeneratePropertyBlock": false,
     "m_UseCustomSlotLabel": false,
     "m_CustomSlotLabel": "",
     "m_DismissedVersion": 0,
@@ -3666,7 +3666,7 @@
     "m_RefNameGeneratedByDisplayName": "OldSmoothness",
     "m_DefaultReferenceName": "_OldSmoothness",
     "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
+    "m_GeneratePropertyBlock": false,
     "m_UseCustomSlotLabel": false,
     "m_CustomSlotLabel": "",
     "m_DismissedVersion": 0,
@@ -4079,9 +4079,6 @@
     "m_Name": "",
     "m_ChildObjectList": [
         {
-            "m_Id": "2d243337a764469f8b632c66186bfa59"
-        },
-        {
             "m_Id": "d065da1e659c4e05864b4776346ef2f9"
         },
         {
@@ -4116,6 +4113,9 @@
         },
         {
             "m_Id": "cf280c9d3fec4fd790d78d1a19919e21"
+        },
+        {
+            "m_Id": "2d243337a764469f8b632c66186bfa59"
         }
     ]
 }
