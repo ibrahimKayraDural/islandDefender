@@ -15,15 +15,15 @@ public class ExcelSwarmConverter : EditorWindow
     const string ASSET_PATH = "Assets/Data/WaveData/ScriptableObjects/";
     const string SCOBJ_ASSET_EXTENTION = ".asset";
 
-void OnGUI()
+    void OnGUI()
     {
         ExcelSwarmConverter window = this;
         window.maxSize = new Vector2(500, 250);
         window.minSize = window.maxSize;
 
-        GUILayout.Label($"Select a CSV file from the project window and press 'CONVERT' button to convert the contents into seperate scriptable objects. The objects will be saved to {ASSET_PATH}.",EditorStyles.helpBox);
+        GUILayout.Label($"Select a CSV file from the project window and press 'CONVERT' button to convert the contents into seperate scriptable objects. The objects will be saved to {ASSET_PATH}.", EditorStyles.helpBox);
         GUI.contentColor = Color.yellow;
-        GUILayout.Label($" ALL FILES IN {ASSET_PATH} WILL BE DELETED AND REPLACED",EditorStyles.boldLabel);
+        GUILayout.Label($" ALL FILES IN {ASSET_PATH} WILL BE DELETED AND REPLACED", EditorStyles.boldLabel);
         GUI.contentColor = Color.white;
         Object[] selection = Selection.GetFiltered(typeof(TextAsset), SelectionMode.Assets);
         GUILayout.Space(10);
@@ -226,7 +226,7 @@ void OnGUI()
                         string[] messages = enemyID.Split("-");
                         S_EnemyWithCount ewc = new S_EnemyWithCount(messages[1], messages[2], enemyCount);
 
-                        lGroup.Enemies = new List<S_EnemyWithCount>() { ewc }; 
+                        lGroup.Enemies = new List<S_EnemyWithCount>() { ewc };
                     }
                     else
                     {
@@ -360,10 +360,10 @@ void OnGUI()
 
             int equalsIndex = message.IndexOf("=");
             string valueStr = GLOBAL.UnassignedString;
-            if(equalsIndex > 0 && equalsIndex < message.Length)
+            if (equalsIndex > 0 && equalsIndex < message.Length)
             {
                 valueStr = message.Substring(equalsIndex + 1, message.Length - (equalsIndex + 1));
-                message = message.Substring(0,equalsIndex);
+                message = message.Substring(0, equalsIndex);
             }
 
             switch (message)
