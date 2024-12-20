@@ -124,7 +124,7 @@ MonoBehaviour:
   _Gains: []
   _MineDuration: 2
   _ForgetDuration: 0.5
-  _DeleteFromTilemap: 0
+  _DeleteFromTilemap: 1
   _SPS: {fileID: -8070371198414233150}
 --- !u!114 &-8070371198414233150
 MonoBehaviour:
