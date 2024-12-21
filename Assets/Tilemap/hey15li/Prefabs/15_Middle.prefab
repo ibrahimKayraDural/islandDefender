@@ -12,6 +12,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: 15_Middle
       objectReference: {fileID: 0}
+    - target: {fileID: 1581993649253144056, guid: 267391298c15e7d439ece44ef1a4d03e, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1581993649253144056, guid: 267391298c15e7d439ece44ef1a4d03e, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1581993649253144056, guid: 267391298c15e7d439ece44ef1a4d03e, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3146121908392338401, guid: 267391298c15e7d439ece44ef1a4d03e, type: 3}
       propertyPath: m_Mesh
       value: 

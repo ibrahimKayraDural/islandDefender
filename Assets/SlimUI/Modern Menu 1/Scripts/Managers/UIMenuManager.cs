@@ -80,6 +80,8 @@ namespace SlimUI.ModernMenu{
         [Tooltip("The GameObject holding the Audio Source component for the SWOOSH SOUND when switching to the Settings Screen")]
         public AudioSource swooshSound;
 
+		public AudioSource clickSound;
+
 		void Start(){
 			CameraObject = transform.GetComponent<Animator>();
 
@@ -233,8 +235,13 @@ namespace SlimUI.ModernMenu{
 			swooshSound.Play();
 		}
 
-		// Are You Sure - Quit Panel Pop Up
-		public void AreYouSure(){
+        public void PlayClick()
+        {
+            clickSound.Play();
+        }
+
+        // Are You Sure - Quit Panel Pop Up
+        public void AreYouSure(){
 			exitMenu.SetActive(true);
 			if(extrasMenu) extrasMenu.SetActive(false);
 			DisablePlayCampaign();
