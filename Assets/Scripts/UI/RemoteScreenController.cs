@@ -6,7 +6,6 @@ public class RemoteScreenController : MonoBehaviour
 {
     [SerializeField] Animator _Animator;
     [SerializeField] float _FullscreenHoldDuration = .5f;
-    [SerializeField] AudioClip WooshSFX;
     [SerializeField] AudioClip PhoneUpSFX;
     [SerializeField] AudioClip PhoneDownSFX;
     [SerializeField] AudioClip UIOpenSFX;
@@ -48,14 +47,16 @@ public class RemoteScreenController : MonoBehaviour
                 _buttonDownTimer = float.MaxValue;
                 _inputNeedsReset = true;
             }
-            else if (_inputNeedsReset == false) SetSmallScreenEnablity(!_isSmallScreenOpen);
+            else if (_inputNeedsReset == false)
+            {
+                SetSmallScreenEnablity(!_isSmallScreenOpen);
+            }
         }
 
         if (Input.GetButtonDown("RemoteScreen"))
         {
             _buttonDownTimer = _FullscreenHoldDuration;
             _inputNeedsReset = false;
-            _audioManager.PlayClip(PhoneUp_ID, PhoneUpSFX);
         }
         else if (Input.GetButton("RemoteScreen") && _inputNeedsReset == false) _buttonDownTimer -= Time.deltaTime;
     }
@@ -69,7 +70,7 @@ public class RemoteScreenController : MonoBehaviour
     {
         if (CanvasManager.SomethingIsOpen) setTo = false;
 
-
+        _audioManager.PlayClip(setTo ? PhoneUp_ID : PhoneDown_ID, setTo ? PhoneUpSFX : PhoneDownSFX);
         _Animator.SetInteger("Status", setTo ? 1 : 0);
         _isSmallScreenOpen = setTo;
     }
