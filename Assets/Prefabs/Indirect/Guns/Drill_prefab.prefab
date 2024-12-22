@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 1535015549455893020}
   - component: {fileID: 500343713260558876}
   m_Layer: 0
-  m_Name: Drill
+  m_Name: Drill_prefab
   m_TagString: OverworldGun
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -227,6 +227,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 8d7eab87093e976418e0add84ddae6fd, type: 3}
       propertyPath: m_Name
       value: drill
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8d7eab87093e976418e0add84ddae6fd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3044204738172913339, guid: 8d7eab87093e976418e0add84ddae6fd, type: 3}
       propertyPath: m_LocalPosition.x

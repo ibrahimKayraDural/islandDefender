@@ -2,6 +2,7 @@ namespace Overworld
 {
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
     using UnityEngine;
 
     public class PlayerToolController : MonoBehaviour
@@ -29,7 +30,7 @@ namespace Overworld
             {
                 if (_activeTools.Count <= 0) return;
 
-                 _currentTool?.Unequip();
+                _currentTool?.Unequip();
 
                 if (value >= _activeTools.Count) AUTOVALUE_toolIdx = 0;
                 else if (value < 0) AUTOVALUE_toolIdx = _activeTools.Count - 1;
@@ -51,7 +52,7 @@ namespace Overworld
         int AUTOVALUE_toolIdx = 0;
 
         ToolDatabase _toolDatabase;
-        List<Tool> _activeTools = new List<Tool>();
+        [SerializeField] List<Tool> _activeTools = new List<Tool>();
         List<Tool> _tools = new List<Tool>();
         List<KeyCode> _numberKeys = GLOBAL.AlphaNumberKeys;
         bool _anyToolIsEquipped => _currentTool != null;
@@ -62,6 +63,11 @@ namespace Overworld
         {
             _toolDatabase = GLOBAL.GetToolDatabase();
             InitializeToolList();
+
+            List<string> currentActiveToolIDs = _activeTools.Select(x => x.Data.ID).ToList();
+            _activeTools = new List<Tool>();
+            currentActiveToolIDs.ForEach(x => TryActivateTool(x));
+
             CanvasManager.e_OnCurrentInterfaceChanged += OnCanvasInterfaceChanged;
 
             _ToolIndex = 0;
@@ -91,7 +97,7 @@ namespace Overworld
                 if (Input.GetButtonDown("Fire1")) _currentTool?.StartFiring();
                 else if (Input.GetButtonUp("Fire1")) _currentTool?.StopFiring();
 
-                CheckChangeTool(); 
+                CheckChangeTool();
             }
         }
 
@@ -131,7 +137,7 @@ namespace Overworld
             if (newTool == null) return false;
 
             Tool exisTool = FindInActiveTools(existingTool_idOrName, out int index);
-            if (exisTool == null) return false;;
+            if (exisTool == null) return false; ;
 
             _activeTools[index].Unequip();
             _activeTools[index] = newTool;
@@ -146,7 +152,7 @@ namespace Overworld
 
             int number = -1;
 
-            if(Input.anyKeyDown)
+            if (Input.anyKeyDown)
             {
                 foreach (var key in _numberKeys)
                 {
