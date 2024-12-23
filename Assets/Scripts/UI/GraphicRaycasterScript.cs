@@ -27,6 +27,13 @@ public class GraphicRaycasterScript : MonoBehaviour
 
     void Start()
     {
+        if(_EventSystem == null)
+        {
+            EventSystemInstance inst = EventSystemInstance.Instance;
+            if(inst != null)
+            _EventSystem = inst.EventSystem;
+        }
+
         if (_Raycaster == null || _EventSystem == null)
         {
             Debug.LogError("No raycaster/eventSystem was assigned to " + gameObject.name);

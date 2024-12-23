@@ -8,15 +8,19 @@ namespace TowerDefence
 {
     public enum TowerDefenceControlMode { None, Remote, Full }
     public enum TowerDefenceGameplayMode { Idle, Play, Edit }
-    public class TDPlayerController : MonoBehaviour
+    public class TDPlayerController : MonoBehaviour, IUICellOwner
     {
         [SerializeField] LayerMask TowerDefenceLayer;
         [SerializeField] TextMeshProUGUI _CurrentTurretText;
         [SerializeField] TextMeshProUGUI _CurrentModeText;
         [SerializeField] TDCanvasManager _TDCanvasManager;
         [SerializeField] SpawnManager _SpawnManager;
+        [SerializeField] OwnedTurretController _OwnedTurretController;
         [SerializeField] Transform _MouseTracker;
         [SerializeField] ManualTurretManager _ManualTurretManager;
+        [SerializeField] GraphicRaycasterScript _GraphicRaycasterScript;
+        [SerializeField] TextMeshProUGUI _DescriptionTitle;
+        [SerializeField] TextMeshProUGUI _DescriptionText;
 
         [SerializeField] Camera _camera = null;
 
@@ -31,6 +35,16 @@ namespace TowerDefence
                 return AUTO_battleManager;
             }
         }
+
+        public UICell OldCell { get; set; }
+        public UICell CurrentCell { get; set; }
+
+        GraphicRaycasterScript IUICellOwner.GraphicRaycasterS => _GraphicRaycasterScript;
+
+        TextMeshProUGUI IUICellOwner.DescriptionTitle => _DescriptionTitle;
+
+        TextMeshProUGUI IUICellOwner.DescriptionText => _DescriptionText;
+
         BattleManager AUTO_battleManager = null;
 
         TowerDefenceTileScript _currentTile = null;
@@ -109,6 +123,7 @@ namespace TowerDefence
                     _ManualTurretManager.DeselectCurrentTurret();
                     break;
                 case TowerDefenceGameplayMode.Edit:
+                    (this as IUICellOwner).OnEnd();
                     break;
                 case TowerDefenceGameplayMode.Idle:
                     break;
@@ -120,6 +135,7 @@ namespace TowerDefence
                 case TowerDefenceGameplayMode.Play:
                     break;
                 case TowerDefenceGameplayMode.Edit:
+                    (this as IUICellOwner).OnStart();
                     break;
                 case TowerDefenceGameplayMode.Idle:
                     break;
@@ -147,6 +163,12 @@ namespace TowerDefence
         void HandleEditMode()
         {
             SetCurrentTile();
+            (this as IUICellOwner).OnLoop();
+
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                _OwnedTurretController.AddTurret(_currentTurret);
+            }
 
             if (Input.GetButtonDown("PlaceTurret")) TryPlaceTurret();
             else if (Input.GetButtonDown("DeleteTurret")) DeleteTurret();
@@ -275,6 +297,17 @@ namespace TowerDefence
 
             _currentTile.GetUnhighlighted();
             _currentTile = null;
+        }
+
+        public void OnHoverInteractableCell(UICell currentCell) { }
+
+        void IUICellOwner.OnCellClicked(UICell cell) { }
+
+        bool IUICellOwner.CellIsValid(UICell cell)
+        {
+            var newCell = cell as OwnedTurretUIScript;
+            if (newCell == null) return false;
+            return newCell.TData != null;
         }
     }
 }
