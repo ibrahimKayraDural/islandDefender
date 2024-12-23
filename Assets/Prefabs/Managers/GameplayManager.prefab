@@ -50,3 +50,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c80ff14a512338d4493558b70b8f726e, type: 2}
   _unlockedTurrets:
   - {fileID: 11400000, guid: 5a902c2cfea19764c9856273849b0d0a, type: 2}
+  - {fileID: 11400000, guid: 9e24902b69d39b645a48964324276bed, type: 2}
+  - {fileID: 11400000, guid: 5c7cc337743a1ac44b4492431073734b, type: 2}
+  - {fileID: 11400000, guid: 74ccac4743be7f342b5fbb7abc3c1757, type: 2}
