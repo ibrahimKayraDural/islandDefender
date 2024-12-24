@@ -3590,8 +3590,8 @@ MonoBehaviour:
   m_Spacing: 10
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
@@ -19530,13 +19530,13 @@ MonoBehaviour:
   TowerDefenceLayer:
     serializedVersion: 2
     m_Bits: 64
-  _CurrentTurretText: {fileID: 1853211411}
   _CurrentModeText: {fileID: 1599808920}
   _TDCanvasManager: {fileID: 2129767042}
   _SpawnManager: {fileID: 1600570451}
-  _OwnedTurretController: {fileID: 53995042}
   _MouseTracker: {fileID: 1864520801}
+  _OwnedTurretController: {fileID: 53995042}
   _ManualTurretManager: {fileID: 60323003}
+  _CraftTabToggler: {fileID: 2143411802}
   _GraphicRaycasterScript: {fileID: 1132284529}
   _DescriptionTitle: {fileID: 284471749}
   _DescriptionText: {fileID: 161700382}
