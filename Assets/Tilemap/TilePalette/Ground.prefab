@@ -53,6 +53,16 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 2
       dummyAlignment: 0
       m_AllTileFlags: 2
+  - first: {x: 3, y: -2, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 3
+      m_TileSpriteIndex: 3
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 3
+      dummyAlignment: 0
+      m_AllTileFlags: 2
   - first: {x: 0, y: 1, z: 0}
     second:
       serializedVersion: 2
@@ -81,6 +91,8 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 5914f214765d29849956ef84d3a7b616, type: 2}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: b63961bc0db6ddf4ebaeb113d0c61ba1, type: 2}
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: 5c9b9e2559629da40aa4b9584e6ff581, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 1
     m_Data: {fileID: 21300000, guid: f045def2e15c38a479c52b481a62314e, type: 3}
@@ -88,8 +100,10 @@ Tilemap:
     m_Data: {fileID: 21300000, guid: 85cf250dd95a2ad41aac26eff6d97d88, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: 21300000, guid: 03b2c4124decded419b61d7973153e0d, type: 3}
+  - m_RefCount: 1
+    m_Data: {fileID: 21300000, guid: 65cc56111d6ed544e8f0345f9114fa1f, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 3
+  - m_RefCount: 4
     m_Data:
       e00: 1
       e01: 0
@@ -108,7 +122,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 3
+  - m_RefCount: 4
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray:
   - m_RefCount: 1
@@ -117,6 +131,8 @@ Tilemap:
     m_Data: {fileID: 1465682377395449155, guid: 70c2f8fe3887a7e449e1c8b2c36e343d, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: 7873356029478735034, guid: 07eced24740a60042ba20bc58ba47f26, type: 3}
+  - m_RefCount: 1
+    m_Data: {fileID: 3295766393776565867, guid: 4ad5166d59980dc4a8af469f727f4573, type: 3}
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: 0, y: -2, z: 0}
@@ -304,7 +320,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2643420590493190906, guid: 7c918ff9ae7d70e48a910c715477218d, type: 3}
   m_PrefabInstance: {fileID: 2753780760675800337}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7771463272240779041
+--- !u!114 &4666388891112798366
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
