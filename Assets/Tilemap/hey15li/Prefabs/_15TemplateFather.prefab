@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -8070371198414233150}
   m_Layer: 0
   m_Name: _15TemplateFather
-  m_TagString: Untagged
+  m_TagString: Minable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

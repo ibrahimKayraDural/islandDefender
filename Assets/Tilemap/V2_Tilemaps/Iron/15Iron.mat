@@ -48,7 +48,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: c7b7d765d78954640a6c4336d235bd72, type: 3}
+        m_Texture: {fileID: 2800000, guid: 21d2cdde4619b4d4a87c2c4a02015587, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -56,7 +56,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normalmap:
-        m_Texture: {fileID: 2800000, guid: d069925bd7d09d146bb7004f1d25bcf3, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4bb7cb0dab73c3b48a7f1e128e45d5f9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -92,13 +92,13 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Metallic: 0
+    - _Metallic: 0.12
     - _Mode: 0
     - _NormalStrength: 0.5
     - _OcclusionStrength: 1
     - _OverlayPower: 0.5
     - _Parallax: 0.02
-    - _Smoothness: 0
+    - _Smoothness: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -111,7 +111,7 @@ Material:
     - _DeteriorationNoiseOffset: {r: 0, g: 0, b: 0, a: 0}
     - _DeteriorationNoiseTiling: {r: 500, g: 200, b: 0, a: 0}
     - _DeteriorationOffset: {r: 0, g: 0, b: 0, a: 0}
-    - _DeteriorationShadowColor: {r: 0.13207549, g: 0.037937645, b: 0.0043609855, a: 1}
+    - _DeteriorationShadowColor: {r: 0.20754719, g: 0.06443575, b: 0.010768958, a: 1}
     - _DeteriorationTiling: {r: 50, g: 50, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _OverlayColor: {r: 0, g: 0.8445399, b: 1, a: 1}

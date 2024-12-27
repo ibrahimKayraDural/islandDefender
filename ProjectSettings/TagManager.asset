@@ -12,6 +12,7 @@ TagManager:
   - DroppedItem
   - Unhittable
   - ProjectionPlane
+  - Minable
   layers:
   - Default
   - TransparentFX

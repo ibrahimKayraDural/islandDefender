@@ -6,6 +6,8 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Collider))]
 public class TriggerScript : MonoBehaviour
 {
+    [SerializeField] List <string> Objects2Look4 = new List<string>();
+
     [SerializeField] UnityEvent<Collider> OnEntered;
     [SerializeField] UnityEvent<Collider> OnExited;
     [SerializeField] UnityEvent<Collider> OnStay;
@@ -18,14 +20,20 @@ public class TriggerScript : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if (Objects2Look4.Contains(other.gameObject.tag) == false && Objects2Look4.Count > 0) return;
+
         OnEntered?.Invoke(other);
     }
     void OnTriggerExit(Collider other)
     {
+        if (Objects2Look4.Contains(other.gameObject.tag) == false && Objects2Look4.Count > 0) return;
+
         OnExited?.Invoke(other);
     }
     private void OnTriggerStay(Collider other)
     {
+        if (Objects2Look4.Contains(other.gameObject.tag) == false && Objects2Look4.Count > 0) return;
+
         OnStay?.Invoke(other);
     }
 }
