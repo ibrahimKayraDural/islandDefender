@@ -122,6 +122,7 @@ namespace GameUI
         bool IUICellOwner.CellIsValid(UICell cell)
         {
             var newCell = cell as InventoryCellScript;
+            if (newCell == null) return false;
             return newCell.ItemData != null;
         }
 

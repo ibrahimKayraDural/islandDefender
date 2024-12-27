@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -8,19 +9,21 @@ namespace TowerDefence
 {
     public enum TowerDefenceControlMode { None, Remote, Full }
     public enum TowerDefenceGameplayMode { Idle, Play, Edit }
-    public class TDPlayerController : MonoBehaviour
+    public class TDPlayerController : MonoBehaviour, IUICellOwner
     {
         [SerializeField] LayerMask TowerDefenceLayer;
-        [SerializeField] TextMeshProUGUI _CurrentTurretText;
         [SerializeField] TextMeshProUGUI _CurrentModeText;
         [SerializeField] TDCanvasManager _TDCanvasManager;
         [SerializeField] SpawnManager _SpawnManager;
         [SerializeField] Transform _MouseTracker;
+        [SerializeField] OwnedTurretController _OwnedTurretController;
         [SerializeField] ManualTurretManager _ManualTurretManager;
+        [SerializeField] ButtonToggleHelper _CraftTabToggler;
+        [SerializeField] GraphicRaycasterScript _GraphicRaycasterScript;
+        [SerializeField] TextMeshProUGUI _DescriptionTitle;
+        [SerializeField] TextMeshProUGUI _DescriptionText;
 
         [SerializeField] Camera _camera = null;
-
-        TurretData _currentTurret => _turrets[currentIndex];
 
         BattleManager _battleManager
         {
@@ -31,14 +34,22 @@ namespace TowerDefence
                 return AUTO_battleManager;
             }
         }
+
+        public UICell OldCell { get; set; }
+        public UICell CurrentCell { get; set; }
+
+        GraphicRaycasterScript IUICellOwner.GraphicRaycasterS => _GraphicRaycasterScript;
+
+        TextMeshProUGUI IUICellOwner.DescriptionTitle => _DescriptionTitle;
+
+        TextMeshProUGUI IUICellOwner.DescriptionText => _DescriptionText;
+
         BattleManager AUTO_battleManager = null;
 
+        float targetTime_CanPlaceTurret = -1;
+        TurretData _currentTurret = null;
         TowerDefenceTileScript _currentTile = null;
-        TurretData[] _turrets;
-        Turret_Remote _selectedTurret = null;
-        int currentIndex = 0;
-        float _changeTurret_TargetTime = -1;
-        float _changeTurret_Cooldown = .2f;
+        Turret_Remote _selectedRemoteTurret = null;
 
         TowerDefenceGameplayMode _currentGameplayMode = TowerDefenceGameplayMode.Edit;
         TowerDefenceControlMode _currentControlMode = TowerDefenceControlMode.None;
@@ -50,9 +61,6 @@ namespace TowerDefence
                 Debug.LogError("No camera was found");
                 this.enabled = false;
             }
-
-            _turrets = GLOBAL.GetTurretDatabase().GetFieldTurrets().ToArray();
-            _CurrentTurretText.text = _currentTurret.DisplayName;
         }
 
         void Update()
@@ -105,10 +113,13 @@ namespace TowerDefence
             switch (oldMode)
             {
                 case TowerDefenceGameplayMode.Play:
-                    DeselectTurret();
+                    DeselectRemoteTurret();
                     _ManualTurretManager.DeselectCurrentTurret();
                     break;
                 case TowerDefenceGameplayMode.Edit:
+                    (this as IUICellOwner).OnEnd();
+                    DeselectCurrentTurret();
+                    _CraftTabToggler.SetStatus(false);
                     break;
                 case TowerDefenceGameplayMode.Idle:
                     break;
@@ -120,6 +131,7 @@ namespace TowerDefence
                 case TowerDefenceGameplayMode.Play:
                     break;
                 case TowerDefenceGameplayMode.Edit:
+                    (this as IUICellOwner).OnStart();
                     break;
                 case TowerDefenceGameplayMode.Idle:
                     break;
@@ -139,19 +151,34 @@ namespace TowerDefence
         public void ExitBattle()
         {
             _currentControlMode = TowerDefenceControlMode.None;
-            DeselectCurrentTile();
+            DeselectCurrentTurret();
             EvaluateGameplayMode(SpawnManager.WaveIsActive);
             _TDCanvasManager.gameObject.SetActive(false);
         }
 
         void HandleEditMode()
         {
-            SetCurrentTile();
+            if (_currentTurret != null && _CraftTabToggler.Status == false)
+            {
+                SetCurrentTile();
+            }
+
+            (this as IUICellOwner).OnLoop();
+
+            if (Input.GetButtonDown("CraftingTabOpen"))
+            {
+                DeselectCurrentTurret();
+                _CraftTabToggler.Toggle();
+            }
 
             if (Input.GetButtonDown("PlaceTurret")) TryPlaceTurret();
-            else if (Input.GetButtonDown("DeleteTurret")) DeleteTurret();
+            else if (Input.GetMouseButtonDown(1)) DeselectCurrentTurret();
+        }
 
-            TryChangeTurret(Input.GetAxisRaw("ChangeTurret"));
+        void DeselectCurrentTurret()
+        {
+            _currentTurret = null;
+            DeselectCurrentTile();
         }
 
         void HandlePlayMode()
@@ -163,10 +190,10 @@ namespace TowerDefence
                 Turret_Remote turret = _currentTile != null ? _currentTile.OccupyingTurret as Turret_Remote : null;
                 EvaluateTurret(turret);
             }
-            if (_selectedTurret != null)
+            if (_selectedRemoteTurret != null)
             {
                 _ManualTurretManager.DeselectCurrentTurret();
-                if (Input.GetButton("UseSelectedRemoteTurret")) _selectedTurret.UseTurret();
+                if (Input.GetButton("UseSelectedRemoteTurret")) _selectedRemoteTurret.UseTurret();
             }
             else
             {
@@ -178,25 +205,25 @@ namespace TowerDefence
             {
                 if (turret == null)
                 {
-                    DeselectTurret();
+                    DeselectRemoteTurret();
                     return;
                 }
-                else if (_selectedTurret != null)
+                else if (_selectedRemoteTurret != null)
                 {
-                    if (_selectedTurret == turret) return;
-                    DeselectTurret();
+                    if (_selectedRemoteTurret == turret) return;
+                    DeselectRemoteTurret();
                 }
 
                 turret.SelectTurret(_MouseTracker);
-                _selectedTurret = turret;
+                _selectedRemoteTurret = turret;
             }
         }
-        void DeselectTurret()
+        void DeselectRemoteTurret()
         {
-            if (_selectedTurret == null) return;
+            if (_selectedRemoteTurret == null) return;
 
-            _selectedTurret.DeselectTurret();
-            _selectedTurret = null;
+            _selectedRemoteTurret.DeselectTurret();
+            _selectedRemoteTurret = null;
         }
 
         void HandleIdleMode()
@@ -231,31 +258,21 @@ namespace TowerDefence
             _MouseTracker.position = hit.point;
         }
 
-        void TryChangeTurret(float v)
-        {
-            if (v == 0) return;
-            if (_changeTurret_TargetTime >= Time.time) return;
-
-            v = v > 0 ? 1 : -1;
-            currentIndex += (int)v;
-
-            if (currentIndex < 0) currentIndex = _turrets.Length - 1;
-            if (currentIndex >= _turrets.Length) currentIndex = 0;
-
-            _CurrentTurretText.text = _currentTurret.DisplayName;
-
-            _changeTurret_TargetTime = Time.time + _changeTurret_Cooldown;
-        }
-
         void TryPlaceTurret()
         {
-            if (_currentTile == null) return;
+            if (targetTime_CanPlaceTurret > Time.time) return;
+            if (_currentTile == null) 
+            {
+                DeselectCurrentTurret();
+                return;
+            }
             if (_currentTile.IsOccupied) return;
-
-            if (BaseResourceController.Instance.TryBuyTurret(_currentTurret) == false) return;
 
             TurretUnit unit = Instantiate(_currentTurret.PrefabObject).GetComponent<TurretUnit>();
             unit.Initialize(_currentTurret, _currentTile);
+
+            _OwnedTurretController.RemoveTurret(_currentTurret);
+            DeselectCurrentTurret();
         }
 
         void DeleteTurret()
@@ -275,6 +292,28 @@ namespace TowerDefence
 
             _currentTile.GetUnhighlighted();
             _currentTile = null;
+        }
+
+        public void OnHoverInteractableCell(UICell currentCell) { }
+
+        void IUICellOwner.OnCellClicked(UICell cell)
+        {
+            var tCell = cell as OwnedTurretUIScript;
+            if (tCell == null) return;
+            TurretData data = tCell.TData;
+            if (data == null) return;
+
+            targetTime_CanPlaceTurret = Time.time + .1f;
+
+            _CraftTabToggler.SetStatus(false);
+            _currentTurret = data;
+        }
+
+        bool IUICellOwner.CellIsValid(UICell cell)
+        {
+            var newCell = cell as OwnedTurretUIScript;
+            if (newCell == null) return false;
+            return newCell.TData != null;
         }
     }
 }

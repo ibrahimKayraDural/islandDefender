@@ -50,7 +50,7 @@ namespace TowerDefence
             GLOBAL.GetTurretDatabase().GetManualTurrets().ForEach(x => _datas.Add(new ManualTurretData(x)));
 
             //Clean UIParent's children
-            foreach (var child in _UIParent.Cast<Transform>()) Destroy(child);
+            foreach (var child in _UIParent.Cast<Transform>()) Destroy(child.gameObject);
 
             //Instantiate and Initialize new UI pieces
             for (int i = 0; i < _datas.Count; i++)
