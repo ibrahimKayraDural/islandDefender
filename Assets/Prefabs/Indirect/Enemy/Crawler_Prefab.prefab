@@ -83,7 +83,7 @@ MonoBehaviour:
   _AttackLayer:
     serializedVersion: 2
     m_Bits: 1536
-  _data: {fileID: 11400000, guid: 7c277445233fa32478b7653998c894f7, type: 2}
+  _data: {fileID: 11400000, guid: 55fd45d4c1604a142b8c560359681af2, type: 2}
   _DeathDuration: 0.5
   _Renderer: {fileID: 4278885250024717273}
   _Animator: {fileID: 2307385479369098232}
