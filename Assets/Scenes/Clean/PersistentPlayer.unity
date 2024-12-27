@@ -878,10 +878,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1528431706}
   - component: {fileID: 1528431708}
-  - component: {fileID: 1528431707}
   m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
+  m_Name: Radar
+  m_TagString: OverworldRadar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -901,41 +900,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1779974927}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1528431707
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1528431705}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1db469b22aee8747b6fc2f60d0a1c7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Objects2Look4:
-  - Minable
-  OnEntered:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnExited:
-    m_PersistentCalls:
-      m_Calls: []
-  OnStay:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!135 &1528431708
 SphereCollider:
   m_ObjectHideFlags: 0
