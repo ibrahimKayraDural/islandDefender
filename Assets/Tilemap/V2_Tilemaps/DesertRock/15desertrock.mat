@@ -111,6 +111,7 @@ Material:
     - _DeteriorationNoiseOffset: {r: 0, g: 0, b: 0, a: 0}
     - _DeteriorationNoiseTiling: {r: 500, g: 200, b: 0, a: 0}
     - _DeteriorationOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _DeteriorationShadowColor: {r: 0.13207549, g: 0.037937645, b: 0.0043609855, a: 1}
     - _DeteriorationTiling: {r: 50, g: 50, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _OverlayColor: {r: 0, g: 0.8445399, b: 1, a: 1}
