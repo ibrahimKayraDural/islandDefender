@@ -20,7 +20,7 @@ public class TriggerScript : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        //if (Objects2Look4Tag.Contains(other.gameObject.tag) == false && Objects2Look4Tag.Count > 0) return;
+        if (Objects2Look4Tag.Contains(other.gameObject.tag) == false && Objects2Look4Tag.Count > 0) return;
 
         OnEntered?.Invoke(other);
     }

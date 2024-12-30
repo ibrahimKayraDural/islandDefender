@@ -120,7 +120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Objects2Look4Tag:
-  - PlayerRadar
+  - OverworldRadar
   OnEntered:
     m_PersistentCalls:
       m_Calls:
