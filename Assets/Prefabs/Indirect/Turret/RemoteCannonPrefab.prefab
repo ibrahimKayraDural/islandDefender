@@ -67,6 +67,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 090f240639b58bf44a9d62050da2ffab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _Renderers:
+  - {fileID: 240993287864568009}
+  - {fileID: 1535556571818859782}
+  - {fileID: 7550752232460852434}
   _TileMask:
     serializedVersion: 2
     m_Bits: 64
@@ -186,6 +190,16 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d523b26624c38747a86156908a5cc0f, type: 3}
+--- !u!23 &240993287864568009 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8564900123269343484, guid: 8d523b26624c38747a86156908a5cc0f, type: 3}
+  m_PrefabInstance: {fileID: 8468048603565318197}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &1535556571818859782 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6974925485189332275, guid: 8d523b26624c38747a86156908a5cc0f, type: 3}
+  m_PrefabInstance: {fileID: 8468048603565318197}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4538575328076365250 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5438324562147614199, guid: 8d523b26624c38747a86156908a5cc0f, type: 3}
@@ -199,5 +213,10 @@ Animator:
 --- !u!4 &6686172784364250182 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2976461462679749747, guid: 8d523b26624c38747a86156908a5cc0f, type: 3}
+  m_PrefabInstance: {fileID: 8468048603565318197}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &7550752232460852434 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2111383866019282151, guid: 8d523b26624c38747a86156908a5cc0f, type: 3}
   m_PrefabInstance: {fileID: 8468048603565318197}
   m_PrefabAsset: {fileID: 0}

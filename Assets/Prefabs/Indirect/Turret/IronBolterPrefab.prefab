@@ -48,6 +48,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c67a1880bb55b2449e33788dc5866a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _Renderers:
+  - {fileID: 3305954458053955651}
+  - {fileID: 2742966841335010726}
+  - {fileID: 2423818854684554193}
+  - {fileID: 4987892871059981573}
   _Barrel: {fileID: 5052115123227211527}
   _RayLenght: 100
   _EnemyMask:
@@ -273,6 +278,26 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!23 &2423818854684554193 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3732770619943154782, guid: 434520948a8c614459576c3f81358c3a, type: 3}
+  m_PrefabInstance: {fileID: 1328092888317560719}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2742966841335010726 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3782650665668891177, guid: 434520948a8c614459576c3f81358c3a, type: 3}
+  m_PrefabInstance: {fileID: 1328092888317560719}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &3305954458053955651 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4579960032909121484, guid: 434520948a8c614459576c3f81358c3a, type: 3}
+  m_PrefabInstance: {fileID: 1328092888317560719}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &4987892871059981573 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6293458672951476874, guid: 434520948a8c614459576c3f81358c3a, type: 3}
+  m_PrefabInstance: {fileID: 1328092888317560719}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &8838078100149930584 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 7550702893515181527, guid: 434520948a8c614459576c3f81358c3a, type: 3}
