@@ -24,5 +24,6 @@ MonoBehaviour:
   _Difficulty: 0
   _RangeType: 0
   _EnemyTypes: 00000000
-  _AttackSFX: {fileID: 8300000, guid: 75af592031a6fce46a27d32154b89b80, type: 3}
+  _GettingDamagedSFX: {fileID: 8300000, guid: 2755cac10c425a84f9bd3258f1f3f1f0, type: 3}
+  _DyingSFX: {fileID: 8300000, guid: 8e448de2872f6b74181558e9d7a4996f, type: 3}
   _enemyPrefab: {fileID: 8660632794050134643, guid: 48affa4cba816fb43b9fd72a33865321, type: 3}
