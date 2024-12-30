@@ -124,10 +124,19 @@ MonoBehaviour:
   _Gains:
   - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
     _amount: 3
+  _MiningSFXCooldown: 0.25
   _MineDuration: 2
   _ForgetDuration: 0.5
   _DeleteFromTilemap: 1
   _SPS: {fileID: 896335366456748533}
+  _MiningSFX:
+    AudioClip: {fileID: 8300000, guid: c9a5b29f2fdf3d94e883fd9cd270043b, type: 3}
+    Pitch: 0.45
+    Volume: 1
+  _MineCompletedSFX:
+    AudioClip: {fileID: 8300000, guid: bc522b8eb85cd8b4092b3cb07b9b1c5c, type: 3}
+    Pitch: 1
+    Volume: 1
 --- !u!114 &896335366456748533
 MonoBehaviour:
   m_ObjectHideFlags: 0
