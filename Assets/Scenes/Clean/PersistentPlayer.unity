@@ -1056,9 +1056,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1616717264103192593, guid: 296de3351f168f9478d7a0e7041b1503, type: 3}
+      propertyPath: m_Type
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2253588649053394883, guid: 296de3351f168f9478d7a0e7041b1503, type: 3}
       propertyPath: m_Name
       value: overworldPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 4260737490289061525, guid: 296de3351f168f9478d7a0e7041b1503, type: 3}
+      propertyPath: m_Type
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7131293006566525913, guid: 296de3351f168f9478d7a0e7041b1503, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1104,6 +1112,14 @@ PrefabInstance:
       propertyPath: _CanvasManager
       value: 
       objectReference: {fileID: 695069628}
+    - target: {fileID: 8785126028115196852, guid: 296de3351f168f9478d7a0e7041b1503, type: 3}
+      propertyPath: _activeTools.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8785126028115196852, guid: 296de3351f168f9478d7a0e7041b1503, type: 3}
+      propertyPath: _activeTools.Array.data[0]
+      value: 
+      objectReference: {fileID: 1535015549455893020, guid: 9dc268fd29d04a7429b988669ec73a27, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
