@@ -29,3 +29,4 @@ MonoBehaviour:
   _prefabObject: {fileID: 906911832218085558, guid: 1e4a680c1472bcf4f8d02d9523aa7555, type: 3}
   _projectilePrefab: {fileID: 665859162509387241, guid: 39242c3aa2e891b41bb7227d9856dda7, type: 3}
   _projectileSpeedMultiplier: 2.5
+  _GetDamagedSFX: {fileID: 8300000, guid: 57e816778ca71674abdfddd09b2e98cd, type: 3}
