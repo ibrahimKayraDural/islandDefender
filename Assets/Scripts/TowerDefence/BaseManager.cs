@@ -14,7 +14,8 @@ public class BaseManager : MonoBehaviour, IHealth
     [SerializeField, Min(.1f)] float _MaxHealth = 10;
     [Header("Reference")]
     [SerializeField] TextMeshProUGUI _HealthTM;
-    [SerializeField] AudioClip _ExplosionSFX;
+    [SerializeField] AudioClip _DeathSFX;
+    [SerializeField] AudioClip _HitSFX;
     [SerializeField] UnityEvent OnDeath;
 
     public float Health => _health;
@@ -29,6 +30,7 @@ public class BaseManager : MonoBehaviour, IHealth
     {
         float targetHealth = Mathf.Clamp(Health - amount, 0, _MaxHealth);
         e_BaseIsAttacked?.Invoke(this, targetHealth);
+        AudioManager.Instance?.PlayClip(this + "_GettingHit", _HitSFX);
         SetHealth(targetHealth);
     }
 
@@ -44,7 +46,7 @@ public class BaseManager : MonoBehaviour, IHealth
     {
         e_BaseHasDied?.Invoke(this, EventArgs.Empty);
 
-        AudioManager.Instance?.PlayClip(this + "_explosion", _ExplosionSFX);
+        AudioManager.Instance?.PlayClip(this + "_explosion", _DeathSFX);
 
         OnDeath?.Invoke();
     }
