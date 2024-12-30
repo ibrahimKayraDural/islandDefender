@@ -121,7 +121,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0b07334eca40f34ab5fa95e48e2d556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Gains: []
+  _Gains:
+  - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
+    _amount: 3
   _MineDuration: 2
   _ForgetDuration: 0.5
   _DeleteFromTilemap: 1
@@ -158,6 +160,10 @@ PrefabInstance:
     - target: {fileID: 296387501634247637, guid: 6e3d195cbb54c684a9f8f17d01c0c3f4, type: 3}
       propertyPath: m_Color.r
       value: 0.6226415
+      objectReference: {fileID: 0}
+    - target: {fileID: 296387501634247637, guid: 6e3d195cbb54c684a9f8f17d01c0c3f4, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3335450509411907386, guid: 6e3d195cbb54c684a9f8f17d01c0c3f4, type: 3}
       propertyPath: m_LocalPosition.x
