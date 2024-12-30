@@ -81,6 +81,7 @@ namespace TowerDefence
         {
             SpawnManager.RemoveFromActiveEnemyList(gameObject);
             _isDead = true;
+            AudioManager.Instance.PlayClip(Data.ID+"_Death", Data.DyingSFX);
             if (_Animator) _Animator?.SetBool("IsDead", true);
             OnDeath?.Invoke();
             StartCoroutine(DeathAnim());
