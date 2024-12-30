@@ -13247,6 +13247,10 @@ PrefabInstance:
       value: BaseManager
       objectReference: {fileID: 0}
     - target: {fileID: 2239794231906955740, guid: 70a1f744d50e3c04799cb6becd3cd2db, type: 3}
+      propertyPath: _DeathSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 2c906c6e10b87c04084332abaf74cfbe, type: 3}
+    - target: {fileID: 2239794231906955740, guid: 70a1f744d50e3c04799cb6becd3cd2db, type: 3}
       propertyPath: _HealthTM
       value: 
       objectReference: {fileID: 881111028}
