@@ -51,6 +51,7 @@ namespace TowerDefence
         }
         virtual public void KillSelf()
         {
+            AudioManager.Instance.PlayClip(Data.ID + "_Death", Data.DeathSFX);
             _parentTile.UnOccupy();
             Destroy(gameObject);
         }

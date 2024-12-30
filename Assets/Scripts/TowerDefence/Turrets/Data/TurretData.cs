@@ -23,6 +23,7 @@ namespace TowerDefence
         public GameObject ProjectilePrefab => _projectilePrefab;
         public float ProjectileSpeedMultiplier => _projectileSpeedMultiplier;
         public AudioClip GetDamagedSFX => _GetDamagedSFX;
+        public AudioClip DeathSFX => _DeathSFX;
 
         [SerializeField] TurretControlType _Type;
         [SerializeField] List<TurretAttribute> _Attributes = new List<TurretAttribute>();
@@ -34,5 +35,6 @@ namespace TowerDefence
         [SerializeField] GameObject _projectilePrefab;
         [SerializeField, Tooltip("Do not touch if you are certain you know what you are doing")] float _projectileSpeedMultiplier = 1;
         [SerializeField] AudioClip _GetDamagedSFX;
+        [SerializeField] AudioClip _DeathSFX;
     }
 }
