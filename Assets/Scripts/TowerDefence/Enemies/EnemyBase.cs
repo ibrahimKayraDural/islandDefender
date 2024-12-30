@@ -49,7 +49,6 @@ namespace TowerDefence
                     {
                         ih.RemoveHealth(_data.Damage);
 
-                        _audioManager.PlayClip(this + "_attack", Data.AttackSFX);
                         if (_Animator) _Animator?.SetTrigger("Attack");
 
                         _nextAttack_TargetTime = Time.time + _data.AttackCooldown;
@@ -65,6 +64,7 @@ namespace TowerDefence
         virtual public void RemoveHealth(float amount)
         {
             PlayDamagedAnim();
+            AudioManager.Instance.PlayClip(Data.ID + "_GetDamaged", Data.GettingDamagedSFX);
             SetHealth(Health - amount);
         }
         virtual public void SetHealth(float setTo)

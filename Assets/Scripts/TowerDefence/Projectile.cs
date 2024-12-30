@@ -9,7 +9,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] float _IterationDuration = .05f;
     [SerializeField] float _LifeTime = 10f;
     [SerializeField] Transform _VisualParent;
-    [SerializeField] AudioClip HitSfx;
+    [SerializeField] AudioClip OnProjectileSpent;
     [SerializeField] string[] IgnoreTags = new string[0];
     [SerializeField] bool _IgnoreTriggers = true;
 
@@ -65,7 +65,7 @@ public class Projectile : MonoBehaviour
         StopAllCoroutines();
 
         if (playSFX)
-            AudioManager.Instance?.PlayClip(this + "_hit", HitSfx);
+            AudioManager.Instance?.PlayClip(this + "_IsSpentSFX", OnProjectileSpent);
 
         Destroy(gameObject);
     }
