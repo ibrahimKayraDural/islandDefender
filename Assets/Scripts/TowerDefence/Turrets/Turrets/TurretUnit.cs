@@ -38,6 +38,11 @@ namespace TowerDefence
 
         abstract internal void ActivationMethod();
 
+        virtual public void RemoveHealth(float amount)
+        {
+            AudioManager.Instance.PlayClip(Data.ID + "_GettingDamaged", Data.GetDamagedSFX);
+            SetHealth(Health - amount);
+        }
         virtual public void SetHealth(float setTo)
         {
             _health = Mathf.Clamp(setTo, 0, _MaxHealth);
@@ -49,5 +54,5 @@ namespace TowerDefence
             _parentTile.UnOccupy();
             Destroy(gameObject);
         }
-    } 
+    }
 }

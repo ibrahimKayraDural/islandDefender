@@ -22,6 +22,7 @@ namespace TowerDefence
         public GameObject PrefabObject => _prefabObject;
         public GameObject ProjectilePrefab => _projectilePrefab;
         public float ProjectileSpeedMultiplier => _projectileSpeedMultiplier;
+        public AudioClip GetDamagedSFX => _GetDamagedSFX;
 
         [SerializeField] TurretControlType _Type;
         [SerializeField] List<TurretAttribute> _Attributes = new List<TurretAttribute>();
@@ -29,9 +30,9 @@ namespace TowerDefence
         [SerializeField] int _Damage = 1;
         [SerializeField] float _activationCooldown = 1;
         [SerializeField] Cost[] _costs = new Cost[0];
-        [SerializeField,Tooltip("Main body of the turret, with turret unit script")] GameObject _prefabObject;
+        [SerializeField, Tooltip("Main body of the turret, with turret unit script")] GameObject _prefabObject;
         [SerializeField] GameObject _projectilePrefab;
         [SerializeField, Tooltip("Do not touch if you are certain you know what you are doing")] float _projectileSpeedMultiplier = 1;
-
-    } 
+        [SerializeField] AudioClip _GetDamagedSFX;
+    }
 }
