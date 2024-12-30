@@ -4,20 +4,44 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MapManager : MonoBehaviour
+public class MapManager : MonoBehaviour, IUserInterface
 {
-    [SerializeField] GameObject mapCam;
-    [SerializeField] GameObject miniMapCam;
+    [SerializeField] Camera mapCam;
+    [SerializeField] Camera miniMapCam;
 
-    [SerializeField] GameObject mapRenderer;
-    [SerializeField] GameObject miniMapRenderer;
+    [SerializeField] RawImage mapRenderer;
+    [SerializeField] RawImage miniMapRenderer;
 
-    private void Update()
+    CanvasManager _CanvasManager
+    {
+        get
+        {
+            if (AUTO_canvasManager == null)
+                AUTO_canvasManager = CanvasManager.Instance;
+
+            return AUTO_canvasManager;
+        }
+    }
+    CanvasManager AUTO_canvasManager = null;
+
+    public bool IsOpen { get; set; }
+
+    public void OnEnablityChanged(bool changedTo)
+    {
+        mapCam.enabled = changedTo;
+        mapRenderer.enabled = changedTo;
+
+        miniMapCam.enabled = !changedTo;
+        miniMapRenderer.enabled = changedTo;
+    }
+
+    public void SetEnablityGetter(bool setTo) => (this as IUserInterface).SetEnablity(setTo);
+
+    void Update()
     {
         if (Input.GetKeyDown(KeyCode.M))
         {
-            mapCam.GetComponent<Camera>().enabled = !mapCam.GetComponent<Camera>().enabled;
-            mapRenderer.GetComponent<RawImage>().enabled = !mapRenderer.GetComponent<RawImage>().enabled;
+            _CanvasManager.SetMapEnablity(!IsOpen);
         }
     }
 }

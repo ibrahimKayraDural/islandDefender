@@ -34,6 +34,7 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] DoorInteractableUI _DoorUI;
     [SerializeField] InteractableHelperUI _InteractableHelper;
     [SerializeField] RemoteScreenController _RemoteScreenController;
+    [SerializeField] MapManager _MapManager;
 
     private void Awake()
     {
@@ -110,12 +111,21 @@ public class CanvasManager : MonoBehaviour
     public void SetInteractionText(string? text)
     {
         if (SomethingIsOpen) text = null;
-        if (text != null && (text == GLOBAL.UnassignedString || text == "")) text = null; 
+        if (text != null && (text == GLOBAL.UnassignedString || text == "")) text = null;
 
         _InteractableHelper.SetHelperText(text == null ? "" : text);
         _InteractableHelper.SetHelperEnablity(text != null);
     }
 
 #nullable disable
+    #endregion
+
+    #region Map Manager
+
+    public void SetMapEnablity(bool setTo)
+    {
+        _MapManager.SetEnablityGetter(setTo);
+    }
+
     #endregion
 }
