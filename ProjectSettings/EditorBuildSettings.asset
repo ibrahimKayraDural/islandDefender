@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Clean/MainMenu.unity
-    guid: fc233b68cde36b44283438d61e61a1fa
+    path: Assets/Scenes/Clean/MainMenuNew.unity
+    guid: 3b63b7db07a3fc643a24bfff352683bf
   - enabled: 1
     path: Assets/Scenes/Clean/PersistentPlayer.unity
     guid: 050f2dd7a063b484f961bb001afa082e
@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/EfeOverworldTest.unity
     guid: 87070a3119dd08147b23f361b23f878d
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: fc233b68cde36b44283438d61e61a1fa
   m_configObjects: {}
