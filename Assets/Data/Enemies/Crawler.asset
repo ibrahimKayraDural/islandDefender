@@ -20,7 +20,7 @@ MonoBehaviour:
   _Speed: 0.5
   _Damage: 50
   _AttackCooldown: 1
-  _AttackRange: 1
+  _AttackRange: 1.8
   _Difficulty: 0
   _RangeType: 0
   _EnemyTypes: 00000000
