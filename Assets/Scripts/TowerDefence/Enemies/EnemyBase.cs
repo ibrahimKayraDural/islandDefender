@@ -11,6 +11,7 @@ namespace TowerDefence
         public float Health => _health;
         public EnemyData Data => _data;
 
+        [SerializeField] internal bool _DealDamageViaAnimation;
         [SerializeField] internal Transform _AttackPoint;
         [SerializeField] internal LayerMask _AttackLayer = 1 << 9;
         [SerializeField] internal EnemyData _data;
@@ -47,7 +48,7 @@ namespace TowerDefence
                 {
                     if (hit.transform.TryGetComponent(out IHealth ih))
                     {
-                        ih.RemoveHealth(_data.Damage);
+                        if (_DealDamageViaAnimation == false) ih.RemoveHealth(_data.Damage);
 
                         if (_Animator) _Animator?.SetTrigger("Attack");
 
@@ -84,7 +85,19 @@ namespace TowerDefence
             OnDeath?.Invoke();
             StartCoroutine(DeathAnim());
         }
+        virtual public void DamageViaAnimation()
+        {
+            if (_DealDamageViaAnimation == false) return;
 
+            Ray ray = new Ray(_AttackPoint.position, transform.forward);
+            if (Physics.Raycast(ray, out RaycastHit hit, _data.AttackRange, _AttackLayer))
+            {
+                if (hit.transform.TryGetComponent(out IHealth ih))
+                {
+                    ih.RemoveHealth(_data.Damage);
+                }
+            }
+        }
         IEnumerator DeathAnim()
         {
             const float step = .05f;
