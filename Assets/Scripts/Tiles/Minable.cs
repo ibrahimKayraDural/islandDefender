@@ -3,24 +3,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-[System.Serializable]
-public struct AdjustableAudioClip
-{
-    public AudioClip @AudioClip;
-    [Range(-3, 3)] public float Pitch;
-    [Range(0, 1)] public float Volume;
-
-    public static AdjustableAudioClip Default
-    {
-        get
-        {
-            var @return = new AdjustableAudioClip();
-            @return.Pitch = 1;
-            @return.Volume = 1;
-            return @return;
-        }
-    }
-}
 public class Minable : MonoBehaviour
 {
     [SerializeField] Cost[] _Gains;
@@ -44,20 +26,21 @@ public class Minable : MonoBehaviour
         }
     }
     float AUTO_currentAmount = 0;
-    float TargetTime_Mining = -1;
+    float TargetTime_MiningSFX = -1;
     bool _isMining = false;
+    bool _miningIsDone;
 
     void Start()
     {
         CurrentAmount = 0;
     }
 
-    public void StartMining()
+    public void StartMining(float speedMultiplier)
     {
         if (_isMining) return;
 
         StopCoroutine(nameof(ForgetIEnum));
-        StartCoroutine(nameof(MineIEnum));
+        StartCoroutine(nameof(MineIEnum), speedMultiplier);
 
         _isMining = true;
     }
@@ -72,35 +55,38 @@ public class Minable : MonoBehaviour
         _isMining = false;
     }
 
-    IEnumerator MineIEnum()
+    IEnumerator MineIEnum(float speedMultiplier)
     {
-        while (true)
-        {
-            float step = .1f;
+        speedMultiplier = Mathf.Max(0, speedMultiplier);
 
-            if (TargetTime_Mining <= Time.time)
+        while (_miningIsDone == false)
+        {
+            float step = .05f;
+
+            if (TargetTime_MiningSFX <= Time.time)
             {
                 AudioManager.Instance.PlayClip(gameObject.name + "_mining",
                     _MiningSFX.AudioClip, volume: _MiningSFX.Volume, pitch: _MiningSFX.Pitch);
 
-                TargetTime_Mining = Time.time + _MiningSFXCooldown;
+                TargetTime_MiningSFX = Time.time + _MiningSFXCooldown;
             }
 
             yield return new WaitForSeconds(step);
-            CurrentAmount = CurrentAmount + step;
-            if (CurrentAmount == _MineDuration) MineSuccessful();
+            CurrentAmount = CurrentAmount + step * speedMultiplier;
+            if (CurrentAmount >= _MineDuration) MineSuccessful();
         }
     }
     IEnumerator ForgetIEnum()
     {
         yield return new WaitForSeconds(_ForgetDuration);
         CurrentAmount = 0;
-        TargetTime_Mining = -1;
+        TargetTime_MiningSFX = -1;
     }
 
     void MineSuccessful()
     {
         StopAllCoroutines();
+        _miningIsDone = true;
 
         AudioManager.Instance.PlayClip(gameObject.name + "_mineComplete",
                     _MineCompletedSFX.AudioClip, volume: _MineCompletedSFX.Volume, pitch: _MineCompletedSFX.Pitch);

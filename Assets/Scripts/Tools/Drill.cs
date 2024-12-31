@@ -5,18 +5,22 @@ namespace Overworld
     using System.Collections.Generic;
     using UnityEngine;
 
-    public class Drill : Tool
+    public class Drill : Tool, ISpeedUpgradable
     {
         [SerializeField] Rigidbody _Rigidbody;
         [SerializeField] Animator _Animator;
         [SerializeField] AudioClip _RunningSFX;
-
         AudioManager _audioManager => AudioManager.Instance;
+
+        public UpgradeData CurrentSpeedUpgrade { get; set; } = null;
+        public float SpeedMultiplier { get; set; } = 1;
+
         readonly string SFX_ID = "DrillTool_Running";
 
         public void Awake()
         {
             _Rigidbody.detectCollisions = false;
+            (this as ISpeedUpgradable).RefreshSpeedUpgrade();
         }
 
         internal override IEnumerator FireIEnum()
@@ -34,7 +38,7 @@ namespace Overworld
         {
             base.StopFiring();
 
-            _Animator.SetBool("IsRunning",_isFiring);
+            _Animator.SetBool("IsRunning", _isFiring);
 
             _audioManager.StopClip(SFX_ID, true);
 
@@ -46,9 +50,9 @@ namespace Overworld
 
         void OnTriggerEnter(Collider other)
         {
-            if(other.gameObject.TryGetComponent(out Minable mnbl))
+            if (other.gameObject.TryGetComponent(out Minable mnbl))
             {
-                mnbl.StartMining();
+                mnbl.StartMining(SpeedMultiplier);
             }
         }
         void OnTriggerExit(Collider other)

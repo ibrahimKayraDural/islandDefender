@@ -7,9 +7,9 @@ namespace Overworld
     using UnityEngine;
 
     [RequireComponent(typeof(Rigidbody))]
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviour, ISpeedUpgradable
     {
-        float Speed { get => _BaseSpeed * _speedMultiplier; }
+        float Speed { get => _BaseSpeed * SpeedMultiplier; }
 
         [Header("Values")]
         [SerializeField, Min(0)] float _BaseSpeed = 1;
@@ -71,6 +71,10 @@ namespace Overworld
                 return AUTO_canvasManager;
             }
         }
+
+        public UpgradeData CurrentSpeedUpgrade { get; set; } = null;
+        public float SpeedMultiplier { get; set; } = 1;
+
         CanvasManager AUTO_canvasManager = null;
 
         public List<Tuple<string, MovementMode>> _movementModeModifiers = new List<Tuple<string, MovementMode>>();
@@ -78,9 +82,6 @@ namespace Overworld
 
         Vector3 _currentMovement = Vector3.zero;
         Vector3 _oldMovement = Vector3.zero;
-
-        UpgradeData _currentMovementUpgrade = null;
-        float _speedMultiplier = 1;
 
         private void Start()
         {
@@ -90,7 +91,7 @@ namespace Overworld
             _RB.drag = 1000000;
             _RB.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
 
-            RefreshSpeedUpgrade();
+            (this as ISpeedUpgradable).RefreshSpeedUpgrade();
         }
 
         void Update()
@@ -227,34 +228,6 @@ namespace Overworld
             RemoveMovementMode(id);
         }
         #endregion
-
-        /// <summary>
-        /// Set the speed upgrade. Upgrade must have a float value named "speed"
-        /// </summary>
-        /// <param name="DoNotChangeIfWorse">Check if the new upgrade is faster, do not change if it is not</param>
-        /// <returns>Old movement upgrade. Null if did not changed</returns>
-        public UpgradeData SetSpeedUpgrade(UpgradeData newUpgrade ,bool DoNotChangeIfWorse = false)
-        {
-            float? newSpeed = newUpgrade?.TryGetFloatValue("speed");
-            if (newSpeed == null) return null;
-            if (_currentMovementUpgrade != null && DoNotChangeIfWorse && newSpeed <= _speedMultiplier) return null;
-
-            var oldUpgrade = _currentMovementUpgrade;
-            _currentMovementUpgrade = newUpgrade;
-            RefreshSpeedUpgrade();
-            return oldUpgrade;
-        }
-        void RefreshSpeedUpgrade()
-        {
-            _speedMultiplier = 1;
-
-            if (_currentMovementUpgrade == null) return;
-
-            var temp = _currentMovementUpgrade.TryGetFloatValue("speed");
-            if (temp.HasValue == false) return;
-
-            _speedMultiplier = temp.Value;
-        }
     }
 
     public enum MovementMode { Normal, Locked, Repeating }

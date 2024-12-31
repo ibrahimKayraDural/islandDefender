@@ -63,7 +63,7 @@ public class AudioManager : MonoBehaviour
         {
             if (IsPlaying == false) return;
 
-            if(EndClip_Handle != null)
+            if (EndClip_Handle != null)
             {
                 StopCoroutine(EndClip_Handle);
                 EndClip_Handle = null;
@@ -79,7 +79,7 @@ public class AudioManager : MonoBehaviour
         }
         void StopAfterClipIsOver()
         {
-            if(IsPlaying ==false) return;
+            if (IsPlaying == false) return;
 
             StopCoroutine(nameof(StopSoundIEnum));
             StartCoroutine(nameof(StopSoundIEnum));
@@ -96,7 +96,7 @@ public class AudioManager : MonoBehaviour
     {
         get
         {
-            if(AUTO_instance == null)
+            if (AUTO_instance == null)
             {
                 new GameObject("Audio Manager", new System.Type[] { typeof(AudioManager) });
             }
@@ -171,7 +171,7 @@ public class AudioManager : MonoBehaviour
             }
         }
 
-        if (ms == null)  ms = GetFreeSource();
+        if (ms == null) ms = GetFreeSource();
 
         if (ms == null) return;
 
@@ -190,4 +190,23 @@ public class AudioManager : MonoBehaviour
 
     ManagableSource GetFreeSource() => _audioSources.Find(x => x.IsPlaying == false);
     ManagableSource[] FindAllById(string id) => _audioSources.FindAll(x => x.CurrentID == id).ToArray();
+}
+
+[System.Serializable]
+public struct AdjustableAudioClip
+{
+    public AudioClip @AudioClip;
+    [Range(-3, 3)] public float Pitch;
+    [Range(0, 1)] public float Volume;
+
+    public static AdjustableAudioClip Default
+    {
+        get
+        {
+            var @return = new AdjustableAudioClip();
+            @return.Pitch = 1;
+            @return.Volume = 1;
+            return @return;
+        }
+    }
 }
