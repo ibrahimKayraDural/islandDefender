@@ -110,5 +110,12 @@ public static class GLOBAL
         return _toolDB;
     }
 
+    static UpgradeDatabase _upgradeDB = null;
+    public static UpgradeDatabase GetUpgradeDatabase()
+    {
+        if (_upgradeDB == null) _upgradeDB = Resources.Load<UpgradeDatabase>("Databases/UpgradeDatabase");
+        return _upgradeDB;
+    }
+
     #endregion
 }

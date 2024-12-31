@@ -9,8 +9,10 @@ namespace Overworld
     [RequireComponent(typeof(Rigidbody))]
     public class PlayerController : MonoBehaviour
     {
+        float Speed { get => _BaseSpeed * _speedMultiplier; }
+
         [Header("Values")]
-        [SerializeField, Min(0)] float _Speed = 1;
+        [SerializeField, Min(0)] float _BaseSpeed = 1;
         [SerializeField, Min(0.001f)] float groundFriction = 10;
         [SerializeField, Min(0)] float _TurnSpeed = 1;
 
@@ -77,6 +79,8 @@ namespace Overworld
         Vector3 _currentMovement = Vector3.zero;
         Vector3 _oldMovement = Vector3.zero;
 
+        UpgradeData _currentMovementUpgrade = null;
+        float _speedMultiplier = 1;
 
         private void Start()
         {
@@ -85,13 +89,15 @@ namespace Overworld
             _RB.angularDrag = 1000000;
             _RB.drag = 1000000;
             _RB.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
+
+            RefreshSpeedUpgrade();
         }
 
         void Update()
         {
             if (Input.GetButtonDown("Inventory")) _CanvasManager?.ToggleInventory();
 
-            if(Time.timeScale <= 0 || _camera == null) return;
+            if (Time.timeScale <= 0 || _camera == null) return;
 
             _Rotator.transform.rotation = Quaternion.Lerp(_Rotator.transform.rotation, _dirAsRot, Time.deltaTime * _TurnSpeed);
         }
@@ -119,7 +125,7 @@ namespace Overworld
             else
             {
                 Quaternion rotation = Quaternion.AngleAxis(_camera.transform.rotation.eulerAngles.y, Vector3.up);
-                movement = TakeInput() * _Speed * Time.deltaTime;
+                movement = TakeInput() * Speed * Time.deltaTime;
                 movement = rotation * movement;
 
                 _oldMovement = movement;
@@ -130,7 +136,7 @@ namespace Overworld
 
         void CalculateAnimation(float deltaTime)
         {
-            Vector3 normalizedVelocity = _currentMovement / deltaTime / _Speed;
+            Vector3 normalizedVelocity = _currentMovement / deltaTime / Speed;
             normalizedVelocity.y = 0;
             float nVelMag = normalizedVelocity.magnitude;
             Quaternion InverseRotation = Quaternion.AngleAxis(-_camera.transform.rotation.eulerAngles.y, Vector3.up);
@@ -149,20 +155,21 @@ namespace Overworld
         {
             Vector3 input;
 
-            switch(currentMovementMode)
+            switch (currentMovementMode)
             {
                 case MovementMode.Repeating:
                 case MovementMode.Locked:
                     input = Vector3.zero; break;
 
                 default: //This is MovementMode.Normal
-                    input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized; 
+                    input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
                     break;
             }
 
             return input;
         }
 
+        #region Movement Mode
         public void AddMovementMode(string id, MovementMode mode, bool @override = false)
         {
             Tuple<string, MovementMode> value = new Tuple<string, MovementMode>(id, mode);
@@ -174,7 +181,7 @@ namespace Overworld
                 if (sameIDIndex != -1) _movementModeModifiers.RemoveAt(sameIDIndex);
 
                 _movementModeModifiers.Insert(0, value);
-                
+
             }
             else
             {
@@ -192,7 +199,7 @@ namespace Overworld
         public void RemoveMovementMode(string ID)
         {
             int index = _movementModeModifiers.FindIndex(x => x.Item1 == ID);
-            if(index != -1) _movementModeModifiers.RemoveAt(index);
+            if (index != -1) _movementModeModifiers.RemoveAt(index);
         }
         public void AddMovementModifierForSeconds(string id, MovementMode mode, float seconds, bool @override = false)
         {
@@ -218,6 +225,35 @@ namespace Overworld
 
             _startedCoroutines.RemoveAt(_startedCoroutines.FindIndex(x => x.Item1 == id));
             RemoveMovementMode(id);
+        }
+        #endregion
+
+        /// <summary>
+        /// Set the speed upgrade. Upgrade must have a float value named "speed"
+        /// </summary>
+        /// <param name="DoNotChangeIfWorse">Check if the new upgrade is faster, do not change if it is not</param>
+        /// <returns>Old movement upgrade. Null if did not changed</returns>
+        public UpgradeData SetSpeedUpgrade(UpgradeData newUpgrade ,bool DoNotChangeIfWorse = false)
+        {
+            float? newSpeed = newUpgrade?.TryGetFloatValue("speed");
+            if (newSpeed == null) return null;
+            if (_currentMovementUpgrade != null && DoNotChangeIfWorse && newSpeed <= _speedMultiplier) return null;
+
+            var oldUpgrade = _currentMovementUpgrade;
+            _currentMovementUpgrade = newUpgrade;
+            RefreshSpeedUpgrade();
+            return oldUpgrade;
+        }
+        void RefreshSpeedUpgrade()
+        {
+            _speedMultiplier = 1;
+
+            if (_currentMovementUpgrade == null) return;
+
+            var temp = _currentMovementUpgrade.TryGetFloatValue("speed");
+            if (temp.HasValue == false) return;
+
+            _speedMultiplier = temp.Value;
         }
     }
 
