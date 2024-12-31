@@ -5,15 +5,30 @@ namespace Overworld
     using System.Collections.Generic;
     using UnityEngine;
 
-    public class Drill : Tool, ISpeedUpgradable
+    public class Drill : Tool, ISpeedUpgradable, IStrengthUpgradable
     {
+        public int DrillLevel => Mathf.Max(Mathf.FloorToInt(StrengthMultiplier), 1);
+
         [SerializeField] Rigidbody _Rigidbody;
         [SerializeField] Animator _Animator;
         [SerializeField] AudioClip _RunningSFX;
-        AudioManager _audioManager => AudioManager.Instance;
+
+        AudioManager _AudioManager
+        {
+            get
+            {
+                if (AUTO_AudioManager == null)
+                    AUTO_AudioManager = AudioManager.Instance;
+
+                return AUTO_AudioManager;
+            }
+        }
+        AudioManager AUTO_AudioManager = null;
 
         public UpgradeData CurrentSpeedUpgrade { get; set; } = null;
         public float SpeedMultiplier { get; set; } = 1;
+        public UpgradeData CurrentStrengthUpgrade { get; set; } = null;
+        public float StrengthMultiplier { get; set; } = 1;
 
         readonly string SFX_ID = "DrillTool_Running";
 
@@ -22,13 +37,17 @@ namespace Overworld
             _Rigidbody.detectCollisions = false;
             (this as ISpeedUpgradable).RefreshSpeedUpgrade();
         }
+        //private void Update()
+        //{
+        //    if (Input.GetKeyDown(KeyCode.Keypad2)) (this as IStrengthUpgradable).SetStrengthUpgrade(GLOBAL.GetUpgradeDatabase().GetDataByDisplayNameOrID("upgrade-strength-2"));
+        //}
 
         internal override IEnumerator FireIEnum()
         {
             _isFiring = true;
             _Animator.SetBool("IsRunning", _isFiring);
 
-            _audioManager.PlayClip(SFX_ID, _RunningSFX, playLooping: true, @override: true);
+            _AudioManager.PlayClip(SFX_ID, _RunningSFX, playLooping: true, @override: true);
 
             _Rigidbody.detectCollisions = true;
 
@@ -40,7 +59,7 @@ namespace Overworld
 
             _Animator.SetBool("IsRunning", _isFiring);
 
-            _audioManager.StopClip(SFX_ID, true);
+            _AudioManager.StopClip(SFX_ID, true);
 
             _Rigidbody.detectCollisions = false;
         }
@@ -52,7 +71,7 @@ namespace Overworld
         {
             if (other.gameObject.TryGetComponent(out Minable mnbl))
             {
-                mnbl.StartMining(SpeedMultiplier);
+                mnbl.StartMining(SpeedMultiplier, DrillLevel);
             }
         }
         void OnTriggerExit(Collider other)

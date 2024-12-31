@@ -7,6 +7,7 @@ public class Minable : MonoBehaviour
 {
     [SerializeField] Cost[] _Gains;
 
+    [SerializeField, Min(1)] int RequiredDrillLevel = 1;
     [SerializeField] float _MiningSFXCooldown = .25f;
     [SerializeField] float _MineDuration = 2;
     [SerializeField] float _ForgetDuration = .5f;
@@ -35,9 +36,10 @@ public class Minable : MonoBehaviour
         CurrentAmount = 0;
     }
 
-    public void StartMining(float speedMultiplier)
+    public void StartMining(float speedMultiplier, int drillLevel)
     {
         if (_isMining) return;
+        if (drillLevel < RequiredDrillLevel) return;
 
         StopCoroutine(nameof(ForgetIEnum));
         StartCoroutine(nameof(MineIEnum), speedMultiplier);

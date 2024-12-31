@@ -71,11 +71,11 @@ namespace Overworld
                 return AUTO_canvasManager;
             }
         }
+        CanvasManager AUTO_canvasManager = null;
 
         public UpgradeData CurrentSpeedUpgrade { get; set; } = null;
         public float SpeedMultiplier { get; set; } = 1;
 
-        CanvasManager AUTO_canvasManager = null;
 
         public List<Tuple<string, MovementMode>> _movementModeModifiers = new List<Tuple<string, MovementMode>>();
         bool _acceptMovementModeModifier = true;
