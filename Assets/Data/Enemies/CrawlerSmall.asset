@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06de1689a4292ac4d9fa84a459bc98d7, type: 3}
+  m_Name: CrawlerSmall
+  m_EditorClassIdentifier: 
+  _displayName: CrawlerSmall
+  _id: crawlerSmall
+  _Description: Is angy and smol
+  _UISprite: {fileID: 21300000, guid: 8f7b2146f0f14f445b0728e0d26b101a, type: 3}
+  _MaxHealth: 50
+  _Speed: 1
+  _Damage: 50
+  _AttackCooldown: 1
+  _AttackRange: 1.8
+  _Difficulty: 0
+  _RangeType: 0
+  _EnemyTypes: 00000000
+  _GettingDamagedSFX: {fileID: 8300000, guid: 2755cac10c425a84f9bd3258f1f3f1f0, type: 3}
+  _DyingSFX: {fileID: 8300000, guid: 8e448de2872f6b74181558e9d7a4996f, type: 3}
+  _enemyPrefab: {fileID: 8660632794050134643, guid: b89d0b5c09fe09d48ae6f1f156ec94bb, type: 3}
