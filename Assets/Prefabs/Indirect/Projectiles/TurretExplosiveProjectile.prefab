@@ -47,4 +47,5 @@ MonoBehaviour:
   _TargetMask:
     serializedVersion: 2
     m_Bits: 128
-  _ExplosionEffect: {fileID: -6271877035034364839, guid: c765ae9e43dd2ab4796726109e66761b, type: 3}
+  _ExplosionEffect: {fileID: -6271877035034364839, guid: 2da509ba9643df6488a987a8b8c47fe2, type: 3}
+  XOffset: 0.1
