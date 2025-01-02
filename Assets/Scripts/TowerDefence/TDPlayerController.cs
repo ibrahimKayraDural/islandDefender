@@ -261,18 +261,14 @@ namespace TowerDefence
         void TryPlaceTurret()
         {
             if (targetTime_CanPlaceTurret > Time.time) return;
-            if (_currentTile == null) 
-            {
-                DeselectCurrentTurret();
-                return;
-            }
+            if (_currentTile == null) {/*DeselectCurrentTurret();*/ return; }
             if (_currentTile.IsOccupied) return;
 
             TurretUnit unit = Instantiate(_currentTurret.PrefabObject).GetComponent<TurretUnit>();
             unit.Initialize(_currentTurret, _currentTile);
 
             _OwnedTurretController.RemoveTurret(_currentTurret);
-            DeselectCurrentTurret();
+            if (_OwnedTurretController.HasTurret(_currentTurret) == false) DeselectCurrentTurret();
         }
 
         void DeleteTurret()
