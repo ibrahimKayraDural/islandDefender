@@ -25,6 +25,7 @@ public class OwnedTurretController : MonoBehaviour
     }
     BaseResourceController AUTO_baseResCont = null;
 
+    public bool HasTurret(TurretData turret) => _ownedTurrets.ContainsKey(turret);
     public bool TryBuyTurret(TurretData turret)
     {
         if (_BaseResCont.TryBuyTurret(turret) == false) return false;
