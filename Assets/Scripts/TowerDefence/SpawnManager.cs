@@ -277,7 +277,7 @@ namespace TowerDefence
 
         void SetIndicatorValues(bool? toNull = false)
         {
-            if(toNull == null || toNull.Value)
+            if (toNull == null || toNull.Value)
             {
                 foreach (var item in _spawners) item.SetEnemyIndicators(null);
 
@@ -299,12 +299,12 @@ namespace TowerDefence
 
                 EnemyData data = item.Key.Enemy;
 
-                if(enemies[laneInt] == null)
+                if (enemies[laneInt] == null)
                 {
                     enemies[laneInt] = new List<EnemyData>();
                 }
 
-                if(enemies[laneInt].Contains(data) == false)
+                if (enemies[laneInt].Contains(data) == false)
                 {
                     enemies[laneInt].Add(data);
                 }
@@ -329,8 +329,10 @@ namespace TowerDefence
             {
                 if (_currentCooldown <= 0) break;
 
-                string timerStr = $"Untill Next Wave : {Mathf.CeilToInt(_currentCooldown)}";
-                _TimeTM.text = _isPaused ? "PAUSED" : timerStr;
+                float tempCD = Mathf.CeilToInt(_currentCooldown);
+                string timerStr = $"Untill Next Wave : {tempCD}";
+                string pausedStr = $"PAUSED ({tempCD} left)";
+                _TimeTM.text = _isPaused ? pausedStr : timerStr;
 
                 yield return new WaitForFixedUpdate();
                 _currentCooldown -= Time.fixedDeltaTime * _cooldownSpeedMultiplier;
