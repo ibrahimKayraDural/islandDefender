@@ -46,6 +46,10 @@ Material:
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
     - _Blend: 1000
+    - _DeteriorationOffset: 0.5
+    - _DeteriorationShadowContranst: 1
+    - _DeteriorationShadowSoftness: 0
+    - _DeteriorationStrenght: 3
     - _EmissionPower: 0.5
     - _Fill: 0
     - _FillTextureScale: 5
@@ -57,10 +61,14 @@ Material:
     - _TextureScale: 4
     - _TextureTiling: 0.5
     - _Tiling: 1
+    - _UseWorldPositionAsUv: 1
     - _XMax: 752.6914
     - _XMin: 651.23346
     m_Colors:
     - _Color: {r: 0, g: 0.7176821, b: 1, a: 1}
+    - _DeteriorationNoiseOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _DeteriorationNoiseTiling: {r: 50, g: 50, b: 0, a: 0}
+    - _DeteriorationShadowColor: {r: 1, g: 0, b: 1, a: 1}
     - _ObjectBounds: {r: 0, g: 1, b: 0, a: 0}
     - _OverlayColor: {r: 0, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []
