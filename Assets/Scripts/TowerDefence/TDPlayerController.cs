@@ -117,6 +117,7 @@ namespace TowerDefence
                     _ManualTurretManager.DeselectCurrentTurret();
                     break;
                 case TowerDefenceGameplayMode.Edit:
+                    _SpawnManager.SetCooldownIsPaused(false);
                     (this as IUICellOwner).OnEnd();
                     DeselectCurrentTurret();
                     _CraftTabToggler.SetStatus(false);
@@ -131,6 +132,7 @@ namespace TowerDefence
                 case TowerDefenceGameplayMode.Play:
                     break;
                 case TowerDefenceGameplayMode.Edit:
+                    _SpawnManager.SetCooldownIsPaused(true);
                     (this as IUICellOwner).OnStart();
                     break;
                 case TowerDefenceGameplayMode.Idle:
