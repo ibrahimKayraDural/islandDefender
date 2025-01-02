@@ -81,7 +81,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DeteriorationNoiseTiling: 1
-    - _DeteriorationOffset: -0.26
+    - _DeteriorationOffset: 0.61
     - _DeteriorationShadowContranst: 0.52
     - _DeteriorationShadowSoftness: 0
     - _DeteriorationStrenght: 2.14
@@ -92,7 +92,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Metallic: 0.33
+    - _Metallic: 0.9
     - _Mode: 0
     - _NormalStrength: 0.5
     - _OcclusionStrength: 1
@@ -105,6 +105,7 @@ Material:
     - _TextureBlend: 1000
     - _TextureTiling: 0.4
     - _UVSec: 0
+    - _UseWorldPositionAsUv: 1
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

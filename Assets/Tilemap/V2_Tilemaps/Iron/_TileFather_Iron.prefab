@@ -124,7 +124,7 @@ MonoBehaviour:
   _Gains:
   - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
     _amount: 3
-  RequiredDrillLevel: 2
+  RequiredDrillLevel: 1
   _MiningSFXCooldown: 0.25
   _MineDuration: 2
   _ForgetDuration: 0.5
