@@ -17,19 +17,20 @@ MonoBehaviour:
   Waves:
   - Lanes:
     - Enemies:
-      - Count: 1
-        _enemy: {fileID: 11400000, guid: 55fd45d4c1604a142b8c560359681af2, type: 2}
-        _isWildCard: 0
-        _wildCardID: UNASSIGNED
-        _wildCardValue: UNASSIGNED
-      - Count: 1
+      - Count: 2
         _enemy: {fileID: 11400000, guid: 55fd45d4c1604a142b8c560359681af2, type: 2}
         _isWildCard: 0
         _wildCardID: UNASSIGNED
         _wildCardValue: UNASSIGNED
     - Enemies:
       - Count: 1
-        _enemy: {fileID: 11400000, guid: 55fd45d4c1604a142b8c560359681af2, type: 2}
+        _enemy: {fileID: 11400000, guid: 963e2d9bca729b54fabf08af27124018, type: 2}
+        _isWildCard: 0
+        _wildCardID: UNASSIGNED
+        _wildCardValue: UNASSIGNED
+    - Enemies:
+      - Count: 3
+        _enemy: {fileID: 11400000, guid: 497aa653f34111048b53c7903a91ecc9, type: 2}
         _isWildCard: 0
         _wildCardID: UNASSIGNED
         _wildCardValue: UNASSIGNED

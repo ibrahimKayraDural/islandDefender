@@ -15,7 +15,7 @@ MonoBehaviour:
   _displayName: Crawler
   _id: crawler
   _Description: Is angy
-  _UISprite: {fileID: 21300000, guid: 8f7b2146f0f14f445b0728e0d26b101a, type: 3}
+  _UISprite: {fileID: 21300000, guid: 5b2f02d01f95ebc418e6f9cedadacf76, type: 3}
   _MaxHealth: 100
   _Speed: 0.5
   _Damage: 50
