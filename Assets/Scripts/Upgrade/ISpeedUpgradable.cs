@@ -13,7 +13,7 @@ public interface ISpeedUpgradable
     {
         float? newSpeed = newUpgrade?.TryGetFloatValue("speed");
         if (newSpeed == null) return null;
-        if (CurrentSpeedUpgrade != null && DoNotChangeIfWorse && newSpeed <= SpeedMultiplier) return null;
+        if (CurrentSpeedUpgrade != null && DoNotChangeIfWorse && newSpeed <= SpeedUpgradeValue) return null;
 
         var oldUpgrade = CurrentSpeedUpgrade;
         CurrentSpeedUpgrade = newUpgrade;
@@ -22,15 +22,15 @@ public interface ISpeedUpgradable
     }
     void RefreshSpeedUpgrade()
     {
-        SpeedMultiplier = 1;
+        SpeedUpgradeValue = 1;
 
         if (CurrentSpeedUpgrade == null) return;
 
         var temp = CurrentSpeedUpgrade.TryGetFloatValue("speed");
         if (temp.HasValue == false) return;
 
-        SpeedMultiplier = temp.Value;
+        SpeedUpgradeValue = temp.Value;
     }
     UpgradeData CurrentSpeedUpgrade { get; set; }
-    float SpeedMultiplier { get; set; }
+    float SpeedUpgradeValue { get; set; }
 }

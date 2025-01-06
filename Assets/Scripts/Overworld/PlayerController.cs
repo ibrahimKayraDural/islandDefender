@@ -3,13 +3,14 @@ namespace Overworld
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
     using UnityEngine;
 
     [RequireComponent(typeof(Rigidbody))]
     public class PlayerController : MonoBehaviour, ISpeedUpgradable
     {
-        float Speed { get => _BaseSpeed * SpeedMultiplier; }
+        float Speed { get => _BaseSpeed * SpeedUpgradeValue * _currentSpeedEnhancer * _currentSpeedHinderer; }
 
         [Header("Values")]
         [SerializeField, Min(0)] float _BaseSpeed = 1;
@@ -74,11 +75,15 @@ namespace Overworld
         CanvasManager AUTO_canvasManager = null;
 
         public UpgradeData CurrentSpeedUpgrade { get; set; } = null;
-        public float SpeedMultiplier { get; set; } = 1;
+        public float SpeedUpgradeValue { get; set; } = 1;
 
 
         public List<Tuple<string, MovementMode>> _movementModeModifiers = new List<Tuple<string, MovementMode>>();
         bool _acceptMovementModeModifier = true;
+
+        public List<Tuple<string, float>> _speedModifiers = new List<Tuple<string, float>>();
+        float _currentSpeedHinderer = 1;
+        float _currentSpeedEnhancer = 1;
 
         Vector3 _currentMovement = Vector3.zero;
         Vector3 _oldMovement = Vector3.zero;
@@ -113,6 +118,58 @@ namespace Overworld
             _RB.MovePosition(transform.position + _currentMovement);
 
             CalculateAnimation(Time.deltaTime);
+        }
+
+        /// <summary>
+        /// Add a new speed modifier with ID
+        /// </summary>
+        /// <param name="id">ID for the modifier</param>
+        /// <param name="value">Speed value. Most extreme value will be used.</param>
+        /// <param name="usedID">The ID that end up getting used. Use this ID to remove modifier later. null if operation was unsuccessfull</param>
+        /// <returns>If the operation was successfull</returns>
+        public bool AddSpeedModifier(string id, float value, out string usedID, bool @override = false)
+        {
+            usedID = null;
+            if (value == 1) return false;
+
+            value = Mathf.Max(value, 0);
+
+            var i = _speedModifiers.FindIndex(x => x.Item1 == id);
+            if (i != -1)
+            {
+                if (@override) _speedModifiers.RemoveAt(i);
+                else id = id + Guid.NewGuid().ToString();
+            }
+
+            usedID = id;
+            _speedModifiers.Add(new Tuple<string, float>(usedID, value));
+            RefreshSpeedModifiers();
+            return true;
+        }
+        public void RemoveSpeedModifier(string id)
+        {
+            int i = _speedModifiers.FindIndex(x => x.Item1 == id);
+            if (i != -1)
+            {
+                _speedModifiers.RemoveAt(i);
+                RefreshSpeedModifiers();
+            }
+        }
+        void RefreshSpeedModifiers()
+        {
+            if (_speedModifiers.Count <= 0)
+            {
+                _currentSpeedEnhancer = 1;
+                _currentSpeedHinderer = 1;
+                return;
+            }
+
+            var list = _speedModifiers.OrderBy(x => x.Item2);
+            float first = list.First().Item2;
+            float last = list.Last().Item2;
+
+            _currentSpeedEnhancer = first > 1 ? first : 1;
+            _currentSpeedHinderer = last < 1 ? last : 1;
         }
 
         Vector3 CalculateMovement()

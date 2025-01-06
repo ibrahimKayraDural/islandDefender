@@ -26,7 +26,7 @@ namespace Overworld
         AudioManager AUTO_AudioManager = null;
 
         public UpgradeData CurrentSpeedUpgrade { get; set; } = null;
-        public float SpeedMultiplier { get; set; } = 1;
+        public float SpeedUpgradeValue { get; set; } = 1;
         public UpgradeData CurrentStrengthUpgrade { get; set; } = null;
         public float StrengthMultiplier { get; set; } = 1;
 
@@ -71,7 +71,7 @@ namespace Overworld
         {
             if (other.gameObject.TryGetComponent(out Minable mnbl))
             {
-                mnbl.StartMining(SpeedMultiplier, DrillLevel);
+                mnbl.StartMining(SpeedUpgradeValue, DrillLevel);
             }
         }
         void OnTriggerExit(Collider other)
