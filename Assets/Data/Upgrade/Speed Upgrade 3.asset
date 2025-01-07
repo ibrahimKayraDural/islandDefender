@@ -16,8 +16,7 @@ MonoBehaviour:
   _id: upgrade-speed-3
   _Description: 'Speed up to %300
 
-
-    FOR DEBUG ONLY'
+'
   _UISprite: {fileID: 21300000, guid: f8b09dc77316b2a47b70781598722ed2, type: 3}
   _FloatValues:
   - Key: speed
