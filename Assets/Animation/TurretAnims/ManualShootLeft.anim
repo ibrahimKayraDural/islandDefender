@@ -320,8 +320,8 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.06666667
-    functionName: Shoot
-    data: 
+    functionName: InvokeEventsWithName
+    data: Left
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
