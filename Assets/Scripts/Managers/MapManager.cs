@@ -30,9 +30,11 @@ public class MapManager : MonoBehaviour, IUserInterface
     {
         mapCam.enabled = changedTo;
         mapRenderer.enabled = changedTo;
-
-        miniMapCam.enabled = !changedTo;
-        miniMapRenderer.enabled = changedTo;
+    }
+    public void SetMinimapEnablity(bool setTo)
+    {
+        miniMapCam.enabled = setTo;
+        miniMapRenderer.enabled = setTo;
     }
 
     public void SetEnablityGetter(bool setTo) => (this as IUserInterface).SetEnablity(setTo);

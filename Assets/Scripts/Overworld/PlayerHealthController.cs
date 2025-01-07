@@ -6,9 +6,18 @@ namespace Overworld
 {
     public class PlayerHealthController : MonoBehaviour, IHealth
     {
-        public float Health => _health;
+        public float Health
+        {
+            get => _health;
+            set
+            {
+                _health = Mathf.Clamp(value, 0, MaxHealth);
+                _PlayerHealthbarManager.SetSliderValue(_health / MaxHealth);
+            }
+        }
 
         [SerializeField] float MaxHealth = 100;
+        [SerializeField] PlayerHealthbarManager _PlayerHealthbarManager;
 
         PlayerInstance _playerInstance
         {
@@ -27,19 +36,18 @@ namespace Overworld
 
         void Awake()
         {
-            _health = MaxHealth;
+            Health = MaxHealth;
         }
 
         public void SetHealth(float setTo)
         {
-            _health = setTo;
-            _health = Mathf.Clamp(_health, 0, MaxHealth);
-            if (_health == 0) Die();
+            Health = setTo;
+            if (Health == 0) Die();
         }
         void Die()
         {
             _Inventory.Clean();
-            _health = MaxHealth;
+            Health = MaxHealth;
             _playerInstance.Respawn();
         }
     }
