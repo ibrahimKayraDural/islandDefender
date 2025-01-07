@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5277945014874459044}
   - component: {fileID: 7429807102681576075}
   - component: {fileID: 3994558404565163869}
+  - component: {fileID: 4939943688779265806}
   m_Layer: 9
   m_Name: ManualBolterPrefab
   m_TagString: Turret
@@ -99,6 +100,80 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4939943688779265806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2416957650022208111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e20c58656323ec540879c8cc3181e5e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _EventToRun:
+    m_PersistentCalls:
+      m_Calls: []
+  namedEvent2Run:
+  - Key: Left
+    Value:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 7429807102681576075}
+          m_TargetAssemblyTypeName: TowerDefence.Turret_BasicManualDoubleBarrelAnimationControlled,
+            Assembly-CSharp
+          m_MethodName: Shoot
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 3963187115579145507}
+          m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
+          m_MethodName: Play
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Key: Right
+    Value:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 7429807102681576075}
+          m_TargetAssemblyTypeName: TowerDefence.Turret_BasicManualDoubleBarrelAnimationControlled,
+            Assembly-CSharp
+          m_MethodName: Shoot
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 7875206667993093391}
+          m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
+          m_MethodName: Play
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &5232287550680547388
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,95 +493,13 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1847596322640998415, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3016952080885974765}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1497554866897439946, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1098300302364652368}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
 --- !u!4 &6582182012675760318 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3025244961065850611, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
   m_PrefabInstance: {fileID: 8260534007270209101}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &7380042847078824583 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1497554866897439946, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
-  m_PrefabInstance: {fileID: 8260534007270209101}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1098300302364652368
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7380042847078824583}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e20c58656323ec540879c8cc3181e5e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _EventToRun:
-    m_PersistentCalls:
-      m_Calls: []
-  namedEvent2Run:
-  - Key: Left
-    Value:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 7429807102681576075}
-          m_TargetAssemblyTypeName: TowerDefence.Turret_BasicManualDoubleBarrelAnimationControlled,
-            Assembly-CSharp
-          m_MethodName: Shoot
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 3963187115579145507}
-          m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
-          m_MethodName: Play
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - Key: Right
-    Value:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 7429807102681576075}
-          m_TargetAssemblyTypeName: TowerDefence.Turret_BasicManualDoubleBarrelAnimationControlled,
-            Assembly-CSharp
-          m_MethodName: Shoot
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 7875206667993093391}
-          m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
-          m_MethodName: Play
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!4 &7710361542877398594 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1847596322640998415, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
