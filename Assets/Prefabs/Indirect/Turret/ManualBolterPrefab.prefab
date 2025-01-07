@@ -77,6 +77,7 @@ MonoBehaviour:
   _shootClipID: ManualBolter_ShootingSFX
   _Animator: {fileID: 3994558404565163869}
   _RightBarrel: {fileID: 3016952080885974765}
+  _SFXPitch: 0.8
 --- !u!95 &3994558404565163869
 Animator:
   serializedVersion: 5
@@ -126,7 +127,8 @@ Transform:
   m_LocalPosition: {x: -0.005094902, y: 0.028876696, z: 0.00844099}
   m_LocalScale: {x: 0.027411595, y: 0.027411604, z: 0.027411604}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3170298565081116552}
   m_Father: {fileID: 7710361542877398594}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6481309995606175666
@@ -157,9 +159,160 @@ Transform:
   m_LocalPosition: {x: 0.00378646, y: 0.029424928, z: 0.008440798}
   m_LocalScale: {x: 0.027411595, y: 0.027411604, z: 0.027411604}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8193563592699463588}
   m_Father: {fileID: 7710361542877398594}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1586755937446368303
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3016952080885974765}
+    m_Modifications:
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.375
+      objectReference: {fileID: 0}
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4971714628578216745, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_Name
+      value: MuzzleFlashSmall
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9951ebf138075134ba116136505330fd, type: 3}
+--- !u!4 &3170298565081116552 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+  m_PrefabInstance: {fileID: 1586755937446368303}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &7875206667993093391 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8885338883537994016, guid: 9951ebf138075134ba116136505330fd, type: 3}
+  m_PrefabInstance: {fileID: 1586755937446368303}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5498614822641630211
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5125405960231805102}
+    m_Modifications:
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.375
+      objectReference: {fileID: 0}
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4971714628578216745, guid: 9951ebf138075134ba116136505330fd, type: 3}
+      propertyPath: m_Name
+      value: MuzzleFlashSmall
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9951ebf138075134ba116136505330fd, type: 3}
+--- !u!198 &3963187115579145507 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8885338883537994016, guid: 9951ebf138075134ba116136505330fd, type: 3}
+  m_PrefabInstance: {fileID: 5498614822641630211}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8193563592699463588 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4465991524826266535, guid: 9951ebf138075134ba116136505330fd, type: 3}
+  m_PrefabInstance: {fileID: 5498614822641630211}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8260534007270209101
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -265,13 +418,95 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1847596322640998415, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3016952080885974765}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1497554866897439946, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1098300302364652368}
   m_SourcePrefab: {fileID: 100100000, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
 --- !u!4 &6582182012675760318 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3025244961065850611, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
   m_PrefabInstance: {fileID: 8260534007270209101}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7380042847078824583 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1497554866897439946, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
+  m_PrefabInstance: {fileID: 8260534007270209101}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1098300302364652368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7380042847078824583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e20c58656323ec540879c8cc3181e5e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _EventToRun:
+    m_PersistentCalls:
+      m_Calls: []
+  namedEvent2Run:
+  - Key: Left
+    Value:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 7429807102681576075}
+          m_TargetAssemblyTypeName: TowerDefence.Turret_BasicManualDoubleBarrelAnimationControlled,
+            Assembly-CSharp
+          m_MethodName: Shoot
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 3963187115579145507}
+          m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
+          m_MethodName: Play
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Key: Right
+    Value:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 7429807102681576075}
+          m_TargetAssemblyTypeName: TowerDefence.Turret_BasicManualDoubleBarrelAnimationControlled,
+            Assembly-CSharp
+          m_MethodName: Shoot
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 7875206667993093391}
+          m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
+          m_MethodName: Play
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!4 &7710361542877398594 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1847596322640998415, guid: 7c2fff32a15eeb2478d312434388579e, type: 3}
