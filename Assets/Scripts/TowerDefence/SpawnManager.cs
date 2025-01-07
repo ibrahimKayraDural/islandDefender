@@ -9,6 +9,7 @@ namespace TowerDefence
     public class SpawnManager : MonoBehaviour
     {
         public static SwarmDataValueContainer CurrentSwarm;
+        public static int CurrentWaveIndex { get; private set; }
 
         static List<GameObject> ActiveEnemies = new List<GameObject>();
         static event EventHandler<string> e_ActiveEnemiesListIsEmptied;
@@ -30,17 +31,17 @@ namespace TowerDefence
         {
             get
             {
-                return _currentWaveIndex < _waveCooldownArr.Count && _currentWaveIndex >= 0 ? _waveCooldownArr[_currentWaveIndex] : _waveCooldownArr[_waveCooldownArr.Count - 1];
+                return CurrentWaveIndex < _waveCooldownArr.Count && CurrentWaveIndex >= 0 ? _waveCooldownArr[CurrentWaveIndex] : _waveCooldownArr[_waveCooldownArr.Count - 1];
             }
         }
         S_Wave? _currentWave
         {
             get
             {
-                if (CurrentSwarm == null || CurrentSwarm.Waves.Count <= _currentWaveIndex)
+                if (CurrentSwarm == null || CurrentSwarm.Waves.Count <= CurrentWaveIndex)
                     return null;
 
-                return CurrentSwarm.Waves[_currentWaveIndex];
+                return CurrentSwarm.Waves[CurrentWaveIndex];
             }
         }
 
@@ -50,7 +51,6 @@ namespace TowerDefence
 
         List<int> _waveCooldownArr = GLOBAL.FailsafeWaveCooldowns;
         SwarmDataValueContainer _changedSwarm = null;
-        int _currentWaveIndex;
         float _cooldownSpeedMultiplier = 1;
 
         void Awake()
@@ -263,14 +263,14 @@ namespace TowerDefence
                 return;
             }
 
-            if (_currentWaveIndex + 1 >= _waveCount && _RepeatLastWave == false)
+            if (CurrentWaveIndex + 1 >= _waveCount && _RepeatLastWave == false)
             {
                 AllWavesEnded();
                 return;
             }
 
             int cooldown = _currentWaveCooldown;
-            if (_currentWaveIndex + 1 < _waveCount) _currentWaveIndex++;
+            if (CurrentWaveIndex + 1 < _waveCount) CurrentWaveIndex++;
 
             StartCoroutine(nameof(RunWaveCooldown), cooldown);
         }
@@ -354,7 +354,7 @@ namespace TowerDefence
         {
             CurrentSwarm = _changedSwarm;
             _changedSwarm = null;
-            _currentWaveIndex = 0;
+            CurrentWaveIndex = 0;
 
             RunWaveCooldown(_currentWaveCooldown);
         }
