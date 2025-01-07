@@ -2,9 +2,12 @@ using Overworld;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Minable : MonoBehaviour
 {
+    [SerializeField] UnityEvent OnMineSuccessfull;
+
     [SerializeField] Cost[] _Gains;
 
     [SerializeField, Min(1)] int RequiredDrillLevel = 1;
@@ -97,6 +100,8 @@ public class Minable : MonoBehaviour
         {
             PlayerInstance.Instance?.Inventory_Ref?.TryAddItemWithSpill(new ResourceItem(item.Resource, item.Amount), true);
         }
+
+        OnMineSuccessfull?.Invoke();
 
         TilemapManager tm = TilemapManager.Instance;
         if (tm != null && _DeleteFromTilemap)
