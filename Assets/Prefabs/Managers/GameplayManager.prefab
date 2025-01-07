@@ -53,3 +53,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9e24902b69d39b645a48964324276bed, type: 2}
   - {fileID: 11400000, guid: 5c7cc337743a1ac44b4492431073734b, type: 2}
   - {fileID: 11400000, guid: 74ccac4743be7f342b5fbb7abc3c1757, type: 2}
+  _enemyPool:
+  - {fileID: 11400000, guid: 55fd45d4c1604a142b8c560359681af2, type: 2}
+  - {fileID: 11400000, guid: 963e2d9bca729b54fabf08af27124018, type: 2}
+  - {fileID: 11400000, guid: 497aa653f34111048b53c7903a91ecc9, type: 2}

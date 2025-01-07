@@ -13,9 +13,11 @@ public class GameplayManager : MonoBehaviour
 
     public List<ToolData> UnlockedTools => _unlockedTools;
     public List<TurretData> UnlockedTurrets => _unlockedTurrets;
+    public List<EnemyData> EnemyPool => _enemyPool;
 
     [SerializeField] List<ToolData> _unlockedTools;
     [SerializeField] List<TurretData> _unlockedTurrets;
+    [SerializeField] List<EnemyData> _enemyPool;
 
     ToolDatabase _toolDatabase;
     TurretDatabase _turretDatabase;
@@ -80,5 +82,20 @@ public class GameplayManager : MonoBehaviour
             _unlockedTurrets.Remove(data);
             e_OnUnlockedToolListChanged?.Invoke(this, UnlockedTools);
         }
+    }
+    public void AddToEnemyPool(string enemyID) => AddToEnemyPool(GLOBAL.GetEnemyDatabase().GetDataByDisplayNameOrID(enemyID));
+    public void AddToEnemyPool(EnemyData data)
+    {
+        if (data == null) return;
+        if (_enemyPool.Find(x => x == data) != null) return;
+        _enemyPool.Add(data);
+    }
+    public void RemoveFromEnemyPool(string enemyID) => RemoveFromEnemyPool(GLOBAL.GetEnemyDatabase().GetDataByDisplayNameOrID(enemyID));
+    public void RemoveFromEnemyPool(EnemyData data)
+    {
+        if (data == null) return;
+        int i = _enemyPool.FindIndex(x => x == data);
+        if (i == -1) return;
+        _enemyPool.RemoveAt(i);
     }
 }
