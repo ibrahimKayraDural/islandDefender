@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TowerDefence;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -84,8 +85,13 @@ public class Projectile : MonoBehaviour
             ih.RemoveHealth(_Damage);
         }
 
-        _penetrationCount--;
+        if (other.TryGetComponent(out EnemyBase eb) && eb.Data.EnemyTypes.Contains(EnemyType.Durable))
+        {
+            DestroyProjectile();
+            return;
+        }
 
+        _penetrationCount--;
         if (_penetrationCount <= 0) DestroyProjectile();
     }
 }
