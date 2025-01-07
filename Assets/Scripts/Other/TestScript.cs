@@ -55,8 +55,6 @@ public class TestScript : MonoBehaviour
             Debug.Log(msg);
         }
     }
-    public void AddSpeedModifier(float speed) => PlayerInstance.Instance.PlayerController_Ref.AddSpeedModifier("test", speed, out _);
-    public void RemoveSpeedModifier() => PlayerInstance.Instance.PlayerController_Ref.RemoveSpeedModifier("test");
     private void O_WasPressed()
     {
         WriteDebug("O_WasPressed");
