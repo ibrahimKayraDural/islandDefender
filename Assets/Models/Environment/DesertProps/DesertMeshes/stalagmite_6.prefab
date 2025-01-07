@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 699209589434522472}
   - component: {fileID: 7566423448748061226}
   - component: {fileID: 1402358213691762048}
+  - component: {fileID: -4251613582149046741}
   m_Layer: 0
   m_Name: stalagmite_6
   m_TagString: Untagged
@@ -83,3 +84,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &-4251613582149046741
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1032668940219411240}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.4054051
+  m_Height: 2.7254374
+  m_Direction: 1
+  m_Center: {x: -0.009276494, y: 1.3300096, z: 0.006778717}
