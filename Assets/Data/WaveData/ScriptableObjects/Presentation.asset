@@ -17,8 +17,8 @@ MonoBehaviour:
   Waves:
   - Lanes:
     - Enemies:
-      - Count: 2
-        _enemy: {fileID: 11400000, guid: 55fd45d4c1604a142b8c560359681af2, type: 2}
+      - Count: 1
+        _enemy: {fileID: 11400000, guid: c6c4e2672e0dd9b41b51792d78c09f54, type: 2}
         _isWildCard: 0
         _wildCardID: UNASSIGNED
         _wildCardValue: UNASSIGNED
