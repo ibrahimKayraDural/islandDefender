@@ -105,7 +105,7 @@ Material:
     - _TextureBlend: 1000
     - _TextureTiling: 0.4
     - _UVSec: 0
-    - _UseWorldPositionAsUv: 1
+    - _UseWorldPositionAsUv: 0
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

@@ -121,7 +121,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0b07334eca40f34ab5fa95e48e2d556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Gains: []
+  _Gains:
+  - _resource: {fileID: 11400000, guid: e9dd3a2e54c2fe340ad7992f3abaec67, type: 2}
+    _amount: 2
   RequiredDrillLevel: 1
   _MiningSFXCooldown: 0.25
   _MineDuration: 2
@@ -129,11 +131,11 @@ MonoBehaviour:
   _DeleteFromTilemap: 1
   _SPS: {fileID: 603079135659627701}
   _MiningSFX:
-    AudioClip: {fileID: 0}
-    Pitch: 1
+    AudioClip: {fileID: 8300000, guid: c9a5b29f2fdf3d94e883fd9cd270043b, type: 3}
+    Pitch: 0.45
     Volume: 1
   _MineCompletedSFX:
-    AudioClip: {fileID: 0}
+    AudioClip: {fileID: 8300000, guid: bc522b8eb85cd8b4092b3cb07b9b1c5c, type: 3}
     Pitch: 1
     Volume: 1
 --- !u!114 &603079135659627701
