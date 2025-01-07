@@ -27,10 +27,10 @@ public class PlayerSpeedModifierHelper : MonoBehaviour
     {
         if (ID == GLOBAL.UnassignedString) return;
 
-        if (usedID != null) EndModifier();
+        if (usedID != null) StopModifier();
         _playerController.AddSpeedModifier(ID, value, out usedID);
     }
-    public void EndModifier()
+    public void StopModifier()
     {
         if (usedID == null) return;
         _playerController.RemoveSpeedModifier(usedID);

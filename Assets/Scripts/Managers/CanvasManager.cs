@@ -20,7 +20,7 @@ public class CanvasManager : MonoBehaviour
             else if (value == null) AUTO_currentInterface = null;
             else return;
 
-            e_OnCurrentInterfaceChanged?.Invoke(Instance, AUTO_currentInterface);
+            OnCurrentInterfaceChanged();
         }
     }
     static IUserInterface AUTO_currentInterface = null;
@@ -35,6 +35,7 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] InteractableHelperUI _InteractableHelper;
     [SerializeField] RemoteScreenController _RemoteScreenController;
     [SerializeField] MapManager _MapManager;
+    [SerializeField] PlayerHealthbarManager _PlayerHealthbarManager;
 
     private void Awake()
     {
@@ -47,6 +48,14 @@ public class CanvasManager : MonoBehaviour
         _MainCanvas.worldCamera = Camera.main;
 
         SetInventoryEnablity(false);
+    }
+
+    static void OnCurrentInterfaceChanged()
+    {
+        Instance.SetHealthbarEnablity(!SomethingIsOpen);
+        Instance.SetMinimapEnablity(!SomethingIsOpen);
+
+        e_OnCurrentInterfaceChanged?.Invoke(Instance, AUTO_currentInterface);
     }
 
     public void SetEnablity(bool setTo)
@@ -125,6 +134,19 @@ public class CanvasManager : MonoBehaviour
     public void SetMapEnablity(bool setTo)
     {
         _MapManager.SetEnablityGetter(setTo);
+    }
+    public void SetMinimapEnablity(bool setTo)
+    {
+        _MapManager.SetMinimapEnablity(setTo);
+    }
+
+    #endregion
+
+    #region Player Healthbar Manager
+
+    public void SetHealthbarEnablity(bool setTo)
+    {
+        _PlayerHealthbarManager.SetEnablity(setTo);
     }
 
     #endregion
