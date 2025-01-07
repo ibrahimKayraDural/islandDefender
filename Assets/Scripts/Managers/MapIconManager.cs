@@ -9,6 +9,6 @@ public class MapIconManager : MonoBehaviour
 
     public void SetStraight()
     {
-        
+        Icon.transform.rotation = Quaternion.identity;
     }
 }
