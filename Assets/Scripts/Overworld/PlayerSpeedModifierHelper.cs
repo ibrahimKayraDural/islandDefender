@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class PlayerSpeedModifierHelper : MonoBehaviour
 {
+    [SerializeField] float value = 1f;
+    [SerializeField] string ID = GLOBAL.UnassignedString;
+
     PlayerInstance _playerInstance
     {
         get
@@ -20,10 +23,12 @@ public class PlayerSpeedModifierHelper : MonoBehaviour
 
     string usedID = null;
 
-    public void StartModifier(string id, float value)
+    public void StartModifier()
     {
+        if (ID == GLOBAL.UnassignedString) return;
+
         if (usedID != null) EndModifier();
-        _playerController.AddSpeedModifier(id, value, out usedID);
+        _playerController.AddSpeedModifier(ID, value, out usedID);
     }
     public void EndModifier()
     {
