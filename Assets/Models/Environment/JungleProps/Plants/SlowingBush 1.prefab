@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 07ef976f61834ef438b21b2880117165, type: 2}
+  - {fileID: 2100000, guid: ada283a456b4c75469d53b19b89aab21, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -94,6 +94,9 @@ GameObject:
   - component: {fileID: 2335777826096423828}
   - component: {fileID: 3467906023841890654}
   - component: {fileID: 6619196099282942372}
+  - component: {fileID: 8048171799782516229}
+  - component: {fileID: 1515424225537696706}
+  - component: {fileID: 4514714047311994654}
   m_Layer: 0
   m_Name: SlowingBush 1
   m_TagString: Untagged
@@ -138,7 +141,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.45, z: 0}
 --- !u!114 &6619196099282942372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,17 +154,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1db469b22aee8747b6fc2f60d0a1c7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Objects2Look4Tag: []
+  Objects2Look4Tag:
+  - OverworldPlayer
   OnEntered:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 0
+      - m_Target: {fileID: 4514714047311994654}
+        m_TargetAssemblyTypeName: PlayerSpeedModifierHelper, Assembly-CSharp
+        m_MethodName: StartModifier
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -169,10 +173,94 @@ MonoBehaviour:
         m_CallState: 2
   OnExited:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4514714047311994654}
+        m_TargetAssemblyTypeName: PlayerSpeedModifierHelper, Assembly-CSharp
+        m_MethodName: StopModifier
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnStay:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8048171799782516229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6082476477349381297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0b07334eca40f34ab5fa95e48e2d556, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnMineSuccessfull:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4514714047311994654}
+        m_TargetAssemblyTypeName: PlayerSpeedModifierHelper, Assembly-CSharp
+        m_MethodName: StopModifier
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _Gains:
+  - _resource: {fileID: 11400000, guid: 2b68b7489a4988c4f8dbd37f6ca16566, type: 2}
+    _amount: 1
+  _MinableID: UNASSIGNED
+  RequiredDrillLevel: 1
+  _MiningSFXCooldown: 0.25
+  _MineDuration: 0.5
+  _ForgetDuration: 0.5
+  _DeleteFromTilemap: 0
+  _SPS: {fileID: 1515424225537696706}
+  _MiningSFX:
+    AudioClip: {fileID: 8300000, guid: deb71de55597a2340b9313d945866a17, type: 3}
+    Pitch: 1
+    Volume: 1
+  _MineCompletedSFX:
+    AudioClip: {fileID: 8300000, guid: deb71de55597a2340b9313d945866a17, type: 3}
+    Pitch: 1
+    Volume: 1
+--- !u!114 &1515424225537696706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6082476477349381297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 345d39fdabd6b0e44accf52b9617e1b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Renderer: {fileID: 187354618455301624}
+--- !u!114 &4514714047311994654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6082476477349381297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86114da79ca5ace4f89ebf99cb60f353, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 0.5
+  ID: JungleBushSlow
 --- !u!1 &8623129177056640918
 GameObject:
   m_ObjectHideFlags: 0

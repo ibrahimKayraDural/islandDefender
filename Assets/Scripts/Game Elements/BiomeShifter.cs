@@ -8,8 +8,6 @@ namespace Biome
     public class BiomeMaterialData
     {
         public Texture MainTexture;
-        public Texture NormalMap;
-        public float NormalStrenght = 1;
         public float Metallic = 0;
         public float Smoothness = 0.5f;
         public Vector2 Tiling = Vector2.zero;
@@ -34,15 +32,11 @@ namespace Biome
             BiomeMaterialData oldMat = new BiomeMaterialData();
 
             oldMat.MainTexture = _mat.GetTexture("_MainTex");
-            oldMat.NormalMap = _mat.GetTexture("_NormalMap");
-            oldMat.NormalStrenght = _mat.GetFloat("_NormalStrength");
             oldMat.Metallic = _mat.GetFloat("_Metallic");
             oldMat.Smoothness = _mat.GetFloat("_Smoothness");
             oldMat.Tiling = _mat.GetVector("_Tiling");
 
             _mat.SetTexture("_OldMainTex", oldMat.MainTexture);
-            _mat.SetTexture("_OldNormalMap", oldMat.NormalMap);
-            _mat.SetFloat("_OldNormalStrength", oldMat.NormalStrenght);
             _mat.SetFloat("_OldMetallic", oldMat.Metallic);
             _mat.SetFloat("_OldSmoothness", oldMat.Smoothness);
             _mat.SetVector("_OldTiling", oldMat.Tiling);
@@ -50,8 +44,6 @@ namespace Biome
             _mat.SetFloat("Fill", 0);
 
             _mat.SetTexture("_MainTex", bmd.MainTexture);
-            _mat.SetTexture("_NormalMap", bmd.NormalMap);
-            _mat.SetFloat("_NormalStrength", bmd.NormalStrenght);
             _mat.SetFloat("_Metallic", bmd.Metallic);
             _mat.SetFloat("_Smoothness", bmd.Smoothness);
             _mat.SetVector("_Tiling", bmd.Tiling);
