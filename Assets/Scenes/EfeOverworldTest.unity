@@ -10509,8 +10509,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _BiomeMaterialData:
     MainTexture: {fileID: 2800000, guid: 4521d1e4b88cbb94996bb7f1c417e631, type: 3}
-    NormalMap: {fileID: 2800000, guid: b3c85633b6ff01a44804ad63df3d92fe, type: 3}
-    NormalStrenght: 1
     Metallic: 0
     Smoothness: 0
     Tiling: {x: 200, y: 200}
@@ -10631,11 +10629,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4433190564116084683, guid: 1af0a56d016675142859498b4244cc46, type: 3}
   m_PrefabInstance: {fileID: 840999244}
-  m_PrefabAsset: {fileID: 0}
---- !u!23 &861317159 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 187354618455301624, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
-  m_PrefabInstance: {fileID: 2019347183}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &924571534
 PrefabInstance:
@@ -11523,7 +11516,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 26154349941583d40b573a757c7e3e0a, type: 2}
+  - {fileID: 2100000, guid: 64e737dcf5dd08a43a65fb1e57f2f768, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11608,71 +11601,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5de59bd4f5317264a963385d6ed30afb, type: 3}
   m_PrefabInstance: {fileID: 1373089429}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1804140916 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6082476477349381297, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
-  m_PrefabInstance: {fileID: 2019347183}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1804140920
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1804140916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 345d39fdabd6b0e44accf52b9617e1b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Renderer: {fileID: 861317159}
---- !u!114 &1804140921
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1804140916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0b07334eca40f34ab5fa95e48e2d556, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnMineSuccessfull:
-    m_PersistentCalls:
-      m_Calls: []
-  _Gains:
-  - _resource: {fileID: 11400000, guid: 2b68b7489a4988c4f8dbd37f6ca16566, type: 2}
-    _amount: 1
-  _MinableID: UNASSIGNED
-  RequiredDrillLevel: 1
-  _MiningSFXCooldown: 0.25
-  _MineDuration: 0.5
-  _ForgetDuration: 0.5
-  _DeleteFromTilemap: 0
-  _SPS: {fileID: 1804140920}
-  _MiningSFX:
-    AudioClip: {fileID: 8300000, guid: deb71de55597a2340b9313d945866a17, type: 3}
-    Pitch: 1
-    Volume: 1
-  _MineCompletedSFX:
-    AudioClip: {fileID: 8300000, guid: deb71de55597a2340b9313d945866a17, type: 3}
-    Pitch: 1
-    Volume: 1
---- !u!114 &1804140922
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1804140916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86114da79ca5ace4f89ebf99cb60f353, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  value: 0.5
-  ID: JungleBushSlow
 --- !u!1 &1949623157
 GameObject:
   m_ObjectHideFlags: 0
@@ -11757,10 +11685,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1051546414}
     m_Modifications:
-    - target: {fileID: 187354618455301624, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: ada283a456b4c75469d53b19b89aab21, type: 2}
     - target: {fileID: 2335777826096423828, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.6109078
@@ -11801,83 +11725,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3467906023841890654, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
-      propertyPath: m_Center.y
-      value: 0.45
-      objectReference: {fileID: 0}
     - target: {fileID: 6082476477349381297, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
       propertyPath: m_Name
-      value: SlowingBush 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6619196099282942372, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
-      propertyPath: Objects2Look4Tag.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6619196099282942372, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
-      propertyPath: Objects2Look4Tag.Array.data[0]
-      value: OverworldPlayer
-      objectReference: {fileID: 0}
-    - target: {fileID: 6619196099282942372, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
-      propertyPath: OnExited.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6619196099282942372, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
-      propertyPath: OnExited.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6619196099282942372, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
-      propertyPath: OnEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6619196099282942372, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
-      propertyPath: OnExited.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1804140922}
-    - target: {fileID: 6619196099282942372, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
-      propertyPath: OnEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1804140922}
-    - target: {fileID: 6619196099282942372, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
-      propertyPath: OnExited.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6619196099282942372, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
-      propertyPath: OnExited.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: EndModifier
-      objectReference: {fileID: 0}
-    - target: {fileID: 6619196099282942372, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
-      propertyPath: OnEntered.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StartModifier
-      objectReference: {fileID: 0}
-    - target: {fileID: 6619196099282942372, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
-      propertyPath: OnExited.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: PlayerSpeedModifierHelper, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 6619196099282942372, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
-      propertyPath: OnEntered.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: PlayerSpeedModifierHelper, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 6619196099282942372, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
-      propertyPath: OnExited.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 6619196099282942372, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
-      propertyPath: OnEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
+      value: SlowingBush
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6082476477349381297, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1804140921}
-    - targetCorrespondingSourceObject: {fileID: 6082476477349381297, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1804140920}
-    - targetCorrespondingSourceObject: {fileID: 6082476477349381297, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1804140922}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1e6dc3145b41d143b1d43cc82e0f63e, type: 3}
 --- !u!4 &2019347184 stripped
 Transform:
@@ -11917,8 +11772,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _BiomeMaterialData:
     MainTexture: {fileID: 2800000, guid: 1ed8a3e3645ba3d43b3e5cc7d2d93cbb, type: 3}
-    NormalMap: {fileID: 2800000, guid: 205b19d5499b4db4e96cce0e785af4a0, type: 3}
-    NormalStrenght: 1
     Metallic: 0
     Smoothness: 0.2
     Tiling: {x: 200, y: 200}
