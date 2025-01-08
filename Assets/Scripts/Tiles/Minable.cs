@@ -10,6 +10,7 @@ public class Minable : MonoBehaviour
 
     [SerializeField] Cost[] _Gains;
 
+    [SerializeField] string _MinableID = GLOBAL.UnassignedString;
     [SerializeField, Min(1)] int RequiredDrillLevel = 1;
     [SerializeField] float _MiningSFXCooldown = .25f;
     [SerializeField] float _MineDuration = 2;
@@ -102,6 +103,7 @@ public class Minable : MonoBehaviour
         }
 
         OnMineSuccessfull?.Invoke();
+        EnemyUnlockManager.Instance?.RegisterMinedObject(_MinableID);
 
         TilemapManager tm = TilemapManager.Instance;
         if (tm != null && _DeleteFromTilemap)
