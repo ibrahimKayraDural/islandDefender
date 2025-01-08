@@ -136,8 +136,8 @@ MonoBehaviour:
   _SPS: {fileID: 603079135659627701}
   _MiningSFX:
     AudioClip: {fileID: 8300000, guid: c9a5b29f2fdf3d94e883fd9cd270043b, type: 3}
-    Pitch: 0.45
-    Volume: 1
+    Pitch: 0.35
+    Volume: 0.69
   _MineCompletedSFX:
     AudioClip: {fileID: 8300000, guid: bc522b8eb85cd8b4092b3cb07b9b1c5c, type: 3}
     Pitch: 1
