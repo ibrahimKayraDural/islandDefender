@@ -121,7 +121,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0b07334eca40f34ab5fa95e48e2d556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnMineSuccessfull:
+    m_PersistentCalls:
+      m_Calls: []
   _Gains: []
+  _MinableID: UNASSIGNED
   RequiredDrillLevel: 1
   _MiningSFXCooldown: 0.25
   _MineDuration: 2
@@ -129,11 +133,11 @@ MonoBehaviour:
   _DeleteFromTilemap: 1
   _SPS: {fileID: 8422057247769761233}
   _MiningSFX:
-    AudioClip: {fileID: 0}
+    AudioClip: {fileID: 8300000, guid: 3557b6cfce6d28143933b3c74fb36cb0, type: 3}
     Pitch: 1
     Volume: 1
   _MineCompletedSFX:
-    AudioClip: {fileID: 0}
+    AudioClip: {fileID: 8300000, guid: ffa5507800348d04eb51767dba852289, type: 3}
     Pitch: 1
     Volume: 1
 --- !u!114 &8422057247769761233
@@ -172,6 +176,10 @@ PrefabInstance:
     - target: {fileID: 296387501634247637, guid: 6e3d195cbb54c684a9f8f17d01c0c3f4, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1753947404366654426, guid: 6e3d195cbb54c684a9f8f17d01c0c3f4, type: 3}
+      propertyPath: OnEntered.m_PersistentCalls.m_Calls.Array.size
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3335450509411907386, guid: 6e3d195cbb54c684a9f8f17d01c0c3f4, type: 3}
       propertyPath: m_LocalPosition.x

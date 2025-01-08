@@ -175,6 +175,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.8490566
       objectReference: {fileID: 0}
+    - target: {fileID: 1753947404366654426, guid: 6e3d195cbb54c684a9f8f17d01c0c3f4, type: 3}
+      propertyPath: OnEntered.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3335450509411907386, guid: 6e3d195cbb54c684a9f8f17d01c0c3f4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

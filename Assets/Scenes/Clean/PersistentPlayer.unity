@@ -421,6 +421,10 @@ PrefabInstance:
       propertyPath: _PlayerHealthbarManager
       value: 
       objectReference: {fileID: 763607985}
+    - target: {fileID: 5916110400963261447, guid: 296de3351f168f9478d7a0e7041b1503, type: 3}
+      propertyPath: orthographic size
+      value: 112.21654
+      objectReference: {fileID: 0}
     - target: {fileID: 7131293006566525913, guid: 296de3351f168f9478d7a0e7041b1503, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
