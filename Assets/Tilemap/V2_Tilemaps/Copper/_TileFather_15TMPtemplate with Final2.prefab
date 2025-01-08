@@ -121,9 +121,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0b07334eca40f34ab5fa95e48e2d556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnMineSuccessfull:
+    m_PersistentCalls:
+      m_Calls: []
   _Gains:
   - _resource: {fileID: 11400000, guid: e9dd3a2e54c2fe340ad7992f3abaec67, type: 2}
     _amount: 2
+  _MinableID: coppertile
   RequiredDrillLevel: 1
   _MiningSFXCooldown: 0.25
   _MineDuration: 2

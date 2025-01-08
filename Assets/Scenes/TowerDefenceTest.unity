@@ -26425,7 +26425,7 @@ MonoBehaviour:
     - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
       _amount: 10
     SliderAfterValue: 0
-    Level: 2
+    Level: 1
     ID: player
   - Button: {fileID: 1332610734}
     Upgrade: {fileID: 11400000, guid: 82821861f424f6049851d6e7ac09124b, type: 2}
