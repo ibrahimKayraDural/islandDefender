@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/EfeOverworldTest.unity
     guid: 87070a3119dd08147b23f361b23f878d
+  - enabled: 1
+    path: Assets/Scenes/EndGame.unity
+    guid: a40d23c36f18bb447a64fefd15e1363d
   m_configObjects: {}
