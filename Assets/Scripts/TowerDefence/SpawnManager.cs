@@ -14,6 +14,7 @@ namespace TowerDefence
         static List<GameObject> ActiveEnemies = new List<GameObject>();
         static event EventHandler<string> e_ActiveEnemiesListIsEmptied;
         public static bool WaveIsActive { get; private set; }
+        public static bool StillSpawningEnemies { get; private set; }
 
         [SerializeField, Min(0)] int _StartCooldown = 2;
         [SerializeField] bool _WaitUntillEnemiesAreDead = true;
@@ -103,7 +104,7 @@ namespace TowerDefence
         public static bool RemoveFromActiveEnemyList(GameObject target)
         {
             bool didRemove = ActiveEnemies.Remove(target);
-            if (ActiveEnemies.Count <= 0)
+            if (ActiveEnemies.Count <= 0 && StillSpawningEnemies == false)
             {
                 e_ActiveEnemiesListIsEmptied?.Invoke(typeof(SpawnManager), "listEmpty");
             }
@@ -131,6 +132,7 @@ namespace TowerDefence
             if (WaveIsActive == false) return;
 
             StopCoroutine(nameof(WaveCoroutine));
+            StillSpawningEnemies = false;
             WaveIsActive = false;
         }
         public void SetCooldownIsPaused(bool setTo) => _cooldownSpeedMultiplier = setTo ? 0 : 1;
@@ -138,6 +140,7 @@ namespace TowerDefence
 
         IEnumerator WaveCoroutine()
         {
+            StillSpawningEnemies = true;
             //looping untill either no data is left in wave data or the failsafe cap is reached
             for (int i = 0; _enemiesWithLanes.Count > 0 && i <= 10000; i++)
             {
@@ -147,6 +150,7 @@ namespace TowerDefence
 
                 if (i == 10000) Debug.LogError("Failsafe cap was reached while spawning waves");
             }
+            StillSpawningEnemies = false;
 
             if (ActiveEnemies.Count <= 0 || _WaitUntillEnemiesAreDead == false) OnWaveEnded(this, "waveEnd");
         }

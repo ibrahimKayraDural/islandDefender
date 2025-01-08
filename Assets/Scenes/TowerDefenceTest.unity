@@ -21599,7 +21599,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _StartCooldown: 60
   _WaitUntillEnemiesAreDead: 1
-  _RepeatLastWave: 0
+  _RepeatLastWave: 1
   _StartPaused: 0
   _spawners:
   - {fileID: 161965099}
