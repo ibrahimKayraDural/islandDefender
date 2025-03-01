@@ -9,9 +9,9 @@ public class CameraManager : MonoBehaviour
 
     public event EventHandler<Camera> e_OnCameraChanged;
     public Camera CurrentCamera => _camerasWithTagg.Count > 0 ? _camerasWithTagg[_currentIndex].Value : null;
-    public List<KeyValuePair<string, Camera>> _camerasWithTagg = new List<KeyValuePair<string, Camera>>();
+    public List<KeyValuePair<string, Camera>> _camerasWithTagg = new();
 
-    [SerializeField] List<string> _IgnoreTags = new List<string>();
+    [SerializeField] List<string> _IgnoreTags = new();
     [SerializeField] string _StartingCameraTag = GLOBAL.UnassignedString;
     [SerializeField, Min(0)] float _WalkDuration = .5f;
     [SerializeField, Min(0)] float _StopDuration = .5f;

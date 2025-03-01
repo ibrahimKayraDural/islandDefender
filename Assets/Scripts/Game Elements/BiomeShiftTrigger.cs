@@ -9,7 +9,7 @@ namespace Biome
     {
         [SerializeField] BiomeMaterialData _BiomeMaterialData;
         [SerializeField] BiomeShifter _BiomeShifter;
-        [SerializeField] List<string> _TagsToCheck = new List<string>() { "OverworldPlayer" };
+        [SerializeField] List<string> _TagsToCheck = new() { "OverworldPlayer" };
 
         void Awake()
         {

@@ -81,7 +81,7 @@ namespace Overworld
         public List<Tuple<string, MovementMode>> _movementModeModifiers = new List<Tuple<string, MovementMode>>();
         bool _acceptMovementModeModifier = true;
 
-        public List<Tuple<string, float>> _speedModifiers = new List<Tuple<string, float>>();
+        public List<Tuple<string, float>> _speedModifiers = new();
         float _currentSpeedHinderer = 1;
         float _currentSpeedEnhancer = 1;
 
@@ -230,7 +230,7 @@ namespace Overworld
         #region Movement Mode
         public void AddMovementMode(string id, MovementMode mode, bool @override = false)
         {
-            Tuple<string, MovementMode> value = new Tuple<string, MovementMode>(id, mode);
+            Tuple<string, MovementMode> value = new(id, mode);
 
             //check for override
             if (@override)
@@ -276,7 +276,7 @@ namespace Overworld
             StartCoroutine(IE);
         }
 
-        List<Tuple<string, IEnumerator>> _startedCoroutines = new List<Tuple<string, IEnumerator>>();
+        List<Tuple<string, IEnumerator>> _startedCoroutines = new();
         IEnumerator RemoveMMAfterSeconds(string id, float seconds)
         {
             yield return new WaitForSeconds(seconds);

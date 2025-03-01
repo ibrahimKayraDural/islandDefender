@@ -9,9 +9,9 @@ public class EnemyUnlockManager : MonoBehaviour
 {
     public static EnemyUnlockManager Instance { get; private set; } = null;
 
-    [SerializeField] List<SerializedKeyValuePair<SerializedKeyValuePair<string, int>, EnemyData>> UnlockWhenMined = new List<SerializedKeyValuePair<SerializedKeyValuePair<string, int>, EnemyData>>();
+    [SerializeField] List<SerializedKeyValuePair<SerializedKeyValuePair<string, int>, EnemyData>> UnlockWhenMined = new();
 
-    Dictionary<string, int> _minedObjects = new Dictionary<string, int>();
+    Dictionary<string, int> _minedObjects = new();
     GameplayManager _GameplayManager
     {
         get

@@ -226,7 +226,7 @@ namespace Overworld
         /// </summary>
         public List<InventoryItem> TryAddItemWithSpill(InventoryItem[] itemsToAdd, bool dropTheSpill = false)
         {
-            List<InventoryItem> returnList = new List<InventoryItem>();
+            List<InventoryItem> returnList = new();
             foreach (var item in itemsToAdd)
             {
                 InventoryItem temp = TryAddItemWithSpill(item, dropTheSpill);

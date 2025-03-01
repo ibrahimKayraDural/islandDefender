@@ -11,7 +11,7 @@ namespace TowerDefence
         public static SwarmDataValueContainer CurrentSwarm;
         public static int CurrentWaveIndex { get; private set; }
 
-        static List<GameObject> ActiveEnemies = new List<GameObject>();
+        static List<GameObject> ActiveEnemies = new();
         static event EventHandler<string> e_ActiveEnemiesListIsEmptied;
         public static bool WaveIsActive { get; private set; }
         public static bool StillSpawningEnemies { get; private set; }
@@ -20,7 +20,7 @@ namespace TowerDefence
         [SerializeField] bool _WaitUntillEnemiesAreDead = true;
         [SerializeField] bool _RepeatLastWave;
         [SerializeField] bool _StartPaused;
-        [SerializeField] List<Spawner> _spawners = new List<Spawner>();
+        [SerializeField] List<Spawner> _spawners = new();
         [SerializeField] GameObject _SpawnerPrefab = null;
         [SerializeField] BaseManager _BaseMngr;
         [SerializeField] TextMeshProUGUI _TimeTM;
@@ -46,8 +46,8 @@ namespace TowerDefence
             }
         }
 
-        List<KeyValuePair<S_EnemyWithCount, int>> _enemiesWithLanes = new List<KeyValuePair<S_EnemyWithCount, int>>();
-        List<float> _enemyCooldownArr = new List<float>();
+        List<KeyValuePair<S_EnemyWithCount, int>> _enemiesWithLanes = new();
+        List<float> _enemyCooldownArr = new();
         int _enemyCooldownArrCount;
 
         List<int> _waveCooldownArr = GLOBAL.FailsafeWaveCooldowns;
@@ -159,7 +159,7 @@ namespace TowerDefence
             _enemiesWithLanes = new List<KeyValuePair<S_EnemyWithCount, int>>();
 
             //instantiating wave data
-            List<int> laneIndexes = new List<int>();
+            List<int> laneIndexes = new();
             for (int i = 0; i < _currentWave.Value.Lanes.Count; i++)
             {
                 S_LaneGroup lane = _currentWave.Value.Lanes[i];
@@ -192,9 +192,9 @@ namespace TowerDefence
 
 
             //Shuffling lanes
-            List<int> spawnerIndexes = new List<int>();
-            List<int> oldLaneIndexes = new List<int>();
-            List<int> uniqueLaneIndexes = new List<int>();
+            List<int> spawnerIndexes = new();
+            List<int> oldLaneIndexes = new();
+            List<int> uniqueLaneIndexes = new();
             for (int i = 0; i < _spawners.Count; i++) spawnerIndexes.Add(i);
             for (int i = 0; i < _enemiesWithLanes.Count; i++) oldLaneIndexes.Add(_enemiesWithLanes[i].Value);
             for (int i = 0; i < _enemiesWithLanes.Count; i++)
@@ -228,7 +228,8 @@ namespace TowerDefence
 
         void SpawnNextWave(ref List<KeyValuePair<S_EnemyWithCount, int>> currentWave)
         {
-            List<int> laneIndexes = new List<int>();
+            List<int> list = new();
+            List<int> laneIndexes = list;
             foreach (var item in currentWave)
             {
                 if (laneIndexes.Contains(item.Value)) continue;
@@ -237,7 +238,7 @@ namespace TowerDefence
 
             int laneInt = laneIndexes[UnityEngine.Random.Range(0, laneIndexes.Count)];
 
-            List<S_EnemyWithCount> enemyList = new List<S_EnemyWithCount>();
+            List<S_EnemyWithCount> enemyList = new();
             foreach (var ewcPair in currentWave.FindAll(x => x.Value == laneInt)) for (int i = 0; i < ewcPair.Key.Count; i++) enemyList.Add(ewcPair.Key);
 
             int rando = UnityEngine.Random.Range(0, enemyList.Count);
@@ -289,7 +290,7 @@ namespace TowerDefence
             }
 
             //First is lane second is enemies in it
-            List<List<EnemyData>> enemies = new List<List<EnemyData>>();
+            List<List<EnemyData>> enemies = new();
 
             for (int i = 0; i < _spawners.Count; i++)
             {

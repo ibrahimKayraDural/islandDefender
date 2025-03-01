@@ -39,7 +39,7 @@ namespace TowerDefence
         {
             if (_hasWon || _isDead) return;
 
-            Ray ray = new Ray(_AttackPoint.position, transform.forward);
+            Ray ray = new(_AttackPoint.position, transform.forward);
             if (Physics.Raycast(ray, out RaycastHit hit, _data.AttackRange, _AttackLayer))
             {
                 if (_Animator) _Animator?.SetBool("IsMoving", false);
@@ -90,7 +90,7 @@ namespace TowerDefence
         {
             if (_DealDamageViaAnimation == false) return;
 
-            Ray ray = new Ray(_AttackPoint.position, transform.forward);
+            Ray ray = new(_AttackPoint.position, transform.forward);
             if (Physics.Raycast(ray, out RaycastHit hit, _data.AttackRange, _AttackLayer))
             {
                 if (hit.transform.TryGetComponent(out IHealth ih))

@@ -11,7 +11,7 @@ public class BaseResourceController : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI _resourceText;
 
-    Dictionary<ResourceData, int> _resourceDictionary = new Dictionary<ResourceData, int>();
+    Dictionary<ResourceData, int> _resourceDictionary = new();
     PlayerInstance playerInstance
     {
         get
@@ -47,7 +47,7 @@ public class BaseResourceController : MonoBehaviour
 
     public void TransferInventory()
     {
-        List<ResourceItem> rItems = new List<ResourceItem>();
+        List<ResourceItem> rItems = new();
         List<InventoryItem> items = playerInstance.Inventory_Ref.Items;
 
         foreach (var item in items)

@@ -12,16 +12,17 @@ namespace TowerDefence
     public class TDPlayerController : MonoBehaviour, IUICellOwner
     {
         [SerializeField] LayerMask TowerDefenceLayer;
-        [SerializeField] TextMeshProUGUI _CurrentModeText;
+        [SerializeField] Transform _MouseTracker;
+        [SerializeField] TurretIndicator _Indicator;
         [SerializeField] TDCanvasManager _TDCanvasManager;
         [SerializeField] SpawnManager _SpawnManager;
-        [SerializeField] Transform _MouseTracker;
         [SerializeField] OwnedTurretController _OwnedTurretController;
         [SerializeField] ManualTurretManager _ManualTurretManager;
         [SerializeField] ButtonToggleHelper _CraftTabToggler;
         [SerializeField] GraphicRaycasterScript _GraphicRaycasterScript;
         [SerializeField] TextMeshProUGUI _DescriptionTitle;
         [SerializeField] TextMeshProUGUI _DescriptionText;
+        [SerializeField] TextMeshProUGUI _CurrentModeText;
 
         [SerializeField] Camera _camera = null;
 
@@ -180,6 +181,7 @@ namespace TowerDefence
         void DeselectCurrentTurret()
         {
             _currentTurret = null;
+            //_Indicator.SetTurret(null);
             DeselectCurrentTile();
         }
 
@@ -282,6 +284,12 @@ namespace TowerDefence
         {
             _currentTile = tdts;
             _currentTile.GetHighlighted();
+
+            if (tdts.IsOccupied == false)
+            {
+                _Indicator.SetPosition(tdts.transform.position);
+                _Indicator.SetEnablity(true);
+            }
         }
 
         void DeselectCurrentTile()
@@ -290,6 +298,8 @@ namespace TowerDefence
 
             _currentTile.GetUnhighlighted();
             _currentTile = null;
+
+            _Indicator.SetEnablity(false);
         }
 
         public void OnHoverInteractableCell(UICell currentCell) { }
@@ -305,6 +315,7 @@ namespace TowerDefence
 
             _CraftTabToggler.SetStatus(false);
             _currentTurret = data;
+            _Indicator.SetTurret(data);
         }
 
         bool IUICellOwner.CellIsValid(UICell cell)

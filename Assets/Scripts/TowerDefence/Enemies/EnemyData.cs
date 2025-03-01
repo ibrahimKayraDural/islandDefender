@@ -26,7 +26,7 @@ namespace TowerDefence
         [SerializeField, Min(0)] float _AttackRange = 1;
         [SerializeField] EnemyDifficulty _Difficulty;
         [SerializeField] EnemyRange _RangeType;
-        [SerializeField] List<EnemyType> _EnemyTypes = new List<EnemyType>() { EnemyType.None };
+        [SerializeField] List<EnemyType> _EnemyTypes = new() { EnemyType.None };
         [SerializeField] AudioClip _GettingDamagedSFX;
         [SerializeField] AudioClip _DyingSFX;
         [SerializeField] GameObject _enemyPrefab;

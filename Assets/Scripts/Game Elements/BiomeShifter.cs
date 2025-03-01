@@ -29,7 +29,7 @@ namespace Biome
         {
             if (Handle_FillProgress != null) StopCoroutine(Handle_FillProgress);
 
-            BiomeMaterialData oldMat = new BiomeMaterialData();
+            BiomeMaterialData oldMat = new();
 
             oldMat.MainTexture = _mat.GetTexture("_MainTex");
             oldMat.Metallic = _mat.GetFloat("_Metallic");
