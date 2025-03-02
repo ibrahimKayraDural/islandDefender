@@ -8,6 +8,12 @@ namespace TowerDefence
 {
     public class SpawnManager : MonoBehaviour
     {
+        public static bool WaveIsActive { get; private set; } = false; 
+        public void SetCooldownIsPaused(bool a){}
+        public void SpawnSpawnerAt(Vector3 a, Transform b) { }
+        public static void RemoveFromActiveEnemyList(GameObject a) { }
+        public void DeleteSpawners() { }
+        /*
         public static SwarmDataValueContainer CurrentSwarm;
         public static int CurrentWaveIndex { get; private set; }
 
@@ -35,7 +41,7 @@ namespace TowerDefence
                 return CurrentWaveIndex < _waveCooldownArr.Count && CurrentWaveIndex >= 0 ? _waveCooldownArr[CurrentWaveIndex] : _waveCooldownArr[_waveCooldownArr.Count - 1];
             }
         }
-        S_Wave? _currentWave
+        TD_Wave? _currentWave
         {
             get
             {
@@ -64,7 +70,7 @@ namespace TowerDefence
 
         private void Start()
         {
-            SwarmDatabase sdb = GLOBAL.GetSwarmDatabase();
+            SwarmDatabase sdb = GLOBAL.GetWaveDatabase();
 
             SwarmData sd = sdb.DataList[0] as SwarmData;
             SwarmData temp = ScriptableObject.CreateInstance<SwarmData>();
@@ -160,9 +166,9 @@ namespace TowerDefence
 
             //instantiating wave data
             List<int> laneIndexes = new();
-            for (int i = 0; i < _currentWave.Value.Lanes.Count; i++)
+            for (int i = 0; i < _currentWave.Value.Enemies.Count; i++)
             {
-                S_LaneGroup lane = _currentWave.Value.Lanes[i];
+                S_LaneGroup lane = _currentWave.Value.Enemies[i];
 
                 for (int n = 0; n < lane.Enemies.Count; n++)
                 {
@@ -385,5 +391,6 @@ namespace TowerDefence
             }
             _spawners = new List<Spawner>();
         }
+    */
     }
 }

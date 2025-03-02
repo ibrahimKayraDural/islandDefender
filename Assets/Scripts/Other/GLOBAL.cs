@@ -96,11 +96,11 @@ public static class GLOBAL
         return _enemyDB;
     }
 
-    static SwarmDatabase _swarmDB = null;
-    public static SwarmDatabase GetSwarmDatabase()
+    static TD_WaveDatabase _waveDB = null;
+    public static TD_WaveDatabase GetWaveDatabase()
     {
-        if (_swarmDB == null) _swarmDB = Resources.Load<SwarmDatabase>("Databases/SwarmDatabase");
-        return _swarmDB;
+        if (_waveDB == null) _waveDB = Resources.Load<TD_WaveDatabase>("Databases/WaveDatabase");
+        return _waveDB;
     }
 
     static ToolDatabase _toolDB = null;

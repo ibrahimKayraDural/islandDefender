@@ -6,8 +6,8 @@ using TowerDefence;
 using UnityEditor;
 using UnityEngine;
 
-public class ExcelSwarmConverter : EditorWindow
-{
+public class ExcelSwarmConverter_OLD : EditorWindow
+{/*
     TextAsset _ExcelFile;
 
     const string INFO_IDENTIFIER = "[info]";
@@ -17,7 +17,7 @@ public class ExcelSwarmConverter : EditorWindow
 
     void OnGUI()
     {
-        ExcelSwarmConverter window = this;
+        ExcelSwarmConverter_OLD window = this;
         window.maxSize = new Vector2(500, 250);
         window.minSize = window.maxSize;
 
@@ -51,7 +51,7 @@ public class ExcelSwarmConverter : EditorWindow
                 RefreshExcel();
                 Unselect();
 
-                //RefreshSwarmDatas();
+                RefreshSwarmDatas();
             }
 
             GUILayout.Space(5);
@@ -61,20 +61,20 @@ public class ExcelSwarmConverter : EditorWindow
             { Unselect(); }
         }
 
-        /*
-        GUILayout.Space(10);
-        GUI.contentColor = Color.white;
-        if (GUILayout.Button("REFRESH"))
-        {
-            RefreshSwarmDatas();
-        }
-        */
+        
+        //GUILayout.Space(10);
+        //GUI.contentColor = Color.white;
+        //if (GUILayout.Button("REFRESH"))
+        //{
+        //    RefreshSwarmDatas();
+        //}
+        
     }
 
-    [MenuItem("Window/Excel to Swarm Converter")]
+    [MenuItem("Window/Excel to Swarm Converter OLD VERSION")]
     public static void ShowWindow()
     {
-        GetWindow<ExcelSwarmConverter>("Excel to Swarm Converter");
+        GetWindow<ExcelSwarmConverter_OLD>("Excel to Swarm Converter OLD VERSION");
     }
 
     void Unselect()
@@ -166,41 +166,28 @@ public class ExcelSwarmConverter : EditorWindow
         }
 
         EnemyDatabase enemyDB = GLOBAL.GetEnemyDatabase();
-        TD_WaveDatabase waveDB = GLOBAL.GetWaveDatabase();
+        SwarmDatabase swarmDB = GLOBAL.GetWaveDatabase();
 
         List<float> defaultEnemyCooldowns = GLOBAL.FailsafeEnemyCooldowns;
+        List<int> defaultWaveCooldowns = GLOBAL.FailsafeWaveCooldowns;
 
-        List<float> targetEnemyCooldowns = new();
+        List<float> targetEnemyCooldowns = new List<float>();
+        List<int> targetWaveCooldowns = new List<int>();
 
-        waveDB.DataListAccess = new();
+        swarmDB.DataListAccess = new List<Data<SwarmData>>();
 
-        string waveName = GLOBAL.UnassignedString;
-        string waveID = GLOBAL.UnassignedString;
-        List<string> usedNames = new();
+        int enemyCount;
+        string sdName = GLOBAL.UnassignedString;
 
         foreach (var NameSeperation in WaveDataList)
         {
-            List<TD_Enemy> currEnemies = new();
+            SwarmDataValueContainer swarmDataVC = new SwarmDataValueContainer();
+            swarmDataVC.Waves = new List<TD_Wave>();
 
             targetEnemyCooldowns = defaultEnemyCooldowns;
+            targetWaveCooldowns = defaultWaveCooldowns;
 
             bool isInfo = NameSeperation[0][0].ToLower(new CultureInfo("en-US")) == INFO_IDENTIFIER;
-
-            if (isInfo == false)
-            {
-                string rawName = NameSeperation[0][1];
-                if (usedNames.Contains(rawName))
-                {
-                    Debug.LogError("Waves can not have the same names (titles). Skipping this wave.");
-                    continue;
-                }
-                usedNames.Add(rawName);
-
-                waveName = rawName;
-                waveID = waveName.Replace(" ", "-");
-                waveID = waveID.ToLower();
-                waveID = waveID.Trim();
-            }
 
             foreach (var RowSeperation in NameSeperation)
             {
@@ -212,8 +199,12 @@ public class ExcelSwarmConverter : EditorWindow
 
                 if (isInfo) continue;
 
+                TD_Wave currWave = new TD_Wave();
+                currWave.Enemies = new List<S_LaneGroup>();
+
                 foreach (var CommaSeperation in RowSeperation)
                 {
+                    enemyCount = 1;
                     string enemyID = HandleOption(CommaSeperation);
                     EnemyData eData = null;
 
@@ -229,34 +220,44 @@ public class ExcelSwarmConverter : EditorWindow
                         }
                     }
 
-                    TD_Enemy tde;
+                    S_LaneGroup lGroup = new S_LaneGroup();
                     if (isWildCard)
                     {
                         string[] messages = enemyID.Split("-");
-                        tde = new(messages[1], messages[2]);
+                        S_EnemyWithCount ewc = new S_EnemyWithCount(messages[1], messages[2], enemyCount);
+
+                        lGroup.Enemies = new List<S_EnemyWithCount>() { ewc };
                     }
                     else
                     {
-                        tde = new(eData);
+                        S_EnemyWithCount ewc = new S_EnemyWithCount(eData, enemyCount);
+
+                        lGroup.Enemies = new List<S_EnemyWithCount>() { ewc };
                     }
 
-                    currEnemies.Add(tde);
+                    currWave.Enemies.Add(lGroup);
                 }
+
+                swarmDataVC.Waves.Add(currWave);
             }
 
             if (isInfo) continue;
 
-            string fullPath = ASSET_PATH + waveName + SCOBJ_ASSET_EXTENTION;
+            string fullPath = ASSET_PATH + sdName + SCOBJ_ASSET_EXTENTION;
 
-            TD_Wave waveData = ScriptableObject.CreateInstance<TD_Wave>();
-            EditorUtility.SetDirty(waveData);
-            waveData.SetValues(currEnemies, targetEnemyCooldowns);
-            waveData.SetNameAndID(waveName, waveID);
-            AssetDatabase.CreateAsset(waveData, fullPath);
-            EditorUtility.SetDirty(AssetDatabase.LoadAssetAtPath<TD_Wave>(fullPath));
+            SwarmData swarmData = ScriptableObject.CreateInstance<SwarmData>();
+            EditorUtility.SetDirty(swarmData);
+            swarmData.SetSwarmValues(swarmDataVC, false);
+            swarmData.SetNameAndID(sdName);
+            swarmData.DefaultEnemyCooldowns = targetEnemyCooldowns;
+            swarmData.DefaultWaveCooldowns = targetWaveCooldowns;
+            AssetDatabase.CreateAsset(swarmData, fullPath);
+            EditorUtility.SetDirty(AssetDatabase.LoadAssetAtPath<SwarmData>(fullPath));
 
-            EditorUtility.SetDirty(waveDB);//changes will not be saved if this is not set dirty
-            waveDB.DataListAccess.Add(AssetDatabase.LoadAssetAtPath<TD_Wave>(fullPath));
+            EditorUtility.SetDirty(swarmDB);//changes will not be saved if this is not set dirty
+            swarmDB.DataListAccess.Add(AssetDatabase.LoadAssetAtPath<SwarmData>(fullPath));
+
+
         }
 
         AssetDatabase.SaveAssets();
@@ -279,7 +280,22 @@ public class ExcelSwarmConverter : EditorWindow
             switch (message)
             {
                 case "title":
-                    waveName = firstCollumn;
+                    sdName = firstCollumn;
+                    break;
+
+                case "wave-cooldown":
+
+                    List<int> ints = new List<int>();
+                    foreach (var item in firstCollumn.Split('/'))
+                    {
+                        string target = item.Replace(".", ",");
+
+                        float currFloat = 0;
+                        if (float.TryParse(target, out currFloat)) ints.Add(Mathf.RoundToInt(currFloat));
+                    }
+
+                    if (ints != null && ints.Count > 0) targetWaveCooldowns = ints;
+
                     break;
 
                 case "enemy-cooldown":
@@ -294,6 +310,21 @@ public class ExcelSwarmConverter : EditorWindow
                     }
 
                     if (floats != null && floats.Count > 0) targetEnemyCooldowns = floats;
+
+                    break;
+
+                case "default-wave-cooldown":
+
+                    ints = new List<int>();
+                    foreach (var item in firstCollumn.Split('/'))
+                    {
+                        string target = item.Replace(".", ",");
+
+                        float currFloat = 0;
+                        if (float.TryParse(target, out currFloat)) ints.Add(Mathf.RoundToInt(currFloat));
+                    }
+
+                    if (ints != null && ints.Count > 0) defaultWaveCooldowns = ints;
 
                     break;
 
@@ -337,12 +368,12 @@ public class ExcelSwarmConverter : EditorWindow
 
             switch (message)
             {
-                //case "count":
-                //    if (int.TryParse(valueStr, out int temp))
-                //    { enemyCount = Mathf.Clamp(temp, 1, 99); }
-                //    else
-                //    { Debug.Log(valueStr + " is not a valid number"); }
-                //    break;
+                case "count":
+                    if (int.TryParse(valueStr, out int temp))
+                    { enemyCount = Mathf.Clamp(temp, 1, 99); }
+                    else
+                    { Debug.Log(valueStr + " is not a valid number"); }
+                    break;
 
                 case "difficulty":
                 case "range":
@@ -358,15 +389,16 @@ public class ExcelSwarmConverter : EditorWindow
         }
     }
 
-    //void RefreshSwarmDatas()
-    //{
-    //    foreach (var asset in AssetDatabase.FindAssets("", new string[] { ASSET_PATH }))
-    //    {
-    //        string path = AssetDatabase.GUIDToAssetPath(asset);
-    //        TD_Wave data = AssetDatabase.LoadAssetAtPath<TD_Wave>(path);
-    //        if (data == null) continue;
-    //        EditorUtility.SetDirty(data);
-    //        data.Refresh();
-    //    }
-    //}
+    void RefreshSwarmDatas()
+    {
+        foreach (var asset in AssetDatabase.FindAssets("", new string[] { ASSET_PATH }))
+        {
+            string path = AssetDatabase.GUIDToAssetPath(asset);
+            SwarmData data = AssetDatabase.LoadAssetAtPath<SwarmData>(path);
+            if (data == null) continue;
+            EditorUtility.SetDirty(data);
+            data.Refresh();
+        }
+    }
+*/
 }
