@@ -85,7 +85,11 @@ namespace TowerDefence
             if (WaveIsActive == false) return;
 
             StopCoroutine(nameof(WaveCoroutine));
+            StopCoroutine(nameof(EnemyCooldownCounter));
+            StopCoroutine(nameof(CheckNextEnemySpawn));
+
             WaveIsActive = false;
+            _spawnNextEnemy = false;
         }
 
         IEnumerator WaveCoroutine()
@@ -96,13 +100,34 @@ namespace TowerDefence
                 var ewl = _currentEnemies[i];
                 SpawnNextEnemy(ewl);
 
-                yield return new WaitForSeconds(ewl.Cooldown);
+                StartCoroutine(nameof(EnemyCooldownCounter), ewl.Cooldown);
+                StartCoroutine(nameof(CheckNextEnemySpawn));
+
+                yield return new WaitUntil(() => _spawnNextEnemy);
+
+                StopCoroutine(nameof(EnemyCooldownCounter));
+                StopCoroutine(nameof(CheckNextEnemySpawn));
+                _spawnNextEnemy = false;
             }
 
             yield return new WaitUntil(() => ActiveEnemies.Count <= 0);
 
             OnWaveEnded();
         }
+
+        bool _spawnNextEnemy = false;
+        IEnumerator EnemyCooldownCounter(float cooldown)
+        {
+            yield return new WaitForSeconds(cooldown);
+            _spawnNextEnemy = true;
+        }
+        IEnumerator CheckNextEnemySpawn()
+        {
+            yield return new WaitUntil(() => ActiveEnemies.Count <= 0);
+            yield return new WaitForSeconds(1);
+            _spawnNextEnemy = true;
+        }
+
         void SetWaveValues()
         {
             _currentEnemies = new();
@@ -114,6 +139,7 @@ namespace TowerDefence
                 _currentEnemies.Add(item);
             }
 
+            #region Old Code
             ////instantiating wave data
             //List<int> laneIndexes = new();
             //for (int i = 0; i < _currentWave.Value.Enemies.Count; i++)
@@ -180,6 +206,7 @@ namespace TowerDefence
             //_enemyCooldownArr = CurrentSwarm.DefaultEnemyCooldowns;
             //if (_enemyCooldownArr == null || _enemyCooldownArr.Count <= 0) _enemyCooldownArr = GLOBAL.FailsafeEnemyCooldowns;
             //_enemyCooldownArrCount = _enemyCooldownArr.Count;
+            #endregion
         }
 
         void SpawnNextEnemy(TD_EnemyWithCooldown enemy)
