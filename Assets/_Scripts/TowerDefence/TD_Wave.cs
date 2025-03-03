@@ -1,11 +1,23 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace TowerDefence
 {
-    [CreateAssetMenu(menuName = "Tower Defence/Wave Data")]
+    [System.Serializable]
+    public struct TD_WaveValue
+    {
+        public List<TD_EnemyWithCooldown> Enemies => _enemies;
+        [SerializeField] List<TD_EnemyWithCooldown> _enemies;
 
+        public TD_WaveValue(List<TD_EnemyWithCooldown> wave)
+        {
+            _enemies = wave;
+        }
+    }
+
+    [CreateAssetMenu(menuName = "Tower Defence/Wave Data")]
     [System.Serializable]
     public class TD_Wave : Data<TD_Wave>
     {
@@ -47,6 +59,14 @@ namespace TowerDefence
         [SerializeField] List<TD_EnemyWithCooldown> _enemies;
 
         public int TotalEnemyCount => Enemies.Count;
+
+        public TD_WaveValue AsValue() => new TD_WaveValue(GetClonedValue());
+        List<TD_EnemyWithCooldown> GetClonedValue()
+        {
+            List<TD_EnemyWithCooldown> list = new();
+            foreach (var item in Enemies) list.Add(item.Clone());
+            return list;
+        }
     }
 
     [System.Serializable]
@@ -59,6 +79,15 @@ namespace TowerDefence
         {
             Enemy = enemy;
             Cooldown = cooldown;
+        }
+
+        public void LockEnemy()
+        {
+            Enemy.LockEnemyData();
+        }
+        public TD_EnemyWithCooldown Clone()
+        {
+            return new TD_EnemyWithCooldown(Enemy.Clone(), Cooldown);
         }
     }
 
@@ -124,6 +153,12 @@ namespace TowerDefence
             _isWildCard = false;
             _wildCardID = GLOBAL.UnassignedString;
             _wildCardValue = GLOBAL.UnassignedString;
+        }
+
+        public TD_Enemy Clone()
+        {
+            TD_Enemy val = _isWildCard ? new(_wildCardID, _wildCardValue) : new(_enemy);
+            return val;
         }
     }
 }

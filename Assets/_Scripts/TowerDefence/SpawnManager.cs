@@ -8,88 +8,46 @@ namespace TowerDefence
 {
     public class SpawnManager : MonoBehaviour
     {
+        /*
         public static bool WaveIsActive { get; private set; } = false; 
         public void SetCooldownIsPaused(bool a){}
         public void SpawnSpawnerAt(Vector3 a, Transform b) { }
         public static void RemoveFromActiveEnemyList(GameObject a) { }
         public void DeleteSpawners() { }
-        /*
-        public static SwarmDataValueContainer CurrentSwarm;
-        public static int CurrentWaveIndex { get; private set; }
-
+        */
         static List<GameObject> ActiveEnemies = new();
-        static event EventHandler<string> e_ActiveEnemiesListIsEmptied;
         public static bool WaveIsActive { get; private set; }
-        public static bool StillSpawningEnemies { get; private set; }
 
-        [SerializeField, Min(0)] int _StartCooldown = 2;
-        [SerializeField] bool _WaitUntillEnemiesAreDead = true;
-        [SerializeField] bool _RepeatLastWave;
-        [SerializeField] bool _StartPaused;
         [SerializeField] List<Spawner> _spawners = new();
         [SerializeField] GameObject _SpawnerPrefab = null;
         [SerializeField] BaseManager _BaseMngr;
-        [SerializeField] TextMeshProUGUI _TimeTM;
         [SerializeField] TDPlayerController _TDPlayerController;
 
-        bool _isPaused => _cooldownSpeedMultiplier == 0;
-        int _waveCount => CurrentSwarm.Waves.Count;
-        int _currentWaveCooldown
+        TD_WaveValue? _currentWave = null;
+        int currentWaveIndex = 0;
+        int _lastLaneIndex = -1;
+
+        List<TD_EnemyWithCooldown> _currentEnemies = new();
+
+        void Start()
         {
-            get
-            {
-                return CurrentWaveIndex < _waveCooldownArr.Count && CurrentWaveIndex >= 0 ? _waveCooldownArr[CurrentWaveIndex] : _waveCooldownArr[_waveCooldownArr.Count - 1];
-            }
-        }
-        TD_Wave? _currentWave
-        {
-            get
-            {
-                if (CurrentSwarm == null || CurrentSwarm.Waves.Count <= CurrentWaveIndex)
-                    return null;
+            //Get wave database
+            var waveDB = GLOBAL.GetWaveDatabase();
 
-                return CurrentSwarm.Waves[CurrentWaveIndex];
-            }
-        }
-
-        List<KeyValuePair<S_EnemyWithCount, int>> _enemiesWithLanes = new();
-        List<float> _enemyCooldownArr = new();
-        int _enemyCooldownArrCount;
-
-        List<int> _waveCooldownArr = GLOBAL.FailsafeWaveCooldowns;
-        SwarmDataValueContainer _changedSwarm = null;
-        float _cooldownSpeedMultiplier = 1;
-
-        void Awake()
-        {
-            foreach (var item in _spawners)
-            {
-                item.SetEnemyIndicators(null);
-            }
-        }
-
-        private void Start()
-        {
-            SwarmDatabase sdb = GLOBAL.GetWaveDatabase();
-
-            SwarmData sd = sdb.DataList[0] as SwarmData;
-            SwarmData temp = ScriptableObject.CreateInstance<SwarmData>();
-            temp.SetSwarmValues(sd.AsValue, false);
-
-            CurrentSwarm = temp.AsValue;
-            CurrentSwarm.e_ValuesHaveChanged += OnCurrentSwarmValuesHaveChanged;
-
-            e_ActiveEnemiesListIsEmptied += OnWaveEnded;
             _BaseMngr.e_BaseHasDied += _BaseMngr_e_BaseHasDied;
-            _TimeTM.text = "";
 
-            StartCoroutine(RunWaveCooldown(_StartCooldown));
-            SetCooldownIsPaused(_StartPaused);
+            //Get current wave index here
+            _currentWave = waveDB.DataList[currentWaveIndex].AsValue();
+
+            SetWaveUp();
+
+            //Use this method when you are ready. Usually hooked up to a button.
+            //StartWave();
         }
 
-        void OnCurrentSwarmValuesHaveChanged(object sender, SwarmDataValueContainer e)
+        public static void RemoveFromActiveEnemyList(GameObject target)
         {
-            Debug.Log($"{sender.ToString()} has changed values.");
+            ActiveEnemies.Remove(target);
         }
 
         void _BaseMngr_e_BaseHasDied(object sender, EventArgs e)
@@ -107,27 +65,16 @@ namespace TowerDefence
             _BaseMngr.e_BaseHasDied -= _BaseMngr_e_BaseHasDied;
         }
 
-        public static bool RemoveFromActiveEnemyList(GameObject target)
-        {
-            bool didRemove = ActiveEnemies.Remove(target);
-            if (ActiveEnemies.Count <= 0 && StillSpawningEnemies == false)
-            {
-                e_ActiveEnemiesListIsEmptied?.Invoke(typeof(SpawnManager), "listEmpty");
-            }
-            return didRemove;
-        }
-
         public void StartWave()
         {
+            //SetIndicatorValues(null);
+
             if (WaveIsActive) return;
             if (_currentWave == null)
             {
                 Debug.LogError("_currentWave is null");
                 return;
             }
-
-            _waveCooldownArr = CurrentSwarm.DefaultWaveCooldowns;
-            if (_waveCooldownArr == null || _waveCooldownArr.Count <= 0) _waveCooldownArr = GLOBAL.FailsafeWaveCooldowns;
 
             WaveIsActive = true;
             _TDPlayerController.EvaluateGameplayMode(true);
@@ -138,236 +85,174 @@ namespace TowerDefence
             if (WaveIsActive == false) return;
 
             StopCoroutine(nameof(WaveCoroutine));
-            StillSpawningEnemies = false;
             WaveIsActive = false;
         }
-        public void SetCooldownIsPaused(bool setTo) => _cooldownSpeedMultiplier = setTo ? 0 : 1;
-
 
         IEnumerator WaveCoroutine()
         {
-            StillSpawningEnemies = true;
             //looping untill either no data is left in wave data or the failsafe cap is reached
-            for (int i = 0; _enemiesWithLanes.Count > 0 && i <= 10000; i++)
+            for (int i = 0; i < _currentEnemies.Count; i++)
             {
-                SpawnNextWave(ref _enemiesWithLanes);
+                var ewl = _currentEnemies[i];
+                SpawnNextEnemy(ewl);
 
-                yield return new WaitForSeconds(_enemyCooldownArrCount > i ? _enemyCooldownArr[i] : _enemyCooldownArr[_enemyCooldownArrCount - 1]);
-
-                if (i == 10000) Debug.LogError("Failsafe cap was reached while spawning waves");
+                yield return new WaitForSeconds(ewl.Cooldown);
             }
-            StillSpawningEnemies = false;
 
-            if (ActiveEnemies.Count <= 0 || _WaitUntillEnemiesAreDead == false) OnWaveEnded(this, "waveEnd");
+            yield return new WaitUntil(() => ActiveEnemies.Count <= 0);
+
+            OnWaveEnded();
         }
-        void SetWaveUp()
+        void SetWaveValues()
         {
-            _enemiesWithLanes = new List<KeyValuePair<S_EnemyWithCount, int>>();
+            _currentEnemies = new();
 
-            //instantiating wave data
-            List<int> laneIndexes = new();
             for (int i = 0; i < _currentWave.Value.Enemies.Count; i++)
             {
-                S_LaneGroup lane = _currentWave.Value.Enemies[i];
-
-                for (int n = 0; n < lane.Enemies.Count; n++)
-                {
-
-                    //locking enemies
-
-                    lane.Enemies[n] = new S_EnemyWithCount(lane.Enemies[n].Enemy, lane.Enemies[n].Count);
-
-                    //locking enemies end
-
-
-                    if (lane.Enemies[n].Count <= 0) continue;
-                    if (lane.Enemies[n].Enemy == null) continue;
-
-                    _enemiesWithLanes.Add(new KeyValuePair<S_EnemyWithCount, int>(lane.Enemies[n], i));
-                    if (laneIndexes.Contains(i) == false) laneIndexes.Add(i);
-                }
+                var item = _currentWave.Value.Enemies[i];
+                item.LockEnemy();
+                _currentEnemies.Add(item);
             }
 
+            ////instantiating wave data
+            //List<int> laneIndexes = new();
+            //for (int i = 0; i < _currentWave.Value.Enemies.Count; i++)
+            //{
+            //    S_LaneGroup lane = _currentWave.Value.Enemies[i];
 
-            //removing excess from waveData to fit the actual lane count
-            for (int i = 0; i < laneIndexes.Count - _spawners.Count; i++)
-            {
-                int randomIndex = UnityEngine.Random.Range(0, laneIndexes.Count);
-                _enemiesWithLanes.FindAll(x => x.Value == randomIndex).ForEach(y => _enemiesWithLanes.Remove(y));
-            }
+            //    for (int n = 0; n < lane.Enemies.Count; n++)
+            //    {
+
+            //        //locking enemies
+
+            //        lane.Enemies[n] = new S_EnemyWithCount(lane.Enemies[n].Enemy, lane.Enemies[n].Count);
+
+            //        //locking enemies end
 
 
-            //Shuffling lanes
-            List<int> spawnerIndexes = new();
-            List<int> oldLaneIndexes = new();
-            List<int> uniqueLaneIndexes = new();
-            for (int i = 0; i < _spawners.Count; i++) spawnerIndexes.Add(i);
-            for (int i = 0; i < _enemiesWithLanes.Count; i++) oldLaneIndexes.Add(_enemiesWithLanes[i].Value);
-            for (int i = 0; i < _enemiesWithLanes.Count; i++)
-            {
-                if (uniqueLaneIndexes.Contains(_enemiesWithLanes[i].Value) == false)
-                {
-                    uniqueLaneIndexes.Add(_enemiesWithLanes[i].Value);
-                }
-            }
+            //        if (lane.Enemies[n].Count <= 0) continue;
+            //        if (lane.Enemies[n].Enemy == null) continue;
 
-            for (int i = 0; i < uniqueLaneIndexes.Count; i++)
-            {
-                int randomIndex = UnityEngine.Random.Range(0, spawnerIndexes.Count);
+            //        _enemiesWithLanes.Add(new KeyValuePair<S_EnemyWithCount, int>(lane.Enemies[n], i));
+            //        if (laneIndexes.Contains(i) == false) laneIndexes.Add(i);
+            //    }
+            //}
 
-                for (int n = 0; n < _enemiesWithLanes.Count; n++)
-                {
-                    if (oldLaneIndexes[n] == uniqueLaneIndexes[i])
-                    {
-                        _enemiesWithLanes[n] = new KeyValuePair<S_EnemyWithCount, int>(_enemiesWithLanes[n].Key, spawnerIndexes[randomIndex]);
-                    }
-                }
 
-                spawnerIndexes.RemoveAt(randomIndex);
-            }
+            ////removing excess from waveData to fit the actual lane count
+            //for (int i = 0; i < laneIndexes.Count - _spawners.Count; i++)
+            //{
+            //    int randomIndex = UnityEngine.Random.Range(0, laneIndexes.Count);
+            //    _enemiesWithLanes.FindAll(x => x.Value == randomIndex).ForEach(y => _enemiesWithLanes.Remove(y));
+            //}
 
-            //registering cooldown values
-            _enemyCooldownArr = CurrentSwarm.DefaultEnemyCooldowns;
-            if (_enemyCooldownArr == null || _enemyCooldownArr.Count <= 0) _enemyCooldownArr = GLOBAL.FailsafeEnemyCooldowns;
-            _enemyCooldownArrCount = _enemyCooldownArr.Count;
+
+            ////Shuffling lanes
+            //List<int> spawnerIndexes = new();
+            //List<int> oldLaneIndexes = new();
+            //List<int> uniqueLaneIndexes = new();
+            //for (int i = 0; i < _spawners.Count; i++) spawnerIndexes.Add(i);
+            //for (int i = 0; i < _enemiesWithLanes.Count; i++) oldLaneIndexes.Add(_enemiesWithLanes[i].Value);
+            //for (int i = 0; i < _enemiesWithLanes.Count; i++)
+            //{
+            //    if (uniqueLaneIndexes.Contains(_enemiesWithLanes[i].Value) == false)
+            //    {
+            //        uniqueLaneIndexes.Add(_enemiesWithLanes[i].Value);
+            //    }
+            //}
+
+            //for (int i = 0; i < uniqueLaneIndexes.Count; i++)
+            //{
+            //    int randomIndex = UnityEngine.Random.Range(0, spawnerIndexes.Count);
+
+            //    for (int n = 0; n < _enemiesWithLanes.Count; n++)
+            //    {
+            //        if (oldLaneIndexes[n] == uniqueLaneIndexes[i])
+            //        {
+            //            _enemiesWithLanes[n] = new KeyValuePair<S_EnemyWithCount, int>(_enemiesWithLanes[n].Key, spawnerIndexes[randomIndex]);
+            //        }
+            //    }
+
+            //    spawnerIndexes.RemoveAt(randomIndex);
+            //}
+
+            ////registering cooldown values
+            //_enemyCooldownArr = CurrentSwarm.DefaultEnemyCooldowns;
+            //if (_enemyCooldownArr == null || _enemyCooldownArr.Count <= 0) _enemyCooldownArr = GLOBAL.FailsafeEnemyCooldowns;
+            //_enemyCooldownArrCount = _enemyCooldownArr.Count;
         }
 
-        void SpawnNextWave(ref List<KeyValuePair<S_EnemyWithCount, int>> currentWave)
+        void SpawnNextEnemy(TD_EnemyWithCooldown enemy)
         {
-            List<int> list = new();
-            List<int> laneIndexes = list;
-            foreach (var item in currentWave)
+            int laneMax = _spawners.Count;
+            int i = 0;
+
+            for (int n = 0; n < 3; n++)
             {
-                if (laneIndexes.Contains(item.Value)) continue;
-                laneIndexes.Add(item.Value);
+                i = UnityEngine.Random.Range(0, laneMax);
+                if (i != _lastLaneIndex) break;
             }
+            _lastLaneIndex = i;
 
-            int laneInt = laneIndexes[UnityEngine.Random.Range(0, laneIndexes.Count)];
-
-            List<S_EnemyWithCount> enemyList = new();
-            foreach (var ewcPair in currentWave.FindAll(x => x.Value == laneInt)) for (int i = 0; i < ewcPair.Key.Count; i++) enemyList.Add(ewcPair.Key);
-
-            int rando = UnityEngine.Random.Range(0, enemyList.Count);
-            S_EnemyWithCount selectedEnemy = enemyList[rando];
-
-            int selectedIndex = currentWave.FindIndex(new Predicate<KeyValuePair<S_EnemyWithCount, int>>(x => x.Key.Equals(selectedEnemy) && x.Value == laneInt));
-
-            GameObject prefab = selectedEnemy.Enemy.EnemyPrefab;
-            prefab = Instantiate(prefab, _spawners[laneInt].Position, prefab.transform.rotation);
+            GameObject prefab = enemy.Enemy.Enemy.EnemyPrefab;
+            prefab = Instantiate(prefab, _spawners[i].Position, prefab.transform.rotation);
             ActiveEnemies.Add(prefab);
-
-            currentWave[selectedIndex] = new KeyValuePair<S_EnemyWithCount, int>(new S_EnemyWithCount(selectedEnemy.Enemy, selectedEnemy.Count - 1), laneInt);
-            if (currentWave[selectedIndex].Key.Count <= 0) currentWave.RemoveAt(selectedIndex);
         }
 
-        void OnWaveEnded(object sender, string senderID)
+        void OnWaveEnded()
         {
             if (WaveIsActive == false) return;
-
-            if (senderID == "listEmpty" && _WaitUntillEnemiesAreDead == false) return;
-
             WaveIsActive = false;
 
-            if (_changedSwarm != null)
-            {
-                ChangeCurrentSwarm();
-                return;
-            }
-
-            if (CurrentWaveIndex + 1 >= _waveCount && _RepeatLastWave == false)
-            {
-                AllWavesEnded();
-                return;
-            }
-
-            int cooldown = _currentWaveCooldown;
-            if (CurrentWaveIndex + 1 < _waveCount) CurrentWaveIndex++;
-
-            StartCoroutine(nameof(RunWaveCooldown), cooldown);
+            Debug.Log("Wave has ended");
         }
 
-        void SetIndicatorValues(bool? toNull = false)
+        //void SetIndicatorValues(bool? toNull = false)
+        //{
+        //    if (toNull == null || toNull.Value)
+        //    {
+        //        foreach (var item in _spawners) item.SetEnemyIndicators(null);
+
+        //        return;
+        //    }
+
+        //    //First is lane second is enemies in it
+        //    List<List<EnemyData>> enemies = new();
+
+        //    for (int i = 0; i < _spawners.Count; i++)
+        //    {
+        //        enemies.Add(null);
+        //    }
+
+        //    foreach (var item in _currentEnemies)
+        //    {
+        //        int laneInt = item.Value;
+        //        if (laneInt >= enemies.Count) continue;
+
+        //        EnemyData data = item.Key.Enemy.Enemy;
+
+        //        if (enemies[laneInt] == null)
+        //        {
+        //            enemies[laneInt] = new List<EnemyData>();
+        //        }
+
+        //        if (enemies[laneInt].Contains(data) == false)
+        //        {
+        //            enemies[laneInt].Add(data);
+        //        }
+        //    }
+
+        //    for (int i = 0; i < _spawners.Count; i++)
+        //    {
+        //        _spawners[i].SetEnemyIndicators(enemies[i]?.ToArray());
+        //    }
+        //}
+
+        void SetWaveUp()
         {
-            if (toNull == null || toNull.Value)
-            {
-                foreach (var item in _spawners) item.SetEnemyIndicators(null);
-
-                return;
-            }
-
-            //First is lane second is enemies in it
-            List<List<EnemyData>> enemies = new();
-
-            for (int i = 0; i < _spawners.Count; i++)
-            {
-                enemies.Add(null);
-            }
-
-            foreach (var item in _enemiesWithLanes)
-            {
-                int laneInt = item.Value;
-                if (laneInt >= enemies.Count) continue;
-
-                EnemyData data = item.Key.Enemy;
-
-                if (enemies[laneInt] == null)
-                {
-                    enemies[laneInt] = new List<EnemyData>();
-                }
-
-                if (enemies[laneInt].Contains(data) == false)
-                {
-                    enemies[laneInt].Add(data);
-                }
-            }
-
-            for (int i = 0; i < _spawners.Count; i++)
-            {
-                _spawners[i].SetEnemyIndicators(enemies[i]?.ToArray());
-            }
-        }
-
-        float _currentCooldown = -1;
-        IEnumerator RunWaveCooldown(int cooldown)
-        {
-            SetWaveUp();
-            SetIndicatorValues();
+            SetWaveValues();
+            //SetIndicatorValues();
             _TDPlayerController.EvaluateGameplayMode(false);
-
-            _currentCooldown = cooldown;
-
-            while (true)
-            {
-                if (_currentCooldown <= 0) break;
-
-                float tempCD = Mathf.CeilToInt(_currentCooldown);
-                string timerStr = $"Untill Next Wave : {tempCD}";
-                string pausedStr = $"PAUSED ({tempCD} left)";
-                _TimeTM.text = _isPaused ? pausedStr : timerStr;
-
-                yield return new WaitForFixedUpdate();
-                _currentCooldown -= Time.fixedDeltaTime * _cooldownSpeedMultiplier;
-            }
-            _currentCooldown = -1;
-            _TimeTM.text = "";
-
-            SetIndicatorValues(null);
-            StartWave();
-        }
-        public void SkipWaveCooldown() => _currentCooldown = -1;
-
-        void AllWavesEnded()
-        {
-            _TimeTM.text = "All Waves are finished";
-        }
-
-        void ChangeCurrentSwarm()
-        {
-            CurrentSwarm = _changedSwarm;
-            _changedSwarm = null;
-            CurrentWaveIndex = 0;
-
-            RunWaveCooldown(_currentWaveCooldown);
         }
 
         public void SpawnSpawnerAt(Vector3 position, Transform parent = null)
@@ -391,6 +276,5 @@ namespace TowerDefence
             }
             _spawners = new List<Spawner>();
         }
-    */
     }
 }

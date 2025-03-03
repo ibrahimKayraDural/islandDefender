@@ -43,7 +43,7 @@ MonoBehaviour:
       _enemy: {fileID: 0}
       _isWildCard: 1
       _wildCardID: type
-      _wildCardValue: tough
+      _wildCardValue: durable
     Cooldown: 10
   - Enemy:
       _enemy: {fileID: 0}
