@@ -70,3 +70,7 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+/.idea/.idea.islandDefender/.idea/encodings.xml
+/.idea/.idea.islandDefender/.idea/.gitignore
+/.idea/.idea.islandDefender/.idea/indexLayout.xml
+/.idea/.idea.islandDefender/.idea/vcs.xml
