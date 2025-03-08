@@ -21,7 +21,7 @@ namespace TowerDefence
         internal override void ActivationMethod()
         {
             Ray ray = new Ray(_lookTransform.position + Vector3.up, Vector3.down);
-            if(Physics.Raycast(ray, out RaycastHit hit, 10, _TileMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, 10, _TileMask))
             {
                 _Animator.SetTrigger("shoot");
                 Vector3 point = hit.collider.transform.position;
@@ -40,12 +40,6 @@ namespace TowerDefence
             _MeshParent.transform.localPosition = _origin + Vector3.right * -.2f;
         }
 
-        internal override void OnInitialized()
-        {
-        }
-
-        internal override void OnUpdate()
-        {
-        }
+        internal override void OnUpdate() { }
     }
 }

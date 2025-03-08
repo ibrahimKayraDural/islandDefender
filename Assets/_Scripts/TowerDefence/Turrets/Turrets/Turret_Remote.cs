@@ -51,10 +51,13 @@ namespace TowerDefence
         }
 
         abstract internal void OnUpdate();
+        internal override void OnInitialized() { }
+
+        public bool IsUsable => _nextUse_TargetTime <= Time.time;
 
         public void UseTurret()
         {
-            if (_nextUse_TargetTime > Time.time) return;
+            if (IsUsable == false) return;
 
             ActivationMethod();
 

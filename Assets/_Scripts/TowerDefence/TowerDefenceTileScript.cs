@@ -35,7 +35,11 @@ namespace TowerDefence
         public void SetOccupied(TurretUnit occupyingTurret)
         {
             if (IsOccupied) return;
-            if (occupyingTurret == null) return;
+            if (occupyingTurret == null)
+            {
+                UnOccupy();
+                return;
+            }
 
             _occupyingTurret = occupyingTurret;
         }

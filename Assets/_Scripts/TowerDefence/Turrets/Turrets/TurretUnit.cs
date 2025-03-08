@@ -27,11 +27,12 @@ namespace TowerDefence
 
             _data = data;
             _MaxHealth = data.Health;
+            SetHealth(_MaxHealth);
+
             _parentTile = tile;
             transform.parent = tile.transform;
             transform.localPosition = Vector3.zero;
             transform.rotation = Quaternion.identity;
-            SetHealth(_MaxHealth);
 
             tile.SetOccupied(this);
             OnInitialized();
@@ -40,7 +41,6 @@ namespace TowerDefence
         }
 
         abstract internal void OnInitialized();
-
         abstract internal void ActivationMethod();
 
         virtual public void RemoveHealth(float amount)
@@ -55,12 +55,20 @@ namespace TowerDefence
 
             if (_health == 0) KillSelf();
         }
-        virtual public void KillSelf()
+        virtual public void KillSelf(bool playEffects = true)
         {
             _isDead = true;
-            AudioManager.Instance.PlayClip(Data.ID + "_Death", Data.DeathSFX);
             _parentTile.UnOccupy();
-            StartCoroutine(DeathAnim());
+
+            if (playEffects)
+            {
+                AudioManager.Instance.PlayClip(Data.ID + "_Death", Data.DeathSFX);
+                StartCoroutine(DeathAnim());
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
         internal virtual IEnumerator DeathAnim()
         {

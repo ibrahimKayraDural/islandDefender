@@ -29,11 +29,11 @@ namespace TowerDefence
             StopCoroutine(nameof(ActivationLoop));
         }
 
-        public override void KillSelf()
+        public override void KillSelf(bool playEffects = true)
         {
             StopAllCoroutines();
             BreakActivationLoop();
-            base.KillSelf();
+            base.KillSelf(playEffects);
         }
-    } 
+    }
 }
