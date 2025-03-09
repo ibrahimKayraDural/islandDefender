@@ -13,7 +13,8 @@ namespace TowerDefence
     {
         [SerializeField] LayerMask TowerDefenceLayer;
         [SerializeField] Transform _MouseTracker;
-        [SerializeField] TurretIndicator _Indicator;
+        [SerializeField] TurretIndicator _CursorIndicator;
+        [SerializeField] TurretIndicatorManager _IndicatorManager;
         [SerializeField] TDCanvasManager _TDCanvasManager;
         [SerializeField] SpawnManager _SpawnManager;
         [SerializeField] OwnedTurretController _OwnedTurretController;
@@ -160,7 +161,7 @@ namespace TowerDefence
         void DeselectCurrentTurret()
         {
             _currentTurretToPlace = null;
-            _Indicator.SetTurret(null);
+            _CursorIndicator.SetTurret(null);
             DeselectCurrentTile();
         }
         void HandleEditMode()
@@ -180,17 +181,17 @@ namespace TowerDefence
 
             if (Input.GetMouseButtonDown(0))
             {
-                if(_currentTurretToPlace)
+                if (_currentTurretToPlace)
                 {
-                    TryToPlaceTurret();
+                    TryPlaceTurret();
                 }
-                else if(_turretToSwap)
+                else if (_turretToSwap)
                 {
-                    TryToSwapCurrentTurret();
+                    TrySwapCurrentTurret();
                 }
                 else
                 {
-                    SelectTurretToSwap(_currentTile?.OccupyingTurret);
+                    SelectTurretToSwap(_currentTile);
                 }
             }
             else if (Input.GetMouseButtonDown(1))
@@ -199,11 +200,11 @@ namespace TowerDefence
                 DeselectTurretToSwap();
             }
 
-            void TryToPlaceTurret()
+            void TryPlaceTurret()
             {
                 if (targetTime_CanPlaceTurret > Time.time) return;
                 if (_currentTile == null) {/*DeselectCurrentTurret();*/ return; }
-                if (_currentTile.IsOccupied) return;
+                if (_currentTile.IsOccupied || _currentTile.IsLocked) return;
 
                 TurretUnit unit = Instantiate(_currentTurretToPlace.PrefabObject).GetComponent<TurretUnit>();
                 unit.Initialize(_currentTurretToPlace, _currentTile);
@@ -224,7 +225,7 @@ namespace TowerDefence
                 {
                     if (_currentTile)
                     {
-                        TryToSwapCurrentTurret();
+                        TrySwapCurrentTurret();
                     }
                 }
                 else if (_selectedRemoteTurret)
@@ -237,7 +238,7 @@ namespace TowerDefence
                 }
                 else
                 {
-                    SelectTurretToSwap(_currentTile?.OccupyingTurret);
+                    SelectTurretToSwap(_currentTile);
                 }
             }
             else if (Input.GetMouseButtonDown(1))
@@ -274,22 +275,28 @@ namespace TowerDefence
             }
         }
 
-        void TryToSwapCurrentTurret()
+        void TrySwapCurrentTurret()
         {
-            var tur = _currentTile.OccupyingTurret;
-            if ((tur && tur == _turretToSwap) == false)
-            {
-                SwapTiles(_currentTile, _turretToSwap._parentTile);
-                DeselectTurretToSwap();
-            }
+            if (_currentTile && _currentTile.IsLocked) return;
+
+            var tur = _currentTile?.OccupyingTurret;
+
+            //infinite turret bugfix
+            if (tur && tur == _turretToSwap) return;
+
+            SwapTiles(_currentTile, _turretToSwap._parentTile);
+            DeselectTurretToSwap();
         }
 
         void HandleIdleMode()
         {
 
         }
-        void SelectTurretToSwap(TurretUnit turret)
+        void SelectTurretToSwap(TowerDefenceTileScript tile)
         {
+            if (tile && tile.IsLocked) return;
+
+            var turret = tile?.OccupyingTurret;
             if (_turretToSwap != null) DeselectTurretToSwap();
 
             _turretToSwap = turret;
@@ -347,10 +354,10 @@ namespace TowerDefence
             _currentTile = tdts;
             _currentTile.GetHighlighted();
 
-            if (tdts.IsOccupied == false)
+            if (tdts.IsOccupied == false && tdts.IsLocked == false)
             {
-                _Indicator.SetPosition(tdts.transform.position);
-                _Indicator.SetEnablity(true);
+                _CursorIndicator.SetPosition(tdts.transform.position);
+                _CursorIndicator.SetEnablity(true);
             }
         }
         void SwapTiles(TowerDefenceTileScript tile1, TowerDefenceTileScript tile2)
@@ -368,14 +375,42 @@ namespace TowerDefence
 
             if (data1)
             {
-                TurretUnit unit = Instantiate(data1.PrefabObject).GetComponent<TurretUnit>();
-                unit.Initialize(data1, tile2);
+                StartCoroutine(nameof(IENUM_SwapTiles), new SwappableTurretData(data1, tile2));
             }
             if (data2)
             {
-                TurretUnit unit = Instantiate(data2.PrefabObject).GetComponent<TurretUnit>();
-                unit.Initialize(data2, tile1);
+                StartCoroutine(nameof(IENUM_SwapTiles), new SwappableTurretData(data2, tile1));
             }
+        }
+        struct SwappableTurretData
+        {
+            public TurretData TData;
+            public TowerDefenceTileScript TDTile;
+
+            public SwappableTurretData(TurretData data, TowerDefenceTileScript tile)
+            {
+                TData = data;
+                TDTile = tile;
+            }
+        }
+        IEnumerator IENUM_SwapTiles(SwappableTurretData data)
+        {
+            var tData = data.TData;
+            var tile = data.TDTile;
+
+            var ind = _IndicatorManager.GetFreeIndicator(out int i);
+            ind.SetTurret(tData);
+            ind.SetPosition(tile.transform.position);
+            ind.SetEnablity(true);
+            tile.SetIsLocked(true);
+
+            yield return new WaitForSeconds(tData.SwapCooldown);
+
+            _IndicatorManager.ReleaseIndicator(i);
+            tile.SetIsLocked(false);
+
+            TurretUnit unit = Instantiate(tData.PrefabObject).GetComponent<TurretUnit>();
+            unit.Initialize(tData, tile);
         }
 
         void DeselectCurrentTile()
@@ -385,7 +420,7 @@ namespace TowerDefence
             _currentTile.GetUnhighlighted();
             _currentTile = null;
 
-            _Indicator.SetEnablity(false);
+            _CursorIndicator.SetEnablity(false);
         }
 
         public void OnHoverInteractableCell(UICell currentCell) { }
@@ -401,7 +436,7 @@ namespace TowerDefence
 
             _CraftTabToggler.SetStatus(false);
             _currentTurretToPlace = data;
-            _Indicator.SetTurret(data);
+            _CursorIndicator.SetTurret(data);
             DeselectTurretToSwap();
         }
 

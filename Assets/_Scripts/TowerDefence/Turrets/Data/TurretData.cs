@@ -18,6 +18,7 @@ namespace TowerDefence
         public int Health => _Health;
         public int Damage => _Damage;
         public float ActivationCooldown => _activationCooldown;
+        public float SwapCooldown => _swapCooldown;
         public Cost[] Costs => _costs;
         public GameObject PrefabObject => _prefabObject;
         public GameObject ProjectilePrefab => _projectilePrefab;
@@ -30,6 +31,7 @@ namespace TowerDefence
         [SerializeField] int _Health = 1;
         [SerializeField] int _Damage = 1;
         [SerializeField] float _activationCooldown = 1;
+        [SerializeField] float _swapCooldown = 1;
         [SerializeField] Cost[] _costs = new Cost[0];
         [SerializeField, Tooltip("Main body of the turret, with turret unit script")] GameObject _prefabObject;
         [SerializeField] GameObject _projectilePrefab;

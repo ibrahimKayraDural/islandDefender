@@ -23,6 +23,7 @@ MonoBehaviour:
   _Health: 250
   _Damage: 200
   _activationCooldown: 20
+  _swapCooldown: 2
   _costs:
   - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
     _amount: 40
@@ -30,3 +31,4 @@ MonoBehaviour:
   _projectilePrefab: {fileID: 665859162509387241, guid: 825a3d2bf43eb184485eaf672ec04bf6, type: 3}
   _projectileSpeedMultiplier: 1
   _GetDamagedSFX: {fileID: 8300000, guid: 57e816778ca71674abdfddd09b2e98cd, type: 3}
+  _DeathSFX: {fileID: 0}

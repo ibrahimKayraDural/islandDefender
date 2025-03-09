@@ -10,7 +10,8 @@ namespace TowerDefence
     public class TurretIndicator : MonoBehaviour
     {
         [TextArea]
-        [SerializeField] string IMPORTANT = "Right click this script and click " +
+        [SerializeField]
+        string IMPORTANT = "Right click this script and click " +
             "''Initialize Meshes'' to initialize the meshes";
 
         [Space(15), SerializeField] Transform _Indicator;
@@ -25,15 +26,44 @@ namespace TowerDefence
 
         GameObject _lastTurret = null;
 
-        public void InitMeshes()
+        TurretDatabase _turretDB
+        {
+            get
+            {
+                if (AUTO_turretDB == null)
+                    AUTO_turretDB = GLOBAL.GetTurretDatabase();
+
+                return AUTO_turretDB;
+            }
+        }
+        TurretDatabase AUTO_turretDB = null;
+
+        public void InitMeshes(Material ghostMaterial = null)
         {
             //clear
             Meshes = new SerializedDictionary<TurretData, GameObject>();
+
+            if (_Indicator == null)
+            {
+                _Indicator = new GameObject("Indicator Parent").transform;
+                _Indicator.parent = transform;
+                _Indicator.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
+            }
+
+            if (ghostMaterial) _GhostMaterial = ghostMaterial;
+
             var children = _Indicator.transform.Cast<Transform>().ToList();
-            foreach (var child in children) DestroyImmediate(child.gameObject);
+            foreach (var child in children)
+            {
+#if UNITY_EDITOR
+                DestroyImmediate(child.gameObject);
+#else
+                Destroy(child.gameObject);
+#endif
+            }
 
             //re-initialize
-            foreach (var type in GLOBAL.GetTurretDatabase().DataList)
+            foreach (var type in _turretDB.DataList)
             {
                 var go = type.PrefabObject;
                 go = Instantiate(go, _Indicator);
@@ -45,7 +75,13 @@ namespace TowerDefence
                     var c = comps[i];
                     var cType = c.GetType();
                     if (IndicatorComponentTypes.Contains(cType) == false)
+                    {
+#if UNITY_EDITOR
                         DestroyImmediate(c);
+#else
+                        Destroy(c);
+#endif
+                    }
                     else if (cType == typeof(MeshRenderer))
                     {
                         var mr = c as MeshRenderer;
@@ -57,7 +93,6 @@ namespace TowerDefence
                 Meshes.Add(type, go);
             }
         }
-
         public void SetPosition(Vector3 position) => _Indicator.position = position;
         public void SetEnablity(bool setTo) => _Indicator.gameObject.SetActive(setTo);
         public void SetTurret(TurretData turret)

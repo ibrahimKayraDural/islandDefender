@@ -6,11 +6,13 @@ namespace TowerDefence
 {
     public class TowerDefenceTileScript : MonoBehaviour
     {
+        public bool IsLocked => _isLocked;
         public TurretUnit OccupyingTurret => _occupyingTurret;
         public bool IsOccupied => _occupyingTurret != null;
 
         Material _material = null;
         TurretUnit _occupyingTurret = null;
+        bool _isLocked = false;
 
         void Awake()
         {
@@ -28,13 +30,14 @@ namespace TowerDefence
 
             _material.SetFloat("_IsHighlighted", setTo ? 1 : 0);
         }
+        public void SetIsLocked(bool setTo) => _isLocked = setTo;
         public void UnOccupy()
         {
             _occupyingTurret = null;
         }
         public void SetOccupied(TurretUnit occupyingTurret)
         {
-            if (IsOccupied) return;
+            if (IsOccupied || IsLocked) return;
             if (occupyingTurret == null)
             {
                 UnOccupy();
@@ -43,5 +46,5 @@ namespace TowerDefence
 
             _occupyingTurret = occupyingTurret;
         }
-    } 
+    }
 }
