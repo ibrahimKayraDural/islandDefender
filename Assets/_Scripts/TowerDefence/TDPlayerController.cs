@@ -193,8 +193,12 @@ namespace TowerDefence
                 {
                     if (_currentTile)
                     {
-                        SwapTiles(_currentTile, _turretToSwap._parentTile);
-                        DeselectTurretToSwap();
+                        var tur = _currentTile.OccupyingTurret;
+                        if ((tur && tur == _turretToSwap) == false)
+                        {
+                            SwapTiles(_currentTile, _turretToSwap._parentTile);
+                            DeselectTurretToSwap();
+                        }
                     }
                 }
                 else if (_selectedRemoteTurret)
