@@ -373,24 +373,28 @@ namespace TowerDefence
             turret1?.KillSelf(false);
             turret2?.KillSelf(false);
 
+            bool dontWaitCooldown = _currentGameplayMode == TowerDefenceGameplayMode.Edit;
+
             if (data1)
             {
-                StartCoroutine(nameof(IENUM_SwapTiles), new SwappableTurretData(data1, tile2));
+                StartCoroutine(nameof(IENUM_SwapTiles), new SwappableTurretData(data1, tile2, dontWaitCooldown));
             }
             if (data2)
             {
-                StartCoroutine(nameof(IENUM_SwapTiles), new SwappableTurretData(data2, tile1));
+                StartCoroutine(nameof(IENUM_SwapTiles), new SwappableTurretData(data2, tile1, dontWaitCooldown));
             }
         }
         struct SwappableTurretData
         {
             public TurretData TData;
             public TowerDefenceTileScript TDTile;
+            public bool DontWaitCooldown;
 
-            public SwappableTurretData(TurretData data, TowerDefenceTileScript tile)
+            public SwappableTurretData(TurretData data, TowerDefenceTileScript tile, bool dontWaitCooldown)
             {
                 TData = data;
                 TDTile = tile;
+                DontWaitCooldown = dontWaitCooldown;
             }
         }
         IEnumerator IENUM_SwapTiles(SwappableTurretData data)
@@ -404,7 +408,8 @@ namespace TowerDefence
             ind.SetEnablity(true);
             tile.SetIsLocked(true);
 
-            yield return new WaitForSeconds(tData.SwapCooldown);
+            var cooldown = data.DontWaitCooldown ? 0 : tData.SwapCooldown;
+            yield return new WaitForSeconds(cooldown);
 
             _IndicatorManager.ReleaseIndicator(i);
             tile.SetIsLocked(false);
