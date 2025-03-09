@@ -13,6 +13,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 0
+--- !u!114 &-5080297638395358445
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da692e001514ec24dbc4cca1949ff7e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 13
+  hdPluginSubTargetMaterialVersions:
+    m_Keys: []
+    m_Values: 
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -39,7 +55,7 @@ Material:
   - TransparentBackface
   - RayTracingPrepass
   - MOTIONVECTORS
-  m_LockedProperties: 
+  m_LockedProperties: _DoubleSidedGIMode
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -64,7 +80,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: d76a9296d4485a44b9467aac9138ab07, type: 3}
+        m_Texture: {fileID: 2800000, guid: 56b9c62bcf339434691b849aa81b0fca, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -102,6 +118,7 @@ Material:
     - _AlphaDstBlend: 0
     - _AlphaSrcBlend: 1
     - _AmbientOcclusion: 1
+    - _AmbientOcclusionValue: 1
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
     - _BlendMode: 0
@@ -124,7 +141,10 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _HighlightThinness: 3
+    - _IsHighlighted: 0
     - _Metallic: 0
+    - _MetallicValue: 0
     - _Mode: 0
     - _NoiseScale: 100
     - _NormalStrength: 1
@@ -139,6 +159,7 @@ Material:
     - _RequireSplitLighting: 0
     - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
+    - _SmoothnessValue: 0.5
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _StencilRef: 0
@@ -169,7 +190,9 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DamageEmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
+    - _DoubleSidedConstants: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _H_ghlightColor: {r: 0, g: 1, b: 1, a: 1}
     - _TextureTint: {r: 1, g: 1, b: 1, a: 1}
+    - _WoundEmissionColor: {r: 0.5019608, g: 0, b: 0.01568628, a: 1}
   m_BuildTextureStacks: []

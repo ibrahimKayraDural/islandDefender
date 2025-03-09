@@ -157,9 +157,15 @@ namespace TowerDefence
             _TDCanvasManager.gameObject.SetActive(false);
         }
 
+        void DeselectCurrentTurret()
+        {
+            _currentTurretToPlace = null;
+            _Indicator.SetTurret(null);
+            DeselectCurrentTile();
+        }
         void HandleEditMode()
         {
-            if (_currentTurretToPlace != null && _CraftTabToggler.Status == false)
+            if (_CraftTabToggler.Status == false)
             {
                 SetCurrentTile();
             }
@@ -172,16 +178,41 @@ namespace TowerDefence
                 _CraftTabToggler.Toggle();
             }
 
-            if (Input.GetButtonDown("PlaceTurret")) TryPlaceTurret();
-            else if (Input.GetMouseButtonDown(1)) DeselectCurrentTurret();
+            if (Input.GetMouseButtonDown(0))
+            {
+                if(_currentTurretToPlace)
+                {
+                    TryToPlaceTurret();
+                }
+                else if(_turretToSwap)
+                {
+                    TryToSwapCurrentTurret();
+                }
+                else
+                {
+                    SelectTurretToSwap(_currentTile?.OccupyingTurret);
+                }
+            }
+            else if (Input.GetMouseButtonDown(1))
+            {
+                DeselectCurrentTurret();
+                DeselectTurretToSwap();
+            }
+
+            void TryToPlaceTurret()
+            {
+                if (targetTime_CanPlaceTurret > Time.time) return;
+                if (_currentTile == null) {/*DeselectCurrentTurret();*/ return; }
+                if (_currentTile.IsOccupied) return;
+
+                TurretUnit unit = Instantiate(_currentTurretToPlace.PrefabObject).GetComponent<TurretUnit>();
+                unit.Initialize(_currentTurretToPlace, _currentTile);
+
+                _OwnedTurretController.RemoveTurret(_currentTurretToPlace);
+                if (_OwnedTurretController.HasTurret(_currentTurretToPlace) == false) DeselectCurrentTurret();
+            }
         }
 
-        void DeselectCurrentTurret()
-        {
-            _currentTurretToPlace = null;
-            _Indicator.SetTurret(null);
-            DeselectCurrentTile();
-        }
 
         void HandlePlayMode()
         {
@@ -193,12 +224,7 @@ namespace TowerDefence
                 {
                     if (_currentTile)
                     {
-                        var tur = _currentTile.OccupyingTurret;
-                        if ((tur && tur == _turretToSwap) == false)
-                        {
-                            SwapTiles(_currentTile, _turretToSwap._parentTile);
-                            DeselectTurretToSwap();
-                        }
+                        TryToSwapCurrentTurret();
                     }
                 }
                 else if (_selectedRemoteTurret)
@@ -248,15 +274,31 @@ namespace TowerDefence
             }
         }
 
-        private void SelectTurretToSwap(TurretUnit turret)
+        void TryToSwapCurrentTurret()
+        {
+            var tur = _currentTile.OccupyingTurret;
+            if ((tur && tur == _turretToSwap) == false)
+            {
+                SwapTiles(_currentTile, _turretToSwap._parentTile);
+                DeselectTurretToSwap();
+            }
+        }
+
+        void HandleIdleMode()
+        {
+
+        }
+        void SelectTurretToSwap(TurretUnit turret)
         {
             if (_turretToSwap != null) DeselectTurretToSwap();
 
             _turretToSwap = turret;
+            _turretToSwap?.SetHighlight(true);
         }
 
-        private void DeselectTurretToSwap()
+        void DeselectTurretToSwap()
         {
+            _turretToSwap?.SetHighlight(false);
             _turretToSwap = null;
         }
 
@@ -266,11 +308,6 @@ namespace TowerDefence
 
             _selectedRemoteTurret.DeselectTurret();
             _selectedRemoteTurret = null;
-        }
-
-        void HandleIdleMode()
-        {
-
         }
 
         void SetCurrentTile()
@@ -298,19 +335,6 @@ namespace TowerDefence
             }
 
             _MouseTracker.position = hit.point;
-        }
-
-        void TryPlaceTurret()
-        {
-            if (targetTime_CanPlaceTurret > Time.time) return;
-            if (_currentTile == null) {/*DeselectCurrentTurret();*/ return; }
-            if (_currentTile.IsOccupied) return;
-
-            TurretUnit unit = Instantiate(_currentTurretToPlace.PrefabObject).GetComponent<TurretUnit>();
-            unit.Initialize(_currentTurretToPlace, _currentTile);
-
-            _OwnedTurretController.RemoveTurret(_currentTurretToPlace);
-            if (_OwnedTurretController.HasTurret(_currentTurretToPlace) == false) DeselectCurrentTurret();
         }
 
         void DeleteTurret()
@@ -378,6 +402,7 @@ namespace TowerDefence
             _CraftTabToggler.SetStatus(false);
             _currentTurretToPlace = data;
             _Indicator.SetTurret(data);
+            DeselectTurretToSwap();
         }
 
         bool IUICellOwner.CellIsValid(UICell cell)

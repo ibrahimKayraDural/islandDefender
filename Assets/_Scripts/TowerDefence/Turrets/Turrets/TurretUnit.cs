@@ -87,6 +87,11 @@ namespace TowerDefence
             foreach (var m in mats) m.SetFloat("_Fill", 1);
             Destroy(gameObject);
         }
+        internal virtual void SetHighlight(bool setTo)
+        {
+            List<Material> mats = _Renderers.Select(x => x.material).ToList();
+            foreach (var m in mats) m.SetFloat("_IsHighlighted", setTo ? 1 : 0);
+        }
         internal virtual void PlayDamagedAnim()
         {
             List<Material> mats = _Renderers.Select(x => x.material).ToList();
