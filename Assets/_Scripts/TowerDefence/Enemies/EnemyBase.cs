@@ -128,8 +128,8 @@ namespace TowerDefence
         IEnumerator HANDLE_GetDamaged = null;
         IEnumerator IENUM_GetDamaged(Material mat)
         {
-            float step = .2f;
-            float speed = 20;
+            float step = .3f;
+            float speed = 40;
             float progress = 0;
 
             while (progress < 2)
