@@ -4,20 +4,39 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(menuName = "Tiles/TestRuleTile")]
-public class CustomRuleTest : RuleTile<CustomRuleTest.Neighbor> {
+public class CustomRuleTest : RuleTile<CustomRuleTest.Neighbor>
+{
     public bool invertRotation = true;
+    public bool alwaysConnect = true;
+    [Tooltip("Leave empty to ignore")]
+    public List<TileBase> tilesToConnect = new List<TileBase>();
 
-    public class Neighbor : RuleTile.TilingRule.Neighbor {
+    public class Neighbor : RuleTile.TilingRule.Neighbor
+    {
         public const int Null = 3;
         public const int NotNull = 4;
     }
 
-    public override bool RuleMatch(int neighbor, TileBase tile) {
-        switch (neighbor) {
+    public override bool RuleMatch(int neighbor, TileBase tile)
+    {
+        switch (neighbor)
+        {
+            case Neighbor.This: return CheckThis(tile);
+            case Neighbor.NotThis: return CheckNotThis(tile);
             case Neighbor.Null: return tile == null;
             case Neighbor.NotNull: return tile != null;
         }
         return base.RuleMatch(neighbor, tile);
+    }
+    bool CheckThis(TileBase tile)
+    {
+        if (alwaysConnect) return tile != null;
+        else if (tilesToConnect.Count <= 0) return tile == this;
+        else return tilesToConnect.Contains(tile) || tile == this;
+    }
+    bool CheckNotThis(TileBase tile)
+    {
+        return !CheckThis(tile);
     }
     public override bool StartUp(Vector3Int position, ITilemap tilemap, GameObject instantiatedGameObject)
     {
