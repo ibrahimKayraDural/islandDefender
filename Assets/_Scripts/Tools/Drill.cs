@@ -12,6 +12,7 @@ namespace Overworld
         [SerializeField] Rigidbody _Rigidbody;
         [SerializeField] Animator _Animator;
         [SerializeField] AudioClip _RunningSFX;
+        [SerializeField] int _BaseFuelMax = 5;
 
         AudioManager _AudioManager
         {
@@ -32,18 +33,20 @@ namespace Overworld
 
         readonly string SFX_ID = "DrillTool_Running";
 
+        int _currentFuel = 0;
+        bool _fuelEmpty = false;
+
         public void Awake()
         {
             _Rigidbody.detectCollisions = false;
             (this as ISpeedUpgradable).RefreshSpeedUpgrade();
+            _currentFuel = _BaseFuelMax;
         }
-        //private void Update()
-        //{
-        //    if (Input.GetKeyDown(KeyCode.Keypad2)) (this as IStrengthUpgradable).SetStrengthUpgrade(GLOBAL.GetUpgradeDatabase().GetDataByDisplayNameOrID("upgrade-strength-2"));
-        //}
 
         internal override IEnumerator FireIEnum()
         {
+            if (_fuelEmpty) yield break;
+
             _isFiring = true;
             _Animator.SetBool("IsRunning", _isFiring);
 
@@ -66,12 +69,24 @@ namespace Overworld
 
         internal override void ActivationImplementation() { }
 
+        public void SpendFuel()
+        {
+            if (_fuelEmpty) return;
+
+            _currentFuel--;
+            if(_currentFuel <= 0)
+            {
+                _currentFuel = 0;
+                _fuelEmpty = true;
+                StopFiring();
+            }
+        }
 
         void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.TryGetComponent(out Minable mnbl))
             {
-                mnbl.StartMining(SpeedUpgradeValue, DrillLevel);
+                mnbl.StartMining(this);
             }
         }
         void OnTriggerExit(Collider other)

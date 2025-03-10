@@ -34,19 +34,22 @@ public class Minable : MonoBehaviour
     float TargetTime_MiningSFX = -1;
     bool _isMining = false;
     bool _miningIsDone;
+    Drill _drill;
 
     void Start()
     {
         CurrentAmount = 0;
     }
 
-    public void StartMining(float speedMultiplier, int drillLevel)
+    public void StartMining(Drill drill)
     {
         if (_isMining) return;
-        if (drillLevel < RequiredDrillLevel) return;
+        if (drill.DrillLevel < RequiredDrillLevel) return;
+
+        _drill = drill;
 
         StopCoroutine(nameof(ForgetIEnum));
-        StartCoroutine(nameof(MineIEnum), speedMultiplier);
+        StartCoroutine(nameof(MineIEnum), drill.SpeedUpgradeValue);
 
         _isMining = true;
     }
@@ -102,6 +105,7 @@ public class Minable : MonoBehaviour
             PlayerInstance.Instance?.Inventory_Ref?.TryAddItemWithSpill(new ResourceItem(item.Resource, item.Amount), true);
         }
 
+        _drill?.SpendFuel();
         OnMineSuccessfull?.Invoke();
         EnemyUnlockManager.Instance?.RegisterMinedObject(_MinableID);
 
