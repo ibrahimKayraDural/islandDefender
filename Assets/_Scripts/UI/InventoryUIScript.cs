@@ -56,9 +56,9 @@ namespace GameUI
             }
             //RightClickHandleEND:;
 
-            if(Input.GetButtonDown("Exit"))
+            if (Input.GetButtonDown("Exit"))
             {
-                SetEnablityGetter(false);
+                SetEnablityGetter(false, null);
             }
 
         }
@@ -110,10 +110,10 @@ namespace GameUI
             return targetIsValid;
         }
 
-        public void ToggleInventory() => SetEnablityGetter(!IsOpen);
+        public void ToggleInventory() => SetEnablityGetter(!IsOpen, null);
         public void RefreshInventory() => (this as IInventoryCellGrid).RefreshGrid(PlayerInstance.Instance.Inventory_Ref.Items.ToArray(), _InventoryCellParent, _CellPrefab);
 
-        public void OnEnablityChanged(bool changedTo)
+        public void OnEnablityChanged(bool changedTo, List<string> optionalParameters = null)
         {
             RefreshInventory();
             _Visuals.SetActive(changedTo);
@@ -131,6 +131,6 @@ namespace GameUI
             else { }
         }
 
-        public void SetEnablityGetter(bool setTo) => (this as IUserInterface).SetEnablity(setTo);
+        public void SetEnablityGetter(bool setTo, List<string> optionalParameters) => (this as IUserInterface).SetEnablity(setTo, optionalParameters);
     }
 }

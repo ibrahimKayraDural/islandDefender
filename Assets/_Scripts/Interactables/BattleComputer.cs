@@ -5,6 +5,7 @@ using UnityEngine;
 public class BattleComputer : MonoBehaviour, IInteractable
 {
     public string InteractDescription { get => "Manage battlefield"; set { } }
+    public List<string> OptionalParameters { get; set; }
 
     BattleManager _battleManager
     {
@@ -15,6 +16,8 @@ public class BattleComputer : MonoBehaviour, IInteractable
             return AUTO_battleManager;
         }
     }
+
+
     BattleManager AUTO_battleManager = null;
 
     public void OnInteracted(GameObject interactor)

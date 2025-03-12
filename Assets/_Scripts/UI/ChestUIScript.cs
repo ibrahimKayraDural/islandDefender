@@ -70,7 +70,7 @@ namespace GameUI
             RefreshGrids();
         }
 
-        public override void OnEnablityChanged(bool changedTo)
+        public override void OnEnablityChanged(bool changedTo,List<string> optionalParameters = null)
         {
             _VisualParent.SetActive(changedTo);
 

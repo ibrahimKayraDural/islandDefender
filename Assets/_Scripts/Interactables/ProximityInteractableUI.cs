@@ -11,9 +11,9 @@ public abstract class ProximityInteractableUI : MonoBehaviour, IUserInterface
             KeyCode.I
         };
 
-    public abstract void OnEnablityChanged(bool changedTo);
+    public abstract void OnEnablityChanged(bool changedTo, List<string> optionalParameters = null);
 
-    public void SetEnablityGetter(bool setTo) => (this as IUserInterface).SetEnablity(setTo);
+    public void SetEnablityGetter(bool setTo, List<string> optionalParameters) => (this as IUserInterface).SetEnablity(setTo, optionalParameters);
 
     public bool TrySetProximityInteractor(ProximityInteractable setTo)
     {
@@ -70,13 +70,13 @@ public abstract class ProximityInteractableUI : MonoBehaviour, IUserInterface
         {
             if (Input.GetKeyDown(key))
             {
-                CurrentPI.SetOpennes(false);
+                CurrentPI.SetOpennes(false, null);
                 return;
             }
         }
         if (Input.GetButtonDown("Interact") || Input.GetButtonDown("Exit"))
         {
-            CurrentPI.SetOpennes(false);
+            CurrentPI.SetOpennes(false, null);
             return;
         }
     }

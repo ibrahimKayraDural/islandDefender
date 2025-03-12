@@ -1,8 +1,10 @@
 
+using System.Collections.Generic;
+
 public interface IUserInterface
 {
     public bool IsOpen { get; set; }
-    void SetEnablity(bool setTo)
+    void SetEnablity(bool setTo, List<string> optionalParameters)
     {
         IUserInterface ui = CanvasManager.CurrentInterface;
 
@@ -11,10 +13,11 @@ public interface IUserInterface
 
         IsOpen = setTo;
         CanvasManager.CurrentInterface = setTo ? this : null;
-        OnEnablityChanged(setTo);
+        OnEnablityChanged(setTo, optionalParameters);
     }
-    abstract void OnEnablityChanged(bool changedTo);
-    void SetEnablityGetter(bool setTo);
+    abstract void OnEnablityChanged(bool changedTo, List<string> optionalParameters);
+    void SetEnablityGetter(bool setTo, List<string> optionalParameters);
+
     //public void SetEnablityGetter(bool setTo)
     //{
     //    UserInterface ui = this as UserInterface;

@@ -64,7 +64,7 @@ namespace GameUI
 
             for (int i = 0; i < _playerToolController.MaxToolCount; i++)
             {
-                if(i < _playerActiveTools.Count)
+                if (i < _playerActiveTools.Count)
                 {
                     InstantiateCell(_playerActiveTools[i], _InventoryCellParent, true, INVENTORY_ID);
                 }
@@ -87,7 +87,7 @@ namespace GameUI
 
         void Close()
         {
-            _currentRack.SetOpennes(false);
+            _currentRack.SetOpennes(false, null);
         }
 
         void HandeDescriptionSprite(Sprite setTo)
@@ -96,7 +96,7 @@ namespace GameUI
             _DescriptionIcon.color = setTo != null ? Color.white : Color.clear;
         }
 
-        public override void OnEnablityChanged(bool changedTo)
+        public override void OnEnablityChanged(bool changedTo, List<string> optionalParameters = null)
         {
             _VisualParent.SetActive(changedTo);
         }

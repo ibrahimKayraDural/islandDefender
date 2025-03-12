@@ -32,8 +32,8 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] ChestUIScript _ChestUI;
     [SerializeField] ToolRackUI _ToolRackUI;
     [SerializeField] DoorInteractableUI _DoorUI;
+    [SerializeField] WorkBenchInteractableUI _WorkBenchUI;
     [SerializeField] InteractableHelperUI _InteractableHelper;
-    [SerializeField] RemoteScreenController _RemoteScreenController;
     [SerializeField] MapManager _MapManager;
     [SerializeField] PlayerHealthbarManager _PlayerHealthbarManager;
 
@@ -60,7 +60,6 @@ public class CanvasManager : MonoBehaviour
 
     public void SetEnablity(bool setTo)
     {
-        _RemoteScreenController.SetSmallScreenEnablity(false);
         gameObject.SetActive(setTo);
     }
 
@@ -75,12 +74,12 @@ public class CanvasManager : MonoBehaviour
         return PIUI.TrySetProximityInteractor(setToNull ? null : sender);
     }
 
-    public void SetProximityInteractableUIEnablity(ProximityInteractable sender, bool setTo)
+    public void SetProximityInteractableUIEnablity(ProximityInteractable sender, bool setTo, List<string> optionalParameters)
     {
         ProximityInteractableUI PIUI = GetProximityInteractorUI(sender);
         if (PIUI == null) return;
 
-        PIUI.SetEnablityGetter(setTo);
+        PIUI.SetEnablityGetter(setTo, optionalParameters);
     }
 
     //register zone
@@ -93,6 +92,7 @@ public class CanvasManager : MonoBehaviour
         if (type == typeof(ChestScript)) return _ChestUI;
         else if (type == typeof(ToolRack)) return _ToolRackUI;
         else if (type == typeof(DoorInteractable)) return _DoorUI;
+        else if (type == typeof(WorkBench)) return _WorkBenchUI;
 
         //register it above --^
         Debug.LogError(type + " is not a registered proximity interactable. If you want to use it, register it HERE (<- click that)");
@@ -109,7 +109,7 @@ public class CanvasManager : MonoBehaviour
 
     public void SetInventoryEnablity(bool setTo)
     {
-        _InventoryUI.SetEnablityGetter(setTo);
+        _InventoryUI.SetEnablityGetter(setTo, null);
     }
     public void RefreshInventory() => _InventoryUI.RefreshInventory();
     #endregion
@@ -133,7 +133,7 @@ public class CanvasManager : MonoBehaviour
 
     public void SetMapEnablity(bool setTo)
     {
-        _MapManager.SetEnablityGetter(setTo);
+        _MapManager.SetEnablityGetter(setTo, null);
     }
     public void SetMinimapEnablity(bool setTo)
     {

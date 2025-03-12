@@ -26,7 +26,7 @@ public class MapManager : MonoBehaviour, IUserInterface
 
     public bool IsOpen { get; set; }
 
-    public void OnEnablityChanged(bool changedTo)
+    public void OnEnablityChanged(bool changedTo, List<string> optionalParameters = null)
     {
         mapCam.enabled = changedTo;
         mapRenderer.enabled = changedTo;
@@ -37,7 +37,7 @@ public class MapManager : MonoBehaviour, IUserInterface
         miniMapRenderer.enabled = setTo;
     }
 
-    public void SetEnablityGetter(bool setTo) => (this as IUserInterface).SetEnablity(setTo);
+    public void SetEnablityGetter(bool setTo, List<string> optionalParameters) => (this as IUserInterface).SetEnablity(setTo, optionalParameters);
 
     void Update()
     {

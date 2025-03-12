@@ -54,7 +54,7 @@ public class DoorInteractableUI : ProximityInteractableUI, IUICellOwner
         _GraphicRaycaster.RunOnUpdate = false;
     }
 
-    public override void OnEnablityChanged(bool changedTo)
+    public override void OnEnablityChanged(bool changedTo, List<string> optionalParameters = null)
     {
         _VisualParent.SetActive(changedTo);
 
@@ -143,6 +143,6 @@ public class DoorInteractableUI : ProximityInteractableUI, IUICellOwner
         }
 
         _currentDoor.OnBought();
-        SetEnablityGetter(false);
+        SetEnablityGetter(false, null);
     }
 }

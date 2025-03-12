@@ -11,6 +11,8 @@ namespace Overworld
             get => _item == null ? "Pick Up" : "Pick up " + _item.DisplayName + " X " + _item.Count;
             set { }
         }
+        public List<string> OptionalParameters { get; set; }
+
 
         InventoryItem _item;
         bool isInstantiated;

@@ -512,7 +512,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224191804}
   - component: {fileID: 224191803}
-  - component: {fileID: 224191802}
+  - component: {fileID: 224191805}
   - component: {fileID: 224191800}
   m_Layer: 0
   m_Name: Lift
@@ -534,43 +534,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ScenesToLoad:
+  - m_SceneAsset: {fileID: 102900000, guid: 050f2dd7a063b484f961bb001afa082e, type: 3}
+    m_SceneName: PersistentPlayer
   - m_SceneAsset: {fileID: 102900000, guid: 5bb7941ed22ae3144a2d408c27063b81, type: 3}
     m_SceneName: BaseScene
---- !u!114 &224191802
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 224191799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1db469b22aee8747b6fc2f60d0a1c7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Objects2Look4Tag:
-  - OverworldPlayer
-  OnEntered:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 224191800}
-        m_TargetAssemblyTypeName: MenuPlayButton, Assembly-CSharp
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnExited:
-    m_PersistentCalls:
-      m_Calls: []
-  OnStay:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!135 &224191803
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -609,6 +576,42 @@ Transform:
   - {fileID: 1772248623}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &224191805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 224191799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ef7f279b600a334ba4165c449c33303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _InteractDescription: Return to your base
+  _InstantiateOnActivation: []
+  _OptionalParameters: []
+  e_OnInteracted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 224191800}
+        m_TargetAssemblyTypeName: SceneLoaderHelper, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  e_OnInteractedWithValue:
+    m_PersistentCalls:
+      m_Calls: []
+  e_OnInteractedWithOptions:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &260616193
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12590,6 +12593,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lift
       objectReference: {fileID: 0}
+    - target: {fileID: 1954859237364998489, guid: 0f893f466a810c346b77d54dfc7d08ef, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 770099c0a301f054981fbded0bcf4f43, type: 2}
+    - target: {fileID: 3497690580670866740, guid: 0f893f466a810c346b77d54dfc7d08ef, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c4b3df7d7d9b4194aad9879ce91ea700, type: 2}
+    - target: {fileID: 5926714233439917278, guid: 0f893f466a810c346b77d54dfc7d08ef, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4b5af11ae86158b47b958adbb29bd723, type: 2}
+    - target: {fileID: 5926714233439917278, guid: 0f893f466a810c346b77d54dfc7d08ef, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 770099c0a301f054981fbded0bcf4f43, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12961,6 +12980,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   b_Animator: {fileID: 0}
   b_ForgetDistance: 2.5
+  _OptionalParameters: []
   DescentPointPrefab: {fileID: 0}
   _items:
     _serializedList:

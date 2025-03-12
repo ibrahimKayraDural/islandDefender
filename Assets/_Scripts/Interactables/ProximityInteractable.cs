@@ -10,9 +10,11 @@ using UnityEngine;
 public abstract class ProximityInteractable : MonoBehaviour, IInteractable
 {
     abstract public string InteractDescription { get; set; }
+    public List<string> OptionalParameters { get => _OptionalParameters; set { } }
 
     [SerializeField] internal Animator b_Animator;
     [SerializeField] internal float b_ForgetDistance = 1;
+    [SerializeField] internal List<string> _OptionalParameters = new();
 
     internal CanvasManager CanvasManagerGetter
     {
@@ -34,13 +36,13 @@ public abstract class ProximityInteractable : MonoBehaviour, IInteractable
         if (CanvasManagerGetter.TrySetCurrentProximityInteractabe(this) == false) return;
 
         b_currentInteractor = interactor.transform;
-        SetOpennes(true);
+        SetOpennes(true, OptionalParameters);
     }
-    virtual public void SetOpennes(bool setTo)
+    virtual public void SetOpennes(bool setTo, List<string> optionalParameters)
     {
         if (b_isOpen == setTo) return;
 
-        CanvasManagerGetter.SetProximityInteractableUIEnablity(this, setTo);
+        CanvasManagerGetter.SetProximityInteractableUIEnablity(this, setTo, optionalParameters);
 
         if (b_Animator) b_Animator.SetBool("IsOpen", setTo);
 
@@ -68,7 +70,7 @@ public abstract class ProximityInteractable : MonoBehaviour, IInteractable
         {
             if (Vector3.Distance(b_currentInteractor.position, pos) >= b_ForgetDistance)
             {
-                SetOpennes(false);
+                SetOpennes(false, null);
             }
             yield return new WaitForSeconds(.1f);
         }

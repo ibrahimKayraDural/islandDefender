@@ -6,13 +6,17 @@ using UnityEngine.Events;
 public class UnityEventTrigger : MonoBehaviour, IInteractable
 {
     public string InteractDescription { get => _InteractDescription; set { } }
+    public List<string> OptionalParameters { get => _OptionalParameters; set { } }
+
     [SerializeField] string _InteractDescription = GLOBAL.UnassignedString;
     [SerializeField] GameObject[] _InstantiateOnActivation;
+    [SerializeField] List<string> _OptionalParameters;
 
     [Space(25)]
 
     [SerializeField] UnityEvent e_OnInteracted;
     [SerializeField] UnityEvent<GameObject> e_OnInteractedWithValue;
+    [SerializeField] UnityEvent<List<string>> e_OnInteractedWithOptions;
 
     public void OnInteracted(GameObject interactor)
     {
