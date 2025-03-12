@@ -29,10 +29,15 @@ public class RemoteScreenController : MonoBehaviour
     bool _inputNeedsReset = false;
     float _buttonDownTimer = float.MaxValue;
 
-    void Awake()
+    void OnEnable()
     {
         CanvasManager.e_OnCurrentInterfaceChanged += OnInterfaceChanged;
     }
+    void OnDisable()
+    {
+        CanvasManager.e_OnCurrentInterfaceChanged -= OnInterfaceChanged;
+    }
+
     void Update()
     {
         bool timerIsDone = _buttonDownTimer <= 0;

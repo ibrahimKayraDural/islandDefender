@@ -24,7 +24,7 @@ public class InfoLogUI : MonoBehaviour
 
     [Space(10)]
     [Header("References")]
-    [SerializeField] Transform _VisualParent;
+    [SerializeField] GameObject _VisualParent;
     [SerializeField] Transform _LogParent;
 
     Queue<GameObject> _log;
@@ -34,17 +34,23 @@ public class InfoLogUI : MonoBehaviour
     void Awake()
     {
         if (Instance == null) Instance = this;
-        else if (Instance != this) Destroy(this);
+        else if (Instance != this)
+        {
+            Destroy(this);
+            return;
+        }
 
         _log = new Queue<GameObject>();
-        CanvasManager.e_OnCurrentInterfaceChanged += OnCanvasManagerInterfaceChanged;
     }
-    private void OnEnable()
+    void OnEnable()
     {
+        CanvasManager.e_OnCurrentInterfaceChanged += OnCanvasManagerInterfaceChanged;
         _isEnabled = true;
     }
     void OnDisable()
     {
+        CanvasManager.e_OnCurrentInterfaceChanged -= OnCanvasManagerInterfaceChanged;
+
         if (CloseAfterDuration_Handler != null)
             StopCoroutine(CloseAfterDuration_Handler);
         SetEnablity(false);
@@ -56,36 +62,36 @@ public class InfoLogUI : MonoBehaviour
         if (e != null) SetEnablity(false);
     }
 
-    private void OnValidate()
-    {
-        if(Button_Write == true)
-        {
-            Button_Write = false;
+    //private void OnValidate()
+    //{
+    //    if (Button_Write == true)
+    //    {
+    //        Button_Write = false;
 
-            if (_TextToWrite == "") return;
-            AddToLog(_TextToWrite);
-            _TextToWrite = "";
-        }
+    //        if (_TextToWrite == "") return;
+    //        AddToLog(_TextToWrite);
+    //        _TextToWrite = "";
+    //    }
 
-        if (Button_OpenForDuration == true)
-        {
-            Button_OpenForDuration = false;
+    //    if (Button_OpenForDuration == true)
+    //    {
+    //        Button_OpenForDuration = false;
 
-            SetEnablity(true, true);
-        }
+    //        SetEnablity(true, true);
+    //    }
 
-        if(Button_Open)
-        {
-            Button_Open = false;
-            SetEnablity(true);
-        }
+    //    if (Button_Open)
+    //    {
+    //        Button_Open = false;
+    //        SetEnablity(true);
+    //    }
 
-        if (Button_Close)
-        {
-            Button_Close = false;
-            SetEnablity(false);
-        }
-    }
+    //    if (Button_Close)
+    //    {
+    //        Button_Close = false;
+    //        SetEnablity(false);
+    //    }
+    //}
 
     public void AddToLog(string text, Color? color = null)
     {
@@ -111,7 +117,7 @@ public class InfoLogUI : MonoBehaviour
 
         if (setTo == false) closeAfterDuration = false;
 
-        _VisualParent.gameObject.SetActive(setTo);
+        _VisualParent.SetActive(setTo);
 
         if (CloseAfterDuration_Handler != null)
             StopCoroutine(CloseAfterDuration_Handler);
@@ -136,7 +142,7 @@ public class InfoLogUI : MonoBehaviour
 
     void AddToQueue(GameObject obj)
     {
-        if(_log.Count == _MessageCapacity)
+        if (_log.Count == _MessageCapacity)
         {
             Destroy(_log.Dequeue());
         }

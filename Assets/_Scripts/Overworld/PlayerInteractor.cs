@@ -53,7 +53,9 @@ public class PlayerInteractor : MonoBehaviour
         }
 
         if (Input.GetButtonDown("Interact"))
-        { currentInteractable?.OnInteracted(gameObject); }
+        { 
+            currentInteractable?.OnInteracted(gameObject); 
+        }
 
         _canvasManager?.SetInteractionText(currentInteractable == null ? null : currentInteractable.InteractDescription);
     }

@@ -68,9 +68,15 @@ namespace Overworld
             _activeTools = new List<Tool>();
             currentActiveToolIDs.ForEach(x => TryActivateTool(x));
 
-            CanvasManager.e_OnCurrentInterfaceChanged += OnCanvasInterfaceChanged;
-
             _ToolIndex = 0;
+        }
+        void OnEnable()
+        {
+            CanvasManager.e_OnCurrentInterfaceChanged += OnCanvasInterfaceChanged;
+        }
+        void OnDisable()
+        {
+            CanvasManager.e_OnCurrentInterfaceChanged -= OnCanvasInterfaceChanged;
         }
 
         void OnCanvasInterfaceChanged(object sender, IUserInterface e)
