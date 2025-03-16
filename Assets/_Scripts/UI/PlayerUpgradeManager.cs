@@ -1,8 +1,6 @@
-using AYellowpaper.SerializedCollections;
 using Overworld;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,29 +8,45 @@ using UnityEngine.UI;
 public class PlayerUpgradeManager : MonoBehaviour
 {
     [System.Serializable]
-    struct UpgradeTree
+    class UpgradeTree
     {
-        public List<UpgradeUIPiece> Upgrades;
-        public Slider Slider;
         public string ID;
+        public Button @Button;
+        public TextMeshProUGUI CostTM;
+        public List<UpgradePiece> Upgrades;
+        public int CurrentIndex = 0;
+
+        public UpgradePiece? CurrentUpgrade
+        {
+            get
+            {
+                if (CurrentIndex < 0 || IsFinished) return null;
+                return Upgrades[CurrentIndex];
+            }
+        }
+        public bool IsFinished => CurrentIndex >= Upgrades.Count;
+        public void SetCostText()
+        {
+            CostTM.text = "";
+            if (CurrentUpgrade != null)
+            {
+                var upgrade = CurrentUpgrade.Value;
+
+                for (int i = 0; i < upgrade.BuyCost.Count; i++)
+                {
+                    Cost buyCost = upgrade.BuyCost[i];
+                    CostTM.text += buyCost.Resource.DisplayName + " X " + buyCost.Amount;
+                    if (i < upgrade.BuyCost.Count - 1) CostTM.text += "\n";
+                }
+            }
+        }
     }
     [System.Serializable]
-    struct UpgradeUIPiece
+    struct UpgradePiece
     {
-        public Button @Button;
-        public UpgradeData Upgrade;
+        public UpgradeData Data;
         public List<Cost> BuyCost;
-        public float SliderAfterValue;
-        [HideInInspector] public UpgradeTree Owner;
     }
-
-    [SerializeField] List<UpgradeTree> _Upgrades;
-    [SerializeField] TextMeshProUGUI _Title;
-    [SerializeField] TextMeshProUGUI _Description;
-    [SerializeField] TextMeshProUGUI _Cost;
-    [SerializeField] GameObject BuyButton;
-    [SerializeField] Color _BoughtUpgradeColor;
-
     BaseResourceController _BaseResourceController
     {
         get
@@ -44,48 +58,80 @@ public class PlayerUpgradeManager : MonoBehaviour
     }
     BaseResourceController AUTO_BaseResourceController = null;
 
-    UpgradeUIPiece? _selectedUpgrade;
+    [SerializeField] List<UpgradeTree> _Upgrades;
+    [SerializeField] TextMeshProUGUI _Title;
+    [SerializeField] TextMeshProUGUI _Description;
+    [SerializeField] GameObject BuyButton;
+
+    UpgradeTree _selectedTree = null;
 
     void Awake()
     {
         foreach (var tree in _Upgrades)
         {
-            for (int i = 0; i < tree.Upgrades.Count; i++)
-            {
-                var item = tree.Upgrades[i];
-                var i2 = i;
-                var tree2 = tree;
-                item.Button.onClick.AddListener(delegate { OnUpgradeSelected(tree, i2); });
-                item.Button.interactable = i == 0;
-                item.Owner = tree;
-            }
+            tree.Button.onClick.AddListener(delegate { OnUpgradeSelected(tree); });
+            tree.SetCostText();
         }
+    }
+
+    void OnUpgradeSelected(UpgradeTree tree)
+    {
+        if (tree.CurrentUpgrade == null) return;
+        var currentUpgrade = tree.CurrentUpgrade.Value;
+        var upgradeData = currentUpgrade.Data;
+        var upgradeCost = currentUpgrade.BuyCost;
+        _selectedTree = tree;
+        RefreshHelpBox(tree);
+        BuyButton.SetActive(true);
+        tree.Button.Select();
+    }
+
+    private void RefreshHelpBox(UpgradeTree tree)
+    {
+        if (tree == null || tree.CurrentUpgrade == null) return;
+        var upgradeData = tree.CurrentUpgrade.Value.Data;
+        _Title.text = upgradeData.DisplayName;
+        _Description.text = upgradeData.Description;
     }
 
     public void BuyUpgrade()
     {
-        if (_selectedUpgrade == null) return;
-        var su = _selectedUpgrade.Value;
-        if (_BaseResourceController.TrySpendResource(su.BuyCost.ToArray()) == false)
+        if (_selectedTree == null) return;
+        if (_selectedTree.CurrentUpgrade == null) return;
+        if (_BaseResourceController.TrySpendResource(_selectedTree.CurrentUpgrade.Value.BuyCost.ToArray()) == false)
         {
             DeselectUpgrade();
             _Title.text = "<color=red>INSUFFICENT FUNDS<color=white>";
             return;
         }
 
-        HandleUpgradeEffect(su);
+        HandleUpgradeEffect(_selectedTree);
 
-        su.Button.interactable = false;
-        su.Button.GetComponent<Image>().color = _BoughtUpgradeColor;
+        _selectedTree.CurrentIndex++;
+        _selectedTree.SetCostText();
+        if (_selectedTree.IsFinished)
+        {
+            _selectedTree.Button.interactable = false;
+            _selectedTree.CostTM.text = "MAX";
+            DeselectUpgrade();
+        }
 
-        su.Owner.Slider.value = su.SliderAfterValue;
-
-        DeselectUpgrade();
+        RefreshHelpBox(_selectedTree);
+        //DeselectUpgrade();
     }
-
-    void HandleUpgradeEffect(UpgradeUIPiece upgrade)
+    void DeselectUpgrade()
     {
-        string id = upgrade.Owner.ID;
+        _selectedTree = null;
+        _Title.text = "";
+        _Description.text = "";
+        BuyButton.SetActive(false);
+        UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
+    }
+    void HandleUpgradeEffect(UpgradeTree tree)
+    {
+        string id = tree.ID;
+        var upgrade = tree.CurrentUpgrade;
+        if (upgrade == null) return;
 
         if (id == "player" || id == "drillSpeed")
         {
@@ -96,32 +142,7 @@ public class PlayerUpgradeManager : MonoBehaviour
                 case "drillSpeed": isu = FindObjectOfType<Drill>(true); break;
                 case "player": isu = PlayerInstance.Instance.PlayerController_Ref; break;
             }
-            isu?.SetSpeedUpgrade(upgrade.Upgrade);
+            isu?.SetSpeedUpgrade(upgrade.Value.Data);
         }
-    }
-    void OnUpgradeSelected(UpgradeTree tree, int index)
-    {
-        UpgradeUIPiece uiPiece = tree.Upgrades[index];
-        _selectedUpgrade = uiPiece;
-        _Title.text = _selectedUpgrade.Value.Upgrade.DisplayName;
-        _Description.text = _selectedUpgrade.Value.Upgrade.Description;
-        _Cost.text = "";
-        for (int i = 0; i < uiPiece.BuyCost.Count; i++)
-        {
-            Cost buyCost = uiPiece.BuyCost[i];
-            _Cost.text += buyCost.Resource.DisplayName + " X " + buyCost.Amount;
-            if (i < uiPiece.BuyCost.Count - 1) _Cost.text += "\n";
-        }
-        uiPiece.Button.Select();
-        BuyButton.SetActive(true);
-    }
-    void DeselectUpgrade()
-    {
-        _selectedUpgrade = null;
-        _Title.text = "";
-        _Description.text = "";
-        _Cost.text = "";
-        BuyButton.SetActive(false);
-        UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
     }
 }
