@@ -4593,63 +4593,74 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Upgrades:
-  - Button: {fileID: 1806423489}
-    Upgrade: {fileID: 11400000, guid: 2ec7b667def85434b8585b009723d7bb, type: 2}
-    BuyCost:
-    - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
-      _amount: 10
-    SliderAfterValue: 0
-    Level: 1
+  - Upgrades:
+    - Button: {fileID: 1806423489}
+      Upgrade: {fileID: 11400000, guid: 2ec7b667def85434b8585b009723d7bb, type: 2}
+      BuyCost:
+      - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
+        _amount: 10
+      SliderAfterValue: 0
+      Owner:
+        Upgrades: []
+        Slider: {fileID: 0}
+        ID: 
+    - Button: {fileID: 1189388781}
+      Upgrade: {fileID: 11400000, guid: 82821861f424f6049851d6e7ac09124b, type: 2}
+      BuyCost:
+      - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
+        _amount: 20
+      SliderAfterValue: 0.5
+      Owner:
+        Upgrades: []
+        Slider: {fileID: 0}
+        ID: 
+    - Button: {fileID: 837774791}
+      Upgrade: {fileID: 11400000, guid: ac829a7713550a64aa095ba491c5f58e, type: 2}
+      BuyCost:
+      - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
+        _amount: 30
+      - _resource: {fileID: 11400000, guid: e9dd3a2e54c2fe340ad7992f3abaec67, type: 2}
+        _amount: 10
+      SliderAfterValue: 1
+      Owner:
+        Upgrades: []
+        Slider: {fileID: 0}
+        ID: 
+    Slider: {fileID: 2108088929}
     ID: player
-  - Button: {fileID: 1189388781}
-    Upgrade: {fileID: 11400000, guid: 82821861f424f6049851d6e7ac09124b, type: 2}
-    BuyCost:
-    - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
-      _amount: 20
-    SliderAfterValue: 0.5
-    Level: 2
-    ID: player
-  - Button: {fileID: 837774791}
-    Upgrade: {fileID: 11400000, guid: ac829a7713550a64aa095ba491c5f58e, type: 2}
-    BuyCost:
-    - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
-      _amount: 30
-    - _resource: {fileID: 11400000, guid: e9dd3a2e54c2fe340ad7992f3abaec67, type: 2}
-      _amount: 10
-    SliderAfterValue: 1
-    Level: 3
-    ID: player
-  - Button: {fileID: 1030259521}
-    Upgrade: {fileID: 11400000, guid: 2ec7b667def85434b8585b009723d7bb, type: 2}
-    BuyCost:
-    - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
-      _amount: 10
-    SliderAfterValue: 0
-    Level: 2
+  - Upgrades:
+    - Button: {fileID: 689836506}
+      Upgrade: {fileID: 11400000, guid: 2ec7b667def85434b8585b009723d7bb, type: 2}
+      BuyCost:
+      - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
+        _amount: 15
+      SliderAfterValue: 0
+      Owner:
+        Upgrades: []
+        Slider: {fileID: 0}
+        ID: 
+    - Button: {fileID: 1030259521}
+      Upgrade: {fileID: 11400000, guid: 82821861f424f6049851d6e7ac09124b, type: 2}
+      BuyCost:
+      - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
+        _amount: 30
+      SliderAfterValue: 0.5
+      Owner:
+        Upgrades: []
+        Slider: {fileID: 0}
+        ID: 
+    - Button: {fileID: 1416485092}
+      Upgrade: {fileID: 11400000, guid: ac829a7713550a64aa095ba491c5f58e, type: 2}
+      BuyCost:
+      - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
+        _amount: 50
+      SliderAfterValue: 1
+      Owner:
+        Upgrades: []
+        Slider: {fileID: 0}
+        ID: 
+    Slider: {fileID: 811253335}
     ID: drillSpeed
-  - Button: {fileID: 689836506}
-    Upgrade: {fileID: 11400000, guid: 82821861f424f6049851d6e7ac09124b, type: 2}
-    BuyCost:
-    - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
-      _amount: 20
-    SliderAfterValue: 0.5
-    Level: 2
-    ID: drillSpeed
-  - Button: {fileID: 1416485092}
-    Upgrade: {fileID: 11400000, guid: ac829a7713550a64aa095ba491c5f58e, type: 2}
-    BuyCost:
-    - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
-      _amount: 30
-    - _resource: {fileID: 11400000, guid: e9dd3a2e54c2fe340ad7992f3abaec67, type: 2}
-      _amount: 10
-    SliderAfterValue: 1
-    Level: 3
-    ID: drillSpeed
-  _SlidersWithID:
-  - Key: player
-    Value: {fileID: 2108088929}
-  - Key: drillSpeed
-    Value: {fileID: 811253335}
   _Title: {fileID: 1630939882}
   _Description: {fileID: 502771080}
   _Cost: {fileID: 1903145271}
@@ -14249,6 +14260,7 @@ GameObject:
   - component: {fileID: 392834911}
   - component: {fileID: 392834909}
   - component: {fileID: 392834910}
+  - component: {fileID: 392834912}
   m_Layer: 0
   m_Name: PlaygroundCamera
   m_TagString: TowerDefencePlayground
@@ -14300,8 +14312,8 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
+  m_HDR: 0
+  m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
@@ -14332,6 +14344,135 @@ Transform:
   - {fileID: 1519316634}
   m_Father: {fileID: 615438469}
   m_LocalEulerAnglesHint: {x: 90.336, y: -144.66, z: -54.70401}
+--- !u!114 &392834912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 392834908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23c1ce4fb46143f46bc5cb5224c934f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clearColorMode: 0
+  backgroundColorHDR: {r: 0.025, g: 0.07, b: 0.19, a: 0}
+  clearDepth: 1
+  volumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  volumeAnchorOverride: {fileID: 0}
+  antialiasing: 0
+  SMAAQuality: 2
+  dithering: 0
+  stopNaNs: 0
+  taaSharpenStrength: 0.5
+  TAAQuality: 1
+  taaHistorySharpening: 0.35
+  taaAntiFlicker: 0.5
+  taaMotionVectorRejection: 0
+  taaAntiHistoryRinging: 0
+  taaBaseBlendFactor: 0.875
+  taaJitterScale: 1
+  physicalParameters:
+    m_Iso: 200
+    m_ShutterSpeed: 0.005
+    m_Aperture: 16
+    m_FocusDistance: 10
+    m_BladeCount: 5
+    m_Curvature: {x: 2, y: 11}
+    m_BarrelClipping: 0.25
+    m_Anamorphism: 0
+  flipYMode: 0
+  xrRendering: 1
+  fullscreenPassthrough: 0
+  allowDynamicResolution: 0
+  customRenderingSettings: 0
+  invertFaceCulling: 0
+  probeLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  hasPersistentHistory: 0
+  screenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  screenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  allowDeepLearningSuperSampling: 1
+  deepLearningSuperSamplingUseCustomQualitySettings: 0
+  deepLearningSuperSamplingQuality: 0
+  deepLearningSuperSamplingUseCustomAttributes: 0
+  deepLearningSuperSamplingUseOptimalSettings: 1
+  deepLearningSuperSamplingSharpening: 0
+  fsrOverrideSharpness: 0
+  fsrSharpness: 0.92
+  exposureTarget: {fileID: 0}
+  materialMipBias: 0
+  m_RenderingPathCustomFrameSettings:
+    bitDatas:
+      data1: 140666587840333
+      data2: 13763000512783810584
+    lodBias: 1
+    lodBiasMode: 0
+    lodBiasQualityLevel: 0
+    maximumLODLevel: 0
+    maximumLODLevelMode: 0
+    maximumLODLevelQualityLevel: 0
+    sssQualityMode: 0
+    sssQualityLevel: 0
+    sssCustomSampleBudget: 20
+    msaaMode: 1
+    materialQuality: 0
+  renderingPathCustomFrameSettingsOverrideMask:
+    mask:
+      data1: 0
+      data2: 0
+  defaultFrameSettings: 0
+  m_Version: 9
+  m_ObsoleteRenderingPath: 0
+  m_ObsoleteFrameSettings:
+    overrides: 0
+    enableShadow: 0
+    enableContactShadows: 0
+    enableShadowMask: 0
+    enableSSR: 0
+    enableSSAO: 0
+    enableSubsurfaceScattering: 0
+    enableTransmission: 0
+    enableAtmosphericScattering: 0
+    enableVolumetrics: 0
+    enableReprojectionForVolumetrics: 0
+    enableLightLayers: 0
+    enableExposureControl: 1
+    diffuseGlobalDimmer: 0
+    specularGlobalDimmer: 0
+    shaderLitMode: 0
+    enableDepthPrepassWithDeferredRendering: 0
+    enableTransparentPrepass: 0
+    enableMotionVectors: 0
+    enableObjectMotionVectors: 0
+    enableDecals: 0
+    enableRoughRefraction: 0
+    enableTransparentPostpass: 0
+    enableDistortion: 0
+    enablePostprocess: 0
+    enableOpaqueObjects: 0
+    enableTransparentObjects: 0
+    enableRealtimePlanarReflection: 0
+    enableMSAA: 0
+    enableAsyncCompute: 0
+    runLightListAsync: 0
+    runSSRAsync: 0
+    runSSAOAsync: 0
+    runContactShadowsAsync: 0
+    runVolumeVoxelizationAsync: 0
+    lightLoopSettings:
+      overrides: 0
+      enableDeferredTileAndCluster: 0
+      enableComputeLightEvaluation: 0
+      enableComputeLightVariants: 0
+      enableComputeMaterialVariants: 0
+      enableFptlForForwardOpaque: 0
+      enableBigTilePrepass: 0
+      isFptlEnabled: 0
 --- !u!1 &394060326
 GameObject:
   m_ObjectHideFlags: 0
