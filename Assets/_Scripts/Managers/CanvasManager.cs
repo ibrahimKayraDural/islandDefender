@@ -35,14 +35,14 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] WorkBenchInteractableUI _WorkBenchUI;
     [SerializeField] InteractableHelperUI _InteractableHelper;
     [SerializeField] MapManager _MapManager;
-    [SerializeField] PlayerHealthbarManager _PlayerHealthbarManager;
+    [SerializeField] PlayerCanvasSlider _PlayerHealthbarManager;
+    [SerializeField] PlayerCanvasSlider _PlayerFuelbarManager;
 
-    private void Awake()
+    void Awake()
     {
         if (Instance == null) Instance = this;
         else if (Instance != this) Destroy(this);
     }
-
     void Start()
     {
         _MainCanvas.worldCamera = Camera.main;
@@ -53,11 +53,11 @@ public class CanvasManager : MonoBehaviour
     static void OnCurrentInterfaceChanged()
     {
         Instance.SetHealthbarEnablity(!SomethingIsOpen);
+        Instance.SetFuelbarEnablity(!SomethingIsOpen);
         Instance.SetMinimapEnablity(!SomethingIsOpen);
 
         e_OnCurrentInterfaceChanged?.Invoke(Instance, AUTO_currentInterface);
     }
-
     public void SetEnablity(bool setTo)
     {
         gameObject.SetActive(setTo);
@@ -147,6 +147,15 @@ public class CanvasManager : MonoBehaviour
     public void SetHealthbarEnablity(bool setTo)
     {
         _PlayerHealthbarManager.SetEnablity(setTo);
+    }
+
+    #endregion
+
+    #region Player Fuelbar Manager
+
+    public void SetFuelbarEnablity(bool setTo)
+    {
+        _PlayerFuelbarManager.SetEnablity(setTo);
     }
 
     #endregion

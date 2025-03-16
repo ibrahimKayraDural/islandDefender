@@ -13,12 +13,14 @@ public class PlayerInstance : MonoBehaviour
     public Inventory Inventory_Ref => _Inventory;
     public PlayerToolController PlayerToolController_Ref => _PlayerToolController;
     public PlayerHealthController PlayerHealthController_Ref => _PlayerHealthController;
+    public PlayerFuelController PlayerFuelController_Ref => _PlayerFuelController;
 
     [SerializeField] PlayerController _PlayerController;
     [SerializeField] PlayerInteractor _PlayerInteractor;
     [SerializeField] Inventory _Inventory;
     [SerializeField] PlayerToolController _PlayerToolController;
     [SerializeField] PlayerHealthController _PlayerHealthController;
+    [SerializeField] PlayerFuelController _PlayerFuelController;
     [SerializeField] CanvasManager _CanvasManager;
 
     void Awake()

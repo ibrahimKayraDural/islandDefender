@@ -17,7 +17,7 @@ namespace Overworld
         }
 
         [SerializeField] float MaxHealth = 100;
-        [SerializeField] PlayerHealthbarManager _PlayerHealthbarManager;
+        [SerializeField] PlayerCanvasSlider _PlayerHealthbarManager;
 
         PlayerInstance _playerInstance
         {

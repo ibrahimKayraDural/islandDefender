@@ -216,6 +216,7 @@ GameObject:
   - component: {fileID: 4612471665001557244}
   - component: {fileID: 9024093362210090674}
   - component: {fileID: 5470066739838234746}
+  - component: {fileID: 8576934496527788580}
   - component: {fileID: 6147596811841315391}
   m_Layer: 0
   m_Name: overworldPlayer
@@ -265,6 +266,7 @@ MonoBehaviour:
   _Inventory: {fileID: 4612471665001557244}
   _PlayerToolController: {fileID: 8785126028115196852}
   _PlayerHealthController: {fileID: 5470066739838234746}
+  _PlayerFuelController: {fileID: 8576934496527788580}
   _CanvasManager: {fileID: 0}
 --- !u!114 &6961616835264164479
 MonoBehaviour:
@@ -339,6 +341,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHealth: 100
   _PlayerHealthbarManager: {fileID: 0}
+--- !u!114 &8576934496527788580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2253588649053394883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19a7dafe5d06a4a4f9f7fe977b7c4a92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _BaseFuelMax: 5
 --- !u!54 &6147596811841315391
 Rigidbody:
   m_ObjectHideFlags: 0

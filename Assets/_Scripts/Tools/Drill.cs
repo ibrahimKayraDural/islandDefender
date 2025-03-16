@@ -12,7 +12,6 @@ namespace Overworld
         [SerializeField] Rigidbody _Rigidbody;
         [SerializeField] Animator _Animator;
         [SerializeField] AudioClip _RunningSFX;
-        [SerializeField] int _BaseFuelMax = 5;
 
         AudioManager _AudioManager
         {
@@ -25,6 +24,17 @@ namespace Overworld
             }
         }
         AudioManager AUTO_AudioManager = null;
+        PlayerFuelController _PlayerFuelController
+        {
+            get
+            {
+                if (AUTO_PlayerFuelController == null)
+                    AUTO_PlayerFuelController = PlayerInstance.Instance.PlayerFuelController_Ref;
+
+                return AUTO_PlayerFuelController;
+            }
+        }
+        PlayerFuelController AUTO_PlayerFuelController = null;
 
         public UpgradeData CurrentSpeedUpgrade { get; set; } = null;
         public float SpeedUpgradeValue { get; set; } = 1;
@@ -33,14 +43,12 @@ namespace Overworld
 
         readonly string SFX_ID = "DrillTool_Running";
 
-        int _currentFuel = 0;
         bool _fuelEmpty = false;
 
         public void Awake()
         {
             _Rigidbody.detectCollisions = false;
             (this as ISpeedUpgradable).RefreshSpeedUpgrade();
-            _currentFuel = _BaseFuelMax;
         }
 
         internal override IEnumerator FireIEnum()
@@ -73,10 +81,9 @@ namespace Overworld
         {
             if (_fuelEmpty) return;
 
-            _currentFuel--;
-            if(_currentFuel <= 0)
+            _PlayerFuelController.TrySpendFuel();
+            if(_PlayerFuelController.FuelEmpty)
             {
-                _currentFuel = 0;
                 _fuelEmpty = true;
                 StopFiring();
             }

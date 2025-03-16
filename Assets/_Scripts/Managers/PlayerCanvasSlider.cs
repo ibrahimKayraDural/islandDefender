@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHealthbarManager : MonoBehaviour
+public class PlayerCanvasSlider : MonoBehaviour
 {
     [SerializeField] GameObject _Visuals;
     [SerializeField] Slider _Slider;
@@ -16,5 +16,9 @@ public class PlayerHealthbarManager : MonoBehaviour
     public void SetSliderValue(float setTo)
     {
         _Slider.value = setTo;
+    }
+    public void SetSliderMaxValue(float setTo)
+    {
+        _Slider.maxValue = setTo;
     }
 }
