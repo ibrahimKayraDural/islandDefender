@@ -101,15 +101,15 @@ public class InventoryQuickMenu : MonoBehaviour
         if (buttonCount <= 0) Close();
         else
         {
-            RectTransform buttonRT = _ButtonPrefab.GetComponent<RectTransform>();
-            RectTransform titleRT = _TitleTM.gameObject.GetComponent<RectTransform>();
-            RectTransform selfRT = GetComponent<RectTransform>();
+            //RectTransform buttonRT = _ButtonPrefab.GetComponent<RectTransform>();
+            //RectTransform titleRT = _TitleTM.gameObject.GetComponent<RectTransform>();
+            //RectTransform selfRT = GetComponent<RectTransform>();
 
-            float targetHeight = buttonCount * (buttonRT.rect.height + _ButtonParentGroup.spacing);
-            targetHeight += _ButtonParentGroup.padding.top + _ButtonParentGroup.padding.bottom;
-            targetHeight += titleRT.rect.height;
+            //float targetHeight = buttonCount * (buttonRT.rect.height + _ButtonParentGroup.spacing);
+            //targetHeight += _ButtonParentGroup.padding.top + _ButtonParentGroup.padding.bottom;
+            //targetHeight += titleRT.rect.height;
 
-            selfRT.sizeDelta = new Vector2(selfRT.sizeDelta.x, targetHeight);
+            //selfRT.sizeDelta = new Vector2(selfRT.sizeDelta.x, targetHeight);
         }
 
         void SpawnButton(string option)

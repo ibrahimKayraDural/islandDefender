@@ -28,13 +28,13 @@ public class CanvasManager : MonoBehaviour
     public static CanvasManager Instance { get; private set; }
 
     [SerializeField] Canvas _MainCanvas;
-    [SerializeField] InventoryUIScript _InventoryUI;
     [SerializeField] ChestUIScript _ChestUI;
     [SerializeField] ToolRackUI _ToolRackUI;
     [SerializeField] DoorInteractableUI _DoorUI;
     [SerializeField] WorkBenchInteractableUI _WorkBenchUI;
     [SerializeField] InteractableHelperUI _InteractableHelper;
     [SerializeField] MapManager _MapManager;
+    [SerializeField] InventoryUIScript _InventoryUI;
     [SerializeField] PlayerCanvasSlider _PlayerHealthbarManager;
     [SerializeField] PlayerCanvasSlider _PlayerFuelbarManager;
 
@@ -47,7 +47,7 @@ public class CanvasManager : MonoBehaviour
     {
         _MainCanvas.worldCamera = Camera.main;
 
-        SetInventoryEnablity(false);
+        //SetInventoryEnablity(false);
     }
 
     static void OnCurrentInterfaceChanged()
@@ -55,6 +55,7 @@ public class CanvasManager : MonoBehaviour
         Instance.SetHealthbarEnablity(!SomethingIsOpen);
         Instance.SetFuelbarEnablity(!SomethingIsOpen);
         Instance.SetMinimapEnablity(!SomethingIsOpen);
+        Instance.SetInventoryEnablity(!SomethingIsOpen);
 
         e_OnCurrentInterfaceChanged?.Invoke(Instance, AUTO_currentInterface);
     }
@@ -102,15 +103,12 @@ public class CanvasManager : MonoBehaviour
     #endregion
 
     #region Inventory
-    public void ToggleInventory()
-    {
-        _InventoryUI.ToggleInventory();
-    }
+    //public void ToggleInventory()
+    //{
+    //    _InventoryUI.ToggleInventory();
+    //}
 
-    public void SetInventoryEnablity(bool setTo)
-    {
-        _InventoryUI.SetEnablityGetter(setTo, null);
-    }
+    public void SetInventoryEnablity(bool setTo) => _InventoryUI.SetEnablity(setTo);
     public void RefreshInventory() => _InventoryUI.RefreshInventory();
     #endregion
 

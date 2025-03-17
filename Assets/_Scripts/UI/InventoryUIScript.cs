@@ -10,16 +10,16 @@ namespace GameUI
     using UnityEngine.EventSystems;
     using UnityEngine.UI;
 
-    public class InventoryUIScript : MonoBehaviour, IUserInterface, IInventoryCellGrid
+    public class InventoryUIScript : MonoBehaviour, IInventoryCellGrid
     {
-        public bool IsOpen { get; set; }
+        public bool IsOpen;
 
         [SerializeField] GameObject _Visuals;
         [SerializeField] Transform _InventoryCellParent;
         [SerializeField] GameObject _CellPrefab;
-        [SerializeField] TextMeshProUGUI _DescriptionTitle;
-        [SerializeField] TextMeshProUGUI _DescriptionText;
-        [SerializeField] Image _DescriptionIcon;
+        //[SerializeField] TextMeshProUGUI _DescriptionTitle;
+        //[SerializeField] TextMeshProUGUI _DescriptionText;
+        //[SerializeField] Image _DescriptionIcon;
         [SerializeField] GraphicRaycasterScript _GraphicRaycaster;
         [SerializeField] GameObject _QuickMenuPrefab;
 
@@ -48,7 +48,8 @@ namespace GameUI
                 {
                     UpdateCurrentCell(results);
 
-                    InventoryQuickMenu iqm = Instantiate(_QuickMenuPrefab, Input.mousePosition, Quaternion.identity, _Visuals.transform)
+                    InventoryQuickMenu iqm = Instantiate(_QuickMenuPrefab,
+                        Input.mousePosition, Quaternion.identity, _Visuals.transform)
                                 .GetComponent<InventoryQuickMenu>();
 
                     iqm.Initialize(_currentCell, _GraphicRaycaster);
@@ -58,7 +59,7 @@ namespace GameUI
 
             if (Input.GetButtonDown("Exit"))
             {
-                SetEnablityGetter(false, null);
+                SetEnablity(false);
             }
 
         }
@@ -85,17 +86,17 @@ namespace GameUI
 
             _oldCell = _currentCell;
 
-            _DescriptionTitle.text = targetIsValid ? _currentCell.ItemData.DisplayName : "";
-            _DescriptionText.text = targetIsValid ? _currentCell.ItemData.Description : "";
-            HandeDescriptionSprite(_currentCell?.ItemData, targetIsValid);
+            //_DescriptionTitle.text = targetIsValid ? _currentCell.ItemData.DisplayName : "";
+            //_DescriptionText.text = targetIsValid ? _currentCell.ItemData.Description : "";
+            //HandeDescriptionSprite(_currentCell?.ItemData, targetIsValid);
         }
 
-        void HandeDescriptionSprite(InventoryItem data, bool targetIsValid)
-        {
-            if (data == null) targetIsValid = false;
-            _DescriptionIcon.sprite = targetIsValid ? data.UISprite : null;
-            _DescriptionIcon.color = targetIsValid ? Color.white : Color.clear;
-        }
+        //void HandeDescriptionSprite(InventoryItem data, bool targetIsValid)
+        //{
+        //if (data == null) targetIsValid = false;
+        //_DescriptionIcon.sprite = targetIsValid ? data.UISprite : null;
+        //_DescriptionIcon.color = targetIsValid ? Color.white : Color.clear;
+        //}
 
         bool CheckCell(List<RaycastResult> resultList, out InventoryCellScript cell)
         {
@@ -110,27 +111,31 @@ namespace GameUI
             return targetIsValid;
         }
 
-        public void ToggleInventory() => SetEnablityGetter(!IsOpen, null);
+        //public void ToggleInventory() => SetEnablity(!IsOpen);
         public void RefreshInventory() => (this as IInventoryCellGrid).RefreshGrid(PlayerInstance.Instance.Inventory_Ref.Items.ToArray(), _InventoryCellParent, _CellPrefab);
 
-        public void OnEnablityChanged(bool changedTo, List<string> optionalParameters = null)
+        //public void OnEnablityChanged(bool changedTo, List<string> optionalParameters = null)
+        //{
+        //    RefreshInventory();
+        //    _Visuals.SetActive(changedTo);
+
+        //    //_DescriptionText.text = "";
+        //    //_DescriptionTitle.text = "";
+        //    //HandeDescriptionSprite(null, false);
+
+        //    if (changedTo == false)
+        //    {
+        //        InventoryQuickMenu.Instance?.Close();
+        //        _currentCell?.SetHighlight(false);
+        //        _oldCell?.SetHighlight(false);
+        //    }
+        //    else { }
+        //}
+
+        public void SetEnablity(bool setTo)
         {
-            RefreshInventory();
-            _Visuals.SetActive(changedTo);
-
-            _DescriptionText.text = "";
-            _DescriptionTitle.text = "";
-            HandeDescriptionSprite(null, false);
-
-            if (changedTo == false)
-            {
-                InventoryQuickMenu.Instance?.Close();
-                _currentCell?.SetHighlight(false);
-                _oldCell?.SetHighlight(false);
-            }
-            else { }
+            IsOpen = setTo;
+            _Visuals.SetActive(setTo);
         }
-
-        public void SetEnablityGetter(bool setTo, List<string> optionalParameters) => (this as IUserInterface).SetEnablity(setTo, optionalParameters);
     }
 }

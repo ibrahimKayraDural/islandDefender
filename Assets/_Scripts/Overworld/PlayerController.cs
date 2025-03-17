@@ -101,7 +101,7 @@ namespace Overworld
 
         void Update()
         {
-            if (Input.GetButtonDown("Inventory")) _CanvasManager?.ToggleInventory();
+            //if (Input.GetButtonDown("Inventory")) _CanvasManager?.ToggleInventory();
 
             if (Time.timeScale <= 0 || _camera == null) return;
 
