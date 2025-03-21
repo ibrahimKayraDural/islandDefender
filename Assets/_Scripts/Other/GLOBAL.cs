@@ -117,5 +117,12 @@ public static class GLOBAL
         return _upgradeDB;
     }
 
+    static TurretUpgradeTree _upgradeTree = null;
+    public static TurretUpgradeTree GetTurretUpgradeTree()
+    {
+        if (_upgradeTree == null) _upgradeTree = Resources.Load<TurretUpgradeTree>("Databases/TurretUpgradeTree");
+        return _upgradeTree;
+    }
+
     #endregion
 }

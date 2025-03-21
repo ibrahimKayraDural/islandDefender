@@ -7,6 +7,8 @@ namespace TowerDefence
 {
     public abstract class TurretUnit : MonoBehaviour, IHealth
     {
+        public static List<GameObject> ActiveTurrets = new();
+
         public TurretData Data => _data;
         public float MaxHealth => _MaxHealth;
         public float Health => _health;
@@ -35,11 +37,15 @@ namespace TowerDefence
             transform.rotation = Quaternion.identity;
 
             tile.SetOccupied(this);
+            ActiveTurrets.Add(gameObject);
             OnInitialized();
 
             _isInitialized = true;
         }
-
+        virtual internal void OnDestroy()
+        {
+            ActiveTurrets.Remove(gameObject);
+        }
         abstract internal void OnInitialized();
         abstract internal void ActivationMethod();
 
