@@ -1,3 +1,5 @@
+using OpenCover.Framework.Model;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +9,7 @@ namespace TowerDefence
 {
     public abstract class TurretUnit : MonoBehaviour, IHealth
     {
-        public static List<GameObject> ActiveTurrets = new();
-
+        public event EventHandler e_OnDeath;
         public TurretData Data => _data;
         public float MaxHealth => _MaxHealth;
         public float Health => _health;
@@ -37,14 +38,15 @@ namespace TowerDefence
             transform.rotation = Quaternion.identity;
 
             tile.SetOccupied(this);
-            ActiveTurrets.Add(gameObject);
+            ActiveTurretManager.ActiveTurrets.Add(gameObject);
             OnInitialized();
 
             _isInitialized = true;
         }
         virtual internal void OnDestroy()
         {
-            ActiveTurrets.Remove(gameObject);
+            e_OnDeath?.Invoke(this, EventArgs.Empty);
+            ActiveTurretManager.ActiveTurrets.Remove(gameObject);
         }
         abstract internal void OnInitialized();
         abstract internal void ActivationMethod();
@@ -93,10 +95,25 @@ namespace TowerDefence
             foreach (var m in mats) m.SetFloat("_Fill", 1);
             Destroy(gameObject);
         }
-        internal virtual void SetHighlight(bool setTo)
+
+        List<Component> _invokers = new List<Component>();
+        internal virtual void SetHighlight(bool setTo, Component invoker)
         {
+            if (setTo)
+            {
+                if (_invokers.Contains(invoker) == false)
+                {
+                    _invokers.Add(invoker);
+                }
+            }
+            else if (setTo == false)
+            {
+                _invokers.Remove(invoker);
+            }
+
+
             List<Material> mats = _Renderers.Select(x => x.material).ToList();
-            foreach (var m in mats) m.SetFloat("_IsHighlighted", setTo ? 1 : 0);
+            foreach (var m in mats) m.SetFloat("_IsHighlighted", _invokers.Count > 0 ? 1 : 0);
         }
         internal virtual void PlayDamagedAnim()
         {

@@ -11,6 +11,8 @@ namespace TowerDefence
     public enum TowerDefenceGameplayMode { Idle, Play, Edit }
     public class TDPlayerController : MonoBehaviour, IUICellOwner
     {
+        public static TDPlayerController Instance { get; private set; } = null;
+
         [SerializeField] LayerMask TowerDefenceLayer;
         [SerializeField] Transform _MouseTracker;
         [SerializeField] TurretIndicator _CursorIndicator;
@@ -36,6 +38,18 @@ namespace TowerDefence
                 return AUTO_battleManager;
             }
         }
+        BattleManager AUTO_battleManager = null;
+
+        ActiveTurretManager _activeTurretManager
+        {
+            get
+            {
+                if (AUTO_activeTurretManager == null)
+                    AUTO_activeTurretManager = ActiveTurretManager.Instance;
+                return AUTO_activeTurretManager;
+            }
+        }
+        ActiveTurretManager AUTO_activeTurretManager = null;
 
         public UICell OldCell { get; set; }
         public UICell CurrentCell { get; set; }
@@ -46,7 +60,6 @@ namespace TowerDefence
 
         TextMeshProUGUI IUICellOwner.DescriptionText => _DescriptionText;
 
-        BattleManager AUTO_battleManager = null;
 
         float targetTime_CanPlaceTurret = -1;
         TurretUnit _turretToSwap = null;
@@ -63,7 +76,10 @@ namespace TowerDefence
             {
                 Debug.LogError("No camera was found");
                 this.enabled = false;
+                return;
             }
+            if (Instance == null) Instance = this;
+            else if (Instance != this) Destroy(this);
         }
 
         void Update()
@@ -206,8 +222,7 @@ namespace TowerDefence
                 if (_currentTile == null) {/*DeselectCurrentTurret();*/ return; }
                 if (_currentTile.IsOccupied || _currentTile.IsLocked) return;
 
-                TurretUnit unit = Instantiate(_currentTurretToPlace.PrefabObject).GetComponent<TurretUnit>();
-                unit.Initialize(_currentTurretToPlace, _currentTile);
+                _activeTurretManager.PlaceTurret(_currentTurretToPlace, _currentTile);
 
                 _OwnedTurretController.RemoveTurret(_currentTurretToPlace);
                 if (_OwnedTurretController.HasTurret(_currentTurretToPlace) == false) DeselectCurrentTurret();
@@ -300,12 +315,12 @@ namespace TowerDefence
             if (_turretToSwap != null) DeselectTurretToSwap();
 
             _turretToSwap = turret;
-            _turretToSwap?.SetHighlight(true);
+            _turretToSwap?.SetHighlight(true, this);
         }
 
-        void DeselectTurretToSwap()
+        public void DeselectTurretToSwap()
         {
-            _turretToSwap?.SetHighlight(false);
+            _turretToSwap?.SetHighlight(false, this);
             _turretToSwap = null;
         }
 
@@ -414,8 +429,7 @@ namespace TowerDefence
             _IndicatorManager.ReleaseIndicator(i);
             tile.SetIsLocked(false);
 
-            TurretUnit unit = Instantiate(tData.PrefabObject).GetComponent<TurretUnit>();
-            unit.Initialize(tData, tile);
+            _activeTurretManager.PlaceTurret(tData, tile);
         }
 
         void DeselectCurrentTile()
