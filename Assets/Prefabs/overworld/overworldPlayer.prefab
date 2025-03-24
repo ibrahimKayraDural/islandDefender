@@ -281,11 +281,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _BaseSpeed: 2
-  groundFriction: 0.3
+  _GroundFriction: 10
   _TurnSpeed: 15
+  _footstepCooldown: 0.3
+  _footstepPitchModulation: 0.1
   _RB: {fileID: 6147596811841315391}
   _Animator: {fileID: 6294195510623386307}
   _Rotator: {fileID: 1188989895029744529}
+  _FootstepClip: {fileID: 8300000, guid: 3a06efaa3556e974992c5d5e390f9dc1, type: 3}
 --- !u!114 &8785126028115196852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,6 +357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _BaseFuelMax: 5
+  _Slider: {fileID: 0}
 --- !u!54 &6147596811841315391
 Rigidbody:
   m_ObjectHideFlags: 0

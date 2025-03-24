@@ -14,13 +14,16 @@ namespace Overworld
 
         [Header("Values")]
         [SerializeField, Min(0)] float _BaseSpeed = 1;
-        [SerializeField, Min(0.001f)] float groundFriction = 10;
+        [SerializeField, Min(0.001f)] float _GroundFriction = 10;
         [SerializeField, Min(0)] float _TurnSpeed = 1;
+        [SerializeField, Min(0)] float _footstepCooldown = .6f;
+        [SerializeField, Min(0)] float _footstepPitchModulation = .3f;
 
         [Header("Reference")]
         [SerializeField] Rigidbody _RB;
         [SerializeField] Animator _Animator;
         [SerializeField] GameObject _Rotator;
+        [SerializeField] AudioClip _FootstepClip;
 
         Vector3 _direction
         {
@@ -49,7 +52,6 @@ namespace Overworld
             }
         }
         Camera _camera => _CameraManager.CurrentCamera;
-
         CameraManager _CameraManager
         {
             get
@@ -74,6 +76,18 @@ namespace Overworld
         }
         CanvasManager AUTO_canvasManager = null;
 
+        AudioManager _AudioManager
+        {
+            get
+            {
+                if (AUTO_AudioManager == null)
+                    AUTO_AudioManager = AudioManager.Instance;
+
+                return AUTO_AudioManager;
+            }
+        }
+        AudioManager AUTO_AudioManager = null;
+
         public UpgradeData CurrentSpeedUpgrade { get; set; } = null;
         public float SpeedUpgradeValue { get; set; } = 1;
 
@@ -87,6 +101,10 @@ namespace Overworld
 
         Vector3 _currentMovement = Vector3.zero;
         Vector3 _oldMovement = Vector3.zero;
+
+        bool _wasMoving = false;
+        float _footstepSFX_targetTime = float.MaxValue;
+        const string FOOTSTEP_ID = "PlayerControllerFootstep";
 
         private void Start()
         {
@@ -113,8 +131,9 @@ namespace Overworld
             if (_camera == null) return;
 
             Vector3 movement = CalculateMovement();
+            HandleFootstepSFX(movement);
 
-            _currentMovement = Vector3.Lerp(_currentMovement, movement, groundFriction);
+            _currentMovement = Vector3.Lerp(_currentMovement, movement, _GroundFriction);
             _RB.MovePosition(transform.position + _currentMovement);
 
             CalculateAnimation(Time.deltaTime);
@@ -183,7 +202,8 @@ namespace Overworld
             else
             {
                 Quaternion rotation = Quaternion.AngleAxis(_camera.transform.rotation.eulerAngles.y, Vector3.up);
-                movement = TakeInput() * Speed * Time.deltaTime;
+                movement = TakeInput();
+                movement *= Speed * Time.deltaTime;
                 movement = rotation * movement;
 
                 _oldMovement = movement;
@@ -225,6 +245,37 @@ namespace Overworld
             }
 
             return input;
+        }
+
+        void HandleFootstepSFX(Vector3 movement)
+        {
+            bool isMoving = movement.magnitude > 0;
+
+            if (isMoving)
+            {
+                if (_wasMoving)//keeping movement
+                {
+                    if (_footstepSFX_targetTime <= Time.time) PlaySFX();
+                }
+                else//just started moving
+                {
+                    PlaySFX();
+                }
+            }
+            else if (_wasMoving)//just stopped moving
+            {
+                _footstepSFX_targetTime = float.MaxValue;
+            }
+
+            _wasMoving = isMoving;
+
+            void PlaySFX()
+            {
+                _footstepSFX_targetTime = Time.time + _footstepCooldown;
+
+                float fsPitch = UnityEngine.Random.Range(-_footstepPitchModulation, _footstepPitchModulation) + 1;
+                _AudioManager?.PlayClip(FOOTSTEP_ID, _FootstepClip, pitch: fsPitch);
+            }
         }
 
         #region Movement Mode

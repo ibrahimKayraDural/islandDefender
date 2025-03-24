@@ -420,6 +420,10 @@ PrefabInstance:
       propertyPath: _PlayerHealthbarManager
       value: 
       objectReference: {fileID: 597712464}
+    - target: {fileID: 6961616835264164479, guid: 296de3351f168f9478d7a0e7041b1503, type: 3}
+      propertyPath: _FootstepClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 3a06efaa3556e974992c5d5e390f9dc1, type: 3}
     - target: {fileID: 7131293006566525913, guid: 296de3351f168f9478d7a0e7041b1503, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
