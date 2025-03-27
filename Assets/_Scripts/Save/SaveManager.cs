@@ -43,12 +43,13 @@ namespace SaveSystem
         {
             public List<InventoryItemSaveData> PlayerInventory = null;
             public List<ItemWithCount> BaseInventory = null;
-            public object Turrets = null;
+            public List<TurretSaveData> Turrets = null;
             public object Grid = null;
 
             public SaveData() { }
 
-            public SaveData(List<InventoryItemSaveData> playerInventory, List<ItemWithCount> baseInventory, object turrets, object grid)
+            public SaveData(List<InventoryItemSaveData> playerInventory, List<ItemWithCount> baseInventory,
+                List<TurretSaveData> turrets, object grid)
             {
                 PlayerInventory = playerInventory;
                 BaseInventory = baseInventory;
@@ -71,6 +72,7 @@ namespace SaveSystem
                 Count = count;
             }
         }
+
         [System.Serializable]
         public class ItemWithCount
         {
@@ -81,6 +83,21 @@ namespace SaveSystem
             {
                 ID = id;
                 Count = count;
+            }
+        }
+
+        [System.Serializable]
+        public class TurretSaveData
+        {
+            public string ID = null;
+            public int PosX = -1;
+            public int PosY = -1;
+
+            public TurretSaveData(string id, int posX, int posY)
+            {
+                ID = id;
+                PosX = posX;
+                PosY = posY;
             }
         }
 
@@ -150,6 +167,12 @@ namespace SaveSystem
             }
         }
 
+        [ContextMenu("Delete Save File")]
+        void DeleteSaveFile()
+        {
+            File.Delete(_fullPath);
+        }
+
         /// <summary>
         /// Replaces player inventory in the current save. Is not saved to file before the WriteToSaveData function is called
         /// </summary>
@@ -166,6 +189,15 @@ namespace SaveSystem
         public void ReplaceBaseInventory(List<ItemWithCount> saveData)
         {
             _currentSave.BaseInventory = saveData;
+        }
+
+        /// <summary>
+        /// Replaces Placed Turrets in the current save. Is not saved to file before the WriteToSaveData function is called
+        /// </summary>
+        /// <param name="saveData">Save data which includes Turret data</param>
+        public void ReplaceTurrets(List<TurretSaveData> saveData)
+        {
+            _currentSave.Turrets = saveData;
         }
     }
 }

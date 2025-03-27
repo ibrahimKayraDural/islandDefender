@@ -16,8 +16,17 @@ namespace TowerDefence
 
         [Header("Reference")]
         [SerializeField] SpawnManager _SpawnManager;
-        [SerializeField, Tooltip("The plane must have 1 in scale to work properly.")] GameObject _TilePrefab;
+        [SerializeField, Tooltip("The plane must have 1 in scale to work properly.")] TowerDefenceTileScript _TilePrefab;
         [SerializeField] LayerMask _TileLayer;
+
+        //!!!GOES [y][x]!!!
+        [SerializeField] List<SerializableTileArray> _Tiles = new();
+
+        [System.Serializable]
+        class SerializableTileArray
+        {
+            public List<TowerDefenceTileScript> Tiles = new();
+        }
 
         public void Generate()
         {
@@ -57,11 +66,20 @@ namespace TowerDefence
             //cpCol.isTrigger = true;
             //collisionPlane.layer = 13;
 
+            _Tiles = new();
+
             for (int y = 0; y < _Height; y++)
             {
+                _Tiles.Add(new());
+
                 for (int x = 0; x < _Width; x++)
                 {
-                    GameObject instGo = Instantiate(_TilePrefab, tempParent);
+                    GameObject instGo = Instantiate(_TilePrefab.gameObject, tempParent);
+
+                    var tile = instGo.GetComponent<TowerDefenceTileScript>();
+                    tile.Initialize(x, y);
+                    _Tiles[y].Tiles.Add(tile);
+
                     Vector3 targetPos = new Vector3(((x + 1) * 2 - 1) * bounds.extents.x, -bounds.extents.y, ((y + 1) * 2 - 1) * bounds.extents.z);
                     instGo.transform.position = targetPos;
 
@@ -94,5 +112,7 @@ namespace TowerDefence
             }
             DestroyImmediate(tempParent.gameObject);
         }
+
+        public TowerDefenceTileScript GetTile(int x, int y) => _Tiles[y].Tiles[x];
     }
 }
