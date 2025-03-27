@@ -42,13 +42,13 @@ namespace SaveSystem
         public class SaveData
         {
             public List<InventoryItemSaveData> PlayerInventory = null;
-            public object BaseInventory = null;
+            public List<ItemWithCount> BaseInventory = null;
             public object Turrets = null;
             public object Grid = null;
 
             public SaveData() { }
 
-            public SaveData(List<InventoryItemSaveData> playerInventory, object baseInventory, object turrets, object grid)
+            public SaveData(List<InventoryItemSaveData> playerInventory, List<ItemWithCount> baseInventory, object turrets, object grid)
             {
                 PlayerInventory = playerInventory;
                 BaseInventory = baseInventory;
@@ -67,6 +67,18 @@ namespace SaveSystem
             public InventoryItemSaveData(string typeID, string id, int count)
             {
                 TypeID = typeID;
+                ID = id;
+                Count = count;
+            }
+        }
+        [System.Serializable]
+        public class ItemWithCount
+        {
+            public string ID = null;
+            public int Count = -1;
+
+            public ItemWithCount(string id, int count)
+            {
                 ID = id;
                 Count = count;
             }
@@ -106,7 +118,7 @@ namespace SaveSystem
             _isInitialized = true;
         }
 
-        void OnDestroy()
+        void OnDestroy()//Is actually called when quitting the app
         {
             if (_isInitialized == false) return;
 
@@ -139,12 +151,21 @@ namespace SaveSystem
         }
 
         /// <summary>
-        /// Replaces player inventory in the current save. Is not saved to file before calling Save Function
+        /// Replaces player inventory in the current save. Is not saved to file before the WriteToSaveData function is called
         /// </summary>
         /// <param name="saveData">Save data</param>
         public void ReplacePlayerInventory(List<InventoryItemSaveData> saveData)
         {
             _currentSave.PlayerInventory = saveData;
+        }
+
+        /// <summary>
+        /// Replaces base inventory in the current save. Is not saved to file before the WriteToSaveData function is called
+        /// </summary>
+        /// <param name="saveData">Save data which includes ID of Resource Data and Count</param>
+        public void ReplaceBaseInventory(List<ItemWithCount> saveData)
+        {
+            _currentSave.BaseInventory = saveData;
         }
     }
 }

@@ -4,6 +4,9 @@ using System.Linq;
 using UnityEngine;
 using TMPro;
 using Overworld;
+using SaveSystem;
+using static SaveSystem.SaveManager;
+using TowerDefence;
 
 public class BaseResourceController : MonoBehaviour
 {
@@ -12,6 +15,7 @@ public class BaseResourceController : MonoBehaviour
     [SerializeField] TextMeshProUGUI _resourceText;
 
     Dictionary<ResourceData, int> _resourceDictionary = new();
+
     PlayerInstance playerInstance
     {
         get
@@ -22,6 +26,19 @@ public class BaseResourceController : MonoBehaviour
         }
     }
     PlayerInstance AUTO_playerInstance = null;
+    SaveManager _SaveManager
+    {
+        get
+        {
+            if (AUTO_saveManager == null)
+                AUTO_saveManager = SaveManager.Instance;
+
+            return AUTO_saveManager;
+        }
+    }
+    SaveManager AUTO_saveManager = null;
+
+    bool _isSaved;//prevents race conditions
 
     void Awake()
     {
@@ -31,7 +48,11 @@ public class BaseResourceController : MonoBehaviour
         GLOBAL.GetResourceDatabase().DataList.ForEach(x => _resourceDictionary.TryAdd(x, 0));
         RefreshText();
     }
-    private void Update()
+    void Start()
+    {
+        LoadInventory();
+    }
+    void Update()
     {
         //DEBUG
         if (Input.GetKeyDown(KeyCode.Keypad0))
@@ -43,6 +64,70 @@ public class BaseResourceController : MonoBehaviour
             }
         }
         //DEBUG
+    }
+    void OnApplicationQuit()
+    {
+        SaveInventory();
+        _isSaved = true;
+    }
+    void OnDestroy()
+    {
+        if (_isSaved == false) SaveInventory();
+    }
+
+    [ContextMenu("Save Inventory")]
+    void SaveInventory()
+    {
+        List<ItemWithCount> inv = new();
+        var dic = _resourceDictionary.ToArray();
+
+        for (int i = 0; i < dic.Length; i++)
+        {
+            var data = dic[i].Key;
+            var count = dic[i].Value;
+
+            if (data == null) continue;
+            else
+            {
+                inv.Add(new ItemWithCount(data.ID, count));
+            }
+        }
+
+        _SaveManager.ReplaceBaseInventory(inv);
+    }
+
+    [ContextMenu("Load Inventory")]
+    public void LoadInventory()
+    {
+        if (_SaveManager == null) return;
+
+        var save = _SaveManager.CurrentSave;
+        if (save == null) return;
+
+        var inv = save.BaseInventory;
+        if (inv == null) return;
+        if (inv.Count == 0) return;
+
+        _resourceDictionary = new Dictionary<ResourceData, int>();
+        GLOBAL.GetResourceDatabase().DataList.ForEach(x => _resourceDictionary.TryAdd(x, 0));
+        var resourceDB = GLOBAL.GetResourceDatabase();
+
+        for (int i = 0; i < inv.Count; i++)
+        {
+            var item = inv[i];
+
+            if (item == null) continue;
+            else
+            {
+                var data = resourceDB.GetDataByDisplayNameOrID(item.ID);
+                if (data == null) continue;
+
+                if (_resourceDictionary.TryAdd(data, item.Count) == false)
+                    _resourceDictionary[data] = item.Count;
+            }
+        }
+
+        RefreshText();
     }
 
     public void TransferInventory()

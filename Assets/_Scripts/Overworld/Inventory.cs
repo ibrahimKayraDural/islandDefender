@@ -84,9 +84,16 @@ namespace Overworld
             //Delete this before taking a final build
             Debugmethod();
         }
-        void OnDestroy()
+
+        bool _isSaved;//prevents race conditions
+        void OnApplicationQuit()
         {
             SaveInventory();
+            _isSaved = true;
+        }
+        void OnDestroy()
+        {
+            if (_isSaved == false) SaveInventory();
         }
 
         [ContextMenu("Save Inventory")]
