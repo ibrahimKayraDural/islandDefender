@@ -6,6 +6,8 @@ namespace Overworld
 {
     public abstract class InventoryItem
     {
+        public const string ResourceItemTypeID = "RESOURCE_ITEM";
+
         public int Count
         {
             get => Mathf.Clamp(_count, 0, MaxItemCount);
@@ -90,7 +92,7 @@ namespace Overworld
                     if (go.TryGetComponent(out DroppedInventoryItem dit) == false)
                     { dit = go.AddComponent<DroppedInventoryItem>(); }
 
-                    dit.Instantiate(this); 
+                    dit.Instantiate(this);
                 }
             }
         }

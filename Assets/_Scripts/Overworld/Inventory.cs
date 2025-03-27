@@ -1,9 +1,12 @@
+using SaveSystem;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using static SaveSystem.SaveManager;
 
 namespace Overworld
 {
@@ -57,17 +60,85 @@ namespace Overworld
         }
         CanvasManager AUTO_canvasManager = null;
 
+        SaveManager _SaveManager
+        {
+            get
+            {
+                if (AUTO_saveManager == null)
+                    AUTO_saveManager = SaveManager.Instance;
+
+                return AUTO_saveManager;
+            }
+        }
+        SaveManager AUTO_saveManager = null;
+
         void Start()
         {
             AUTO_canvasManager = CanvasManager.Instance;
             Clean();
+            LoadInventory();
             _slots.CollectionChanged += OnInventoryChanged;
         }
-
-        private void Update()
+        void Update()
         {
             //Delete this before taking a final build
             Debugmethod();
+        }
+        void OnDestroy()
+        {
+            SaveInventory();
+        }
+
+        [ContextMenu("Save Inventory")]
+        void SaveInventory()
+        {
+            List<InventoryItemSaveData> inv = Enumerable.Repeat<InventoryItemSaveData>(null, SlotCount).ToList();
+            for (int i = 0; i < SlotCount; i++)
+            {
+                var item = _slots[i];
+
+                if (IsNull(item)) continue;
+                else if (item as ResourceItem != null)
+                {
+                    var temp = (ResourceItem)item;
+                    inv[i] = new InventoryItemSaveData(InventoryItem.ResourceItemTypeID, temp.Data.ID, temp.Count);
+                }
+                else continue;
+            }
+
+            _SaveManager.ReplacePlayerInventory(inv);
+        }
+
+        [ContextMenu("Load Inventory")]
+        public void LoadInventory()
+        {
+            if (_SaveManager == null) return;
+
+            var save = _SaveManager.CurrentSave;
+            if (save == null) return;
+
+            List<InventoryItemSaveData> inv = save.PlayerInventory;
+            if (inv == null) return;
+            if (inv.Count == 0) return;
+
+            SlotCount = inv.Count;
+
+            var resourceDB = GLOBAL.GetResourceDatabase();
+
+            for (int i = 0; i < inv.Count; i++)
+            {
+                var item = inv[i];
+
+                if (item == null) continue;
+                else if (item.TypeID == InventoryItem.ResourceItemTypeID)
+                {
+                    var data = resourceDB.GetDataByDisplayNameOrID(item.ID);
+                    _slots[i] = new ResourceItem(data, item.Count);
+                }
+                else continue;
+            }
+
+            _CanvasManager.RefreshInventory();
         }
 
         void Debugmethod()
@@ -210,7 +281,7 @@ namespace Overworld
             }
 
             //drop the rest if it was asked for
-            if(dropTheSpill)
+            if (dropTheSpill)
             {
                 itemToAdd.Drop(transform.position);
                 return null;
@@ -259,7 +330,7 @@ namespace Overworld
             int count = 0;
             foreach (var slot in _slots)
             {
-                if(IsNull(slot))
+                if (IsNull(slot))
                 {
                     count += item.MaxItemCount;
                 }
