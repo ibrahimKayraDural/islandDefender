@@ -38,69 +38,6 @@ namespace SaveSystem
         static SaveManager _instance;
         static bool _isCreatingInstance = false;
 
-        [System.Serializable]
-        public class SaveData
-        {
-            public List<InventoryItemSaveData> PlayerInventory = null;
-            public List<ItemWithCount> BaseInventory = null;
-            public List<TurretSaveData> Turrets = null;
-            public object Grid = null;
-
-            public SaveData() { }
-
-            public SaveData(List<InventoryItemSaveData> playerInventory, List<ItemWithCount> baseInventory,
-                List<TurretSaveData> turrets, object grid)
-            {
-                PlayerInventory = playerInventory;
-                BaseInventory = baseInventory;
-                Turrets = turrets;
-                Grid = grid;
-            }
-        }
-
-        [System.Serializable]
-        public class InventoryItemSaveData
-        {
-            public string TypeID = null;
-            public string ID = null;
-            public int Count = -1;
-
-            public InventoryItemSaveData(string typeID, string id, int count)
-            {
-                TypeID = typeID;
-                ID = id;
-                Count = count;
-            }
-        }
-
-        [System.Serializable]
-        public class ItemWithCount
-        {
-            public string ID = null;
-            public int Count = -1;
-
-            public ItemWithCount(string id, int count)
-            {
-                ID = id;
-                Count = count;
-            }
-        }
-
-        [System.Serializable]
-        public class TurretSaveData
-        {
-            public string ID = null;
-            public int PosX = -1;
-            public int PosY = -1;
-
-            public TurretSaveData(string id, int posX, int posY)
-            {
-                ID = id;
-                PosX = posX;
-                PosY = posY;
-            }
-        }
-
         public SaveData CurrentSave => _currentSave;
 
         [SerializeField] SaveData _currentSave = new();
@@ -174,7 +111,8 @@ namespace SaveSystem
         }
 
         /// <summary>
-        /// Replaces player inventory in the current save. Is not saved to file before the WriteToSaveData function is called
+        /// Replaces player inventory in the current save. 
+        /// Is not saved to file before the WriteToSaveData function is called
         /// </summary>
         /// <param name="saveData">Save data</param>
         public void ReplacePlayerInventory(List<InventoryItemSaveData> saveData)
@@ -183,7 +121,8 @@ namespace SaveSystem
         }
 
         /// <summary>
-        /// Replaces base inventory in the current save. Is not saved to file before the WriteToSaveData function is called
+        /// Replaces base inventory in the current save. 
+        /// Is not saved to file before the WriteToSaveData function is called
         /// </summary>
         /// <param name="saveData">Save data which includes ID of Resource Data and Count</param>
         public void ReplaceBaseInventory(List<ItemWithCount> saveData)
@@ -192,12 +131,111 @@ namespace SaveSystem
         }
 
         /// <summary>
-        /// Replaces Placed Turrets in the current save. Is not saved to file before the WriteToSaveData function is called
+        /// Replaces Placed Turrets in the current save. 
+        /// Is not saved to file before the WriteToSaveData function is called
         /// </summary>
         /// <param name="saveData">Save data which includes Turret data</param>
         public void ReplaceTurrets(List<TurretSaveData> saveData)
         {
             _currentSave.Turrets = saveData;
+        }
+
+        /// <summary>
+        /// Adds a new grid or replaces the existing one. 
+        /// Is not saved to file before the WriteToSaveData function is called
+        /// </summary>
+        /// <param name="tileManagerID">ID of the TileManager which holds and controls the TileMaps</param>
+        /// <param name="deletedTileDatas">Actual data to save</param>
+        public void AddOrReplaceGrid(string tileManagerID, List<DeletedTileData> deletedTileDatas)
+        {
+            var grids = _currentSave.Grids;
+            var gridIdx = grids.FindIndex(x => x.TileManagerID == tileManagerID);
+            var newGrid = new GridSaveData(tileManagerID, deletedTileDatas);
+
+            if (gridIdx == -1) grids.Add(newGrid);
+            else grids[gridIdx] = newGrid;
+        }
+    }
+
+    [System.Serializable]
+    public class SaveData
+    {
+        public List<InventoryItemSaveData> PlayerInventory = null;
+        public List<ItemWithCount> BaseInventory = null;
+        public List<TurretSaveData> Turrets = null;
+        public List<GridSaveData> Grids = new();
+
+        public SaveData() { }
+    }
+
+    [System.Serializable]
+    public class InventoryItemSaveData
+    {
+        public string TypeID = null;
+        public string ID = null;
+        public int Count = -1;
+
+        public InventoryItemSaveData(string typeID, string id, int count)
+        {
+            TypeID = typeID;
+            ID = id;
+            Count = count;
+        }
+    }
+
+    [System.Serializable]
+    public class ItemWithCount
+    {
+        public string ID = null;
+        public int Count = -1;
+
+        public ItemWithCount(string id, int count)
+        {
+            ID = id;
+            Count = count;
+        }
+    }
+
+    [System.Serializable]
+    public class TurretSaveData
+    {
+        public string ID = null;
+        public int PosX = -1;
+        public int PosY = -1;
+
+        public TurretSaveData(string id, int posX, int posY)
+        {
+            ID = id;
+            PosX = posX;
+            PosY = posY;
+        }
+    }
+    [System.Serializable]
+    public class GridSaveData
+    {
+        public string TileManagerID = null;
+        public List<DeletedTileData> DeletedTiles = null;
+
+        public GridSaveData(string tileManagerID, List<DeletedTileData> deletedTiles)
+        {
+            TileManagerID = tileManagerID;
+            DeletedTiles = deletedTiles;
+        }
+    }
+    [System.Serializable]
+    public class DeletedTileData
+    {
+        public Vector3Int TileCellPosition => new Vector3Int(TilePosX, TilePosY, TilePosZ);
+
+        public string TilemapID = null;
+        public int TilePosX, TilePosY, TilePosZ;
+
+        public DeletedTileData(string tilemapID, Vector3Int tileCellPosition)
+        {
+            TilemapID = tilemapID;
+            TilePosX = tileCellPosition.x;
+            TilePosY = tileCellPosition.y;
+            TilePosZ = tileCellPosition.z;
         }
     }
 }

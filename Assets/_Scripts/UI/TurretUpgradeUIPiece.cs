@@ -112,6 +112,8 @@ public class TurretUpgradeUIPiece : MonoBehaviour, IPointerEnterHandler, IPointe
 
     void OnUnitDeath(object sender, System.EventArgs e)
     {
+        if (gameObject == null) return;
+
         Destroy(gameObject);
     }
 }

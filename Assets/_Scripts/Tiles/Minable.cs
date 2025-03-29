@@ -112,7 +112,7 @@ public class Minable : MonoBehaviour
         TilemapManager tm = TilemapManager.Instance;
         if (tm != null && _DeleteFromTilemap)
         {
-            if (tm.DeleteTile(transform.position, "objects") == false) Destroy(gameObject);
+            if (tm.TryDeleteTile(transform.position, "objects") == false) Destroy(gameObject);
         }
         else Destroy(gameObject);
     }
