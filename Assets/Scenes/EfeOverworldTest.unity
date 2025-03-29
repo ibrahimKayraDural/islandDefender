@@ -12052,6 +12052,7 @@ MonoBehaviour:
   _Tilemaps:
   - _Tilemap: {fileID: 613343795}
     _ID: objects
+  _GUID: 0fe2b03e-76bb-4525-a80b-06e37c9cffc0
 --- !u!1001 &1373089429
 PrefabInstance:
   m_ObjectHideFlags: 0

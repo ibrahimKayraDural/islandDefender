@@ -106,6 +106,12 @@ public class TilemapManager : MonoBehaviour
     void SaveGrid()
     {
         if (_deletedTiles == null || _deletedTiles.Count == 0) return;
+        if(_GUID == GLOBAL.UnassignedString)
+        {
+            Debug.LogError($"GUID of {gameObject.name} is not assigned. " +
+                $"Assign it by right clicking and selecting ''Generate GUID'' on TilemapManager script.");
+            return;
+        }
 
         _SaveManager.AddOrReplaceGrid(_GUID, _deletedTiles);
     }
