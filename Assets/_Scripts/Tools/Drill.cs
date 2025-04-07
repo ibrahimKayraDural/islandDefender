@@ -4,10 +4,13 @@ namespace Overworld
     using System.Collections;
     using System.Collections.Generic;
     using UnityEngine;
+    using UpgradeSystem;
 
-    public class Drill : Tool, ISpeedUpgradable, IStrengthUpgradable
+    public class Drill : Tool, IUpgradeable
     {
-        public int DrillLevel => Mathf.Max(Mathf.FloorToInt(StrengthMultiplier), 1);
+        public int DrillLevel => Mathf.Max(Mathf.FloorToInt(_strengthMultiplier), 1);
+        public float SpeedUpgradeValue => _speedUpgradeValue;
+
 
         [SerializeField] Rigidbody _Rigidbody;
         [SerializeField] Animator _Animator;
@@ -36,11 +39,6 @@ namespace Overworld
         }
         PlayerFuelController AUTO_PlayerFuelController = null;
 
-        public UpgradeData CurrentSpeedUpgrade { get; set; } = null;
-        public float SpeedUpgradeValue { get; set; } = 1;
-        public UpgradeData CurrentStrengthUpgrade { get; set; } = null;
-        public float StrengthMultiplier { get; set; } = 1;
-
         readonly string SFX_ID = "DrillTool_Running";
 
         bool _fuelEmpty = false;
@@ -48,8 +46,36 @@ namespace Overworld
         public void Awake()
         {
             _Rigidbody.detectCollisions = false;
-            (this as ISpeedUpgradable).RefreshSpeedUpgrade();
         }
+
+        #region Upgrade
+        public Dictionary<string, UpgradeData> Upgrades => _Upgrades;
+        [SerializeField]
+        Dictionary<string, UpgradeData> _Upgrades = new()
+        {
+            { "speed", null },
+            { "strength", null },
+        };
+
+        public void HandleUpgradeValues(string id, UpgradeData data)
+        {
+            if (data.TryGetFloatValue(id, out float temp) == false) return;
+
+            Upgrades[id] = data;
+
+            if (id == "speed")
+            {
+                _speedUpgradeValue = temp;
+            }
+            else if (id == "strength")
+            {
+                _strengthMultiplier = temp;
+            }
+        }
+
+        float _speedUpgradeValue = 1;
+        float _strengthMultiplier = 1;
+        #endregion
 
         internal override IEnumerator FireIEnum()
         {
@@ -82,7 +108,7 @@ namespace Overworld
             if (_fuelEmpty) return;
 
             _PlayerFuelController.TrySpendFuel();
-            if(_PlayerFuelController.FuelEmpty)
+            if (_PlayerFuelController.FuelEmpty)
             {
                 _fuelEmpty = true;
                 StopFiring();

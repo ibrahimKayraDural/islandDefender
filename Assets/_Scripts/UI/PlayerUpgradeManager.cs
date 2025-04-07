@@ -1,9 +1,11 @@
 using Overworld;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UpgradeSystem;
 
 public class PlayerUpgradeManager : MonoBehaviour
 {
@@ -130,19 +132,23 @@ public class PlayerUpgradeManager : MonoBehaviour
     void HandleUpgradeEffect(UpgradeTree tree)
     {
         string id = tree.ID;
-        var upgrade = tree.CurrentUpgrade;
+        var upgrade = tree?.CurrentUpgrade?.Data;
         if (upgrade == null) return;
 
-        if (id == "player" || id == "drillSpeed")
+        IUpgradeable upgradeable = null;
+        string upgradeID = GLOBAL.UnassignedString;
+        switch (id)
         {
-            ISpeedUpgradable isu = null;
-
-            switch (id)
-            {
-                case "drillSpeed": isu = FindObjectOfType<Drill>(true); break;
-                case "player": isu = PlayerInstance.Instance.PlayerController_Ref; break;
-            }
-            isu?.SetSpeedUpgrade(upgrade.Value.Data);
+            case "drillSpeed":
+                upgradeable = FindObjectOfType<Drill>(true);
+                upgradeID = "speed";
+                break;
+            case "player":
+                upgradeable = PlayerInstance.Instance.PlayerController_Ref;
+                upgradeID = "speed";
+                break;
         }
+
+        upgradeable?.SetUpgradeData(upgradeID, upgrade);
     }
 }

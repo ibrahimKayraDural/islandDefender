@@ -6,17 +6,19 @@ namespace Overworld
     using System.Linq;
     using System.Reflection;
     using UnityEngine;
+    using UpgradeSystem;
 
     [RequireComponent(typeof(Rigidbody))]
-    public class PlayerController : MonoBehaviour, ISpeedUpgradable
+    public class PlayerController : MonoBehaviour, IUpgradeable
     {
-        float Speed { get => _BaseSpeed * SpeedUpgradeValue * _currentSpeedEnhancer * _currentSpeedHinderer; }
+        float Speed { get => _BaseSpeed * _speedUpgradeValue * _currentSpeedEnhancer * _currentSpeedHinderer; }
+        float FootstepCooldown => Speed > 0 ? Mathf.Max(_footstepCooldownBase / Speed, .05f) : _footstepCooldownBase;
 
         [Header("Values")]
         [SerializeField, Min(0)] float _BaseSpeed = 1;
         [SerializeField, Min(0.001f)] float _GroundFriction = 10;
         [SerializeField, Min(0)] float _TurnSpeed = 1;
-        [SerializeField, Min(0)] float _footstepCooldown = .6f;
+        [SerializeField, Min(0)] float _footstepCooldownBase = .6f;
         [SerializeField, Min(0)] float _footstepPitchModulation = .3f;
 
         [Header("Reference")]
@@ -88,10 +90,6 @@ namespace Overworld
         }
         AudioManager AUTO_AudioManager = null;
 
-        public UpgradeData CurrentSpeedUpgrade { get; set; } = null;
-        public float SpeedUpgradeValue { get; set; } = 1;
-
-
         public List<Tuple<string, MovementMode>> _movementModeModifiers = new List<Tuple<string, MovementMode>>();
         bool _acceptMovementModeModifier = true;
 
@@ -113,10 +111,7 @@ namespace Overworld
             _RB.angularDrag = 1000000;
             _RB.drag = 1000000;
             _RB.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
-
-            (this as ISpeedUpgradable).RefreshSpeedUpgrade();
         }
-
         void Update()
         {
             //if (Input.GetButtonDown("Inventory")) _CanvasManager?.ToggleInventory();
@@ -125,7 +120,6 @@ namespace Overworld
 
             _Rotator.transform.rotation = Quaternion.Lerp(_Rotator.transform.rotation, _dirAsRot, Time.deltaTime * _TurnSpeed);
         }
-
         void FixedUpdate()
         {
             if (_camera == null) return;
@@ -138,6 +132,33 @@ namespace Overworld
 
             CalculateAnimation(Time.deltaTime);
         }
+
+        #region Upgrade
+        public Dictionary<string, UpgradeData> Upgrades => _Upgrades;
+        [SerializeField]
+        Dictionary<string, UpgradeData> _Upgrades = new()
+        {
+            { "speed", null }
+        };
+
+        public void HandleUpgradeValues(string id, UpgradeData data)
+        {
+            if (Upgrades.ContainsKey(id) == false) return;
+
+            if (data == null) return;
+
+            if (data.TryGetFloatValue(id, out float temp) == false) return;
+
+            Upgrades[id] = data;
+
+            if (id == "speed")
+            {
+                _speedUpgradeValue = temp;
+            }
+        }
+
+        float _speedUpgradeValue = 1;
+        #endregion
 
         /// <summary>
         /// Add a new speed modifier with ID
@@ -271,7 +292,7 @@ namespace Overworld
 
             void PlaySFX()
             {
-                _footstepSFX_targetTime = Time.time + _footstepCooldown;
+                _footstepSFX_targetTime = Time.time + FootstepCooldown;
 
                 float fsPitch = UnityEngine.Random.Range(-_footstepPitchModulation, _footstepPitchModulation) + 1;
                 _AudioManager?.PlayClip(FOOTSTEP_ID, _FootstepClip, pitch: fsPitch);
