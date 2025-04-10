@@ -1,5 +1,6 @@
 namespace Overworld
 {
+    using SaveSystem;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -26,6 +27,8 @@ namespace Overworld
         [SerializeField] Animator _Animator;
         [SerializeField] GameObject _Rotator;
         [SerializeField] AudioClip _FootstepClip;
+
+        [SerializeField] string _GUID;
 
         Vector3 _direction
         {
@@ -104,13 +107,26 @@ namespace Overworld
         float _footstepSFX_targetTime = float.MaxValue;
         const string FOOTSTEP_ID = "PlayerControllerFootstep";
 
-        private void Start()
+        bool _isSaved;//prevents race conditions
+
+        void OnApplicationQuit()
+        {
+            (this as IUpgradeable).SaveUpgradeData();
+            _isSaved = true;
+        }
+        void OnDestroy()
+        {
+            if (_isSaved == false) (this as IUpgradeable).SaveUpgradeData();
+        }
+        void Start()
         {
             _RB = GetComponent<Rigidbody>();
             _RB.useGravity = false;
             _RB.angularDrag = 1000000;
             _RB.drag = 1000000;
             _RB.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
+
+            (this as IUpgradeable).LoadUpgradeData();
         }
         void Update()
         {
@@ -134,7 +150,17 @@ namespace Overworld
         }
 
         #region Upgrade
+
+        [ContextMenu("Generate GUID")]
+        void GenerateGUIDGetter() => _GUID = Guid.NewGuid().ToString();
+        public string UpgradeableGUID => _GUID;
+
         public Dictionary<string, UpgradeData> Upgrades => _Upgrades;
+
+        public SaveManager AUTO_SaveManager { get; set; }
+        public UpgradeDatabase AUTO_UpgradeDatabaseGetter { get; set; }
+        public string DisplayName => name;
+
         [SerializeField]
         Dictionary<string, UpgradeData> _Upgrades = new()
         {

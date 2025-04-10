@@ -1,8 +1,11 @@
 namespace Overworld
 {
+    using SaveSystem;
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
+    using TowerDefence;
     using UnityEngine;
     using UpgradeSystem;
 
@@ -11,7 +14,7 @@ namespace Overworld
         public int DrillLevel => Mathf.Max(Mathf.FloorToInt(_strengthMultiplier), 1);
         public float SpeedUpgradeValue => _speedUpgradeValue;
 
-
+        [SerializeField] string _GUID = "PLAYERDRILL";
         [SerializeField] Rigidbody _Rigidbody;
         [SerializeField] Animator _Animator;
         [SerializeField] AudioClip _RunningSFX;
@@ -42,20 +45,47 @@ namespace Overworld
         readonly string SFX_ID = "DrillTool_Running";
 
         bool _fuelEmpty = false;
+        bool _isSaved;//prevents race conditions
 
         public void Awake()
         {
             _Rigidbody.detectCollisions = false;
         }
+        void Start()
+        {
+            (this as IUpgradeable).LoadUpgradeData();
+        }
+        void OnApplicationQuit()
+        {
+            (this as IUpgradeable).SaveUpgradeData();
+            _isSaved = true;
+        }
+        void OnDestroy()
+        {
+            if (_isSaved == false) (this as IUpgradeable).SaveUpgradeData();
+        }
 
         #region Upgrade
+
+        [ContextMenu("Generate GUID")]
+        void GenerateGUIDGetter() => _GUID = Guid.NewGuid().ToString();
+        public string UpgradeableGUID => _GUID;
+
         public Dictionary<string, UpgradeData> Upgrades => _Upgrades;
+
+        public SaveManager AUTO_SaveManager { get; set; }
+        public UpgradeDatabase AUTO_UpgradeDatabaseGetter { get; set; }
+        public string DisplayName => name;
+
         [SerializeField]
         Dictionary<string, UpgradeData> _Upgrades = new()
         {
             { "speed", null },
             { "strength", null },
         };
+
+        float _speedUpgradeValue = 1;
+        float _strengthMultiplier = 1;
 
         public void HandleUpgradeValues(string id, UpgradeData data)
         {
@@ -72,9 +102,6 @@ namespace Overworld
                 _strengthMultiplier = temp;
             }
         }
-
-        float _speedUpgradeValue = 1;
-        float _strengthMultiplier = 1;
         #endregion
 
         internal override IEnumerator FireIEnum()

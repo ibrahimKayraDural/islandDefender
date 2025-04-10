@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.WSA;
+using UpgradeSystem;
 
 namespace SaveSystem
 {
@@ -155,6 +156,23 @@ namespace SaveSystem
             if (gridIdx == -1) grids.Add(newGrid);
             else grids[gridIdx] = newGrid;
         }
+
+        /// <summary>
+        /// Adds a new upgradeable or replaces the existing one. 
+        /// Is not saved to file before the WriteToSaveData function is called
+        /// </summary>
+        /// <param name="guid">Unique id of the upradeable</param>
+        /// <param name="data">Actual data to save</param>
+        public void AddOrReplaceUpgradeable(string guid, List<UpgradeData> datas)
+        {
+            if (guid == null) return;
+
+            var i = _currentSave.Upgrades.FindIndex(x => x.GUID == guid);
+            var upgrades = new UpgradeableData(guid, datas);
+
+            if (i == -1) _currentSave.Upgrades.Add(upgrades);
+            else _currentSave.Upgrades[i] = upgrades;
+        }
     }
 
     [System.Serializable]
@@ -164,8 +182,21 @@ namespace SaveSystem
         public List<ItemWithCount> BaseInventory = null;
         public List<TurretSaveData> Turrets = null;
         public List<GridSaveData> Grids = new();
+        public List<UpgradeableData> Upgrades
+        {
+            get
+            {
+                if (_upgrades == null) _upgrades = new();
+                return _upgrades;
+            }
+            set { _upgrades = value; }
+        }
+
+        List<UpgradeableData> _upgrades = new();
 
         public SaveData() { }
+
+        public UpgradeableData GetUpgradesOfGUID(string guid) => Upgrades.Find(x => x.GUID == guid);
     }
 
     [System.Serializable]
@@ -236,6 +267,28 @@ namespace SaveSystem
             TilePosX = tileCellPosition.x;
             TilePosY = tileCellPosition.y;
             TilePosZ = tileCellPosition.z;
+        }
+    }
+    [System.Serializable]
+    public class UpgradeableData
+    {
+        public string GUID = null;
+        public List<string> UpgradeIDs = null;
+
+        public UpgradeableData(string guid, List<string> upgradeIDs)
+        {
+            GUID = guid;
+            UpgradeIDs = upgradeIDs;
+        }
+        public UpgradeableData(string guid, List<UpgradeData> upgrades)
+        {
+            GUID = guid;
+            UpgradeIDs = new();
+            foreach (var upgrade in upgrades)
+            {
+                if (upgrade == null) continue;
+                UpgradeIDs.Add(upgrade.ID);
+            }
         }
     }
 }
