@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using TowerDefence;
 using UnityEngine;
 using UnityEngine.WSA;
 using UpgradeSystem;
@@ -142,6 +144,36 @@ namespace SaveSystem
         }
 
         /// <summary>
+        /// Replaces Unlocked Turrets in the current save. 
+        /// Is not saved to file before the WriteToSaveData function is called
+        /// </summary>
+        /// <param name="turrets">Turrets to save</param>
+        public void ReplaceUnlockedTurrets(List<TurretData> turrets)
+        {
+            _currentSave.UnlockedTurretIDs = turrets.Select(x => x.ID).ToList();
+        }
+
+        /// <summary>
+        /// Replaces Unlocked Tools in the current save. 
+        /// Is not saved to file before the WriteToSaveData function is called
+        /// </summary>
+        /// <param name="tools">Tools to save</param>
+        public void ReplaceUnlockedTools(List<ToolData> tools)
+        {
+            _currentSave.UnlockedToolIDs = tools.Select(x => x.ID).ToList();
+        }
+
+        /// <summary>
+        /// Replaces Unlocked Enemies in the current save. 
+        /// Is not saved to file before the WriteToSaveData function is called
+        /// </summary>
+        /// <param name="enemies">Enemies to save</param>
+        public void ReplaceUnlockedEnemies(List<EnemyData> enemies)
+        {
+            _currentSave.UnlockedEnemyIDs = enemies.Select(x => x.ID).ToList();
+        }
+
+        /// <summary>
         /// Adds a new grid or replaces the existing one. 
         /// Is not saved to file before the WriteToSaveData function is called
         /// </summary>
@@ -181,6 +213,9 @@ namespace SaveSystem
         public List<InventoryItemSaveData> PlayerInventory = null;
         public List<ItemWithCount> BaseInventory = null;
         public List<TurretSaveData> Turrets = null;
+        public List<string> UnlockedEnemyIDs = null;
+        public List<string> UnlockedToolIDs = null;
+        public List<string> UnlockedTurretIDs = null;
         public List<GridSaveData> Grids = new();
         public List<UpgradeableData> Upgrades
         {
