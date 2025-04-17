@@ -1,3 +1,4 @@
+using Overworld;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -174,6 +175,16 @@ namespace SaveSystem
         }
 
         /// <summary>
+        /// Replaces Active Tools in the current save. 
+        /// Is not saved to file before the WriteToSaveData function is called
+        /// </summary>
+        /// <param name="tools">active tools to save</param>
+        public void ReplaceActiveTools(List<Tool> tools)
+        {
+            _currentSave.ActiveToolIDs = tools.Select(x => x?.Data?.ID).Where(x => x != null).ToList();
+        }
+
+        /// <summary>
         /// Adds a new grid or replaces the existing one. 
         /// Is not saved to file before the WriteToSaveData function is called
         /// </summary>
@@ -216,6 +227,7 @@ namespace SaveSystem
         public List<string> UnlockedEnemyIDs = null;
         public List<string> UnlockedToolIDs = null;
         public List<string> UnlockedTurretIDs = null;
+        public List<string> ActiveToolIDs = null;
         public List<GridSaveData> Grids = new();
         public List<UpgradeableData> Upgrades
         {

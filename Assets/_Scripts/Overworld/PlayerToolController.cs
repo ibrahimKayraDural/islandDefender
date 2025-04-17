@@ -1,8 +1,10 @@
 namespace Overworld
 {
+    using SaveSystem;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using TowerDefence;
     using UnityEngine;
 
     public class PlayerToolController : MonoBehaviour
@@ -21,6 +23,7 @@ namespace Overworld
         [SerializeField] Transform _ToolPoint;
         [SerializeField] int _MaxToolCount = 3;
 
+        [SerializeField] List<Tool> _activeTools = new List<Tool>();
 
         // To change the gun, simply change this value. The value will automatically normalize itself to _ActiveTools array.
         int _ToolIndex
@@ -52,21 +55,65 @@ namespace Overworld
         int AUTOVALUE_toolIdx = 0;
 
         ToolDatabase _toolDatabase;
-        [SerializeField] List<Tool> _activeTools = new List<Tool>();
         List<Tool> _tools = new List<Tool>();
         List<KeyCode> _numberKeys = GLOBAL.AlphaNumberKeys;
         bool _anyToolIsEquipped => _currentTool != null;
         float _changeTool_TargetTime = -1;
         float _changeTool_Cooldown = .2f;
 
+        SaveManager _SaveManager
+        {
+            get
+            {
+                if (AUTO_saveManager == null)
+                    AUTO_saveManager = SaveManager.Instance;
+
+                return AUTO_saveManager;
+            }
+        }
+        SaveManager AUTO_saveManager = null;
+
+        bool _isSaved;//prevents race conditions
+
+        void OnApplicationQuit()
+        {
+            SaveActiveTools();
+            _isSaved = true;
+        }
+        void OnDestroy()
+        {
+            if (_isSaved == false) SaveActiveTools();
+        }
+
+        [ContextMenu("Save Tools")]
+        void SaveActiveTools()
+        {
+            _SaveManager?.ReplaceActiveTools(_activeTools);
+        }
+
+        [ContextMenu("Load Tools")]
+        public void LoadActiveTools()
+        {
+            List<string> currentActiveToolIDs;
+
+            if (_SaveManager?.CurrentSave?.ActiveToolIDs == null)
+            {
+                currentActiveToolIDs = _activeTools.Select(x => x.Data.ID).ToList();
+            }
+            else
+            {
+                currentActiveToolIDs = _SaveManager.CurrentSave.ActiveToolIDs;
+            }
+
+            _activeTools = new List<Tool>();
+            currentActiveToolIDs.ForEach(x => TryActivateTool(x));
+        }
         void Start()
         {
             _toolDatabase = GLOBAL.GetToolDatabase();
             InitializeToolList();
 
-            List<string> currentActiveToolIDs = _activeTools.Select(x => x.Data.ID).ToList();
-            _activeTools = new List<Tool>();
-            currentActiveToolIDs.ForEach(x => TryActivateTool(x));
+            LoadActiveTools();
 
             _ToolIndex = 0;
         }
@@ -169,7 +216,8 @@ namespace Overworld
                         if (keyStr.Contains("Alpha"))
                         {
                             try { number = int.Parse(key.ToString().Replace("Alpha", "")); }
-                            catch { number = -1; };
+                            catch { number = -1; }
+                            ;
                         }
 
                         if (number != -1) break;
