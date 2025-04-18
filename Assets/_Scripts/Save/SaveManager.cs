@@ -216,6 +216,38 @@ namespace SaveSystem
             if (i == -1) _currentSave.Upgrades.Add(upgrades);
             else _currentSave.Upgrades[i] = upgrades;
         }
+
+        /// <summary>
+        /// Adds or replaces an integer to the save file
+        /// Is not saved to file before the WriteToSaveData function is called
+        /// </summary>
+        /// <param name="id">An ID to hande the integer value</param>
+        /// <param name="integer">The actual value to save</param>
+        public void AddOrReplaceSavedInteger(string id, int integer)
+        {
+            if (id == null) return;
+
+            int index = _currentSave.SavedIntegers.FindIndex(x => x.ID == id);
+
+            if (index == -1) _currentSave.SavedIntegers.Add(new(id, integer));
+            else _currentSave.SavedIntegers[index] = new(id, integer);
+        }
+
+        /// <summary>
+        /// Tries to remove an integer with the id
+        /// Is not saved to file before the WriteToSaveData function is called
+        /// </summary>
+        /// <param name="id">ID that the integer was saved with</param>
+        public bool TryRemoveSavedInteger(string id)
+        {
+            if (id == null) return false;
+
+            int index = _currentSave.SavedIntegers.FindIndex(x => x.ID == id);
+            if (index == -1) return false;
+
+            _currentSave.SavedIntegers.RemoveAt(index);
+            return true;
+        }
     }
 
     [System.Serializable]
@@ -229,6 +261,7 @@ namespace SaveSystem
         public List<string> UnlockedTurretIDs = null;
         public List<string> ActiveToolIDs = null;
         public List<GridSaveData> Grids = new();
+        public List<IntWithID> SavedIntegers = new();
         public List<UpgradeableData> Upgrades
         {
             get
@@ -336,6 +369,18 @@ namespace SaveSystem
                 if (upgrade == null) continue;
                 UpgradeIDs.Add(upgrade.ID);
             }
+        }
+    }
+    [System.Serializable]
+    public class IntWithID
+    {
+        public string ID;
+        public int Value;
+
+        public IntWithID(string id, int value)
+        {
+            ID = id;
+            Value = value;
         }
     }
 }
