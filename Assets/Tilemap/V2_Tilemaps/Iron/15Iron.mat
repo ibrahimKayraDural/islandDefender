@@ -55,7 +55,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 21d2cdde4619b4d4a87c2c4a02015587, type: 3}
+        m_Texture: {fileID: 2800000, guid: 1e593e69dcb465149b41277d35ec88e6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -63,7 +63,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normalmap:
-        m_Texture: {fileID: 2800000, guid: 4bb7cb0dab73c3b48a7f1e128e45d5f9, type: 3}
+        m_Texture: {fileID: 2800000, guid: 023c35ec0494e8543bd886cf9949a1dd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
