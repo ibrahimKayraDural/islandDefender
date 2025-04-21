@@ -128,6 +128,8 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _HighlightThinness: 3
+    - _IsHighlighted: 0
     - _Metallic: 0
     - _MetallicValue: 0
     - _Mode: 0
@@ -177,6 +179,7 @@ Material:
     - _DamageEmissionColor: {r: 0.29803923, g: 0.29803923, b: 0.29803923, a: 1}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _H_ghlightColor: {r: 0, g: 1, b: 1, a: 1}
     - _TextureTint: {r: 1, g: 1, b: 1, a: 1}
     - _WoundEmissionColor: {r: 0.5019608, g: 0, b: 0.01568628, a: 1}
   m_BuildTextureStacks: []
