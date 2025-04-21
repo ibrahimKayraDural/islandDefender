@@ -25,7 +25,6 @@ namespace TowerDefence
         [SerializeField] GraphicRaycasterScript _GraphicRaycasterScript;
         [SerializeField] TextMeshProUGUI _DescriptionTitle;
         [SerializeField] TextMeshProUGUI _DescriptionText;
-        [SerializeField] TextMeshProUGUI _CurrentModeText;
 
         [SerializeField] Camera _camera = null;
 
@@ -93,9 +92,7 @@ namespace TowerDefence
                 case TowerDefenceGameplayMode.Idle: HandleIdleMode(); break;
             }
 
-            if (Input.GetButtonDown("Exit")) _battleManager.ExitBattle();
-
-            _CurrentModeText.text = _currentGameplayMode.ToString();
+            if (Input.GetButtonDown("Exit") && SpawnManager.WaveIsActive == false) _battleManager.ExitBattle();
         }
 
         public void EvaluateGameplayMode(bool WaveIsActive)

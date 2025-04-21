@@ -219,6 +219,8 @@ public class BaseResourceController : MonoBehaviour
 
     void RefreshText()
     {
+        if (_resourceText == null) return;
+
         _resourceText.text = "";
         foreach (KeyValuePair<ResourceData, int> pair in _resourceDictionary)
         {

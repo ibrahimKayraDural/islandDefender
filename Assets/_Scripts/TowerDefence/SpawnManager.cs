@@ -20,11 +20,21 @@ namespace TowerDefence
 
         [SerializeField] List<Spawner> _spawners = new();
         [SerializeField] GameObject _SpawnerPrefab = null;
+        [SerializeField] GameObject _PrevWaveButton;
         [SerializeField] BaseManager _BaseMngr;
         [SerializeField] TDPlayerController _TDPlayerController;
 
-        TD_WaveValue? _currentWave = null;
-        int currentWaveIndex = 0;
+        List<TD_Wave> _waves = null;
+        TD_WaveValue? _CurrentWave
+        {
+            get
+            {
+                if (_waves == null || _waves.Count <= 0) return null;
+                if (_currentWaveIndex >= _waves.Count) return _waves[_waves.Count - 1]?.AsValue();
+                return _waves[_currentWaveIndex]?.AsValue();
+            }
+        }
+        int _currentWaveIndex = 0;
         int _lastLaneIndex = -1;
 
         List<TD_EnemyWithCooldown> _currentEnemies = new();
@@ -32,13 +42,11 @@ namespace TowerDefence
         void Start()
         {
             //Get wave database
-            var waveDB = GLOBAL.GetWaveDatabase();
+            _waves = GLOBAL.GetWaveDatabase()?.DataList;
 
             _BaseMngr.e_BaseHasDied += _BaseMngr_e_BaseHasDied;
 
-            //Get current wave index here
-            _currentWave = waveDB.DataList[currentWaveIndex].AsValue();
-
+            _PrevWaveButton.SetActive(false);
             SetWaveUp();
 
             //Use this method when you are ready. Usually hooked up to a button.
@@ -65,12 +73,17 @@ namespace TowerDefence
             _BaseMngr.e_BaseHasDied -= _BaseMngr_e_BaseHasDied;
         }
 
-        public void StartWave()
+        public void StartPreviousWave()
+        {
+            _currentWaveIndex = Mathf.Max(_currentWaveIndex - 1, 0);
+            StartNextWave();
+        }
+        public void StartNextWave()
         {
             //SetIndicatorValues(null);
 
             if (WaveIsActive) return;
-            if (_currentWave == null)
+            if (_CurrentWave == null)
             {
                 Debug.LogError("_currentWave is null");
                 return;
@@ -132,9 +145,9 @@ namespace TowerDefence
         {
             _currentEnemies = new();
 
-            for (int i = 0; i < _currentWave.Value.Enemies.Count; i++)
+            for (int i = 0; i < _CurrentWave.Value.Enemies.Count; i++)
             {
-                var item = _currentWave.Value.Enemies[i];
+                var item = _CurrentWave.Value.Enemies[i];
                 item.LockEnemy();
                 _currentEnemies.Add(item);
             }
@@ -231,7 +244,10 @@ namespace TowerDefence
             if (WaveIsActive == false) return;
             WaveIsActive = false;
 
-            Debug.Log("Wave has ended");
+            _currentWaveIndex++;
+            _PrevWaveButton.SetActive(true);
+
+            _TDPlayerController.EvaluateGameplayMode(false);
         }
 
         //void SetIndicatorValues(bool? toNull = false)
