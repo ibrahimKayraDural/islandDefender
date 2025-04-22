@@ -23,6 +23,18 @@ public static class GLOBAL
     {
         KeyCode.Keypad1, KeyCode.Keypad2, KeyCode.Keypad3, KeyCode.Keypad4, KeyCode.Keypad5, KeyCode.Keypad6, KeyCode.Keypad7, KeyCode.Keypad8, KeyCode.Keypad9, KeyCode.Keypad0,
     };
+    public readonly static Dictionary<EnemyDifficulty, float> EnemyDifficultyMultipliers = new()
+    {
+        { EnemyDifficulty.Weak, 1f} ,
+        { EnemyDifficulty.Medium, 2f} ,
+        { EnemyDifficulty.Tough, 5f} ,
+    };
+    public readonly static Dictionary<EnemyDifficulty, float> EnemyResearchPointGain = new()
+    {
+        { EnemyDifficulty.Weak, 100f} ,
+        { EnemyDifficulty.Medium, 250f} ,
+        { EnemyDifficulty.Tough, 600f} ,
+    };
 
     #endregion
 
@@ -70,15 +82,36 @@ public static class GLOBAL
 
     public static bool StringHasValue(string str) => !(str == null || str == "" || str == UnassignedString);
 
+    public static float EnemyCooldownDifficultyCalculator(float cooldown)
+    {
+        switch (cooldown)
+        {
+            case <= 0: return 1;
+            case <= .3f: return 7;
+            case <= .8f: return 5;
+            case <= 1.5f: return 4;
+            case <= 3f: return 3;
+            case <= 6f: return 2;
+            default: return 1;
+        }
+    }
 
-# endregion
+    public static float DecimalSimplifier(float number, int placeCount)
+    {
+        placeCount = Mathf.Clamp(placeCount, 0, 10);
+        float mod = 1 / Mathf.Pow(10, placeCount);
+        float sub = number % mod;
+        return number - sub;
+    }
+
+    #endregion
 
     #region Databases
 
     static TurretDatabase _turretDB = null;
     public static TurretDatabase GetTurretDatabase()
     {
-        if(_turretDB == null) _turretDB = Resources.Load<TurretDatabase>("Databases/TurretDatabase");
+        if (_turretDB == null) _turretDB = Resources.Load<TurretDatabase>("Databases/TurretDatabase");
         return _turretDB;
     }
 

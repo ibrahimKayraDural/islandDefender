@@ -9,6 +9,7 @@ namespace TowerDefence
     public struct TD_WaveValue
     {
         public List<TD_EnemyWithCooldown> Enemies => _enemies;
+
         [SerializeField] List<TD_EnemyWithCooldown> _enemies;
 
         public TD_WaveValue(List<TD_EnemyWithCooldown> wave)

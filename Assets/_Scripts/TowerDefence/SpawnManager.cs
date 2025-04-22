@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEditor.ShaderGraph.Internal;
 
 namespace TowerDefence
 {
@@ -15,8 +16,12 @@ namespace TowerDefence
         public static void RemoveFromActiveEnemyList(GameObject a) { }
         public void DeleteSpawners() { }
         */
-        static List<GameObject> ActiveEnemies = new();
         public static bool WaveIsActive { get; private set; }
+
+        static List<GameObject> ActiveEnemies = new();
+
+        public WaveValueInfo? PreviousWaveValueInfo { get; private set; } = null;
+        public WaveValueInfo? CurrentWaveValueInfo { get; private set; } = null;
 
         [SerializeField] List<Spawner> _spawners = new();
         [SerializeField] GameObject _SpawnerPrefab = null;
@@ -24,16 +29,31 @@ namespace TowerDefence
         [SerializeField] BaseManager _BaseMngr;
         [SerializeField] TDPlayerController _TDPlayerController;
 
-        List<TD_Wave> _waves = null;
         TD_WaveValue? _CurrentWave
         {
             get
             {
                 if (_waves == null || _waves.Count <= 0) return null;
                 if (_currentWaveIndex >= _waves.Count) return _waves[_waves.Count - 1]?.AsValue();
+
                 return _waves[_currentWaveIndex]?.AsValue();
             }
         }
+        TD_WaveValue? _PreviousWave
+        {
+            get
+            {
+                int newIndex = _currentWaveIndex - 1;
+
+                if (_waves == null || _waves.Count <= 0) return null;
+                if (newIndex < 0) return null;
+                if (newIndex >= _waves.Count) newIndex = _waves.Count - 1;
+
+                return _waves[newIndex]?.AsValue();
+            }
+        }
+
+        List<TD_Wave> _waves = null;
         int _currentWaveIndex = 0;
         int _lastLaneIndex = -1;
 
@@ -89,6 +109,7 @@ namespace TowerDefence
                 return;
             }
 
+            SetWaveUp();
             WaveIsActive = true;
             _TDPlayerController.EvaluateGameplayMode(true);
             StartCoroutine(nameof(WaveCoroutine));
@@ -107,7 +128,6 @@ namespace TowerDefence
 
         IEnumerator WaveCoroutine()
         {
-            //looping untill either no data is left in wave data or the failsafe cap is reached
             for (int i = 0; i < _currentEnemies.Count; i++)
             {
                 var ewl = _currentEnemies[i];
@@ -151,6 +171,9 @@ namespace TowerDefence
                 item.LockEnemy();
                 _currentEnemies.Add(item);
             }
+
+            PreviousWaveValueInfo = CurrentWaveValueInfo;
+            CurrentWaveValueInfo = new WaveValueInfo(_currentEnemies);
 
             #region Old Code
             ////instantiating wave data
@@ -245,8 +268,9 @@ namespace TowerDefence
             WaveIsActive = false;
 
             _currentWaveIndex++;
-            _PrevWaveButton.SetActive(true);
+            SetWaveUp();
 
+            _PrevWaveButton.SetActive(true);
             _TDPlayerController.EvaluateGameplayMode(false);
         }
 
@@ -318,6 +342,48 @@ namespace TowerDefence
                     Destroy(target.gameObject);
             }
             _spawners = new List<Spawner>();
+        }
+
+        public struct WaveValueInfo
+        {
+            public readonly float DifficultyMultiplier;
+            public readonly List<EnemyType> EnemyTypes;
+            public readonly float RPReward;
+
+            public WaveValueInfo(List<TD_EnemyWithCooldown> enemies)
+            {
+                var rpGain = GLOBAL.EnemyResearchPointGain;
+                var dic_difficulty = GLOBAL.EnemyDifficultyMultipliers;
+                List<EnemyType> types = new();
+                float totalRP = 0;
+                float totalDifficulty = 0;
+                float currentEnemyCooldown = -1;
+
+                foreach (var e in enemies)
+                {
+                    var eData = e.Enemy.Enemy;
+                    var cd = e.Cooldown;
+                    var difficulty = eData.Difficulty;
+                    var difficultyThisCycle = 0f;
+
+                    foreach (var t in eData.EnemyTypes)
+                    {
+                        if (t != EnemyType.None && types.Contains(t) == false) types.Add(t);
+                    }
+
+                    difficultyThisCycle = dic_difficulty[difficulty];
+                    difficultyThisCycle *= GLOBAL.EnemyCooldownDifficultyCalculator(cd);
+                    totalDifficulty += difficultyThisCycle;
+
+                    totalRP += rpGain[difficulty];
+                    currentEnemyCooldown = cd;
+                }
+
+                DifficultyMultiplier = totalDifficulty / enemies.Count;
+                DifficultyMultiplier = GLOBAL.DecimalSimplifier(DifficultyMultiplier, 3);
+                EnemyTypes = types;
+                RPReward = totalRP;
+            }
         }
     }
 }
