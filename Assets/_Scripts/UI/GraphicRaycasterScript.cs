@@ -17,7 +17,7 @@ public class GraphicRaycasterScript : MonoBehaviour
 
             StopCoroutine(nameof(UpdateIEnum));
 
-            if(AUTO_runOnUpdate) StartCoroutine(nameof(UpdateIEnum));
+            if (AUTO_runOnUpdate) StartCoroutine(nameof(UpdateIEnum));
         }
     }
     bool AUTO_runOnUpdate = true;
@@ -27,11 +27,10 @@ public class GraphicRaycasterScript : MonoBehaviour
 
     void Start()
     {
-        if(_EventSystem == null)
+        if (_EventSystem == null)
         {
             EventSystemInstance inst = EventSystemInstance.Instance;
-            if(inst != null)
-            _EventSystem = inst.EventSystem;
+            if (inst != null) _EventSystem = inst.EventSystem;
         }
 
         if (_Raycaster == null || _EventSystem == null)
@@ -50,7 +49,7 @@ public class GraphicRaycasterScript : MonoBehaviour
 
     IEnumerator UpdateIEnum()
     {
-        while(true)
+        while (true)
         {
             Raycast();
             yield return null;

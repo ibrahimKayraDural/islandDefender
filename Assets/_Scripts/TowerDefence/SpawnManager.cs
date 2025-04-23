@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEditor.ShaderGraph.Internal;
 
 namespace TowerDefence
 {
@@ -16,7 +15,7 @@ namespace TowerDefence
         public static void RemoveFromActiveEnemyList(GameObject a) { }
         public void DeleteSpawners() { }
         */
-        public static bool WaveIsActive { get; private set; }
+        public static bool WaveIsActive { get; private set; } = false;
 
         static List<GameObject> ActiveEnemies = new();
 
@@ -34,9 +33,9 @@ namespace TowerDefence
             get
             {
                 if (_waves == null || _waves.Count <= 0) return null;
-                if (_currentWaveIndex >= _waves.Count) return _waves[_waves.Count - 1]?.AsValue();
+                if (_currentWaveIndex >= _waves.Count) return _waves[_waves.Count - 1];
 
-                return _waves[_currentWaveIndex]?.AsValue();
+                return _waves[_currentWaveIndex];
             }
         }
         TD_WaveValue? _PreviousWave
@@ -49,11 +48,11 @@ namespace TowerDefence
                 if (newIndex < 0) return null;
                 if (newIndex >= _waves.Count) newIndex = _waves.Count - 1;
 
-                return _waves[newIndex]?.AsValue();
+                return _waves[newIndex];
             }
         }
 
-        List<TD_Wave> _waves = null;
+        List<TD_WaveValue> _waves = null;
         int _currentWaveIndex = 0;
         int _lastLaneIndex = -1;
 
@@ -61,13 +60,15 @@ namespace TowerDefence
 
         void Start()
         {
-            //Get wave database
-            _waves = GLOBAL.GetWaveDatabase()?.DataList;
+            //Locking waves assigns values to the wildcards in it.
+            LockWaves();
+
+            //Setting wave populates info and add enemies to _currentEnemies
+            SetWaveUp();
 
             _BaseMngr.e_BaseHasDied += _BaseMngr_e_BaseHasDied;
 
             _PrevWaveButton.SetActive(false);
-            SetWaveUp();
 
             //Use this method when you are ready. Usually hooked up to a button.
             //StartWave();
@@ -109,9 +110,8 @@ namespace TowerDefence
                 return;
             }
 
-            SetWaveUp();
             WaveIsActive = true;
-            _TDPlayerController.EvaluateGameplayMode(true);
+            SetWaveUp();
             StartCoroutine(nameof(WaveCoroutine));
         }
         public void StopWave()
@@ -161,88 +161,28 @@ namespace TowerDefence
             _spawnNextEnemy = true;
         }
 
+        void LockWaves()
+        {
+            var datalist = GLOBAL.GetWaveDatabase()?.DataList;
+            if (datalist == null) return;
+
+            _waves = new();
+            for (int i = 0; i < datalist.Count; i++)
+            {
+                var d = datalist[i].AsValue();
+                for (int n = 0; n < d.Enemies.Count; n++)
+                {
+                    d.Enemies[n].LockEnemy();
+                }
+                _waves.Add(d);
+            }
+        }
         void SetWaveValues()
         {
-            _currentEnemies = new();
-
-            for (int i = 0; i < _CurrentWave.Value.Enemies.Count; i++)
-            {
-                var item = _CurrentWave.Value.Enemies[i];
-                item.LockEnemy();
-                _currentEnemies.Add(item);
-            }
+            _currentEnemies = _CurrentWave.Value.Enemies;
 
             PreviousWaveValueInfo = CurrentWaveValueInfo;
             CurrentWaveValueInfo = new WaveValueInfo(_currentEnemies);
-
-            #region Old Code
-            ////instantiating wave data
-            //List<int> laneIndexes = new();
-            //for (int i = 0; i < _currentWave.Value.Enemies.Count; i++)
-            //{
-            //    S_LaneGroup lane = _currentWave.Value.Enemies[i];
-
-            //    for (int n = 0; n < lane.Enemies.Count; n++)
-            //    {
-
-            //        //locking enemies
-
-            //        lane.Enemies[n] = new S_EnemyWithCount(lane.Enemies[n].Enemy, lane.Enemies[n].Count);
-
-            //        //locking enemies end
-
-
-            //        if (lane.Enemies[n].Count <= 0) continue;
-            //        if (lane.Enemies[n].Enemy == null) continue;
-
-            //        _enemiesWithLanes.Add(new KeyValuePair<S_EnemyWithCount, int>(lane.Enemies[n], i));
-            //        if (laneIndexes.Contains(i) == false) laneIndexes.Add(i);
-            //    }
-            //}
-
-
-            ////removing excess from waveData to fit the actual lane count
-            //for (int i = 0; i < laneIndexes.Count - _spawners.Count; i++)
-            //{
-            //    int randomIndex = UnityEngine.Random.Range(0, laneIndexes.Count);
-            //    _enemiesWithLanes.FindAll(x => x.Value == randomIndex).ForEach(y => _enemiesWithLanes.Remove(y));
-            //}
-
-
-            ////Shuffling lanes
-            //List<int> spawnerIndexes = new();
-            //List<int> oldLaneIndexes = new();
-            //List<int> uniqueLaneIndexes = new();
-            //for (int i = 0; i < _spawners.Count; i++) spawnerIndexes.Add(i);
-            //for (int i = 0; i < _enemiesWithLanes.Count; i++) oldLaneIndexes.Add(_enemiesWithLanes[i].Value);
-            //for (int i = 0; i < _enemiesWithLanes.Count; i++)
-            //{
-            //    if (uniqueLaneIndexes.Contains(_enemiesWithLanes[i].Value) == false)
-            //    {
-            //        uniqueLaneIndexes.Add(_enemiesWithLanes[i].Value);
-            //    }
-            //}
-
-            //for (int i = 0; i < uniqueLaneIndexes.Count; i++)
-            //{
-            //    int randomIndex = UnityEngine.Random.Range(0, spawnerIndexes.Count);
-
-            //    for (int n = 0; n < _enemiesWithLanes.Count; n++)
-            //    {
-            //        if (oldLaneIndexes[n] == uniqueLaneIndexes[i])
-            //        {
-            //            _enemiesWithLanes[n] = new KeyValuePair<S_EnemyWithCount, int>(_enemiesWithLanes[n].Key, spawnerIndexes[randomIndex]);
-            //        }
-            //    }
-
-            //    spawnerIndexes.RemoveAt(randomIndex);
-            //}
-
-            ////registering cooldown values
-            //_enemyCooldownArr = CurrentSwarm.DefaultEnemyCooldowns;
-            //if (_enemyCooldownArr == null || _enemyCooldownArr.Count <= 0) _enemyCooldownArr = GLOBAL.FailsafeEnemyCooldowns;
-            //_enemyCooldownArrCount = _enemyCooldownArr.Count;
-            #endregion
         }
 
         void SpawnNextEnemy(TD_EnemyWithCooldown enemy)
@@ -271,7 +211,6 @@ namespace TowerDefence
             SetWaveUp();
 
             _PrevWaveButton.SetActive(true);
-            _TDPlayerController.EvaluateGameplayMode(false);
         }
 
         //void SetIndicatorValues(bool? toNull = false)
@@ -319,7 +258,7 @@ namespace TowerDefence
         {
             SetWaveValues();
             //SetIndicatorValues();
-            _TDPlayerController.EvaluateGameplayMode(false);
+            _TDPlayerController.EvaluateGameplayMode(WaveIsActive);
         }
 
         public void SpawnSpawnerAt(Vector3 position, Transform parent = null)
