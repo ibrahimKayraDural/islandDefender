@@ -74,3 +74,5 @@ crashlytics-build.properties
 /.idea/.idea.islandDefender/.idea/.gitignore
 /.idea/.idea.islandDefender/.idea/indexLayout.xml
 /.idea/.idea.islandDefender/.idea/vcs.xml
+ProjectSettings/Packages/com.unity.polybrush/Settings.json
+ProjectSettings/Packages/com.unity.probuilder/Settings.json
