@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Overworld;
+using SaveSystem;
+using System.Linq;
 
 namespace TowerDefence
 {
@@ -15,6 +18,9 @@ namespace TowerDefence
         public static void RemoveFromActiveEnemyList(GameObject a) { }
         public void DeleteSpawners() { }
         */
+
+        const string SAVE_ID = "spawn-manager-current-wave-index";
+
         public static bool WaveIsActive { get; private set; } = false;
 
         static List<GameObject> ActiveEnemies = new();
@@ -58,9 +64,24 @@ namespace TowerDefence
         int _lastLaneIndex = -1;
 
         List<TD_EnemyWithCooldown> _currentEnemies = new();
+        SaveManager _SaveManager
+        {
+            get
+            {
+                if (AUTO_saveManager == null)
+                    AUTO_saveManager = SaveManager.Instance;
+
+                return AUTO_saveManager;
+            }
+        }
+        SaveManager AUTO_saveManager = null;
+
+        bool _isSaved;//prevents race conditions
 
         void Start()
         {
+            LoadWaves();
+
             //Locking waves assigns values to the wildcards in it.
             LockWaves();
 
@@ -69,10 +90,29 @@ namespace TowerDefence
 
             _BaseMngr.e_BaseHasDied += _BaseMngr_e_BaseHasDied;
 
-            _PrevWaveButton.SetActive(false);
+            _PrevWaveButton.SetActive(_currentWaveIndex > 0);
 
             //Use this method when you are ready. Usually hooked up to a button.
             //StartWave();
+        }
+
+        void OnApplicationQuit()
+        {
+            SaveWaves();
+            _isSaved = true;
+        }
+        void OnDestroy()
+        {
+            if (_isSaved == false) SaveWaves();
+        }
+        void SaveWaves()
+        {
+            _SaveManager?.AddOrReplaceSavedInteger(SAVE_ID, _currentWaveIndex);
+        }
+
+        public void LoadWaves()
+        {
+            _currentWaveIndex = _SaveManager?.CurrentSave?.SavedIntegers?.Find(x => x.ID == SAVE_ID)?.Value ?? 0;
         }
 
         public static void RemoveFromActiveEnemyList(GameObject target)
@@ -182,8 +222,14 @@ namespace TowerDefence
         {
             _currentEnemies = _CurrentWave.Value.Enemies;
 
-            PreviousWaveValueInfo = CurrentWaveValueInfo;
-            CurrentWaveValueInfo = new WaveValueInfo(_currentEnemies);
+            //A save was loaded
+            if (_currentWaveIndex > 0 && CurrentWaveValueInfo == null)
+            {
+                PreviousWaveValueInfo = new(_waves[_currentWaveIndex - 1].Enemies);
+            }
+            else PreviousWaveValueInfo = CurrentWaveValueInfo;
+
+            CurrentWaveValueInfo = new(_currentEnemies);
         }
 
         void SpawnNextEnemy(TD_EnemyWithCooldown enemy)
