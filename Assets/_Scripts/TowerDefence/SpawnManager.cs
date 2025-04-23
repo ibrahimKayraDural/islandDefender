@@ -27,6 +27,7 @@ namespace TowerDefence
         [SerializeField] GameObject _PrevWaveButton;
         [SerializeField] BaseManager _BaseMngr;
         [SerializeField] TDPlayerController _TDPlayerController;
+        [SerializeField] ResourceData _RPData;
 
         TD_WaveValue? _CurrentWave
         {
@@ -207,6 +208,8 @@ namespace TowerDefence
             if (WaveIsActive == false) return;
             WaveIsActive = false;
 
+            GiveRewards();
+
             _currentWaveIndex++;
             SetWaveUp();
 
@@ -259,6 +262,13 @@ namespace TowerDefence
             SetWaveValues();
             //SetIndicatorValues();
             _TDPlayerController.EvaluateGameplayMode(WaveIsActive);
+        }
+        void GiveRewards()
+        {
+            if (CurrentWaveValueInfo.HasValue == false) return;
+            var rp = (int)CurrentWaveValueInfo.Value.RPReward;
+
+            BaseResourceController.Instance.AddResource(_RPData, rp);
         }
 
         public void SpawnSpawnerAt(Vector3 position, Transform parent = null)
