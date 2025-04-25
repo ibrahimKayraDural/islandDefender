@@ -20,37 +20,37 @@ MonoBehaviour:
       _isWildCard: 0
       _wildCardID: UNASSIGNED
       _wildCardValue: UNASSIGNED
-    Cooldown: 5
+    Cooldown: 15
   - Enemy:
       _enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
       _isWildCard: 0
       _wildCardID: UNASSIGNED
       _wildCardValue: UNASSIGNED
-    Cooldown: 5
+    Cooldown: 10
+  - Enemy:
+      _enemy: {fileID: 0}
+      _isWildCard: 1
+      _wildCardID: difficulty
+      _wildCardValue: weak
+    Cooldown: 10
   - Enemy:
       _enemy: {fileID: 0}
       _isWildCard: 1
       _wildCardID: difficulty
       _wildCardValue: weak
     Cooldown: 5
-  - Enemy:
-      _enemy: {fileID: 0}
-      _isWildCard: 1
-      _wildCardID: difficulty
-      _wildCardValue: weak
-    Cooldown: 1
   - Enemy:
       _enemy: {fileID: 0}
       _isWildCard: 1
       _wildCardID: range
       _wildCardValue: melee
-    Cooldown: 1
+    Cooldown: 5
   - Enemy:
       _enemy: {fileID: 0}
       _isWildCard: 1
       _wildCardID: type
       _wildCardValue: durable
-    Cooldown: 1
+    Cooldown: 3
   - Enemy:
       _enemy: {fileID: 0}
       _isWildCard: 1
@@ -87,3 +87,6 @@ MonoBehaviour:
       _wildCardID: difficulty
       _wildCardValue: weak
     Cooldown: 1
+  _rewards:
+  - Resource: {fileID: 11400000, guid: d0c0ceadfcdce394ba610da51a2a9bbf, type: 2}
+    Count: 30

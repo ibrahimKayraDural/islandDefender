@@ -13,8 +13,21 @@ public class ResourceData : GameplayElementData<ResourceData>
 
     public ResourceItem AsItem(int count = 0) => new ResourceItem(this, count);
 }
+[System.Serializable]
+public class ResourceWithCount
+{
+    public ResourceData Resource;
+    public int Count;
 
-[System.Serializable] public struct Cost
+    public ResourceWithCount(ResourceData resource, int count)
+    {
+        Resource = resource;
+        Count = count;
+    }
+}
+
+[System.Serializable]
+public struct Cost
 {
     public ResourceData Resource => _resource;
     public int Amount => _amount;

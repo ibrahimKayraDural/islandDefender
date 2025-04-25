@@ -7,6 +7,7 @@ namespace Overworld
     public abstract class InventoryItem
     {
         public const string ResourceItemTypeID = "RESOURCE_ITEM";
+        internal const int MAX_HARDCAP = 99;
 
         public int Count
         {
@@ -15,8 +16,8 @@ namespace Overworld
         }
         public int MaxItemCount
         {
-            get => Mathf.Clamp(_maxItemCount, 1, _maxHardcap);
-            set => _maxItemCount = Mathf.Clamp(value, 1, _maxHardcap);
+            get => Mathf.Clamp(_maxItemCount, 1, MAX_HARDCAP);
+            set => _maxItemCount = Mathf.Clamp(value, 1, MAX_HARDCAP);
         }
         public int RemainingSpace => _maxItemCount - _count;
         public bool IsInitialized => _isInitialized;
@@ -29,7 +30,6 @@ namespace Overworld
         internal string _displayName = GLOBAL.UnassignedString;
         internal GameObject _droppedItem;
         internal Sprite _UISprite;
-        internal int _maxHardcap = 99;
         internal int _count = 0;
         internal int _maxItemCount = 1;
         internal bool _isInitialized = false;
