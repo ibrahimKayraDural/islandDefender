@@ -9,12 +9,15 @@ namespace TowerDefence
     public struct TD_WaveValue
     {
         public List<TD_EnemyWithCooldown> Enemies => _enemies;
+        public List<ResourceWithCount> Rewards => _rewards;
 
         [SerializeField] List<TD_EnemyWithCooldown> _enemies;
+        [SerializeField] List<ResourceWithCount> _rewards;
 
-        public TD_WaveValue(List<TD_EnemyWithCooldown> wave)
+        public TD_WaveValue(List<TD_EnemyWithCooldown> wave, List<ResourceWithCount> rewards)
         {
             _enemies = wave;
+            _rewards = rewards;
         }
     }
 
@@ -22,7 +25,7 @@ namespace TowerDefence
     [System.Serializable]
     public class TD_Wave : Data<TD_Wave>
     {
-        public void SetValues(List<TD_Enemy> enemies, List<float> cooldowns)
+        public void SetValues(List<TD_Enemy> enemies, List<float> cooldowns, List<ResourceWithCount> rewards)
         {
             _enemies = new List<TD_EnemyWithCooldown>();
 
@@ -36,6 +39,8 @@ namespace TowerDefence
                 float cooldown = cooldowns[i < cdCount ? i : cdCount - 1];
                 _enemies.Add(new TD_EnemyWithCooldown(enemies[i], cooldown));
             }
+
+            _rewards = rewards;
 
             TrySaveAssetIfInEditor();
         }
@@ -57,16 +62,25 @@ namespace TowerDefence
         }
 
         public List<TD_EnemyWithCooldown> Enemies => _enemies;
+        public List<ResourceWithCount> Rewards => _rewards;
+
         [SerializeField] List<TD_EnemyWithCooldown> _enemies;
+        [SerializeField] List<ResourceWithCount> _rewards;
 
         public int TotalEnemyCount => Enemies.Count;
 
-        public TD_WaveValue AsValue() => new TD_WaveValue(GetClonedValue());
-        List<TD_EnemyWithCooldown> GetClonedValue()
+        public TD_WaveValue AsValue() => new TD_WaveValue(GetClonedEnemies(), GetClonedRewards());
+        List<TD_EnemyWithCooldown> GetClonedEnemies()
         {
-            List<TD_EnemyWithCooldown> list = new();
-            foreach (var item in Enemies) list.Add(item.Clone());
-            return list;
+            List<TD_EnemyWithCooldown> enemies = new();
+            foreach (var item in Enemies) enemies.Add(item.Clone());
+            return enemies;
+        }
+        List<ResourceWithCount> GetClonedRewards()
+        {
+            List<ResourceWithCount> rewards = new();
+            foreach (var item in Rewards) rewards.Add(new(item.Resource, item.Count));
+            return rewards;
         }
     }
 

@@ -38,7 +38,14 @@ public class WaveInfoDisplayer : MonoBehaviour
             _EnemyTypesTM.text += info.EnemyTypes[i];
             if (i < info.EnemyTypes.Count - 1) _EnemyTypesTM.text += "\n";
         }
-        _RewardTM.text = info.RPReward + " RP";
+        _RewardTM.text = "";
+        for (int i = 0; i < info.Rewards.Count; i++)
+        {
+            var reward = info.Rewards[i];
+            _RewardTM.text += reward.Count + " ";
+            _RewardTM.text += reward.Resource.DisplayName;
+            if (i < info.Rewards.Count - 1) _RewardTM.text += "\n";
+        }
     }
     void CleanAllInfo()
     {

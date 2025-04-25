@@ -80,10 +80,11 @@ namespace TowerDefence
 
         void Start()
         {
-            LoadWaves();
+            LoadWaveIndex();
 
             //Locking waves assigns values to the wildcards in it.
-            LockWaves();
+            var datalist = GLOBAL.GetWaveDatabase()?.DataList;
+            if (datalist != null) _waves = LockWaves(datalist);
 
             //Setting wave populates info and add enemies to _currentEnemies
             SetWaveUp();
@@ -98,21 +99,22 @@ namespace TowerDefence
 
         void OnApplicationQuit()
         {
-            SaveWaves();
+            SaveWaveIndex();
             _isSaved = true;
         }
         void OnDestroy()
         {
-            if (_isSaved == false) SaveWaves();
+            if (_isSaved == false) SaveWaveIndex();
         }
-        void SaveWaves()
+        void SaveWaveIndex()
         {
             _SaveManager?.AddOrReplaceSavedInteger(SAVE_ID, _currentWaveIndex);
         }
 
-        public void LoadWaves()
+        public void LoadWaveIndex()
         {
-            _currentWaveIndex = _SaveManager?.CurrentSave?.SavedIntegers?.Find(x => x.ID == SAVE_ID)?.Value ?? 0;
+            var temp = _SaveManager?.CurrentSave?.SavedIntegers?.Find(x => x.ID == SAVE_ID)?.Value ?? 0;
+            _currentWaveIndex = Mathf.Min(Mathf.Max(_waves.Count - 1, 0), temp);
         }
 
         public static void RemoveFromActiveEnemyList(GameObject target)
@@ -135,6 +137,21 @@ namespace TowerDefence
             _BaseMngr.e_BaseHasDied -= _BaseMngr_e_BaseHasDied;
         }
 
+        /// <summary>
+        /// Adds waves to current waves at current index
+        /// </summary>
+        /// <param name="addition">Waves to add</param>
+        /// <param name="waveDelay">Delay of the waves. 0 means waves will play as next waves</param>
+        public void AddWaves(List<TD_Wave> addition, int waveDelay = 0)
+        {
+            //Wave shouldn't be active to begin with
+            if (WaveIsActive) return;
+
+            int addIndex = _currentWaveIndex + Mathf.Max(waveDelay, 0);
+            addIndex = Mathf.Min(addIndex, _waves.Count);
+
+            _waves.InsertRange(addIndex, LockWaves(addition));
+        }
         public void StartPreviousWave()
         {
             _currentWaveIndex = Mathf.Max(_currentWaveIndex - 1, 0);
@@ -202,34 +219,29 @@ namespace TowerDefence
             _spawnNextEnemy = true;
         }
 
-        void LockWaves()
+        List<TD_WaveValue> LockWaves(List<TD_Wave> allWaves)
         {
-            var datalist = GLOBAL.GetWaveDatabase()?.DataList;
-            if (datalist == null) return;
-
-            _waves = new();
-            for (int i = 0; i < datalist.Count; i++)
+            var waves = new List<TD_WaveValue>();
+            for (int i = 0; i < allWaves.Count; i++)
             {
-                var d = datalist[i].AsValue();
+                var d = allWaves[i].AsValue();
                 for (int n = 0; n < d.Enemies.Count; n++)
                 {
                     d.Enemies[n].LockEnemy();
                 }
-                _waves.Add(d);
+                waves.Add(d);
             }
+            return waves;
         }
         void SetWaveValues()
         {
-            _currentEnemies = _CurrentWave.Value.Enemies;
+            var currentWave = _CurrentWave.Value;
+            _currentEnemies = currentWave.Enemies;
 
-            //A save was loaded
-            if (_currentWaveIndex > 0 && CurrentWaveValueInfo == null)
-            {
-                PreviousWaveValueInfo = new(_waves[_currentWaveIndex - 1].Enemies);
-            }
-            else PreviousWaveValueInfo = CurrentWaveValueInfo;
+            if (_PreviousWave.HasValue)
+                PreviousWaveValueInfo = new(_PreviousWave.Value);
 
-            CurrentWaveValueInfo = new(_currentEnemies);
+            CurrentWaveValueInfo = new(currentWave);
         }
 
         void SpawnNextEnemy(TD_EnemyWithCooldown enemy)
@@ -256,7 +268,8 @@ namespace TowerDefence
 
             GiveRewards();
 
-            _currentWaveIndex++;
+            if (_currentWaveIndex < _waves.Count - 1) _currentWaveIndex++;
+
             SetWaveUp();
 
             _PrevWaveButton.SetActive(true);
@@ -311,10 +324,11 @@ namespace TowerDefence
         }
         void GiveRewards()
         {
-            if (CurrentWaveValueInfo.HasValue == false) return;
-            var rp = (int)CurrentWaveValueInfo.Value.RPReward;
-
-            BaseResourceController.Instance.AddResource(_RPData, rp);
+            var rewards = _CurrentWave.Value.Rewards;
+            foreach (var reward in rewards)
+            {
+                BaseResourceController.Instance.AddResource(reward.Resource, reward.Count);
+            }
         }
 
         public void SpawnSpawnerAt(Vector3 position, Transform parent = null)
@@ -343,18 +357,17 @@ namespace TowerDefence
         {
             public readonly float DifficultyMultiplier;
             public readonly List<EnemyType> EnemyTypes;
-            public readonly float RPReward;
+            public readonly List<ResourceWithCount> Rewards;
 
-            public WaveValueInfo(List<TD_EnemyWithCooldown> enemies)
+            public WaveValueInfo(TD_WaveValue wave)
             {
                 var rpGain = GLOBAL.EnemyResearchPointGain;
                 var dic_difficulty = GLOBAL.EnemyDifficultyMultipliers;
                 List<EnemyType> types = new();
-                float totalRP = 0;
                 float totalDifficulty = 0;
                 float currentEnemyCooldown = -1;
 
-                foreach (var e in enemies)
+                foreach (var e in wave.Enemies)
                 {
                     var eData = e.Enemy.Enemy;
                     var cd = e.Cooldown;
@@ -370,14 +383,13 @@ namespace TowerDefence
                     difficultyThisCycle *= GLOBAL.EnemyCooldownDifficultyCalculator(cd);
                     totalDifficulty += difficultyThisCycle;
 
-                    totalRP += rpGain[difficulty];
                     currentEnemyCooldown = cd;
                 }
 
-                DifficultyMultiplier = totalDifficulty / enemies.Count;
+                DifficultyMultiplier = totalDifficulty / wave.Enemies.Count;
                 DifficultyMultiplier = GLOBAL.DecimalSimplifier(DifficultyMultiplier, 3);
                 EnemyTypes = types;
-                RPReward = totalRP;
+                Rewards = wave.Rewards;
             }
         }
     }
