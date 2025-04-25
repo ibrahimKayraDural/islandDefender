@@ -55,7 +55,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 3bd97e5fa48b1b14a9ad167ed9f0506f, type: 3}
+        m_Texture: {fileID: 2800000, guid: 928babb11c1900c459d8a9118fbf0879, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -63,7 +63,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normalmap:
-        m_Texture: {fileID: 2800000, guid: 5cc1d898d375f264a854c420df85b13d, type: 3}
+        m_Texture: {fileID: 2800000, guid: c35f45afa4e4801479b17129de8c0839, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -128,7 +128,7 @@ Material:
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
-    - _NormalStrength: 0.15
+    - _NormalStrength: 0.76
     - _OcclusionStrength: 1
     - _OpaqueCullMode: 2
     - _OverlayPower: 0.5
@@ -156,7 +156,7 @@ Material:
     - _SupportDecals: 1
     - _SurfaceType: 0
     - _TextureBlend: 1000
-    - _TextureTiling: 0.4
+    - _TextureTiling: 1.24
     - _TransparentBackfaceEnable: 0
     - _TransparentCullMode: 2
     - _TransparentDepthPostpassEnable: 0
