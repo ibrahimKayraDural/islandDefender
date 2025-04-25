@@ -16,22 +16,22 @@ MonoBehaviour:
   _id: default-wave-3
   _enemies:
   - Enemy:
+      _enemy: {fileID: 11400000, guid: 55fd45d4c1604a142b8c560359681af2, type: 2}
+      _isWildCard: 0
+      _wildCardID: UNASSIGNED
+      _wildCardValue: UNASSIGNED
+    Cooldown: 8
+  - Enemy:
       _enemy: {fileID: 11400000, guid: 497aa653f34111048b53c7903a91ecc9, type: 2}
       _isWildCard: 0
       _wildCardID: UNASSIGNED
       _wildCardValue: UNASSIGNED
     Cooldown: 8
   - Enemy:
-      _enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
+      _enemy: {fileID: 11400000, guid: 497aa653f34111048b53c7903a91ecc9, type: 2}
       _isWildCard: 0
       _wildCardID: UNASSIGNED
       _wildCardValue: UNASSIGNED
-    Cooldown: 8
-  - Enemy:
-      _enemy: {fileID: 0}
-      _isWildCard: 1
-      _wildCardID: difficulty
-      _wildCardValue: weak
     Cooldown: 9
   - Enemy:
       _enemy: {fileID: 0}
@@ -42,14 +42,20 @@ MonoBehaviour:
   - Enemy:
       _enemy: {fileID: 0}
       _isWildCard: 1
-      _wildCardID: range
-      _wildCardValue: melee
+      _wildCardID: difficulty
+      _wildCardValue: weak
     Cooldown: 4
   - Enemy:
       _enemy: {fileID: 0}
       _isWildCard: 1
-      _wildCardID: type
-      _wildCardValue: durable
+      _wildCardID: difficulty
+      _wildCardValue: weak
+    Cooldown: 2
+  - Enemy:
+      _enemy: {fileID: 11400000, guid: 55fd45d4c1604a142b8c560359681af2, type: 2}
+      _isWildCard: 0
+      _wildCardID: UNASSIGNED
+      _wildCardValue: UNASSIGNED
     Cooldown: 2
   - Enemy:
       _enemy: {fileID: 0}
@@ -62,9 +68,19 @@ MonoBehaviour:
       _isWildCard: 1
       _wildCardID: difficulty
       _wildCardValue: weak
+    Cooldown: 2
+  - Enemy:
+      _enemy: {fileID: 11400000, guid: 55fd45d4c1604a142b8c560359681af2, type: 2}
+      _isWildCard: 0
+      _wildCardID: UNASSIGNED
+      _wildCardValue: UNASSIGNED
+    Cooldown: 2
+  - Enemy:
+      _enemy: {fileID: 11400000, guid: 55fd45d4c1604a142b8c560359681af2, type: 2}
+      _isWildCard: 0
+      _wildCardID: UNASSIGNED
+      _wildCardValue: UNASSIGNED
     Cooldown: 2
   _rewards:
-  - Resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
-    Count: 24
   - Resource: {fileID: 11400000, guid: d0c0ceadfcdce394ba610da51a2a9bbf, type: 2}
-    Count: 100
+    Count: 150

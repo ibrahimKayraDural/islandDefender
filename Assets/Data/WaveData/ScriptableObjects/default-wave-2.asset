@@ -16,53 +16,41 @@ MonoBehaviour:
   _id: default-wave-2
   _enemies:
   - Enemy:
-      _enemy: {fileID: 11400000, guid: 96ac5e6bc84659c4481ff67bf21c70eb, type: 2}
+      _enemy: {fileID: 11400000, guid: 497aa653f34111048b53c7903a91ecc9, type: 2}
       _isWildCard: 0
       _wildCardID: UNASSIGNED
       _wildCardValue: UNASSIGNED
     Cooldown: 15
   - Enemy:
-      _enemy: {fileID: 11400000, guid: 55fd45d4c1604a142b8c560359681af2, type: 2}
+      _enemy: {fileID: 11400000, guid: 497aa653f34111048b53c7903a91ecc9, type: 2}
       _isWildCard: 0
       _wildCardID: UNASSIGNED
       _wildCardValue: UNASSIGNED
     Cooldown: 15
   - Enemy:
-      _enemy: {fileID: 0}
-      _isWildCard: 1
-      _wildCardID: difficulty
-      _wildCardValue: weak
+      _enemy: {fileID: 11400000, guid: 497aa653f34111048b53c7903a91ecc9, type: 2}
+      _isWildCard: 0
+      _wildCardID: UNASSIGNED
+      _wildCardValue: UNASSIGNED
     Cooldown: 10
   - Enemy:
-      _enemy: {fileID: 0}
-      _isWildCard: 1
-      _wildCardID: difficulty
-      _wildCardValue: weak
+      _enemy: {fileID: 11400000, guid: 497aa653f34111048b53c7903a91ecc9, type: 2}
+      _isWildCard: 0
+      _wildCardID: UNASSIGNED
+      _wildCardValue: UNASSIGNED
     Cooldown: 10
   - Enemy:
-      _enemy: {fileID: 0}
-      _isWildCard: 1
-      _wildCardID: type
-      _wildCardValue: durable
+      _enemy: {fileID: 11400000, guid: 497aa653f34111048b53c7903a91ecc9, type: 2}
+      _isWildCard: 0
+      _wildCardID: UNASSIGNED
+      _wildCardValue: UNASSIGNED
     Cooldown: 10
   - Enemy:
-      _enemy: {fileID: 0}
-      _isWildCard: 1
-      _wildCardID: difficulty
-      _wildCardValue: weak
+      _enemy: {fileID: 11400000, guid: 497aa653f34111048b53c7903a91ecc9, type: 2}
+      _isWildCard: 0
+      _wildCardID: UNASSIGNED
+      _wildCardValue: UNASSIGNED
     Cooldown: 5
-  - Enemy:
-      _enemy: {fileID: 0}
-      _isWildCard: 1
-      _wildCardID: difficulty
-      _wildCardValue: weak
-    Cooldown: 5
-  - Enemy:
-      _enemy: {fileID: 0}
-      _isWildCard: 1
-      _wildCardID: difficulty
-      _wildCardValue: weak
-    Cooldown: 0
   _rewards:
   - Resource: {fileID: 11400000, guid: d0c0ceadfcdce394ba610da51a2a9bbf, type: 2}
-    Count: 50
+    Count: 100
