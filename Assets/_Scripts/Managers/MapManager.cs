@@ -46,4 +46,11 @@ public class MapManager : MonoBehaviour, IUserInterface
             _CanvasManager.SetMapEnablity(!IsOpen);
         }
     }
+    
+    public void RevealScannerIcons(ScannerUpgradeData data)
+    {
+        // data.RevealMineCount kadar mine yeri göster
+        // data.RevealRuinCount kadar ruin yeri göster
+    }
+
 }
