@@ -28065,7 +28065,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   b_Animator: {fileID: 0}
-  b_ForgetDistance: 1
+  b_ForgetDistance: 1.15
   _OptionalParameters:
   - scanner
   _InteractDescription: Open scanner
