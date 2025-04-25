@@ -223,6 +223,150 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[2].ID
+      value: drillSpeed
+      objectReference: {fileID: 0}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[3].ID
+      value: drillSpeed
+      objectReference: {fileID: 0}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[2].Button
+      value: 
+      objectReference: {fileID: 1368224703}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[2].CostTM
+      value: 
+      objectReference: {fileID: 1147133721}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[3].Button
+      value: 
+      objectReference: {fileID: 1368224703}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[3].CostTM
+      value: 
+      objectReference: {fileID: 1147133721}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[2].Upgrades.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[3].Upgrades.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[2].Upgrades.Array.data[0].Data
+      value: 
+      objectReference: {fileID: 11400000, guid: 2ec7b667def85434b8585b009723d7bb, type: 2}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[2].Upgrades.Array.data[1].Data
+      value: 
+      objectReference: {fileID: 11400000, guid: 82821861f424f6049851d6e7ac09124b, type: 2}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[2].Upgrades.Array.data[2].Data
+      value: 
+      objectReference: {fileID: 11400000, guid: ac829a7713550a64aa095ba491c5f58e, type: 2}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[3].Upgrades.Array.data[0].Data
+      value: 
+      objectReference: {fileID: 11400000, guid: 2ec7b667def85434b8585b009723d7bb, type: 2}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[3].Upgrades.Array.data[1].Data
+      value: 
+      objectReference: {fileID: 11400000, guid: 82821861f424f6049851d6e7ac09124b, type: 2}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[3].Upgrades.Array.data[2].Data
+      value: 
+      objectReference: {fileID: 11400000, guid: ac829a7713550a64aa095ba491c5f58e, type: 2}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[2].Upgrades.Array.data[0].BuyCost.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[2].Upgrades.Array.data[1].BuyCost.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[2].Upgrades.Array.data[2].BuyCost.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[3].Upgrades.Array.data[0].BuyCost.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[3].Upgrades.Array.data[1].BuyCost.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[3].Upgrades.Array.data[2].BuyCost.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[1].Upgrades.Array.data[0].BuyCost.Array.data[0]._amount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[1].Upgrades.Array.data[1].BuyCost.Array.data[0]._amount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[1].Upgrades.Array.data[2].BuyCost.Array.data[0]._amount
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[2].Upgrades.Array.data[0].BuyCost.Array.data[0]._amount
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[2].Upgrades.Array.data[1].BuyCost.Array.data[0]._amount
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[2].Upgrades.Array.data[2].BuyCost.Array.data[0]._amount
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[3].Upgrades.Array.data[0].BuyCost.Array.data[0]._amount
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[3].Upgrades.Array.data[1].BuyCost.Array.data[0]._amount
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[3].Upgrades.Array.data[2].BuyCost.Array.data[0]._amount
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[2].Upgrades.Array.data[0].BuyCost.Array.data[0]._resource
+      value: 
+      objectReference: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[2].Upgrades.Array.data[1].BuyCost.Array.data[0]._resource
+      value: 
+      objectReference: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[2].Upgrades.Array.data[2].BuyCost.Array.data[0]._resource
+      value: 
+      objectReference: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[3].Upgrades.Array.data[0].BuyCost.Array.data[0]._resource
+      value: 
+      objectReference: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[3].Upgrades.Array.data[1].BuyCost.Array.data[0]._resource
+      value: 
+      objectReference: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
+    - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+      propertyPath: _Upgrades.Array.data[3].Upgrades.Array.data[2].BuyCost.Array.data[0]._resource
+      value: 
+      objectReference: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
     - target: {fileID: 2708046885222103409, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
       propertyPath: m_Name
       value: CanvasManager
@@ -393,6 +537,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e0ae3e76b53d3346b8e5b5fd2c7e4d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1147133721 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4134322949760260180, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+  m_PrefabInstance: {fileID: 597712459}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1191248831 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7179489983978553103, guid: 296de3351f168f9478d7a0e7041b1503, type: 3}
@@ -402,6 +557,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6c608b0341dac1642b408e039665897b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1368224703 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2111127687249475378, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
+  m_PrefabInstance: {fileID: 597712459}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1779974926
