@@ -416,6 +416,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: overworldPlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 4920597033314937500, guid: 296de3351f168f9478d7a0e7041b1503, type: 3}
+      propertyPath: m_Radius
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5470066739838234746, guid: 296de3351f168f9478d7a0e7041b1503, type: 3}
       propertyPath: _PlayerHealthbarManager
       value: 
