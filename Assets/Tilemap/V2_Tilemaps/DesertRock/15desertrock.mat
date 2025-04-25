@@ -128,7 +128,7 @@ Material:
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
-    - _NormalStrength: 0.5
+    - _NormalStrength: 0.15
     - _OcclusionStrength: 1
     - _OpaqueCullMode: 2
     - _OverlayPower: 0.5
