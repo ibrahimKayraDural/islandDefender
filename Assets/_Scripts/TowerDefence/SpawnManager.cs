@@ -80,11 +80,11 @@ namespace TowerDefence
 
         void Start()
         {
-            LoadWaveIndex();
-
             //Locking waves assigns values to the wildcards in it.
             var datalist = GLOBAL.GetWaveDatabase()?.DataList;
             if (datalist != null) _waves = LockWaves(datalist);
+
+            LoadWaveIndex();
 
             //Setting wave populates info and add enemies to _currentEnemies
             SetWaveUp();

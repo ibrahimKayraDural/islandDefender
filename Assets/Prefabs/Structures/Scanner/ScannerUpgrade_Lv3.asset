@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91c06460931fe824cb0911410e1f8e3c, type: 3}
+  m_Name: ScannerUpgrade_Lv3
+  m_EditorClassIdentifier: Assembly-CSharp::ScannerUpgradeData
+  ScannerLevel: 3
+  Costs:
+  - _resource: {fileID: 11400000, guid: 2b68b7489a4988c4f8dbd37f6ca16566, type: 2}
+    _amount: 1
+  - _resource: {fileID: 11400000, guid: 169558a9b779cf74ca44a6954b916965, type: 2}
+    _amount: 3
+  RevealMineCount: 3
+  RevealRuinCount: 2
