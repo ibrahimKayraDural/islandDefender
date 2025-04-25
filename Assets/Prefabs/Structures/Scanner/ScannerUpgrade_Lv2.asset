@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: ScannerUpgrade_Lv2
   m_EditorClassIdentifier: Assembly-CSharp::ScannerUpgradeData
-  ScannerLevel: 2
+  ScannerLevel: 0
   Costs:
   - _resource: {fileID: 11400000, guid: e9dd3a2e54c2fe340ad7992f3abaec67, type: 2}
     _amount: 60
+  - _resource: {fileID: 11400000, guid: 169558a9b779cf74ca44a6954b916965, type: 2}
+    _amount: 2
   RevealMineCount: 2
   RevealRuinCount: 1

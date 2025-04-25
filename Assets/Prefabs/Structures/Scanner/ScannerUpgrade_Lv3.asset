@@ -16,5 +16,7 @@ MonoBehaviour:
   Costs:
   - _resource: {fileID: 11400000, guid: 2b68b7489a4988c4f8dbd37f6ca16566, type: 2}
     _amount: 1
+  - _resource: {fileID: 11400000, guid: 169558a9b779cf74ca44a6954b916965, type: 2}
+    _amount: 3
   RevealMineCount: 3
   RevealRuinCount: 2
