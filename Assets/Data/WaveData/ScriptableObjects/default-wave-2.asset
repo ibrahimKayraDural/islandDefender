@@ -63,3 +63,6 @@ MonoBehaviour:
       _wildCardID: difficulty
       _wildCardValue: weak
     Cooldown: 0
+  _rewards:
+  - Resource: {fileID: 11400000, guid: d0c0ceadfcdce394ba610da51a2a9bbf, type: 2}
+    Count: 50

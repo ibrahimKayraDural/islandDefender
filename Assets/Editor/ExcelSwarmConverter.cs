@@ -167,10 +167,12 @@ public class ExcelSwarmConverter : EditorWindow
 
         EnemyDatabase enemyDB = GLOBAL.GetEnemyDatabase();
         TD_WaveDatabase waveDB = GLOBAL.GetWaveDatabase();
+        ResourceDatabase resourceDB = GLOBAL.GetResourceDatabase();
 
         List<float> defaultEnemyCooldowns = GLOBAL.FailsafeEnemyCooldowns;
 
         List<float> targetEnemyCooldowns = new();
+        List<ResourceWithCount> targetRewards = new();
 
         waveDB.DataListAccess = new();
 
@@ -181,6 +183,7 @@ public class ExcelSwarmConverter : EditorWindow
         foreach (var NameSeperation in WaveDataList)
         {
             List<TD_Enemy> currEnemies = new();
+            targetRewards = new();
 
             targetEnemyCooldowns = defaultEnemyCooldowns;
 
@@ -250,7 +253,7 @@ public class ExcelSwarmConverter : EditorWindow
 
             TD_Wave waveData = ScriptableObject.CreateInstance<TD_Wave>();
             EditorUtility.SetDirty(waveData);
-            waveData.SetValues(currEnemies, targetEnemyCooldowns);
+            waveData.SetValues(currEnemies, targetEnemyCooldowns, targetRewards);
             waveData.SetNameAndID(waveName, waveID);
             AssetDatabase.CreateAsset(waveData, fullPath);
             EditorUtility.SetDirty(AssetDatabase.LoadAssetAtPath<TD_Wave>(fullPath));
@@ -276,6 +279,10 @@ public class ExcelSwarmConverter : EditorWindow
             message = message.ToLower(new CultureInfo("en-US"));
 
             string firstCollumn = rowSeperation[1];
+
+            int lastValueIndex = rowSeperation.Count - 1;
+            rowSeperation[lastValueIndex] = rowSeperation[lastValueIndex].Replace("\r", "");
+
             switch (message)
             {
                 case "title":
@@ -309,6 +316,21 @@ public class ExcelSwarmConverter : EditorWindow
                     }
 
                     if (floats != null && floats.Count > 0) defaultEnemyCooldowns = floats;
+
+                    break;
+
+                case "reward-ids":
+
+                    for (int i = 1; i < rowSeperation.Count; i++)
+                    {
+                        var seperation = rowSeperation[i].Split("=");
+                        int count = 1;
+                        if (seperation.Length > 1 && int.TryParse(seperation[1], out int temp))
+                        { count = temp; }
+                        var data = resourceDB.GetDataByDisplayNameOrID(seperation[0]);
+                        if (data == null) continue;
+                        targetRewards.Add(new(data, count));
+                    }
 
                     break;
             }
