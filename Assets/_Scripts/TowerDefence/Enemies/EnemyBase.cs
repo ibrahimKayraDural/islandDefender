@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,8 @@ namespace TowerDefence
     {
         public float Health => _health;
         public EnemyData Data => _data;
+        public float MaxHealth { get; private set; }
+        public event EventHandler<float> OnHealthChanged;
 
         [SerializeField] internal bool _DealDamageViaAnimation;
         [SerializeField] internal Transform _AttackPoint;
@@ -20,7 +23,7 @@ namespace TowerDefence
         [SerializeField] internal Animator _Animator;
 
         [Space(15)]
-        [SerializeField] internal UnityEvent OnDeath;
+        public UnityEvent OnDeath;
 
         internal bool _hasWon = false;
         internal bool _isDead = false;
@@ -31,7 +34,8 @@ namespace TowerDefence
 
         virtual public void Awake()
         {
-            _health = _data.MaxHealth;
+            MaxHealth = Data.MaxHealth;
+            _health = MaxHealth;
             _rb = GetComponent<Rigidbody>();
         }
 
@@ -73,6 +77,7 @@ namespace TowerDefence
             if (_isDead) return;
 
             _health = Mathf.Clamp(setTo, 0, _data.MaxHealth);
+            OnHealthChanged?.Invoke(this, Health / MaxHealth);
 
             if (_health == 0) Die();
         }

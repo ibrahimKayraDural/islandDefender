@@ -34,6 +34,7 @@ namespace TowerDefence
         [SerializeField] BaseManager _BaseMngr;
         [SerializeField] TDPlayerController _TDPlayerController;
         [SerializeField] ResourceData _RPData;
+        [SerializeField] EnemyHealthbarManager _EnemyHBManager;
 
         TD_WaveValue? _CurrentWave
         {
@@ -259,6 +260,7 @@ namespace TowerDefence
             GameObject prefab = enemy.Enemy.Enemy.EnemyPrefab;
             prefab = Instantiate(prefab, _spawners[i].Position, prefab.transform.rotation);
             ActiveEnemies.Add(prefab);
+            _EnemyHBManager.SpawnBar(prefab, enemy.Enemy.Enemy.Difficulty);
         }
 
         void OnWaveEnded()
