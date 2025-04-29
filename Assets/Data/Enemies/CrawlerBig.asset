@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CrawlerBig
   m_EditorClassIdentifier: 
   _displayName: Crawler Big
-  _id: crawlerBig
+  _id: crawler-t3
   _Description: Is angy and big
   _UISprite: {fileID: 21300000, guid: 4d8084d4015048c4199e32ae58cb3dd4, type: 3}
   _MaxHealth: 500

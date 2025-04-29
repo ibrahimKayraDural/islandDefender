@@ -26743,11 +26743,13 @@ MonoBehaviour:
   - {fileID: 1402358632}
   - {fileID: 1632508111}
   - {fileID: 2085773178}
+  - {fileID: 1030099316}
   PlayModeCanvasObjects:
   - {fileID: 2111607862}
   IdleModeCanvasObjects:
   - {fileID: 2111607862}
   - {fileID: 349828437}
+  - {fileID: 1030099316}
 --- !u!1 &624448200
 GameObject:
   m_ObjectHideFlags: 0
@@ -35805,6 +35807,7 @@ RectTransform:
   - {fileID: 1402358632}
   - {fileID: 1632508111}
   - {fileID: 2085773178}
+  - {fileID: 1030099316}
   m_Father: {fileID: 621411261}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -39925,12 +39928,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1943197703}
+  m_Father: {fileID: 911374424}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -20, y: -135.6}
-  m_SizeDelta: {x: 700, y: 650.5029}
+  m_AnchoredPosition: {x: -31, y: -157}
+  m_SizeDelta: {x: 1051.0167, y: 207.9975}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1030099317
 MonoBehaviour:
@@ -85334,7 +85337,6 @@ RectTransform:
   m_Children:
   - {fileID: 570611968}
   - {fileID: 1496323327}
-  - {fileID: 1030099316}
   m_Father: {fileID: 621411261}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
