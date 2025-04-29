@@ -11,6 +11,7 @@ namespace TowerDefence
         [SerializeField, SerializedDictionary("Indicator", "Lock Status")]
         SerializedDictionary<TurretIndicator, bool> _Indicators;
         [SerializeField] Material _GhostMaterial;
+        [SerializeField] Mesh _FailsafeMesh;
 
         public TurretIndicator GetFreeIndicator(out int index)
         {
@@ -38,7 +39,7 @@ namespace TowerDefence
             ind.transform.parent = transform;
             ind.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
 
-            ind.InitMeshes(_GhostMaterial);
+            ind.InitMeshes(_GhostMaterial, _FailsafeMesh);
             _Indicators.Add(ind, false);
 
             return ind;

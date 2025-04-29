@@ -16,6 +16,7 @@ namespace TowerDefence
 
         [Space(15), SerializeField] Transform _Indicator;
         [SerializeField] Material _GhostMaterial;
+        [SerializeField] Mesh _FailsafeMesh;
         [ContextMenu("Initialize Meshes")] void InitMeshesGetter() => InitMeshes();
 
         [SerializeField, SerializedDictionary("Turret", "Object")]
@@ -25,6 +26,7 @@ namespace TowerDefence
         { typeof(Transform), typeof(MeshRenderer), typeof(MeshFilter) };
 
         GameObject _lastTurret = null;
+        GameObject _failsafeGO;
 
         TurretDatabase _turretDB
         {
@@ -38,7 +40,7 @@ namespace TowerDefence
         }
         TurretDatabase AUTO_turretDB = null;
 
-        public void InitMeshes(Material ghostMaterial = null)
+        public void InitMeshes(Material ghostMaterial = null, Mesh failsafeMesh = null)
         {
             //clear
             Meshes = new SerializedDictionary<TurretData, GameObject>();
@@ -51,6 +53,7 @@ namespace TowerDefence
             }
 
             if (ghostMaterial) _GhostMaterial = ghostMaterial;
+            if (failsafeMesh) _FailsafeMesh = failsafeMesh;
 
             var children = _Indicator.transform.Cast<Transform>().ToList();
             foreach (var child in children)
@@ -61,6 +64,16 @@ namespace TowerDefence
                 Destroy(child.gameObject);
 #endif
             }
+
+            //add failsafe gameObject
+            var temp = new GameObject("Turret Indicator Failsafe GO", typeof(MeshRenderer), typeof(MeshFilter));
+            temp.transform.SetParent(_Indicator);
+            temp.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+            temp.SetActive(false);
+            temp.GetComponent<MeshRenderer>().sharedMaterials = new[] { _GhostMaterial };
+            temp.GetComponent<MeshFilter>().sharedMesh = _FailsafeMesh;
+            _failsafeGO = temp;
+            _failsafeGO.layer = LayerMask.NameToLayer("TowerDefenceVisual");
 
             //re-initialize
             foreach (var type in _turretDB.DataList)
@@ -101,7 +114,7 @@ namespace TowerDefence
             if (_lastTurret) _lastTurret.SetActive(false);
             if (turret)
             {
-                go = Meshes[turret];
+                go = Meshes.ContainsKey(turret) ? Meshes[turret] : _failsafeGO;
                 go.SetActive(true);
             }
             _lastTurret = go;
