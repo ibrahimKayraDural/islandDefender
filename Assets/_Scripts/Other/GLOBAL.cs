@@ -159,3 +159,4 @@ public static class GLOBAL
 
     #endregion
 }
+    public enum DamageType { Fire }

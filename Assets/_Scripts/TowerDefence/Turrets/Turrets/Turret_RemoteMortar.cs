@@ -26,7 +26,7 @@ namespace TowerDefence
                 _Animator.SetTrigger("shoot");
                 Vector3 point = hit.collider.transform.position;
                 ProjectileExplosive p = Instantiate(_ProjectilePrefab, point, Quaternion.identity).GetComponent<ProjectileExplosive>();
-                p.Activate(Data.AOE_Radius, Data.Damage);
+                p.Activate(Data.AOE_Radius, Data.Damage, Data.DamageTypes);
             }
         }
 

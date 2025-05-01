@@ -14,6 +14,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] string[] IgnoreTags = new string[0];
     [SerializeField] bool _IgnoreTriggers = true;
 
+    List<DamageType> _damageTypes;
     int _penetrationCount = 0;
     bool _isInitialized;
     bool _breakUpdate;
@@ -21,7 +22,8 @@ public class Projectile : MonoBehaviour
     Vector3 _dir;
     Rigidbody _rb;
 
-    public void Initialize(Vector3 direction, float? damage = null, float speedMultiplier = 1, int penetrationCount = 0)
+    public void Initialize(Vector3 direction, float? damage = null, float speedMultiplier = 1,
+        int penetrationCount = 0, List<DamageType> damageTypes = null)
     {
         if (_isInitialized) return;
 
@@ -29,6 +31,7 @@ public class Projectile : MonoBehaviour
         if (damage.HasValue) _Damage = damage.Value;
         _speed = GLOBAL.BaseProjectileSpeed * speedMultiplier;
         _penetrationCount = Mathf.Max(penetrationCount, 0);
+        _damageTypes = damageTypes ?? new();
 
         _rb = GetComponent<Rigidbody>();
         _rb.useGravity = false;
@@ -42,7 +45,8 @@ public class Projectile : MonoBehaviour
         _isInitialized = true;
     }
     public void Initialize(Vector3 direction, TowerDefence.TurretData data)
-        => Initialize(direction, data.Damage, data.ProjectileSpeedMultiplier, data.PenetrationCount);
+        => Initialize(direction, data.Damage, data.ProjectileSpeedMultiplier,
+            data.PenetrationCount, data.DamageTypes);
 
     IEnumerator UpdateLoop()
     {
@@ -82,7 +86,7 @@ public class Projectile : MonoBehaviour
 
         if (other.TryGetComponent(out IHealth ih))
         {
-            ih.RemoveHealth(_Damage);
+            ih.RemoveHealth(_Damage, _damageTypes);
         }
 
         if (other.TryGetComponent(out EnemyBase eb) && eb.Data.EnemyTypes.Contains(EnemyType.Durable))

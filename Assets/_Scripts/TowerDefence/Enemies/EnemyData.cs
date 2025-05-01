@@ -15,6 +15,7 @@ namespace TowerDefence
         public EnemyDifficulty Difficulty => _Difficulty;
         public EnemyRange RangeType => _RangeType;
         public List<EnemyType> EnemyTypes => _EnemyTypes;
+        public List<DamageType> DamageTypes => _DamageTypes;
         public AudioClip GettingDamagedSFX => _GettingDamagedSFX;
         public AudioClip DyingSFX => _DyingSFX;
         public GameObject EnemyPrefab => _enemyPrefab;
@@ -27,6 +28,7 @@ namespace TowerDefence
         [SerializeField] EnemyDifficulty _Difficulty;
         [SerializeField] EnemyRange _RangeType;
         [SerializeField] List<EnemyType> _EnemyTypes = new() { EnemyType.None };
+        [SerializeField] List<DamageType> _DamageTypes = new();
         [SerializeField] AudioClip _GettingDamagedSFX;
         [SerializeField] AudioClip _DyingSFX;
         [SerializeField] GameObject _enemyPrefab;
@@ -50,12 +52,12 @@ namespace TowerDefence
                 default: return null;
             }
         }
-    } 
+    }
 
     // -- IMPORTANT, WHEN ADDING NEW VALUES: --
     // Do not forget to register ids after adding new values to these enums.
     // IDs are located in GLOBAL script. Add an id to the new enum in the corresponding dictionary.
-    public enum EnemyDifficulty { Weak, Medium, Tough}
-    public enum EnemyRange { Melee, Ranged, Special}
+    public enum EnemyDifficulty { Weak, Medium, Tough }
+    public enum EnemyRange { Melee, Ranged, Special }
     public enum EnemyType { None, Durable, FastMoving, FastAttacking, HardHitting }
 }

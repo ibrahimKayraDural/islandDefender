@@ -28,6 +28,14 @@ public class InventoryCellScript : UICell
 
         CellIndex = i;
 
-        Initialize(item.UISprite, _item.DisplayName, _item.Description, isInteractable, ownerID);
+        base.Initialize(item.UISprite, _item.DisplayName, _item.Description, isInteractable, ownerID);
+    }
+    public override void Initialize()
+    {
+        CellIndex = -1;
+        _item = null;
+        _CountTM.text = "";
+
+        base.Initialize();
     }
 }

@@ -46,10 +46,14 @@ public class UICell : MonoBehaviour
     {
         _displayIcon = uiSprite;
         _UIImage.sprite = _displayIcon;
+        _UIImage.color = new Color(1, 1, 1, 1);
+        _BackgroundImage.color = DefaultBG;
         _displayName = displayName;
         _displayDescription = displayDescription;
         IsInteractable = isInteractable;
-        if (ownerID != null) _ownerID = ownerID;
+        _ownerID = ownerID != null ? ownerID : GLOBAL.UnassignedString;
+        _isEmpty = false;
+        _isHighlighted = false;
 
         _isInitialized = true;
     }
@@ -60,6 +64,12 @@ public class UICell : MonoBehaviour
 
         _UIImage.color = new Color(1, 1, 1, 0);
         _BackgroundImage.color = DefaultBG;
+        _isHighlighted = false;
+
+        _ownerID = GLOBAL.UnassignedString;
+        _displayName = GLOBAL.UnassignedString;
+        _displayDescription = GLOBAL.UnassignedString;
+        _displayIcon = null;
 
         _isInitialized = true;
     }

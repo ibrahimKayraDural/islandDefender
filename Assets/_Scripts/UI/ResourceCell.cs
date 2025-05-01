@@ -15,9 +15,18 @@ namespace GameUI
         public virtual void Initialize(ResourceData data, int amount, int i, bool isInteractable = true, string ownerID = null)
         {
             _data = data;
-            _amount = amount;
+            var item = _data.AsItem();
+            item.Count = amount;
+            _amount = item.Count;
 
-            Initialize(_data.AsItem(), i, IsInteractable, ownerID);
+            base.Initialize(item, i, isInteractable, ownerID);
         }
-    } 
+        public override void Initialize()
+        {
+            _data = null;
+            _amount = 0;
+
+            base.Initialize();
+        }
+    }
 }

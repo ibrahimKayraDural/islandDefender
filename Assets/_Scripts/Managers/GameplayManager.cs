@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TowerDefence;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameplayManager : MonoBehaviour
@@ -161,8 +162,11 @@ public class GameplayManager : MonoBehaviour
     }
     void LoadUnlockedEnemies()
     {
-        var ids = _SaveManager.CurrentSave.UnlockedEnemyIDs;
-        _enemyPool = ids.Select(x => _enemyDatabase?.GetDataByID(x))?.Where(y => y != null).ToList();
+        var ids = _SaveManager?.CurrentSave?.UnlockedEnemyIDs;
+        var temp = ids?.Select(x => _enemyDatabase?.GetDataByID(x))?.Where(y => y != null)?.ToList();
+        if (temp == null || temp.Count <= 0) return;
+
+        _enemyPool.AddRange(temp);
     }
     void SaveUnlockedTools()
     {

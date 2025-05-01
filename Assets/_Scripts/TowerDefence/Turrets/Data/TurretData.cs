@@ -13,7 +13,8 @@ namespace TowerDefence
         [HideInInspector] public int PenetrationCount = 0;
         [HideInInspector] public int AOE_Radius = 0;
 
-        public TurretControlType Type => _Type;
+        public TurretControlType ControlType => _Type;
+        public List<DamageType> DamageTypes => _DamageTypes;
         public List<TurretAttribute> Attributes => _Attributes;
         public int Health => _Health;
         public int Damage => _Damage;
@@ -27,7 +28,8 @@ namespace TowerDefence
         public AudioClip DeathSFX => _DeathSFX;
 
         [SerializeField] TurretControlType _Type;
-        [SerializeField] List<TurretAttribute> _Attributes = new List<TurretAttribute>();
+        [SerializeField] List<DamageType> _DamageTypes = new();
+        [SerializeField] List<TurretAttribute> _Attributes = new();
         [SerializeField] int _Health = 1;
         [SerializeField] int _Damage = 1;
         [SerializeField] float _activationCooldown = 1;

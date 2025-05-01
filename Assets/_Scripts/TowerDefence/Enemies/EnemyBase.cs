@@ -52,7 +52,7 @@ namespace TowerDefence
                 {
                     if (hit.transform.TryGetComponent(out IHealth ih))
                     {
-                        if (_DealDamageViaAnimation == false) ih.RemoveHealth(_data.Damage);
+                        if (_DealDamageViaAnimation == false) ih.RemoveHealth(_data.Damage, _data.DamageTypes);
 
                         if (_Animator) _Animator?.SetTrigger("Attack");
 
@@ -66,7 +66,7 @@ namespace TowerDefence
                 _rb.MovePosition(transform.position + transform.forward * _data.Speed * Time.deltaTime);
             }
         }
-        virtual public void RemoveHealth(float amount)
+        virtual public void RemoveHealth(float amount, List<DamageType> damageTypes)
         {
             PlayDamagedAnim();
             AudioManager.Instance.PlayClip(Data.ID + "_GetDamaged", Data.GettingDamagedSFX);
@@ -100,7 +100,7 @@ namespace TowerDefence
             {
                 if (hit.transform.TryGetComponent(out IHealth ih))
                 {
-                    ih.RemoveHealth(_data.Damage);
+                    ih.RemoveHealth(_data.Damage, _data.DamageTypes);
                 }
             }
         }

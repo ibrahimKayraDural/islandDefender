@@ -11,7 +11,7 @@ public class ProjectileExplosive : MonoBehaviour
     [SerializeField] ParticleObject _ExplosionEffect;
     [SerializeField] float XOffset = .1f;
 
-    public void Activate(int tileRadius, int damage)
+    public void Activate(int tileRadius, int damage, List<DamageType> _damageTypes)
     {
         float actualHeight = (tileRadius * TILE_SIZE) + (TILE_SIZE / 2);
         float radius = actualHeight * ROTATION_RESCALE;
@@ -21,7 +21,7 @@ public class ProjectileExplosive : MonoBehaviour
         RaycastHit[] hits = Physics.CapsuleCastAll(origin - axis, origin + axis, radius, Vector3.up, tileRadius * 10, _TargetMask);
         foreach (var hit in hits)
         {
-            if (hit.collider.gameObject.TryGetComponent(out IHealth ih)) ih.RemoveHealth(damage);
+            if (hit.collider.gameObject.TryGetComponent(out IHealth ih)) ih.RemoveHealth(damage, _damageTypes);
         }
 
         Instantiate(_ExplosionEffect.gameObject, transform.position, Quaternion.identity);

@@ -248,6 +248,34 @@ namespace SaveSystem
             _currentSave.SavedIntegers.RemoveAt(index);
             return true;
         }
+
+        /// <summary>
+        /// Adds or replaces a crack reward index to the save file
+        /// Is not saved to file before the WriteToSaveData function is called
+        /// </summary>
+        /// <param name="id">An ID to determine crack instance</param>
+        /// <param name="integer">The actual value to save</param>
+        public void AddOrReplaceCrackIndex(string id, int integer)
+        {
+            if (id == null)
+            {
+                Debug.LogError("Crack id can not be null");
+                return;
+            }
+
+            int index = _currentSave.CrackIndexes.FindIndex(x => x.ID == id);
+
+            if (index == -1) _currentSave.CrackIndexes.Add(new(id, integer));
+            else _currentSave.CrackIndexes[index] = new(id, integer);
+        }
+
+        /// <summary>
+        /// Deletes all crack indexes so they can reroll the reward
+        /// </summary>
+        public void DeleteCrackIndexes()
+        {
+            _currentSave.CrackIndexes = new();
+        }
     }
 
     [System.Serializable]
@@ -262,6 +290,7 @@ namespace SaveSystem
         public List<string> ActiveToolIDs = null;
         public List<GridSaveData> Grids = new();
         public List<IntWithID> SavedIntegers = new();
+        public List<IntWithID> CrackIndexes = new();
         public List<UpgradeableData> Upgrades
         {
             get

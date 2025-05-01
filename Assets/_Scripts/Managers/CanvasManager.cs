@@ -31,6 +31,7 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] ChestUIScript _ChestUI;
     [SerializeField] ToolRackUI _ToolRackUI;
     [SerializeField] DoorInteractableUI _DoorUI;
+    [SerializeField] CrackInteractableUI _CrackUI;
     [SerializeField] WorkBenchInteractableUI _WorkBenchUI;
     [SerializeField] InteractableHelperUI _InteractableHelper;
     [SerializeField] MapManager _MapManager;
@@ -94,6 +95,7 @@ public class CanvasManager : MonoBehaviour
         else if (type == typeof(ToolRack)) return _ToolRackUI;
         else if (type == typeof(DoorInteractable)) return _DoorUI;
         else if (type == typeof(WorkBench)) return _WorkBenchUI;
+        else if (type == typeof(CrackInteractable)) return _CrackUI;
 
         //register it above --^
         Debug.LogError(type + " is not a registered proximity interactable. If you want to use it, register it HERE (<- click that)");

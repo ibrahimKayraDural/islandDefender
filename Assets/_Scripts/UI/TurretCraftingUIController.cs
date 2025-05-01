@@ -40,7 +40,7 @@ public class TurretCraftingUIController : MonoBehaviour
     {
         foreach (Transform child in _CellParent) Destroy(child.gameObject);
 
-        var turrets = _GameplayManager.UnlockedTurrets.Where(x => x.Type != TurretControlType.Manual).ToList();
+        var turrets = _GameplayManager.UnlockedTurrets.Where(x => x.ControlType != TurretControlType.Manual).ToList();
         foreach (var turret in turrets)
         {
             var CUCS = Instantiate(_CellPrefab, _CellParent).GetComponent<CraftingUICellScript>();

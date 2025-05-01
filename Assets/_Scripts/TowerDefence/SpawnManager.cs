@@ -326,11 +326,15 @@ namespace TowerDefence
         }
         void GiveRewards()
         {
+            //Gather wave rewards and add them to the base
             var rewards = _CurrentWave.Value.Rewards;
             foreach (var reward in rewards)
             {
                 BaseResourceController.Instance.AddResource(reward.Resource, reward.Count);
             }
+
+            //Wipe crack save so they can reroll
+            _SaveManager.DeleteCrackIndexes();
         }
 
         public void SpawnSpawnerAt(Vector3 position, Transform parent = null)
