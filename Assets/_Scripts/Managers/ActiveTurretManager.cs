@@ -88,7 +88,7 @@ public class ActiveTurretManager : MonoBehaviour
 
             if (item == null) continue;
 
-            if(item.PosX >= 0 && item.PosY >= 0 && item.ID != null)
+            if (item.PosX >= 0 && item.PosY >= 0 && item.ID != null)
             {
                 var data = turretDB.GetDataByDisplayNameOrID(item.ID);
                 var tile = _GridManager.GetTile(item.PosX, item.PosY);

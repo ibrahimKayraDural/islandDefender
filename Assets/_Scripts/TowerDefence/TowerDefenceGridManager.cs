@@ -114,5 +114,22 @@ namespace TowerDefence
         }
 
         public TowerDefenceTileScript GetTile(int x, int y) => _Tiles[y].Tiles[x];
+
+        public TowerDefenceTileScript GetFirstFreeTile()
+        {
+            for (int y = 0; y < _Tiles.Count; y++)
+            {
+                var xTiles = _Tiles[y].Tiles;
+                for (int x = 0; x < xTiles.Count; x++)
+                {
+                    var tile = xTiles[x];
+                    if (tile == null || tile.IsLocked || tile.IsOccupied) continue;
+
+                    return tile;
+                }
+            }
+
+            return null;
+        }
     }
 }

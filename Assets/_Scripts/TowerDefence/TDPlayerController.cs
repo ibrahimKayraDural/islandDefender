@@ -57,7 +57,6 @@ namespace TowerDefence
           TextMeshProUGUI IUICellOwner.DescriptionText => _DescriptionText;*/
 
 
-        float targetTime_CanPlaceTurret = -1;
         TurretUnit _turretToSwap = null;
         //TurretData _currentTurretToPlace = null;
         TowerDefenceTileScript _currentTile = null;
@@ -227,27 +226,7 @@ namespace TowerDefence
 
                 DeselectTurretToSwap();
             }
-
-            /*
-            void TryPlaceTurret()
-            {
-                if (targetTime_CanPlaceTurret > Time.time) return;
-                if (_currentTile == null)
-                {
-                    //DeselectCurrentTurret(); 
-                    return;
-                }
-                if (_currentTile.IsOccupied || _currentTile.IsLocked) return;
-
-                _activeTurretManager.PlaceTurret(_currentTurretToPlace, _currentTile);
-
-                //TODO add proper place mechanic
-                //_OwnedTurretController.RemoveTurret(_currentTurretToPlace);
-                //if (_OwnedTurretController.HasTurret(_currentTurretToPlace) == false) DeselectCurrentTurret();
-            }*/
         }
-
-
         void HandlePlayMode()
         {
             SetCurrentTile();
@@ -341,7 +320,6 @@ namespace TowerDefence
             _turretToSwap?.SetHighlight(false, this);
             _turretToSwap = null;
         }
-
         void DeselectRemoteTurret()
         {
             if (_selectedRemoteTurret == null) return;

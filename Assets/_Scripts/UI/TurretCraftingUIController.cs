@@ -11,6 +11,7 @@ public class TurretCraftingUIController : MonoBehaviour
     [SerializeField] Transform _CellParent;
     [SerializeField] GameObject _CellPrefab;
     [SerializeField] CraftingInfoBar _CraftingInfoBar;
+    [SerializeField] TowerDefenceGridManager _GridManager;
     GameplayManager _GameplayManager
     {
         get
@@ -21,6 +22,28 @@ public class TurretCraftingUIController : MonoBehaviour
         }
     }
     GameplayManager AUTO_GameplayManager = null;
+
+    ActiveTurretManager _ActiveTurretManager
+    {
+        get
+        {
+            if (AUTO_ActiveTurretManager == null)
+                AUTO_ActiveTurretManager = ActiveTurretManager.Instance;
+            return AUTO_ActiveTurretManager;
+        }
+    }
+    ActiveTurretManager AUTO_ActiveTurretManager = null;
+
+    BaseResourceController _BaseResourceController
+    {
+        get
+        {
+            if (AUTO_BaseResourceController == null)
+                AUTO_BaseResourceController = BaseResourceController.Instance;
+            return AUTO_BaseResourceController;
+        }
+    }
+    BaseResourceController AUTO_BaseResourceController = null;
 
     void Start()
     {
@@ -50,12 +73,28 @@ public class TurretCraftingUIController : MonoBehaviour
     }
     public void Craft(TurretData turret)
     {
-        Debug.Log("I wanna craft " + turret.DisplayName);
-        //TODO change this to automatically place the turret
+        var tile = _GridManager.GetFirstFreeTile();
+        if (tile == null)
+        {
+            WriteErrorMessage("No place in field");
+            return;
+        }
+        if (turret == null || _BaseResourceController.TryBuyTurret(turret) == false)
+        {
+            WriteErrorMessage("Insufficent funds");
+            return;
+        }
+
+        _ActiveTurretManager.PlaceTurret(turret, tile);
     }
     public void SendDataToBar(CraftingUICellScript cell)
     {
         _CraftingInfoBar.Refresh(cell.TurretData, cell.GetMiddlePos().x);
     }
     public void SetBarEnablity(bool setTo) => _CraftingInfoBar.SetEnablity(setTo);
+
+    void WriteErrorMessage(string message)
+    {
+        _CraftingInfoBar.SetErrorMessage(message);
+    }
 }
