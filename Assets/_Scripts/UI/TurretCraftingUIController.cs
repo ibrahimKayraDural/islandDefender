@@ -4,12 +4,13 @@ using System.Linq;
 using TowerDefence;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.UI.GridLayoutGroup;
 
 public class TurretCraftingUIController : MonoBehaviour
 {
     [SerializeField] Transform _CellParent;
     [SerializeField] GameObject _CellPrefab;
-    [SerializeField] OwnedTurretController _OwnedTurretController;
+    [SerializeField] CraftingInfoBar _CraftingInfoBar;
     GameplayManager _GameplayManager
     {
         get
@@ -49,6 +50,12 @@ public class TurretCraftingUIController : MonoBehaviour
     }
     public void Craft(TurretData turret)
     {
-        _OwnedTurretController.TryBuyTurret(turret);
+        Debug.Log("I wanna craft " + turret.DisplayName);
+        //TODO change this to automatically place the turret
     }
+    public void SendDataToBar(CraftingUICellScript cell)
+    {
+        _CraftingInfoBar.Refresh(cell.TurretData, cell.GetMiddlePos().x);
+    }
+    public void SetBarEnablity(bool setTo) => _CraftingInfoBar.SetEnablity(setTo);
 }

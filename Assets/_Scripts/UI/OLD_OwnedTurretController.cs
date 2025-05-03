@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TowerDefence;
 using UnityEngine;
 
-public class OwnedTurretController : MonoBehaviour
+public class OLD_OwnedTurretController : MonoBehaviour
 {
     const string OWNERID = "owned-turret-controller";
 

@@ -1,3 +1,4 @@
+using CustomPointerEvents;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,7 @@ public class TDInfoBoxManager : MonoBehaviour
 {
     [SerializeField] GameObject[] _InfoBoxes;
 
-    public void EnableInfoBox(OnHoverOver.HoverData data)
+    public void EnableInfoBox(HoverData data)
     {
         var floats = data.AdditionalFloatDatas;
         if (floats == null || floats.Count <= 0) return;

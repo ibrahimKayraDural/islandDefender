@@ -1,3 +1,4 @@
+using CustomPointerEvents;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,9 +10,8 @@ public class CraftingUICellScript : MonoBehaviour
 {
     public TurretData @TurretData => _turretData;
 
-    [SerializeField] TextMeshProUGUI _TurretNameTM;
-    [SerializeField] TextMeshProUGUI _TurretCosts;
-    [SerializeField] Image TurretIcon;
+    [SerializeField] Image _TurretIcon;
+    [SerializeField] Transform _MiddlePosTransform;
 
     TurretCraftingUIController _owner;
     TurretData _turretData;
@@ -22,15 +22,8 @@ public class CraftingUICellScript : MonoBehaviour
         if (_isInitialized) return;
 
         _owner = owner;
-
         _turretData = turret;
-        _TurretNameTM.text = turret.DisplayName;
-        TurretIcon.sprite = turret.UISprite;
-        _TurretCosts.text = "";
-        foreach (var c in turret.Costs)
-        {
-            _TurretCosts.text += $"{c.Amount} {c.Resource.DisplayName}";
-        }
+        _TurretIcon.sprite = turret.UISprite;
 
         _isInitialized = true;
     }
@@ -39,4 +32,9 @@ public class CraftingUICellScript : MonoBehaviour
     {
         _owner.Craft(TurretData);
     }
+
+    public void SendDataToBar() => _owner.SendDataToBar(this);
+
+    public void SetBarEnablity(bool setTo) => _owner.SetBarEnablity(setTo);
+    public Vector3 GetMiddlePos() => _MiddlePosTransform.transform.position;
 }

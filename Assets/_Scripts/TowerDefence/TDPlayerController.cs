@@ -9,7 +9,7 @@ namespace TowerDefence
 {
     public enum TowerDefenceControlMode { None, Remote, Full }
     public enum TowerDefenceGameplayMode { Idle, Play, Edit }
-    public class TDPlayerController : MonoBehaviour, IUICellOwner
+    public class TDPlayerController : MonoBehaviour/*, IUICellOwner*/
     {
         public static TDPlayerController Instance { get; private set; } = null;
 
@@ -19,12 +19,12 @@ namespace TowerDefence
         [SerializeField] TurretIndicatorManager _IndicatorManager;
         [SerializeField] TDCanvasManager _TDCanvasManager;
         [SerializeField] SpawnManager _SpawnManager;
-        [SerializeField] OwnedTurretController _OwnedTurretController;
-        //[SerializeField] ManualTurretManager _ManualTurretManager;
         [SerializeField] ButtonToggleHelper _CraftTabToggler;
-        [SerializeField] GraphicRaycasterScript _GraphicRaycasterScript;
-        [SerializeField] TextMeshProUGUI _DescriptionTitle;
-        [SerializeField] TextMeshProUGUI _DescriptionText;
+
+        //[SerializeField] ManualTurretManager _ManualTurretManager;
+        /*[SerializeField] GraphicRaycasterScript _GraphicRaycasterScript;
+          [SerializeField] TextMeshProUGUI _DescriptionTitle;
+          [SerializeField] TextMeshProUGUI _DescriptionText;*/
 
         [SerializeField] Camera _camera = null;
 
@@ -50,19 +50,16 @@ namespace TowerDefence
         }
         ActiveTurretManager AUTO_activeTurretManager = null;
 
-        public UICell OldCell { get; set; }
-        public UICell CurrentCell { get; set; }
-
-        GraphicRaycasterScript IUICellOwner.GraphicRaycasterS => _GraphicRaycasterScript;
-
-        TextMeshProUGUI IUICellOwner.DescriptionTitle => _DescriptionTitle;
-
-        TextMeshProUGUI IUICellOwner.DescriptionText => _DescriptionText;
+        /*public UICell OldCell { get; set; }
+          public UICell CurrentCell { get; set; }
+          GraphicRaycasterScript IUICellOwner.GraphicRaycasterS => _GraphicRaycasterScript;
+          TextMeshProUGUI IUICellOwner.DescriptionTitle => _DescriptionTitle;
+          TextMeshProUGUI IUICellOwner.DescriptionText => _DescriptionText;*/
 
 
         float targetTime_CanPlaceTurret = -1;
         TurretUnit _turretToSwap = null;
-        TurretData _currentTurretToPlace = null;
+        //TurretData _currentTurretToPlace = null;
         TowerDefenceTileScript _currentTile = null;
         Turret_Remote _selectedRemoteTurret = null;
 
@@ -132,8 +129,12 @@ namespace TowerDefence
                     //_ManualTurretManager.DeselectCurrentTurret();
                     break;
                 case TowerDefenceGameplayMode.Edit:
-                    (this as IUICellOwner).OnEnd();
-                    DeselectCurrentTurret();
+                    //(this as IUICellOwner).OnEnd();
+
+                    //DeselectCurrentTurret(); 
+                    //changed this(^) to that(v)
+                    DeselectCurrentTile();
+
                     _CraftTabToggler.SetStatus(false);
                     break;
                 case TowerDefenceGameplayMode.Idle:
@@ -146,7 +147,7 @@ namespace TowerDefence
                 case TowerDefenceGameplayMode.Play:
                     break;
                 case TowerDefenceGameplayMode.Edit:
-                    (this as IUICellOwner).OnStart();
+                    //(this as IUICellOwner).OnStart();
                     break;
                 case TowerDefenceGameplayMode.Idle:
                     break;
@@ -166,17 +167,22 @@ namespace TowerDefence
         public void ExitBattle()
         {
             _currentControlMode = TowerDefenceControlMode.None;
-            DeselectCurrentTurret();
+
+            //DeselectCurrentTurret(); 
+            //changed this(^) to that(v)
+            DeselectCurrentTile();
+
             EvaluateGameplayMode(SpawnManager.WaveIsActive);
             _TDCanvasManager.gameObject.SetActive(false);
         }
 
+        /*
         void DeselectCurrentTurret()
         {
             _currentTurretToPlace = null;
             _CursorIndicator.SetTurret(null);
             DeselectCurrentTile();
-        }
+        }*/
         void HandleEditMode()
         {
             if (_CraftTabToggler.Status == false)
@@ -184,21 +190,27 @@ namespace TowerDefence
                 SetCurrentTile();
             }
 
-            (this as IUICellOwner).OnLoop();
+            //(this as IUICellOwner).OnLoop();
 
             if (Input.GetButtonDown("CraftingTabOpen"))
             {
-                DeselectCurrentTurret();
+                //DeselectCurrentTurret(); 
+                //changed this(^) to that(v)
+                DeselectCurrentTile();
+
                 _CraftTabToggler.Toggle();
+
+                return;
             }
 
             if (Input.GetMouseButtonDown(0))
             {
+                /*
                 if (_currentTurretToPlace)
                 {
                     TryPlaceTurret();
                 }
-                else if (_turretToSwap)
+         else */if (_turretToSwap)
                 {
                     TrySwapCurrentTurret();
                 }
@@ -209,21 +221,30 @@ namespace TowerDefence
             }
             else if (Input.GetMouseButtonDown(1))
             {
-                DeselectCurrentTurret();
+                //DeselectCurrentTurret(); 
+                //changed this(^) to that(v)
+                DeselectCurrentTile();
+
                 DeselectTurretToSwap();
             }
 
+            /*
             void TryPlaceTurret()
             {
                 if (targetTime_CanPlaceTurret > Time.time) return;
-                if (_currentTile == null) {/*DeselectCurrentTurret();*/ return; }
+                if (_currentTile == null)
+                {
+                    //DeselectCurrentTurret(); 
+                    return;
+                }
                 if (_currentTile.IsOccupied || _currentTile.IsLocked) return;
 
                 _activeTurretManager.PlaceTurret(_currentTurretToPlace, _currentTile);
 
-                _OwnedTurretController.RemoveTurret(_currentTurretToPlace);
-                if (_OwnedTurretController.HasTurret(_currentTurretToPlace) == false) DeselectCurrentTurret();
-            }
+                //TODO add proper place mechanic
+                //_OwnedTurretController.RemoveTurret(_currentTurretToPlace);
+                //if (_OwnedTurretController.HasTurret(_currentTurretToPlace) == false) DeselectCurrentTurret();
+            }*/
         }
 
 
@@ -439,28 +460,28 @@ namespace TowerDefence
             _CursorIndicator.SetEnablity(false);
         }
 
-        public void OnHoverInteractableCell(UICell currentCell) { }
+        //public void OnHoverInteractableCell(UICell currentCell) { }
 
-        void IUICellOwner.OnCellClicked(UICell cell)
-        {
-            var tCell = cell as OwnedTurretUIScript;
-            if (tCell == null) return;
-            TurretData data = tCell.TData;
-            if (data == null) return;
 
-            targetTime_CanPlaceTurret = Time.time + .1f;
+        /*void IUICellOwner.OnCellClicked(UICell cell)
+          {
+              var tCell = cell as OwnedTurretUIScript;
+              if (tCell == null) return;
+              TurretData data = tCell.TData;
+              if (data == null) return;
 
-            _CraftTabToggler.SetStatus(false);
-            _currentTurretToPlace = data;
-            _CursorIndicator.SetTurret(data);
-            DeselectTurretToSwap();
-        }
+              targetTime_CanPlaceTurret = Time.time + .1f;
 
-        bool IUICellOwner.CellIsValid(UICell cell)
-        {
-            var newCell = cell as OwnedTurretUIScript;
-            if (newCell == null) return false;
-            return newCell.TData != null;
-        }
+              _CraftTabToggler.SetStatus(false);
+              _currentTurretToPlace = data;
+              _CursorIndicator.SetTurret(data);
+              DeselectTurretToSwap();
+          }
+          bool IUICellOwner.CellIsValid(UICell cell)
+          {
+              var newCell = cell as OwnedTurretUIScript;
+              if (newCell == null) return false;
+              return newCell.TData != null;
+          }*/
     }
 }
