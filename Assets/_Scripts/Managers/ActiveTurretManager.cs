@@ -1,3 +1,4 @@
+using AYellowpaper.SerializedCollections;
 using Overworld;
 using SaveSystem;
 using System.Collections;
@@ -15,6 +16,7 @@ public class ActiveTurretManager : MonoBehaviour
     [SerializeField] Transform _UpgradeParent;
     [SerializeField] TurretUpgradeUIPiece _PiecePrefab;
     [SerializeField] TowerDefenceGridManager _GridManager;
+    [SerializeField] SerializedDictionary<TurretData, int> _AllowedTurretCounts;
 
     SaveManager _SaveManager
     {
@@ -97,6 +99,35 @@ public class ActiveTurretManager : MonoBehaviour
         }
     }
 
+    [ContextMenu("Refresh Turret Count List")]
+    void RefreshTurrets()
+    {
+        var turrets = GLOBAL.GetTurretDatabase().DataList;
+        SerializedDictionary<TurretData, int> tempDic = new();
+
+        foreach (var item in turrets)
+        {
+            tempDic.Add(item, 1);
+            if (_AllowedTurretCounts.TryGetValue(item, out int count)) tempDic[item] = count;
+        }
+
+        _AllowedTurretCounts = tempDic;
+    }
+
+    public bool HasRoomForTurret(TurretData turret)
+    {
+        if (turret == null) return false;
+
+        var turretCount = ActiveTurrets.Select(x => x?.GetComponent
+        <TurretUnit>()?.Data).Where(x => x == turret).Count();
+
+        if (_AllowedTurretCounts.ContainsKey(turret) == false) return false;
+
+        int allowedCount = _AllowedTurretCounts[turret];
+        if (allowedCount <= 0) return false;
+
+        return allowedCount > turretCount;
+    }
     public void PlaceTurret(TurretData turret, TowerDefenceTileScript tile)
     {
         TurretUnit unit = Instantiate(turret.PrefabObject).GetComponent<TurretUnit>();

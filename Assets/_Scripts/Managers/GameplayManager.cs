@@ -174,7 +174,9 @@ public class GameplayManager : MonoBehaviour
     }
     void LoadUnlockedTools()
     {
-        var ids = _SaveManager.CurrentSave.UnlockedToolIDs;
+        var ids = _SaveManager?.CurrentSave?.UnlockedToolIDs;
+        if (ids == null) return;
+
         _unlockedTools = ids.Select(x => _toolDatabase?.GetToolByID(x)?.Data)?.Where(y => y != null).ToList();
     }
     void SaveUnlockedTurrets()
@@ -183,7 +185,9 @@ public class GameplayManager : MonoBehaviour
     }
     void LoadUnlockedTurrets()
     {
-        var ids = _SaveManager.CurrentSave.UnlockedTurretIDs;
+        var ids = _SaveManager?.CurrentSave?.UnlockedTurretIDs;
+        if (ids == null) return;
+
         _unlockedTurrets = ids.Select(x => _turretDatabase?.GetDataByDisplayNameOrID(x))?.Where(y => y != null).ToList();
     }
     #endregion

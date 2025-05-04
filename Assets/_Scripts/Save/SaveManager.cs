@@ -14,11 +14,11 @@ namespace SaveSystem
 {
     public class SaveManager : MonoBehaviour
     {
-        string _fullPath;
-        string _folderPath;
+        static string _fullPath => Path.Combine(_folderPath, FILE_NAME);
+        static string _folderPath => Path.Combine(UnityEngine.Application.persistentDataPath, FOLDER_NAME);
 
-        readonly string FolderName = "Saves";
-        readonly string FileName = "savedata.txt";
+        const string FOLDER_NAME = "Saves";
+        const string FILE_NAME = "savedata.txt";
 
         public static SaveManager Instance
         {
@@ -68,9 +68,6 @@ namespace SaveSystem
         {
             DontDestroyOnLoad(gameObject);
 
-            _folderPath = Path.Combine(UnityEngine.Application.persistentDataPath, FolderName);
-            _fullPath = Path.Combine(_folderPath, FileName);
-
             ReadSaveData();
 
             _isInitialized = true;
@@ -109,9 +106,12 @@ namespace SaveSystem
         }
 
         [ContextMenu("Delete Save File")]
-        void DeleteSaveFile()
+
+        [UnityEditor.MenuItem("Save System/Delete Save File")]
+        public static void DeleteSaveFile()
         {
             File.Delete(_fullPath);
+            Debug.Log($"EDITORDEBUG -> Save file at {_fullPath} is deleted.");
         }
 
         /// <summary>

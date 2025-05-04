@@ -79,6 +79,11 @@ public class TurretCraftingUIController : MonoBehaviour
             WriteErrorMessage("No place in field");
             return;
         }
+        if(_ActiveTurretManager.HasRoomForTurret(turret) == false)
+        {
+            WriteErrorMessage("Already at maximum count for this turret");
+            return;
+        }
         if (turret == null || _BaseResourceController.TryBuyTurret(turret) == false)
         {
             WriteErrorMessage("Insufficent funds");

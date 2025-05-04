@@ -40077,6 +40077,14 @@ MonoBehaviour:
   _UpgradeParent: {fileID: 397494141}
   _PiecePrefab: {fileID: 7546409852063966317, guid: 105302d2e663d534fa9cc53f8f70bd05, type: 3}
   _GridManager: {fileID: 1872965885}
+  _AllowedTurretCounts:
+    _serializedList:
+    - Key: {fileID: 11400000, guid: 9e24902b69d39b645a48964324276bed, type: 2}
+      Value: 1
+    - Key: {fileID: 11400000, guid: 5c7cc337743a1ac44b4492431073734b, type: 2}
+      Value: 1
+    - Key: {fileID: 11400000, guid: 74ccac4743be7f342b5fbb7abc3c1757, type: 2}
+      Value: 1
 --- !u!4 &815259999
 Transform:
   m_ObjectHideFlags: 0
@@ -92246,12 +92254,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
