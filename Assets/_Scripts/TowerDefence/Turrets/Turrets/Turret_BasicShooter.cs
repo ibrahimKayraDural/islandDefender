@@ -17,7 +17,7 @@ namespace TowerDefence
         {
             get
             {
-                if (AUTO_audioManager == null) 
+                if (AUTO_audioManager == null)
                     AUTO_audioManager = AudioManager.Instance;
                 return AUTO_audioManager;
             }
@@ -53,10 +53,11 @@ namespace TowerDefence
             proj.Initialize(transform.forward, _data);
         }
 
-        private void OnDrawGizmosSelected()
+        private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawLine(_ray.origin, _ray.origin + _ray.direction * _RayLenght);
+            //Gizmos.DrawLine(_ray.origin, _ray.origin + _ray.direction * _RayLenght);
+            Gizmos.DrawLine(_Barrel.position, _Barrel.position + Vector3.forward * _RayLenght);
         }
     }
 }
