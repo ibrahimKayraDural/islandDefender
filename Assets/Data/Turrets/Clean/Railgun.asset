@@ -10,15 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f668a1441eb51ad46ac03f32cd815cc9, type: 3}
-  m_Name: Penetrator
+  m_Name: Railgun
   m_EditorClassIdentifier: 
-  _displayName: Penetrator
-  _id: turret-penetrator
+  _displayName: Railgun
+  _id: turret-railgun
   _Description: "Penetrates and hits up to 4 enemies\r"
   _UISprite: {fileID: 21300000, guid: 603ef7fb2e4f55b4ab45b546dc20f580, type: 3}
   PenetrationCount: 4
   AOE_Radius: 0
   _Type: 0
+  _DamageTypes: 
   _Attributes: 00000000
   _Health: 250
   _Damage: 90
