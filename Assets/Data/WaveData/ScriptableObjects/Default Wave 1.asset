@@ -16,7 +16,7 @@ MonoBehaviour:
   _id: default-wave-1
   _enemies:
   - Enemy:
-      _enemy: {fileID: 11400000, guid: 6a0d3e6c69e538c4492ba7f04bf827d7, type: 2}
+      _enemy: {fileID: 11400000, guid: 963e2d9bca729b54fabf08af27124018, type: 2}
       _isWildCard: 0
       _wildCardID: UNASSIGNED
       _wildCardValue: UNASSIGNED
@@ -26,7 +26,7 @@ MonoBehaviour:
       _isWildCard: 0
       _wildCardID: UNASSIGNED
       _wildCardValue: UNASSIGNED
-    Cooldown: 0
+    Cooldown: 1
   - Enemy:
       _enemy: {fileID: 11400000, guid: 497aa653f34111048b53c7903a91ecc9, type: 2}
       _isWildCard: 0
