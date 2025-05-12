@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7581886661022587545}
   - component: {fileID: 270723066456184431}
   m_Layer: 8
-  m_Name: TurretExplosiveProjectile
+  m_Name: ExplosiveProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

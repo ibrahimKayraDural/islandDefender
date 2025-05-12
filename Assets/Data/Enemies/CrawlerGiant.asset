@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06de1689a4292ac4d9fa84a459bc98d7, type: 3}
-  m_Name: CrawlerBig
+  m_Name: CrawlerGiant
   m_EditorClassIdentifier: 
-  _displayName: Crawler Big
-  _id: crawler-t3
-  _Description: Is angy and big
+  _displayName: Giant Crawler
+  _id: enemy-crawler-t3
+  _Description: An enormous crawler so tough, even penetrating weapons can not go
+    through
   _UISprite: {fileID: 21300000, guid: 4d8084d4015048c4199e32ae58cb3dd4, type: 3}
   _MaxHealth: 500
   _Speed: 0.25
@@ -24,6 +25,7 @@ MonoBehaviour:
   _Difficulty: 2
   _RangeType: 0
   _EnemyTypes: 01000000
+  _DamageTypes: 
   _GettingDamagedSFX: {fileID: 8300000, guid: 2755cac10c425a84f9bd3258f1f3f1f0, type: 3}
   _DyingSFX: {fileID: 8300000, guid: 8e448de2872f6b74181558e9d7a4996f, type: 3}
   _enemyPrefab: {fileID: 8660632794050134643, guid: 688c29118e9ec874880500febfa30b24, type: 3}
