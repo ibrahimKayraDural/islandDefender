@@ -630,7 +630,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7519169819797895504, guid: 62e822bccf9f97048b42a5a712acec19, type: 3}
       propertyPath: _unlockedTurrets.Array.size
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7519169819797895504, guid: 62e822bccf9f97048b42a5a712acec19, type: 3}
       propertyPath: _unlockedTurrets.Array.data[0]
@@ -639,7 +639,7 @@ PrefabInstance:
     - target: {fileID: 7519169819797895504, guid: 62e822bccf9f97048b42a5a712acec19, type: 3}
       propertyPath: _unlockedTurrets.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: 5c7cc337743a1ac44b4492431073734b, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 7519169819797895504, guid: 62e822bccf9f97048b42a5a712acec19, type: 3}
       propertyPath: _unlockedTurrets.Array.data[2]
       value: 

@@ -45,8 +45,13 @@ public class TurretCraftingUIController : MonoBehaviour
     }
     BaseResourceController AUTO_BaseResourceController = null;
 
+    List<TurretData> _allTurrets = new();
+
     void Start()
     {
+        _allTurrets = GLOBAL.GetTurretDatabase().GetAllTurretsOfType
+            (new[] { TurretControlType.Automatic, TurretControlType.Remote });
+
         Refresh();
     }
 
@@ -59,16 +64,18 @@ public class TurretCraftingUIController : MonoBehaviour
         GameplayManager.e_OnUnlockedTurretListChanged -= RefreshHandler;
     }
 
-    void RefreshHandler(object sender, List<TurretData> e) => Refresh();
-    public void Refresh()
+    void RefreshHandler(object sender, List<TurretData> e) => Refresh(e);
+    public void Refresh(List<TurretData> unlockedTurrets = null)
     {
         foreach (Transform child in _CellParent) Destroy(child.gameObject);
 
-        var turrets = _GameplayManager.UnlockedTurrets.Where(x => x.ControlType != TurretControlType.Manual).ToList();
-        foreach (var turret in turrets)
+        if (unlockedTurrets == null)
+            unlockedTurrets = _GameplayManager.UnlockedTurrets;
+
+        foreach (var turret in _allTurrets)
         {
             var CUCS = Instantiate(_CellPrefab, _CellParent).GetComponent<CraftingUICellScript>();
-            CUCS.Initialize(turret, this);
+            CUCS.Initialize(turret, this, unlockedTurrets.Contains(turret) == false);
         }
     }
     public void Craft(TurretData turret)
@@ -79,7 +86,7 @@ public class TurretCraftingUIController : MonoBehaviour
             WriteErrorMessage("No place in field");
             return;
         }
-        if(_ActiveTurretManager.HasRoomForTurret(turret) == false)
+        if (_ActiveTurretManager.HasRoomForTurret(turret) == false)
         {
             WriteErrorMessage("Already at maximum count for this turret");
             return;

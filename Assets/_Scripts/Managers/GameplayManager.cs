@@ -55,10 +55,7 @@ public class GameplayManager : MonoBehaviour
         _toolDatabase = GLOBAL.GetToolDatabase();
         _turretDatabase = GLOBAL.GetTurretDatabase();
         _enemyDatabase = GLOBAL.GetEnemyDatabase();
-    }
 
-    void Start()
-    {
         LoadAllData();
     }
     void OnApplicationQuit()

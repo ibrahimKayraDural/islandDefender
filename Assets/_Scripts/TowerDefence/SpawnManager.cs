@@ -190,7 +190,7 @@ namespace TowerDefence
             for (int i = 0; i < _currentEnemies.Count; i++)
             {
                 var ewl = _currentEnemies[i];
-                SpawnNextEnemy(ewl);
+                yield return SpawnNextEnemy(ewl);
 
                 StartCoroutine(nameof(EnemyCooldownCounter), ewl.Cooldown);
                 StartCoroutine(nameof(CheckNextEnemySpawn));
@@ -245,8 +245,9 @@ namespace TowerDefence
             CurrentWaveValueInfo = new(currentWave);
         }
 
-        void SpawnNextEnemy(TD_EnemyWithCooldown enemy)
+        IEnumerator SpawnNextEnemy(TD_EnemyWithCooldown enemy)
         {
+            var data = enemy.Enemy.Enemy;
             int laneMax = _spawners.Count;
             int i = 0;
 
@@ -257,10 +258,21 @@ namespace TowerDefence
             }
             _lastLaneIndex = i;
 
-            GameObject prefab = enemy.Enemy.Enemy.EnemyPrefab;
-            prefab = Instantiate(prefab, _spawners[i].Position, prefab.transform.rotation);
-            ActiveEnemies.Add(prefab);
-            _EnemyHBManager.SpawnBar(prefab, enemy.Enemy.Enemy.Difficulty);
+            GameObject prefab = data.EnemyPrefab;
+            int swarmCount = data.SwarmCount;
+
+            for (int n = 0; n < swarmCount; n++)
+            {
+                var spawnedGO = Instantiate(prefab, _spawners[i].Position, prefab.transform.rotation);
+                ActiveEnemies.Add(spawnedGO);
+                _EnemyHBManager.SpawnBar(spawnedGO, data.Difficulty);
+
+                if (n < swarmCount - 1)
+                    yield return new WaitForSeconds
+                        (data.SwarmCooldownRange.GetRandomInclusive());
+            }
+
+            yield return null;
         }
 
         void OnWaveEnded()

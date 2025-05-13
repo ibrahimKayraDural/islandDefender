@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using TowerDefence;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class CraftingUICellScript : MonoBehaviour
@@ -15,12 +16,15 @@ public class CraftingUICellScript : MonoBehaviour
     [SerializeField] Transform _MiddlePosTransform;
     [SerializeField] Color _NormalColor = new Color(.8f, .8f, .8f, 1);
     [SerializeField] Color _HighlightedColor = new Color(1, 1, 1, 1);
+    [SerializeField] OnHoverOver _OnHoverOver;
+    [SerializeField] EventTrigger _EventTrigger;
+    [SerializeField] GameObject _LockImage;
 
     TurretCraftingUIController _owner;
     TurretData _turretData;
     bool _isInitialized;
 
-    public void Initialize(TurretData turret, TurretCraftingUIController owner)
+    public void Initialize(TurretData turret, TurretCraftingUIController owner, bool isLocked)
     {
         if (_isInitialized) return;
 
@@ -28,6 +32,10 @@ public class CraftingUICellScript : MonoBehaviour
         _turretData = turret;
         _TurretIcon.sprite = turret.UISprite;
         _Background.color = _NormalColor;
+
+        _OnHoverOver.enabled = !isLocked;
+        _EventTrigger.enabled = !isLocked;
+        _LockImage.SetActive(isLocked);
 
         _isInitialized = true;
     }
