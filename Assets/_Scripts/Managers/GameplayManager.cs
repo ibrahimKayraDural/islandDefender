@@ -68,6 +68,29 @@ public class GameplayManager : MonoBehaviour
         if (_isSaved == false) SaveAllData();
     }
 
+    public void UnlockDatas(List<string> ids)
+    {
+        foreach (var fullID in ids)
+        {
+            var sep = fullID.Split('=');
+            if (sep.Length != 2) continue;
+
+            var type = sep[0];
+            var val = sep[1];
+
+            if (type == GLOBAL.TurretUnlockID) UnlockTurret(val);
+            else if (type == GLOBAL.ToolUnlockID) UnlockTool(val);
+            else if (type == GLOBAL.EnemyUnlockID) AddToEnemyPool(val);
+            else if (type == GLOBAL.UpgradeUnlockID)
+            {
+
+            }
+            else if (type == GLOBAL.SpecialUnlockID)
+            {
+
+            }
+        }
+    }
     public void UnlockTool(string nameOrID)
     {
         Tool tool = _toolDatabase.GetToolByNameOrID(nameOrID);
@@ -96,7 +119,7 @@ public class GameplayManager : MonoBehaviour
     }
     public void UnlockTurret(string nameOrID)
     {
-        TurretData data = _turretDatabase.GetDataByDisplayName(nameOrID);
+        TurretData data = _turretDatabase.GetDataByDisplayNameOrID(nameOrID);
         if (data == null) return;
 
         if (_unlockedTurrets.Contains(data) == false)
@@ -109,7 +132,7 @@ public class GameplayManager : MonoBehaviour
     }
     public void LockTurret(string nameOrID)
     {
-        TurretData data = _turretDatabase.GetDataByDisplayName(nameOrID);
+        TurretData data = _turretDatabase.GetDataByDisplayNameOrID(nameOrID);
         if (data == null) return;
 
         if (_unlockedTurrets.Contains(data))

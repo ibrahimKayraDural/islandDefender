@@ -65,6 +65,18 @@ namespace TowerDefence
         int _lastLaneIndex = -1;
 
         List<TD_EnemyWithCooldown> _currentEnemies = new();
+
+        GameplayManager _GameplayManager
+        {
+            get
+            {
+                if (AUTO_GameplayManager == null)
+                    AUTO_GameplayManager = GameplayManager.Instance;
+
+                return AUTO_GameplayManager;
+            }
+        }
+        GameplayManager AUTO_GameplayManager = null;
         SaveManager _SaveManager
         {
             get
@@ -345,6 +357,9 @@ namespace TowerDefence
                 BaseResourceController.Instance.AddResource(reward.Resource, reward.Count);
             }
 
+            //Send data to unlock manager (gameplay manager)
+            _GameplayManager.UnlockDatas(_CurrentWave.Value.Unlocks);
+
             //Wipe crack save so they can reroll
             _SaveManager.DeleteCrackIndexes();
         }
@@ -376,6 +391,7 @@ namespace TowerDefence
             public readonly float DifficultyMultiplier;
             public readonly List<EnemyType> EnemyTypes;
             public readonly List<ResourceWithCount> Rewards;
+            public readonly List<string> UnlockIDs;
 
             public WaveValueInfo(TD_WaveValue wave)
             {
@@ -408,6 +424,7 @@ namespace TowerDefence
                 DifficultyMultiplier = GLOBAL.DecimalSimplifier(DifficultyMultiplier, 3);
                 EnemyTypes = types;
                 Rewards = wave.Rewards;
+                UnlockIDs = wave.Unlocks;
             }
         }
     }

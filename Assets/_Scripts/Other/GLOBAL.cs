@@ -10,9 +10,16 @@ public static class GLOBAL
     #region Variables
 
     public readonly static string UnassignedString = "UNASSIGNED";
-    public readonly static float TDColliderElevation = 1f;
 
+    public readonly static string TurretUnlockID = "turret";
+    public readonly static string UpgradeUnlockID = "upgrade";
+    public readonly static string ToolUnlockID = "tool";
+    public readonly static string EnemyUnlockID = "enemy";
+    public readonly static string SpecialUnlockID = "special";
+
+    public readonly static float TDColliderElevation = 1f;
     public readonly static float BaseProjectileSpeed = 50;
+
     public readonly static List<float> FailsafeEnemyCooldowns = new List<float>() { 5, 5, 5, 3, 3, 3, 2.5f, 2.5f, 2, 2, 2, 1 };
     public readonly static List<int> FailsafeWaveCooldowns = new List<int>() { 10, 8, 5, 5, 5, 3 };
     public readonly static List<KeyCode> AlphaNumberKeys = new List<KeyCode>()
@@ -60,6 +67,8 @@ public static class GLOBAL
         {"fast-attacking",EnemyType.FastAttacking },
         {"fast-moving",EnemyType.FastMoving },
         {"hard-hitting",EnemyType.HardHitting },
+        {"explosive",EnemyType.Explosive },
+        {"swarm",EnemyType.Swarm },
         {"none",EnemyType.None },
     };
 
@@ -159,4 +168,4 @@ public static class GLOBAL
 
     #endregion
 }
-    public enum DamageType { Fire }
+public enum DamageType { Fire }

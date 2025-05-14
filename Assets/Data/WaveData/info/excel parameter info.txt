@@ -6,6 +6,10 @@
 
 [default-enemy-cooldown] - Adds default cooldown values between enemies in a wave. This value will be used if no spesific value is given to a wave using "[enemy-cooldown]". It should be used with "[info]". Cooldowns are written to second (B) cell. Numbers are divided by '/' symbol and float values are accepted if given with '.' symbol. Example : "1/1/2.7/3
 
+[reward-ids] ... <ResourceID=Count>... - Adds rewards to the wave. Can be repeated as long as it starts with the identifier
+
+[unlocks] ... <TypeID=ValueID>... - Adds an unlock to the wave. Can be repeated as long as it starts with the identifier. Possible type IDs: turret, tool, enemy, upgrade, special. Special means a hard-coded method is to be called.
+
 <difficulty=DifficultyId> - Tries to select a random enemy with given difficulty from the database. Replace DifficultyId with a proper ID. IDs can be found in "WildcardInfo" file.
 
 <range=RangeId> - Tries to select a random enemy with given range from the database. Replace RangeId with a proper ID. IDs can be found in "WildcardInfo" file.
