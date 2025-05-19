@@ -160,6 +160,13 @@ public static class GLOBAL
         return _upgradeDB;
     }
 
+    static CoreDatabase _coreDatabase = null;
+    public static CoreDatabase GetCoreDatabase()
+    {
+        if (_coreDatabase == null) _coreDatabase = Resources.Load<CoreDatabase>("Databases/CoreDatabase");
+        return _coreDatabase;
+    }
+
     static TurretUpgradeTree _upgradeTree = null;
     public static TurretUpgradeTree GetTurretUpgradeTree()
     {

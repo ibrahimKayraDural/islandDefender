@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Resource/Resource Data")]
+[CreateAssetMenu(menuName = "Data/Resource/Resource Data")]
 public class ResourceData : GameplayElementData<ResourceData>
 {
     public int StackSize => _stackSize;

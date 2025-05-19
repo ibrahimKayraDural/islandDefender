@@ -22,6 +22,8 @@ public class ResourceItem : InventoryItem
         _displayName = data.DisplayName;
         _description = data.Description;
 
+        _isDroppable = true;
+
         _isInitialized = true;
     }
 
