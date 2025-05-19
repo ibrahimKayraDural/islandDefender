@@ -55,17 +55,21 @@ public class WaveInfoDisplayer : MonoBehaviour
             _RewardTM.text += reward.Resource.DisplayName;
             if (i < info.Rewards.Count - 1) _RewardTM.text += "\n";
         }
-        for (int i = 0; i < info.UnlockIDs.Count; i++)
+
+        if (_ShowPreviousWave == false)
         {
-            if (i == 0) _RewardTM.text += "\n";
+            for (int i = 0; i < info.UnlockIDs.Count; i++)
+            {
+                if (i == 0) _RewardTM.text += "\n";
 
-            var u = info.UnlockIDs[i];
-            var unlockName = GetUnlockDisplayName(u);
-            if (unlockName == null) continue;
+                var u = info.UnlockIDs[i];
+                var unlockName = GetUnlockDisplayName(u);
+                if (unlockName == null) continue;
 
-            _RewardTM.text += "<color=yellow><i><b>Unlocks:</b></i></color> " + unlockName;
+                _RewardTM.text += "<color=yellow><i><b>Unlocks:</b></i></color> " + unlockName;
 
-            if (i < info.UnlockIDs.Count - 1) _RewardTM.text += "\n";
+                if (i < info.UnlockIDs.Count - 1) _RewardTM.text += "\n";
+            }
         }
     }
     string GetUnlockDisplayName(string id)

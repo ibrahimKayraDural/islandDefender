@@ -112,7 +112,7 @@ public class GameplayManager : MonoBehaviour
             else if (type == GLOBAL.ScannerUnlockID)
             {
                 if (_ScannerManager != null && int.TryParse(val, out int lvl))
-                    _ScannerManager.SetAllowedLevel(lvl);
+                    _ScannerManager.IncreasinglySetAllowedLevel(lvl);
             }
             else if (type == GLOBAL.SpecialUnlockID)
             {

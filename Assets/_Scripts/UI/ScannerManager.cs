@@ -98,8 +98,14 @@ public class ScannerManager : ProximityInteractableUI
         _scanButton.interactable = allow;
     }
 
-    public void SetAllowedLevel(int setTo)
+    /// <summary>
+    /// Set allowed level. Does not work if setTo is less than or equal to current AllowedLevel
+    /// </summary>
+    /// <param name="setTo">Value to set allowed level to</param>
+    public void IncreasinglySetAllowedLevel(int setTo)
     {
+        if (AllowedLevel >= setTo) return;
+
         AllowedLevel = setTo;
         UpdateUI();
     }
