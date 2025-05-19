@@ -3,14 +3,17 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using SaveSystem;
+using static UnityEngine.Rendering.HighDefinition.ScalableSettingLevelParameter;
 
 public class ScannerManager : ProximityInteractableUI
 {
-    public const string SCANNERLEVELKEY = "ScannerLevel";
+    public const string SCANNERLEVELKEY = "scanner-level";
+    public const string ALLOWEDLEVELKEY = "allowed-level";
 
     [SerializeField] ScannerUpgradeDatabase _scannerDatabase;
 
     [SerializeField] GameObject _scannerUpgradePanel;
+    [SerializeField] GameObject _LockPanel;
     [SerializeField] Transform _costGroupParent;
     [SerializeField] GameObject _costItemPrefab;
     [SerializeField] Button _scanButton;
@@ -18,20 +21,45 @@ public class ScannerManager : ProximityInteractableUI
     [SerializeField] Button _backButton;
 
     BaseResourceController _resourceController => BaseResourceController.Instance;
-    SaveManager _saveManager => SaveManager.Instance;
+    SaveManager _SaveManager
+    {
+        get
+        {
+            if (AUTO_saveManager == null)
+                AUTO_saveManager = SaveManager.Instance;
+
+            return AUTO_saveManager;
+        }
+    }
+    SaveManager AUTO_saveManager = null;
     MapManager _mapManager => FindObjectOfType<MapManager>(true); // veya Singleton kullanılabilir
 
-    int ScannerLevel => _saveManager.CurrentSave.SavedIntegers.Find(x => x.ID == SCANNERLEVELKEY)?.Value ?? 0;
+    int AllowedLevel = 0;
 
     void Awake()
     {
         _scanButton.onClick.AddListener(OnScanClicked);
-        UpdateUI();
     }
 
+    public void Save()
+    {
+        _SaveManager?.AddOrReplaceSavedInteger(ALLOWEDLEVELKEY, AllowedLevel);
+    }
+    public void Load()
+    {
+        var save = _SaveManager?.CurrentSave?.SavedIntegers;
+        if (save == null) return;
+
+        var val = save.Find(x => x.ID == ALLOWEDLEVELKEY)?.Value;
+
+        AllowedLevel = val ?? 0;
+        UpdateUI();
+    }
+    int GetScannerLevel() => _SaveManager.CurrentSave.SavedIntegers.Find(x => x.ID == SCANNERLEVELKEY)?.Value ?? 0;
     void OnScanClicked()
     {
-        var nextData = _scannerDatabase.GetDataByLevel(ScannerLevel + 1);
+        var scannerLevel = GetScannerLevel();
+        var nextData = _scannerDatabase.GetDataByLevel(scannerLevel + 1);
         if (nextData == null) return;
 
         if (!_resourceController.TrySpendResource(nextData.Costs.ToArray()))
@@ -40,14 +68,15 @@ public class ScannerManager : ProximityInteractableUI
             return;
         }
 
-        _saveManager.AddOrReplaceSavedInteger(SCANNERLEVELKEY, ScannerLevel + 1);
+        _SaveManager.AddOrReplaceSavedInteger(SCANNERLEVELKEY, scannerLevel + 1);
         _mapManager?.RevealScannerIcons(nextData);
         UpdateUI();
     }
 
     void UpdateUI()
     {
-        var nextData = _scannerDatabase.GetDataByLevel(ScannerLevel + 1);
+        var scannerLevel = GetScannerLevel();
+        var nextData = _scannerDatabase.GetDataByLevel(scannerLevel + 1);
         if (nextData == null)
         {
             foreach (Transform child in _costGroupParent) Destroy(child.gameObject);
@@ -63,9 +92,17 @@ public class ScannerManager : ProximityInteractableUI
             go.GetComponent<UICostItem>().Initialize(cost.Resource.UISprite, cost.Amount);
         }
 
-        _scanButton.interactable = true;
+        bool allow = AllowedLevel >= scannerLevel + 1;
+
+        _LockPanel.SetActive(!allow);
+        _scanButton.interactable = allow;
     }
 
+    public void SetAllowedLevel(int setTo)
+    {
+        AllowedLevel = setTo;
+        UpdateUI();
+    }
     public override void OnEnablityChanged(bool changedTo, List<string> optionalParameters = null)
     {
         _scannerUpgradePanel.SetActive(changedTo);

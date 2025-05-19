@@ -15,6 +15,7 @@ public static class GLOBAL
     public readonly static string UpgradeUnlockID = "upgrade";
     public readonly static string ToolUnlockID = "tool";
     public readonly static string EnemyUnlockID = "enemy";
+    public readonly static string ScannerUnlockID = "scanner";
     public readonly static string SpecialUnlockID = "special";
 
     public readonly static float TDColliderElevation = 1f;

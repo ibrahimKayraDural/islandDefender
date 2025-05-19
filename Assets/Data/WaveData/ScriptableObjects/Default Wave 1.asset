@@ -31,5 +31,6 @@ MonoBehaviour:
   - tool=gun-basic
   - enemy=turret-flamer
   - upgrade=Walk-Speed
+  - scanner=1
   - special=turret-flamer
   - ciguli

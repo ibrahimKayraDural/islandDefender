@@ -25,6 +25,7 @@ public class GameplayManager : MonoBehaviour
     ToolDatabase _toolDatabase;
     TurretDatabase _turretDatabase;
     EnemyDatabase _enemyDatabase;
+
     SaveManager _SaveManager
     {
         get
@@ -36,7 +37,6 @@ public class GameplayManager : MonoBehaviour
         }
     }
     SaveManager AUTO_saveManager = null;
-
     PlayerUpgradeManager _PlayerUpgradeManager
     {
         get
@@ -48,6 +48,17 @@ public class GameplayManager : MonoBehaviour
         }
     }
     PlayerUpgradeManager AUTO_playerUpgradeManager = null;
+    ScannerManager _ScannerManager
+    {
+        get
+        {
+            if (AUTO_scannerManager == null)
+                AUTO_scannerManager = FindObjectOfType<ScannerManager>(true);
+
+            return AUTO_scannerManager;
+        }
+    }
+    ScannerManager AUTO_scannerManager = null;
 
     bool _isSaved;//prevents race conditions
 
@@ -97,6 +108,11 @@ public class GameplayManager : MonoBehaviour
             {
                 if (_PlayerUpgradeManager != null)
                     _PlayerUpgradeManager.UnlockUpgradeTree(val);
+            }
+            else if (type == GLOBAL.ScannerUnlockID)
+            {
+                if (_ScannerManager != null && int.TryParse(val, out int lvl))
+                    _ScannerManager.SetAllowedLevel(lvl);
             }
             else if (type == GLOBAL.SpecialUnlockID)
             {

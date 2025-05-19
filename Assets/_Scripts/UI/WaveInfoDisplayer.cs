@@ -86,6 +86,11 @@ public class WaveInfoDisplayer : MonoBehaviour
         {
             return val?.Replace("-", " ") + " Upgrade";
         }
+        else if (type == GLOBAL.ScannerUnlockID)
+        {
+            if (val != null) return "Scanner Level " + val;
+            else return null;
+        }
         else if (type == GLOBAL.SpecialUnlockID)
         {
             return val?.Replace("-", " ");

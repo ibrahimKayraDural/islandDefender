@@ -8,7 +8,7 @@
 
 [reward-ids] ... <ResourceID=Count>... - Adds rewards to the wave. Can be repeated as long as it starts with the identifier
 
-[unlocks] ... <TypeID=ValueID>... - Adds an unlock to the wave. Can be repeated as long as it starts with the identifier. Possible type IDs: turret, tool, enemy, upgrade, special. Special means a hard-coded method is to be called.
+[unlocks] ... <TypeID=ValueID>... - Adds an unlock to the wave. Can be repeated as long as it starts with the identifier. Possible parameters: turret=turretID, tool=toolID, enemy=enemyID, upgrade=upgradeID(at PlayerUpgradeManager), scanner=allowedLevel(integer), special. Special means a hard-coded method is to be called.
 
 <difficulty=DifficultyId> - Tries to select a random enemy with given difficulty from the database. Replace DifficultyId with a proper ID. IDs can be found in "WildcardInfo" file.
 
