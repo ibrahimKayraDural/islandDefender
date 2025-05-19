@@ -1,13 +1,10 @@
 using Overworld;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using TowerDefence;
 using UnityEngine;
-using UnityEngine.WSA;
 using UpgradeSystem;
 
 namespace SaveSystem
@@ -250,6 +247,39 @@ namespace SaveSystem
         }
 
         /// <summary>
+        /// Adds or replaces an object in the save file
+        /// Is not saved to file before the WriteToSaveData function is called
+        /// NOTE THAT OBJECT MUST BE SERIALIZABLE TO BE SAVED
+        /// </summary>
+        /// <param name="id">An ID to hande the integer value</param>
+        /// <param name="object">The actual value to save</param>
+        public void AddOrReplaceSavedObject(string id, object @object)
+        {
+            if (id == null) return;
+
+            int index = _currentSave.SavedObjects.FindIndex(x => x.ID == id);
+
+            if (index == -1) _currentSave.SavedObjects.Add(new(id, @object));
+            else _currentSave.SavedObjects[index] = new(id, @object);
+        }
+
+        /// <summary>
+        /// Tries to remove an object with the id
+        /// Is not saved to file before the WriteToSaveData function is called
+        /// </summary>
+        /// <param name="id">ID that the object was saved with</param>
+        public bool TryRemoveSavedObject(string id)
+        {
+            if (id == null) return false;
+
+            int index = _currentSave.SavedObjects.FindIndex(x => x.ID == id);
+            if (index == -1) return false;
+
+            _currentSave.SavedObjects.RemoveAt(index);
+            return true;
+        }
+
+        /// <summary>
         /// Adds or replaces a crack reward index to the save file
         /// Is not saved to file before the WriteToSaveData function is called
         /// </summary>
@@ -290,6 +320,7 @@ namespace SaveSystem
         public List<string> ActiveToolIDs = null;
         public List<GridSaveData> Grids = new();
         public List<IntWithID> SavedIntegers = new();
+        public List<ObjectWithID> SavedObjects = new();
         public List<IntWithID> CrackIndexes = new();
         public List<UpgradeableData> Upgrades
         {
@@ -407,6 +438,18 @@ namespace SaveSystem
         public int Value;
 
         public IntWithID(string id, int value)
+        {
+            ID = id;
+            Value = value;
+        }
+    }
+    [System.Serializable]
+    public class ObjectWithID
+    {
+        public string ID;
+        public object Value;
+
+        public ObjectWithID(string id, object value)
         {
             ID = id;
             Value = value;

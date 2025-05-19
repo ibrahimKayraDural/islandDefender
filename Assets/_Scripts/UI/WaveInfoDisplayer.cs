@@ -64,6 +64,7 @@ public class WaveInfoDisplayer : MonoBehaviour
             if (unlockName == null) continue;
 
             _RewardTM.text += "<color=yellow><i><b>Unlocks:</b></i></color> " + unlockName;
+
             if (i < info.UnlockIDs.Count - 1) _RewardTM.text += "\n";
         }
     }
@@ -83,7 +84,7 @@ public class WaveInfoDisplayer : MonoBehaviour
         //    return _enemyDatabase?.GetDataByDisplayNameOrID(id)?.DisplayName;
         else if (type == GLOBAL.UpgradeUnlockID)
         {
-            return val?.Replace("-", " ");
+            return val?.Replace("-", " ") + " Upgrade";
         }
         else if (type == GLOBAL.SpecialUnlockID)
         {

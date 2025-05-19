@@ -37,6 +37,18 @@ public class GameplayManager : MonoBehaviour
     }
     SaveManager AUTO_saveManager = null;
 
+    PlayerUpgradeManager _PlayerUpgradeManager
+    {
+        get
+        {
+            if (AUTO_playerUpgradeManager == null)
+                AUTO_playerUpgradeManager = FindObjectOfType<PlayerUpgradeManager>(true);
+
+            return AUTO_playerUpgradeManager;
+        }
+    }
+    PlayerUpgradeManager AUTO_playerUpgradeManager = null;
+
     bool _isSaved;//prevents race conditions
 
     void Awake()
@@ -83,7 +95,8 @@ public class GameplayManager : MonoBehaviour
             else if (type == GLOBAL.EnemyUnlockID) AddToEnemyPool(val);
             else if (type == GLOBAL.UpgradeUnlockID)
             {
-
+                if (_PlayerUpgradeManager != null)
+                    _PlayerUpgradeManager.UnlockUpgradeTree(val);
             }
             else if (type == GLOBAL.SpecialUnlockID)
             {
