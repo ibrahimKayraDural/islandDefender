@@ -20,6 +20,12 @@ namespace TowerDefence
         public AudioClip DyingSFX => _DyingSFX;
         public GameObject EnemyPrefab => _enemyPrefab;
 
+        [HideInInspector] public GameObject ExplosionPrefab;
+        [HideInInspector] public int ExplosionRange = 1;
+        [HideInInspector] public int ExplosionDamage = 1;
+        [HideInInspector] public int SwarmCount = 1;
+        [HideInInspector] public FloatRange SwarmCooldownRange;
+
         [SerializeField, Min(.1f)] float _MaxHealth = 1;
         [SerializeField, Min(0)] float _Speed = 1;
         [SerializeField, Min(0)] float _Damage = 1;
@@ -59,5 +65,5 @@ namespace TowerDefence
     // IDs are located in GLOBAL script. Add an id to the new enum in the corresponding dictionary.
     public enum EnemyDifficulty { Weak, Medium, Tough }
     public enum EnemyRange { Melee, Ranged, Special }
-    public enum EnemyType { None, Durable, FastMoving, FastAttacking, HardHitting }
+    public enum EnemyType { None, Durable, FastMoving, FastAttacking, HardHitting, Explosive, Swarm }
 }

@@ -10,14 +10,17 @@ namespace TowerDefence
     {
         public List<TD_EnemyWithCooldown> Enemies => _enemies;
         public List<ResourceWithCount> Rewards => _rewards;
+        public List<string> Unlocks => _unlocks;
 
         [SerializeField] List<TD_EnemyWithCooldown> _enemies;
         [SerializeField] List<ResourceWithCount> _rewards;
+        [SerializeField] List<string> _unlocks;
 
-        public TD_WaveValue(List<TD_EnemyWithCooldown> wave, List<ResourceWithCount> rewards)
+        public TD_WaveValue(List<TD_EnemyWithCooldown> wave, List<ResourceWithCount> rewards, List<string> unlocks)
         {
             _enemies = wave;
             _rewards = rewards;
+            _unlocks = unlocks;
         }
     }
 
@@ -25,7 +28,8 @@ namespace TowerDefence
     [System.Serializable]
     public class TD_Wave : Data<TD_Wave>
     {
-        public void SetValues(List<TD_Enemy> enemies, List<float> cooldowns, List<ResourceWithCount> rewards)
+        public void SetValues(List<TD_Enemy> enemies, List<float> cooldowns,
+            List<ResourceWithCount> rewards, List<string> unlockIDs = null)
         {
             _enemies = new List<TD_EnemyWithCooldown>();
 
@@ -41,6 +45,7 @@ namespace TowerDefence
             }
 
             _rewards = rewards;
+            _unlockIDs = unlockIDs;
 
             TrySaveAssetIfInEditor();
         }
@@ -63,13 +68,15 @@ namespace TowerDefence
 
         public List<TD_EnemyWithCooldown> Enemies => _enemies;
         public List<ResourceWithCount> Rewards => _rewards;
+        public List<string> UnlockIDs => _unlockIDs;
 
         [SerializeField] List<TD_EnemyWithCooldown> _enemies;
         [SerializeField] List<ResourceWithCount> _rewards;
+        [SerializeField] List<string> _unlockIDs;
 
         public int TotalEnemyCount => Enemies.Count;
 
-        public TD_WaveValue AsValue() => new TD_WaveValue(GetClonedEnemies(), GetClonedRewards());
+        public TD_WaveValue AsValue() => new TD_WaveValue(GetClonedEnemies(), GetClonedRewards(), UnlockIDs);
         List<TD_EnemyWithCooldown> GetClonedEnemies()
         {
             List<TD_EnemyWithCooldown> enemies = new();

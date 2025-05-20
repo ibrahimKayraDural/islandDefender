@@ -13,6 +13,7 @@ public class BaseResourceController : MonoBehaviour
     public static BaseResourceController Instance { get; private set; } = null;
 
     [SerializeField] TextMeshProUGUI _resourceText;
+    [SerializeField] CoreManager _CoreManager;
 
     Dictionary<ResourceData, int> _resourceDictionary = new();
 
@@ -133,6 +134,7 @@ public class BaseResourceController : MonoBehaviour
     public void TransferInventory()
     {
         List<ResourceItem> rItems = new();
+        List<CoreItem> cores = new();
         List<InventoryItem> items = playerInstance.Inventory_Ref.Items;
 
         foreach (var item in items)
@@ -141,10 +143,15 @@ public class BaseResourceController : MonoBehaviour
             {
                 rItems.Add(item as ResourceItem);
             }
+            else if (item is CoreItem)
+            {
+                cores.Add(item as CoreItem);
+            }
         }
 
         playerInstance.Inventory_Ref.Clean();
         AddResource(rItems.ToArray());
+        _CoreManager.AddCores(cores);
     }
     public void AddResource(ResourceItem[] items)
     {

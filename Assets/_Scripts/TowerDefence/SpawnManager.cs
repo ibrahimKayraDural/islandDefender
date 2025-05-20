@@ -65,6 +65,18 @@ namespace TowerDefence
         int _lastLaneIndex = -1;
 
         List<TD_EnemyWithCooldown> _currentEnemies = new();
+
+        GameplayManager _GameplayManager
+        {
+            get
+            {
+                if (AUTO_GameplayManager == null)
+                    AUTO_GameplayManager = GameplayManager.Instance;
+
+                return AUTO_GameplayManager;
+            }
+        }
+        GameplayManager AUTO_GameplayManager = null;
         SaveManager _SaveManager
         {
             get
@@ -190,7 +202,7 @@ namespace TowerDefence
             for (int i = 0; i < _currentEnemies.Count; i++)
             {
                 var ewl = _currentEnemies[i];
-                SpawnNextEnemy(ewl);
+                yield return SpawnNextEnemy(ewl);
 
                 StartCoroutine(nameof(EnemyCooldownCounter), ewl.Cooldown);
                 StartCoroutine(nameof(CheckNextEnemySpawn));
@@ -245,8 +257,9 @@ namespace TowerDefence
             CurrentWaveValueInfo = new(currentWave);
         }
 
-        void SpawnNextEnemy(TD_EnemyWithCooldown enemy)
+        IEnumerator SpawnNextEnemy(TD_EnemyWithCooldown enemy)
         {
+            var data = enemy.Enemy.Enemy;
             int laneMax = _spawners.Count;
             int i = 0;
 
@@ -257,10 +270,21 @@ namespace TowerDefence
             }
             _lastLaneIndex = i;
 
-            GameObject prefab = enemy.Enemy.Enemy.EnemyPrefab;
-            prefab = Instantiate(prefab, _spawners[i].Position, prefab.transform.rotation);
-            ActiveEnemies.Add(prefab);
-            _EnemyHBManager.SpawnBar(prefab, enemy.Enemy.Enemy.Difficulty);
+            GameObject prefab = data.EnemyPrefab;
+            int swarmCount = data.SwarmCount;
+
+            for (int n = 0; n < swarmCount; n++)
+            {
+                var spawnedGO = Instantiate(prefab, _spawners[i].Position, prefab.transform.rotation);
+                ActiveEnemies.Add(spawnedGO);
+                _EnemyHBManager.SpawnBar(spawnedGO, data.Difficulty);
+
+                if (n < swarmCount - 1)
+                    yield return new WaitForSeconds
+                        (data.SwarmCooldownRange.GetRandomInclusive());
+            }
+
+            yield return null;
         }
 
         void OnWaveEnded()
@@ -333,6 +357,9 @@ namespace TowerDefence
                 BaseResourceController.Instance.AddResource(reward.Resource, reward.Count);
             }
 
+            //Send data to unlock manager (gameplay manager)
+            _GameplayManager.UnlockDatas(_CurrentWave.Value.Unlocks);
+
             //Wipe crack save so they can reroll
             _SaveManager.DeleteCrackIndexes();
         }
@@ -364,6 +391,7 @@ namespace TowerDefence
             public readonly float DifficultyMultiplier;
             public readonly List<EnemyType> EnemyTypes;
             public readonly List<ResourceWithCount> Rewards;
+            public readonly List<string> UnlockIDs;
 
             public WaveValueInfo(TD_WaveValue wave)
             {
@@ -396,6 +424,7 @@ namespace TowerDefence
                 DifficultyMultiplier = GLOBAL.DecimalSimplifier(DifficultyMultiplier, 3);
                 EnemyTypes = types;
                 Rewards = wave.Rewards;
+                UnlockIDs = wave.Unlocks;
             }
         }
     }

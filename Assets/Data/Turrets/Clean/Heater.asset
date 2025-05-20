@@ -10,25 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f668a1441eb51ad46ac03f32cd815cc9, type: 3}
-  m_Name: Remote Cannon
+  m_Name: Heater
   m_EditorClassIdentifier: 
-  _displayName: Remote Cannon
-  _id: turret-remote-cannon
-  _Description: Shoots at the selected target and deals damage in a small area
-  _UISprite: {fileID: 21300000, guid: 9758f2786fa7f824296a4937ad8e074e, type: 3}
+  _displayName: Heater
+  _id: turret-heater
+  _Description: A turret which increases its power as it shoots
+  _UISprite: {fileID: 21300000, guid: 0e4b6d22370eeca42b66c45accd80ba9, type: 3}
   PenetrationCount: 0
-  AOE_Radius: 1
-  _Type: 1
-  _Attributes: 02000000
+  AOE_Radius: 0
+  _Type: 0
+  _DamageTypes: 
+  _Attributes: 
   _Health: 250
-  _Damage: 200
-  _activationCooldown: 20
-  _swapCooldown: 2
+  _Damage: 5
+  _activationCooldown: 0.35
+  _swapCooldown: 1
   _costs:
   - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
-    _amount: 40
-  _prefabObject: {fileID: 2416957650022208111, guid: 55e9762467031d0498912f1eb87e0b84, type: 3}
-  _projectilePrefab: {fileID: 665859162509387241, guid: 825a3d2bf43eb184485eaf672ec04bf6, type: 3}
+    _amount: 10
+  _prefabObject: {fileID: 8452570112913302767, guid: b0da4ea71b321094db681ba8413f3752, type: 3}
+  _projectilePrefab: {fileID: 0}
   _projectileSpeedMultiplier: 1
   _GetDamagedSFX: {fileID: 8300000, guid: 57e816778ca71674abdfddd09b2e98cd, type: 3}
-  _DeathSFX: {fileID: 0}
+  _DeathSFX: {fileID: 8300000, guid: 75af592031a6fce46a27d32154b89b80, type: 3}

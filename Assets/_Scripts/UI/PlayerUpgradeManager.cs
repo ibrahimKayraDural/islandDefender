@@ -1,22 +1,39 @@
 using Overworld;
+using SaveSystem;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using TMPro;
+using TowerDefence;
 using UnityEngine;
 using UnityEngine.UI;
 using UpgradeSystem;
 
 public class PlayerUpgradeManager : MonoBehaviour
 {
+    const string UNLOCKEDTREESAVEID = "player-upgrade-manager-unlocks";
+    const string TREEINDEXSAVEHEADER = "player-upgrade-manager-tree-index-";
+
     [System.Serializable]
     class UpgradeTree
     {
         public string ID;
         public Button @Button;
         public TextMeshProUGUI CostTM;
+        public GameObject VisualParent;
         public List<UpgradePiece> Upgrades;
-        public int CurrentIndex = 0;
+        public int CurrentIndex
+        {
+            get { return _currentIndex; }
+            set
+            {
+                _currentIndex = value;
+                Refresh();
+            }
+        }
+
+        [SerializeField] int _currentIndex = 0;
 
         public UpgradePiece? CurrentUpgrade
         {
@@ -27,6 +44,13 @@ public class PlayerUpgradeManager : MonoBehaviour
             }
         }
         public bool IsFinished => CurrentIndex >= Upgrades.Count;
+
+
+        public void Refresh()
+        {
+            Button.interactable = !IsFinished;
+            SetCostText();
+        }
         public void SetCostText()
         {
             CostTM.text = "";
@@ -40,6 +64,10 @@ public class PlayerUpgradeManager : MonoBehaviour
                     CostTM.text += buyCost.Resource.DisplayName + " X " + buyCost.Amount;
                     if (i < upgrade.BuyCost.Count - 1) CostTM.text += "\n";
                 }
+            }
+            else if (IsFinished)
+            {
+                CostTM.text = "MAXED OUT";
             }
         }
     }
@@ -64,15 +92,65 @@ public class PlayerUpgradeManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI _Title;
     [SerializeField] TextMeshProUGUI _Description;
     [SerializeField] GameObject BuyButton;
+    [SerializeField] List<string> _UnlockedTrees;
 
     UpgradeTree _selectedTree = null;
-
-    void Awake()
+    SaveManager _SaveManager
     {
+        get
+        {
+            if (AUTO_saveManager == null)
+                AUTO_saveManager = SaveManager.Instance;
+
+            return AUTO_saveManager;
+        }
+    }
+    SaveManager AUTO_saveManager = null;
+
+    void Start()
+    {
+        LoadDatas();
+
         foreach (var tree in _Upgrades)
         {
             tree.Button.onClick.AddListener(delegate { OnUpgradeSelected(tree); });
             tree.SetCostText();
+
+            tree.VisualParent.SetActive(_UnlockedTrees.Contains(tree.ID));
+        }
+    }
+
+    [ContextMenu("Save Datas")]
+    public void SaveDatas()
+    {
+        _SaveManager.AddOrReplaceSavedObject(UNLOCKEDTREESAVEID, _UnlockedTrees);
+
+        foreach (var u in _Upgrades)
+        {
+            var fullID = TREEINDEXSAVEHEADER + u.ID;
+            _SaveManager.AddOrReplaceSavedInteger(fullID, u.CurrentIndex);
+        }
+    }
+
+    [ContextMenu("Load Datas")]
+    public void LoadDatas()
+    {
+        if (_SaveManager == null) return;
+
+        var save = _SaveManager.CurrentSave;
+        if (save == null) return;
+
+        var val = save?.SavedObjects?.Find(x => x.ID == UNLOCKEDTREESAVEID);
+        if (val?.Value != null)
+            _UnlockedTrees = val.Value as List<string>;
+
+        for (int i = 0; i < _Upgrades.Count; i++)
+        {
+            var fullID = TREEINDEXSAVEHEADER + _Upgrades[i].ID;
+            int? index = save?.SavedIntegers?.Find(x => x.ID == fullID)?.Value;
+
+            if (index.HasValue)
+                _Upgrades[i].CurrentIndex = index.Value;
         }
     }
 
@@ -110,16 +188,17 @@ public class PlayerUpgradeManager : MonoBehaviour
         HandleUpgradeEffect(_selectedTree);
 
         _selectedTree.CurrentIndex++;
-        _selectedTree.SetCostText();
-        if (_selectedTree.IsFinished)
-        {
-            _selectedTree.Button.interactable = false;
-            _selectedTree.CostTM.text = "MAX";
-            DeselectUpgrade();
-        }
+        if (_selectedTree.IsFinished) DeselectUpgrade();
 
         RefreshHelpBox(_selectedTree);
         //DeselectUpgrade();
+    }
+    public void UnlockUpgradeTree(string id)
+    {
+        if (_UnlockedTrees.Contains(id)) return;
+
+        _UnlockedTrees.Add(id);
+        _Upgrades.Find(x => x.ID == id)?.VisualParent.SetActive(true);
     }
     void DeselectUpgrade()
     {
@@ -139,11 +218,11 @@ public class PlayerUpgradeManager : MonoBehaviour
         string upgradeID = GLOBAL.UnassignedString;
         switch (id)
         {
-            case "drillSpeed":
+            case "Drill-Speed":
                 upgradeable = FindObjectOfType<Drill>(true);
                 upgradeID = "speed";
                 break;
-            case "player":
+            case "Walk-Speed":
                 upgradeable = PlayerInstance.Instance.PlayerController_Ref;
                 upgradeID = "speed";
                 break;

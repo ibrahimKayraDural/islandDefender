@@ -173,6 +173,7 @@ public class ExcelSwarmConverter : EditorWindow
 
         List<float> targetEnemyCooldowns = new();
         List<ResourceWithCount> targetRewards = new();
+        List<string> targetUnlocks = new();
 
         waveDB.DataListAccess = new();
 
@@ -184,6 +185,7 @@ public class ExcelSwarmConverter : EditorWindow
         {
             List<TD_Enemy> currEnemies = new();
             targetRewards = new();
+            targetUnlocks = new();
 
             targetEnemyCooldowns = defaultEnemyCooldowns;
 
@@ -253,7 +255,7 @@ public class ExcelSwarmConverter : EditorWindow
 
             TD_Wave waveData = ScriptableObject.CreateInstance<TD_Wave>();
             EditorUtility.SetDirty(waveData);
-            waveData.SetValues(currEnemies, targetEnemyCooldowns, targetRewards);
+            waveData.SetValues(currEnemies, targetEnemyCooldowns, targetRewards, targetUnlocks);
             waveData.SetNameAndID(waveName, waveID);
             AssetDatabase.CreateAsset(waveData, fullPath);
             EditorUtility.SetDirty(AssetDatabase.LoadAssetAtPath<TD_Wave>(fullPath));
@@ -331,6 +333,12 @@ public class ExcelSwarmConverter : EditorWindow
                         if (data == null) continue;
                         targetRewards.Add(new(data, count));
                     }
+
+                    break;
+                case "unlocks":
+
+                    for (int i = 1; i <= lastValueIndex; i++)
+                        targetUnlocks.Add(rowSeperation[i]);
 
                     break;
             }

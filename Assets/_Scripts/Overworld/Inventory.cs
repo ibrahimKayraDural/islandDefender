@@ -110,6 +110,11 @@ namespace Overworld
                     var temp = (ResourceItem)item;
                     inv[i] = new InventoryItemSaveData(InventoryItem.ResourceItemTypeID, temp.Data.ID, temp.Count);
                 }
+                else if (item as CoreItem != null)
+                {
+                    var temp = (CoreItem)item;
+                    inv[i] = new InventoryItemSaveData(InventoryItem.CoreItemTypeID, temp.Data.ID, 1);
+                }
                 else continue;
             }
 
@@ -131,6 +136,7 @@ namespace Overworld
             SlotCount = inv.Count;
 
             var resourceDB = GLOBAL.GetResourceDatabase();
+            var coreDB = GLOBAL.GetCoreDatabase();
 
             for (int i = 0; i < inv.Count; i++)
             {
@@ -141,6 +147,11 @@ namespace Overworld
                 {
                     var data = resourceDB.GetDataByDisplayNameOrID(item.ID);
                     _slots[i] = new ResourceItem(data, item.Count);
+                }
+                else if (item.TypeID == InventoryItem.CoreItemTypeID)
+                {
+                    var data = coreDB.GetDataByDisplayNameOrID(item.ID);
+                    _slots[i] = new CoreItem(data);
                 }
                 else continue;
             }
@@ -173,8 +184,8 @@ namespace Overworld
                 Clean();
             if (Input.GetKeyDown(KeyCode.J))
             {
-                ResourceData datdat = GLOBAL.GetResourceDatabase().GetDataByID("resource-iron");
-                InventoryItem itemm = datdat.AsItem(15);
+                var datdat = GLOBAL.GetCoreDatabase().GetDataByID("core-jungle");
+                InventoryItem itemm = datdat.AsItem();
                 TryAddItemFully(itemm);
             }
         }

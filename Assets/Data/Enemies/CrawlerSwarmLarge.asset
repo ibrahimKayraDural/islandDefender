@@ -10,20 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06de1689a4292ac4d9fa84a459bc98d7, type: 3}
-  m_Name: CrawlerBig
+  m_Name: CrawlerSwarmLarge
   m_EditorClassIdentifier: 
-  _displayName: Crawler Big
-  _id: crawler-t3
-  _Description: Is angy and big
-  _UISprite: {fileID: 21300000, guid: 4d8084d4015048c4199e32ae58cb3dd4, type: 3}
-  _MaxHealth: 500
-  _Speed: 0.25
-  _Damage: 100
+  _displayName: Large Crawler Swarm
+  _id: enemy-crawler-swarm-t2
+  _Description: A swarm of large crawlers
+  _UISprite: {fileID: 21300000, guid: cc6e88b4752e04a438125b9a047aaa91, type: 3}
+  ExplosionPrefab: {fileID: 0}
+  ExplosionRange: 1
+  ExplosionDamage: 1
+  SwarmCount: 3
+  SwarmCooldownRange:
+    _min: 0.5
+    _max: 1.5
+  _MaxHealth: 90
+  _Speed: 0.5
+  _Damage: 50
   _AttackCooldown: 1
-  _AttackRange: 2.3
-  _Difficulty: 2
+  _AttackRange: 1.8
+  _Difficulty: 0
   _RangeType: 0
-  _EnemyTypes: 01000000
+  _EnemyTypes: 06000000
+  _DamageTypes: 
   _GettingDamagedSFX: {fileID: 8300000, guid: 2755cac10c425a84f9bd3258f1f3f1f0, type: 3}
   _DyingSFX: {fileID: 8300000, guid: 8e448de2872f6b74181558e9d7a4996f, type: 3}
-  _enemyPrefab: {fileID: 8660632794050134643, guid: 688c29118e9ec874880500febfa30b24, type: 3}
+  _enemyPrefab: {fileID: 8660632794050134643, guid: 48affa4cba816fb43b9fd72a33865321, type: 3}

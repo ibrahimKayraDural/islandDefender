@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ namespace Overworld
     public abstract class InventoryItem
     {
         public const string ResourceItemTypeID = "RESOURCE_ITEM";
+        public const string CoreItemTypeID = "CORE_ITEM";
         internal const int MAX_HARDCAP = 99;
 
         public int Count
@@ -22,6 +24,7 @@ namespace Overworld
         public int RemainingSpace => _maxItemCount - _count;
         public bool IsInitialized => _isInitialized;
         public Sprite UISprite => _UISprite;
+        public bool IsDroppable => _isDroppable;
         public GameObject DroppedItem => _droppedItem;
         public string DisplayName => _displayName;
         public string Description => _description;
@@ -29,6 +32,7 @@ namespace Overworld
         internal string _description = GLOBAL.UnassignedString;
         internal string _displayName = GLOBAL.UnassignedString;
         internal GameObject _droppedItem;
+        internal bool _isDroppable = false;
         internal Sprite _UISprite;
         internal int _count = 0;
         internal int _maxItemCount = 1;
@@ -68,6 +72,8 @@ namespace Overworld
         public abstract bool Compare(InventoryItem otherItem);
         public void Drop(Vector3 dropAt)
         {
+            if (IsDroppable == false) return;
+
             dropAt.y = 100;
             Ray ray = new Ray(dropAt, -Vector3.up);
             if (Physics.Raycast(ray, out RaycastHit hit, 200, 1 << 11))

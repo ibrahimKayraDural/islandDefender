@@ -25,6 +25,7 @@ public class GameplayManager : MonoBehaviour
     ToolDatabase _toolDatabase;
     TurretDatabase _turretDatabase;
     EnemyDatabase _enemyDatabase;
+
     SaveManager _SaveManager
     {
         get
@@ -36,6 +37,28 @@ public class GameplayManager : MonoBehaviour
         }
     }
     SaveManager AUTO_saveManager = null;
+    PlayerUpgradeManager _PlayerUpgradeManager
+    {
+        get
+        {
+            if (AUTO_playerUpgradeManager == null)
+                AUTO_playerUpgradeManager = FindObjectOfType<PlayerUpgradeManager>(true);
+
+            return AUTO_playerUpgradeManager;
+        }
+    }
+    PlayerUpgradeManager AUTO_playerUpgradeManager = null;
+    ScannerManager _ScannerManager
+    {
+        get
+        {
+            if (AUTO_scannerManager == null)
+                AUTO_scannerManager = FindObjectOfType<ScannerManager>(true);
+
+            return AUTO_scannerManager;
+        }
+    }
+    ScannerManager AUTO_scannerManager = null;
 
     bool _isSaved;//prevents race conditions
 
@@ -55,10 +78,7 @@ public class GameplayManager : MonoBehaviour
         _toolDatabase = GLOBAL.GetToolDatabase();
         _turretDatabase = GLOBAL.GetTurretDatabase();
         _enemyDatabase = GLOBAL.GetEnemyDatabase();
-    }
 
-    void Start()
-    {
         LoadAllData();
     }
     void OnApplicationQuit()
@@ -71,6 +91,35 @@ public class GameplayManager : MonoBehaviour
         if (_isSaved == false) SaveAllData();
     }
 
+    public void UnlockDatas(List<string> ids)
+    {
+        foreach (var fullID in ids)
+        {
+            var sep = fullID.Split('=');
+            if (sep.Length != 2) continue;
+
+            var type = sep[0];
+            var val = sep[1];
+
+            if (type == GLOBAL.TurretUnlockID) UnlockTurret(val);
+            else if (type == GLOBAL.ToolUnlockID) UnlockTool(val);
+            else if (type == GLOBAL.EnemyUnlockID) AddToEnemyPool(val);
+            else if (type == GLOBAL.UpgradeUnlockID)
+            {
+                if (_PlayerUpgradeManager != null)
+                    _PlayerUpgradeManager.UnlockUpgradeTree(val);
+            }
+            else if (type == GLOBAL.ScannerUnlockID)
+            {
+                if (_ScannerManager != null && int.TryParse(val, out int lvl))
+                    _ScannerManager.IncreasinglySetAllowedLevel(lvl);
+            }
+            else if (type == GLOBAL.SpecialUnlockID)
+            {
+
+            }
+        }
+    }
     public void UnlockTool(string nameOrID)
     {
         Tool tool = _toolDatabase.GetToolByNameOrID(nameOrID);
@@ -99,7 +148,7 @@ public class GameplayManager : MonoBehaviour
     }
     public void UnlockTurret(string nameOrID)
     {
-        TurretData data = _turretDatabase.GetDataByDisplayName(nameOrID);
+        TurretData data = _turretDatabase.GetDataByDisplayNameOrID(nameOrID);
         if (data == null) return;
 
         if (_unlockedTurrets.Contains(data) == false)
@@ -112,7 +161,7 @@ public class GameplayManager : MonoBehaviour
     }
     public void LockTurret(string nameOrID)
     {
-        TurretData data = _turretDatabase.GetDataByDisplayName(nameOrID);
+        TurretData data = _turretDatabase.GetDataByDisplayNameOrID(nameOrID);
         if (data == null) return;
 
         if (_unlockedTurrets.Contains(data))

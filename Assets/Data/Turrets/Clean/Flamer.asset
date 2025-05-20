@@ -10,25 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f668a1441eb51ad46ac03f32cd815cc9, type: 3}
-  m_Name: Penetrator
+  m_Name: Flamer
   m_EditorClassIdentifier: 
-  _displayName: Penetrator
-  _id: turret-penetrator
-  _Description: "Penetrates and hits up to 4 enemies\r"
-  _UISprite: {fileID: 21300000, guid: 603ef7fb2e4f55b4ab45b546dc20f580, type: 3}
-  PenetrationCount: 4
+  _displayName: Flamer
+  _id: turret-flamer
+  _Description: A fire spewing turret
+  _UISprite: {fileID: 21300000, guid: 0e4b6d22370eeca42b66c45accd80ba9, type: 3}
+  PenetrationCount: 0
   AOE_Radius: 0
   _Type: 0
-  _Attributes: 00000000
+  _DamageTypes: 00000000
+  _Attributes: 
   _Health: 250
-  _Damage: 90
-  _activationCooldown: 3
-  _swapCooldown: 3
+  _Damage: 2
+  _activationCooldown: 0.125
+  _swapCooldown: 1
   _costs:
   - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
-    _amount: 130
-  _prefabObject: {fileID: 906911832218085558, guid: 1e4a680c1472bcf4f8d02d9523aa7555, type: 3}
-  _projectilePrefab: {fileID: 665859162509387241, guid: 39242c3aa2e891b41bb7227d9856dda7, type: 3}
-  _projectileSpeedMultiplier: 2.5
+    _amount: 10
+  _prefabObject: {fileID: 8452570112913302767, guid: 8527aa6b2516b9f46929ce8d4265a244, type: 3}
+  _projectilePrefab: {fileID: 0}
+  _projectileSpeedMultiplier: 1
   _GetDamagedSFX: {fileID: 8300000, guid: 57e816778ca71674abdfddd09b2e98cd, type: 3}
-  _DeathSFX: {fileID: 0}
+  _DeathSFX: {fileID: 8300000, guid: 75af592031a6fce46a27d32154b89b80, type: 3}

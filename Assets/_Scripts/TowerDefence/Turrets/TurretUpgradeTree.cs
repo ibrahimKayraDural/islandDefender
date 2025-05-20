@@ -9,6 +9,8 @@ namespace TowerDefence
     [CreateAssetMenu(fileName = "TurretUpgradeTree", menuName = "Tower Defence/Turret Upgrade Tree")]
     public class TurretUpgradeTree : ScriptableObject
     {
+        public List<UpgradeTree> AllTrees => _AllTrees;
+
         [System.Serializable]
         public class TurretUpgradePiece
         {
@@ -37,7 +39,7 @@ namespace TowerDefence
             }
         }
 
-        [SerializeField] List<UpgradeTree> AllTrees = new();
+        [SerializeField] List<UpgradeTree> _AllTrees = new();
 
         void OnValidate()
         {

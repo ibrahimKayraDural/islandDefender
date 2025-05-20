@@ -30,6 +30,18 @@ public class ActiveTurretManager : MonoBehaviour
     }
     SaveManager AUTO_saveManager = null;
 
+    TurretUpgradeTree _TurretUpgradeTree
+    {
+        get
+        {
+            if (AUTO_TurretUpgradeTree == null)
+                AUTO_TurretUpgradeTree = GLOBAL.GetTurretUpgradeTree();
+
+            return AUTO_TurretUpgradeTree;
+        }
+    }
+    TurretUpgradeTree AUTO_TurretUpgradeTree = null;
+
     bool _isSaved;//prevents race conditions
 
     void Awake()
@@ -118,8 +130,19 @@ public class ActiveTurretManager : MonoBehaviour
     {
         if (turret == null) return false;
 
+        var tree = _TurretUpgradeTree.FindTree(turret, out _);
+        var types = new List<TurretData>();
+        if (tree != null)
+        {
+            foreach (var item in tree.Upgrades)
+            {
+                types.Add(item.Turret);
+            }
+        }
+        else types.Add(turret);
+
         var turretCount = ActiveTurrets.Select(x => x?.GetComponent
-        <TurretUnit>()?.Data).Where(x => x == turret).Count();
+        <TurretUnit>()?.Data).Where(x => x != null && types.Contains(x)).Count();
 
         if (_AllowedTurretCounts.ContainsKey(turret) == false) return false;
 

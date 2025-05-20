@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06de1689a4292ac4d9fa84a459bc98d7, type: 3}
+  m_Name: CrawlerExplosive
+  m_EditorClassIdentifier: 
+  _displayName: Explosive Crawler
+  _id: enemy-crawler-explosive
+  _Description: A special crawler that explodes when killed by a flaming weapon
+  _UISprite: {fileID: 21300000, guid: cc6e88b4752e04a438125b9a047aaa91, type: 3}
+  ExplosionPrefab: {fileID: 665859162509387241, guid: 825a3d2bf43eb184485eaf672ec04bf6, type: 3}
+  ExplosionRange: 1
+  ExplosionDamage: 200
+  _MaxHealth: 50
+  _Speed: 1
+  _Damage: 50
+  _AttackCooldown: 1
+  _AttackRange: 1.5
+  _Difficulty: 0
+  _RangeType: 0
+  _EnemyTypes: 05000000
+  _DamageTypes: 
+  _GettingDamagedSFX: {fileID: 8300000, guid: 2755cac10c425a84f9bd3258f1f3f1f0, type: 3}
+  _DyingSFX: {fileID: 8300000, guid: 8e448de2872f6b74181558e9d7a4996f, type: 3}
+  _enemyPrefab: {fileID: 2983680394603094073, guid: 1478c52825116bb4ea00219110a85b99, type: 3}

@@ -180,7 +180,7 @@ Material:
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _H_ghlightColor: {r: 0, g: 1, b: 1, a: 1}
-    - _TextureTint: {r: 0.96981126, g: 0.40073332, b: 0.40073332, a: 1}
+    - _TextureTint: {r: 0.53004694, g: 1, b: 0.4481132, a: 1}
     - _WoundEmissionColor: {r: 0.5019608, g: 0, b: 0.01568628, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &3841143001889907538
