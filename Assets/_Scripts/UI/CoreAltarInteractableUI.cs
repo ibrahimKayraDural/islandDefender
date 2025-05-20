@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class CrackInteractableUI : ProximityInteractableUI, IUICellOwner
+public class CoreAltarInteractableUI : ProximityInteractableUI, IUICellOwner
 {
     public UICell OldCell { get; set; }
     public UICell CurrentCell { get; set; }
@@ -14,7 +14,7 @@ public class CrackInteractableUI : ProximityInteractableUI, IUICellOwner
     [SerializeField] TextMeshProUGUI _DescriptionTitle;
     [SerializeField] TextMeshProUGUI _DescriptionText;
     [SerializeField] GameObject _VisualParent;
-    [SerializeField] ResourceCell _THECELL;
+    [SerializeField] CoreCell _THECELL;
     GraphicRaycasterScript IUICellOwner.GraphicRaycasterS => _GraphicRaycaster;
     TextMeshProUGUI IUICellOwner.DescriptionTitle => _DescriptionTitle;
     TextMeshProUGUI IUICellOwner.DescriptionText => _DescriptionText;
@@ -36,12 +36,18 @@ public class CrackInteractableUI : ProximityInteractableUI, IUICellOwner
     {
         if (changedTo == true)
         {
-            var item = ((CrackInteractable)CurrentPI)?.CurrentReward;
+            var core = ((CoreAltarInteractable)CurrentPI);
 
-            if (item != null)
-                _THECELL.Initialize(item.Resource, item.Count, 0);
+            if (core?.Core != null && core.IsTaken == false)
+            {
+                _THECELL.gameObject.SetActive(true);
+                _THECELL.Initialize(core.Core);
+            }
             else
+            {
                 _THECELL.Initialize();
+                _THECELL.gameObject.SetActive(false);
+            }
 
             _VisualParent.SetActive(true);
         }
@@ -69,18 +75,18 @@ public class CrackInteractableUI : ProximityInteractableUI, IUICellOwner
     }
     bool IUICellOwner.CellIsValid(UICell cell)
     {
-        var newCell = cell as InventoryCellScript;
+        var newCell = cell as CoreCell;
         return newCell.ItemData != null;
     }
     void IUICellOwner.OnCellClicked(UICell cell)
     {
-        var item = ((ResourceCell)cell)?.ItemData;
+        var item = ((CoreCell)cell)?.ItemData;
         if (item == null) return;
 
-        if (_Inventory.TryAddItemFully(item))
+        if (((CoreAltarInteractable)CurrentPI).TryTakeCore() && _Inventory.TryAddItemFully(item))
         {
-            ((CrackInteractable)CurrentPI).SpendItem();
             _THECELL.Initialize();
+            _THECELL.gameObject.SetActive(false);
             _DescriptionText.text = "";
             _DescriptionTitle.text = "";
         }
