@@ -9,9 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e34b77983567b84b9aed73df346a743, type: 3}
-  m_Name: CoreDatabase
+  m_Script: {fileID: 11500000, guid: 76c8648d67b17324691ecb778219cf6f, type: 3}
+  m_Name: PhosphorCore
   m_EditorClassIdentifier: 
-  _DataList:
-  - {fileID: 11400000, guid: 3fe6af56bee33464bbcdc5197723e681, type: 2}
-  - {fileID: 11400000, guid: 5c7007b824984084b9ae160e37e7c98a, type: 2}
+  _displayName: Phosphor Core
+  _id: core-phosphor
+  _Description: The phosphorus core
+  _UISprite: {fileID: 21300000, guid: b715d92a413ce804ebf669be72dd48bd, type: 3}
+  _UsePerDay: 1

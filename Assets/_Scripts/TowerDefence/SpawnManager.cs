@@ -35,6 +35,7 @@ namespace TowerDefence
         [SerializeField] TDPlayerController _TDPlayerController;
         [SerializeField] ResourceData _RPData;
         [SerializeField] EnemyHealthbarManager _EnemyHBManager;
+        [SerializeField] CoreManager _CoreManager;
 
         TD_WaveValue? _CurrentWave
         {
@@ -293,6 +294,7 @@ namespace TowerDefence
             WaveIsActive = false;
 
             GiveRewards();
+            //_CoreManager?.ResetCorePowers();
 
             if (_currentWaveIndex < _waves.Count - 1) _currentWaveIndex++;
 
@@ -345,6 +347,7 @@ namespace TowerDefence
         void SetWaveUp()
         {
             SetWaveValues();
+            _CoreManager?.ResetCorePowers();
             //SetIndicatorValues();
             _TDPlayerController.EvaluateGameplayMode(WaveIsActive);
         }

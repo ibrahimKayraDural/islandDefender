@@ -280,6 +280,16 @@ namespace SaveSystem
         }
 
         /// <summary>
+        /// Sets core manager state. Is not saved to file before the WriteToSaveData function is called
+        /// </summary>
+        /// <param name="cores">All the cores in the manager</param>
+        /// <param name="selectedCore">ID of the selected core of the manager. Can be null.</param>
+        public void SetCoreState(List<string> cores, string selectedCore)
+        {
+            _currentSave.CoreState = new(cores, selectedCore);
+        }
+
+        /// <summary>
         /// Adds or replaces a crack reward index to the save file
         /// Is not saved to file before the WriteToSaveData function is called
         /// </summary>
@@ -322,6 +332,7 @@ namespace SaveSystem
         public List<IntWithID> SavedIntegers = new();
         public List<ObjectWithID> SavedObjects = new();
         public List<IntWithID> CrackIndexes = new();
+        public CoreManagerState CoreState = null;
         public List<UpgradeableData> Upgrades
         {
             get
@@ -453,6 +464,18 @@ namespace SaveSystem
         {
             ID = id;
             Value = value;
+        }
+    }
+    [System.Serializable]
+    public class CoreManagerState
+    {
+        public List<string> CoreIDs = new();
+        public string SelectedCore = null;
+
+        public CoreManagerState(List<string> coreIDs, string selectedCore)
+        {
+            CoreIDs = coreIDs;
+            SelectedCore = selectedCore;
         }
     }
 }
