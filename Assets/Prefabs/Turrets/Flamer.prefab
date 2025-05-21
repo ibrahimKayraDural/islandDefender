@@ -4984,7 +4984,7 @@ MonoBehaviour:
   _EnemyMask:
     serializedVersion: 2
     m_Bits: 128
-  ShootSFX: {fileID: 8300000, guid: 0248423d0a08c4470b25d529e36f25e0, type: 3}
+  ShootSFX: {fileID: 8300000, guid: 210f2cd3e78fde34eb5a57f434458d2f, type: 3}
   ShootID: FlamerShoot
   _ShootingEffect: {fileID: 5621866290817240022}
 --- !u!65 &726954216017450516
