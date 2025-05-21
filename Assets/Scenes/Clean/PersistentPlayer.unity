@@ -1733,7 +1733,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7519169819797895504, guid: 62e822bccf9f97048b42a5a712acec19, type: 3}
       propertyPath: _unlockedTurrets.Array.size
-      value: 1
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7519169819797895504, guid: 62e822bccf9f97048b42a5a712acec19, type: 3}
       propertyPath: _unlockedTurrets.Array.data[0]
@@ -1742,7 +1742,7 @@ PrefabInstance:
     - target: {fileID: 7519169819797895504, guid: 62e822bccf9f97048b42a5a712acec19, type: 3}
       propertyPath: _unlockedTurrets.Array.data[1]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: 8d227f3800cf506458afd19fad9a1d51, type: 2}
     - target: {fileID: 7519169819797895504, guid: 62e822bccf9f97048b42a5a712acec19, type: 3}
       propertyPath: _unlockedTurrets.Array.data[2]
       value: 
@@ -1750,11 +1750,11 @@ PrefabInstance:
     - target: {fileID: 7519169819797895504, guid: 62e822bccf9f97048b42a5a712acec19, type: 3}
       propertyPath: _unlockedTurrets.Array.data[3]
       value: 
-      objectReference: {fileID: 11400000, guid: 8dbbb4e2965ce7c46a88aae46c44873e, type: 2}
+      objectReference: {fileID: 11400000, guid: 5c7cc337743a1ac44b4492431073734b, type: 2}
     - target: {fileID: 7519169819797895504, guid: 62e822bccf9f97048b42a5a712acec19, type: 3}
       propertyPath: _unlockedTurrets.Array.data[4]
       value: 
-      objectReference: {fileID: 11400000, guid: 8d227f3800cf506458afd19fad9a1d51, type: 2}
+      objectReference: {fileID: 11400000, guid: 8dbbb4e2965ce7c46a88aae46c44873e, type: 2}
     - target: {fileID: 7519169819797895504, guid: 62e822bccf9f97048b42a5a712acec19, type: 3}
       propertyPath: _unlockedTurrets.Array.data[5]
       value: 
