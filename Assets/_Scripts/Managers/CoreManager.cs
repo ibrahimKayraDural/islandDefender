@@ -1,3 +1,4 @@
+using CorePowers;
 using Overworld;
 using SaveSystem;
 using System.Collections;
@@ -81,17 +82,14 @@ public class CoreManager : MonoBehaviour
 
         _CorePowerActivator.Refresh(SelectedCorePower);
     }
-    public bool TryActivateCorePower()
-    {
-        return dic_corePowerControllers[_selectedCore]?.TryActivate() ?? false;
-    }
 
 
     [ContextMenu("Save")]
     void Save()
     {
-        List<string> coreIDs = Cores.Where(x => x?.Data?.ID != null).Select(x => x.Data.ID).ToList();
-        _SaveManager.SetCoreState(coreIDs, _selectedCore.ID);
+        List<string> coreIDs = Cores?.Where(x => x?.Data?.ID != null)?.Select(x => x.Data.ID)?.ToList();
+        if (coreIDs != null)
+            _SaveManager.SetCoreState(coreIDs, _selectedCore.ID);
     }
 
     [ContextMenu("Load")]
@@ -149,7 +147,7 @@ public class CoreManager : MonoBehaviour
         for (int i = 0; i < cpcs.Length; i++)
         {
             var cpc = cpcs[i];
-            dic_corePowerControllers.Add(cpc.Data, cpc);
+            dic_corePowerControllers.TryAdd(cpc.Data, cpc);
         }
     }
 }

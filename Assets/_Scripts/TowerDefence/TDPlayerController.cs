@@ -13,6 +13,8 @@ namespace TowerDefence
     {
         public static TDPlayerController Instance { get; private set; } = null;
 
+        public Transform MouseTracker => _MouseTracker;
+
         [SerializeField] LayerMask TowerDefenceLayer;
         [SerializeField] Transform _MouseTracker;
         [SerializeField] TurretIndicator _CursorIndicator;

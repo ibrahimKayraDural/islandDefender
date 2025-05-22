@@ -8710,6 +8710,9 @@ MonoBehaviour:
   _CoreManager: {fileID: 465817391}
   VisualParent: {fileID: 1907748061}
   Icon: {fileID: 366570954}
+  _TileMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &130333214
 GameObject:
   m_ObjectHideFlags: 0
@@ -14097,7 +14100,7 @@ GameObject:
   - component: {fileID: 305603594}
   - component: {fileID: 305603593}
   m_Layer: 0
-  m_Name: CoreAltarPhosphor
+  m_Name: CoreAltarForce
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14118,7 +14121,7 @@ MonoBehaviour:
   b_Animator: {fileID: 0}
   b_ForgetDistance: 1.15
   _OptionalParameters: []
-  _Core: {fileID: 11400000, guid: 5c7007b824984084b9ae160e37e7c98a, type: 2}
+  _Core: {fileID: 11400000, guid: a775cf6a0d46a8a4f86bed6f548bdacb, type: 2}
   _CoreVisual: {fileID: 1945679332}
   _GUID: core-altar-186f2436-5e34-4316-b4e8-dae59a0e4b2d
 --- !u!136 &305603594
@@ -14350,6 +14353,7 @@ Transform:
   m_Children:
   - {fileID: 469979812}
   - {fileID: 1067281393}
+  - {fileID: 750436540}
   m_Father: {fileID: 465817392}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &314407354
@@ -43133,6 +43137,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2094255690}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!1 &750436539
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 750436540}
+  - component: {fileID: 750436541}
+  m_Layer: 0
+  m_Name: CorePower_Force
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &750436540
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 750436539}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 312844202}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &750436541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 750436539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a5f8e56e15c04e4a9eb64c314a05abe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Data: {fileID: 11400000, guid: a775cf6a0d46a8a4f86bed6f548bdacb, type: 2}
+  _ExplosionPrefab: {fileID: 270723066456184431, guid: 825a3d2bf43eb184485eaf672ec04bf6, type: 3}
+  _Damage: 10
+  _TileRadius: 1
+  _DamageTypes: 
 --- !u!1 &751315445
 GameObject:
   m_ObjectHideFlags: 0
@@ -115042,7 +115095,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e937fd7ea19b7684c8744a43e44d5aeb, type: 2}
+  - {fileID: 2100000, guid: dc6cd69cf07f10747bf79407279f8bdc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

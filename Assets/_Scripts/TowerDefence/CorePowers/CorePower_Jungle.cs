@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CorePower_Jungle : CorePower_Base
+namespace CorePowers
 {
-    internal override void OnActivated()
+    public class CorePower_Jungle : CorePower_Base
     {
-        Debug.Log("Used jungle");
-    }
+        internal override void OnActivated()
+        {
+            Debug.Log("Used jungle");
+        }
+    } 
 }

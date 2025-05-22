@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CorePower_Phosphor : CorePower_Base
+namespace CorePowers
 {
-    internal override void OnActivated()
+    public class CorePower_Phosphor : CorePower_Base
     {
-        Debug.Log("Used phosphor");
-    }
+        internal override void OnActivated()
+        {
+            Debug.Log("Used phosphor");
+        }
+    } 
 }
