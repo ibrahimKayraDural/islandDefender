@@ -32,6 +32,6 @@ MonoBehaviour:
   _RangeType: 0
   _EnemyTypes: 06000000
   _DamageTypes: 
-  _GettingDamagedSFX: {fileID: 8300000, guid: 2755cac10c425a84f9bd3258f1f3f1f0, type: 3}
+  _GettingDamagedSFX: {fileID: 8300000, guid: ffc5e0325b5a7a747a06b839cfe82c34, type: 3}
   _DyingSFX: {fileID: 8300000, guid: 8e448de2872f6b74181558e9d7a4996f, type: 3}
   _enemyPrefab: {fileID: 8660632794050134643, guid: b89d0b5c09fe09d48ae6f1f156ec94bb, type: 3}

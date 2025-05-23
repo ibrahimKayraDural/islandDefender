@@ -87,7 +87,7 @@ public class CrackInteractableUI : ProximityInteractableUI, IUICellOwner
         else
         {
             _DescriptionText.text = "";
-            _DescriptionTitle.text = "<color=red>INSUFFICENT FUNDS</color>";
+            _DescriptionTitle.text = "<color=red>NOT ENOUGH ROOM IN INVENTORY</color>";
         }
     }
 }
