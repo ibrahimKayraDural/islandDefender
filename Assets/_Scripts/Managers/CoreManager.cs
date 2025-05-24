@@ -16,6 +16,7 @@ public class CoreManager : MonoBehaviour
     [SerializeField] CorePowerActivator _CorePowerActivator;
     [SerializeField] Transform _CellParent;
     [SerializeField] Transform _CorePowerControllerParent;
+    [SerializeField] Transform _CleanBeforeWaveParent;
 
     Dictionary<CoreData, CorePower_Base> dic_corePowerControllers = new();
     List<CoreItem> _cores = new();
@@ -71,6 +72,16 @@ public class CoreManager : MonoBehaviour
 
         if (isFirst) SelectCore(Cores[0].Data);
         if (refresh) RefreshCells();
+    }
+    public void OnWaveStart()
+    {
+        ResetCorePowers();
+
+        var children = _CleanBeforeWaveParent.Cast<Transform>();
+        foreach (var child in children)
+        {
+            Destroy(child.gameObject);
+        }
     }
     public void ResetCorePowers()
     {
@@ -148,6 +159,7 @@ public class CoreManager : MonoBehaviour
         {
             var cpc = cpcs[i];
             dic_corePowerControllers.TryAdd(cpc.Data, cpc);
+            cpc.CleanBeforeWaveParent = _CleanBeforeWaveParent;
         }
     }
 }

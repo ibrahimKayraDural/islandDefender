@@ -25,11 +25,13 @@ namespace TowerDefence
         [Space(15)]
         public UnityEvent OnDeath;
 
+        internal List<Tuple<string, float>> _speedModifiers = new();
+        internal Rigidbody _rb;
         internal bool _hasWon = false;
         internal bool _isDead = false;
         internal float _health;
-        internal Rigidbody _rb;
         internal float _nextAttack_TargetTime = -1;
+        internal float _speedModifiedMultiplier = 1;
         internal AudioManager _audioManager => AudioManager.Instance;
 
         virtual public void Awake()
@@ -63,7 +65,7 @@ namespace TowerDefence
             else
             {
                 if (_Animator) _Animator.SetBool("IsMoving", true);
-                _rb.MovePosition(transform.position + transform.forward * _data.Speed * Time.deltaTime);
+                _rb.MovePosition(transform.position + transform.forward * _data.Speed * _speedModifiedMultiplier * Time.deltaTime);
             }
         }
         virtual public void RemoveHealth(float amount, List<DamageType> damageTypes)
@@ -81,7 +83,6 @@ namespace TowerDefence
 
             if (_health == 0) Die();
         }
-
         virtual internal void Die()
         {
             SpawnManager.RemoveFromActiveEnemyList(gameObject);
@@ -103,6 +104,53 @@ namespace TowerDefence
                     ih.RemoveHealth(_data.Damage, _data.DamageTypes);
                 }
             }
+        }
+        /// <summary>
+        /// Add a new speed modifier with ID
+        /// </summary>
+        /// <param name="id">ID for the modifier</param>
+        /// <param name="value">Speed value. Most extreme value will be used.</param>
+        /// <param name="usedID">The ID that end up getting used. Use this ID to remove modifier later. null if operation was unsuccessfull</param>
+        /// <returns>If the operation was successfull</returns>
+        public bool AddSpeedModifier(string id, float value, out string usedID, bool @override = false)
+        {
+            usedID = null;
+            if (value == 1) return false;
+
+            value = Mathf.Max(value, 0);
+
+            var i = _speedModifiers.FindIndex(x => x.Item1 == id);
+            if (i != -1)
+            {
+                if (@override) _speedModifiers.RemoveAt(i);
+                else id = id + "-" + Guid.NewGuid().ToString();
+            }
+
+            usedID = id;
+            _speedModifiers.Add(new Tuple<string, float>(usedID, value));
+            RefreshSpeedModifiers();
+            return true;
+        }
+        public void RemoveSpeedModifier(string id)
+        {
+            int i = _speedModifiers.FindIndex(x => x.Item1 == id);
+            if (i != -1)
+            {
+                _speedModifiers.RemoveAt(i);
+                RefreshSpeedModifiers();
+            }
+        }
+        void RefreshSpeedModifiers()
+        {
+            if (_speedModifiers.Count <= 0)
+            {
+                _speedModifiedMultiplier = 1;
+                return;
+            }
+
+            float temp = 1;
+            foreach (var sm in _speedModifiers) temp *= sm.Item2;
+            _speedModifiedMultiplier = temp;
         }
         IEnumerator DeathAnim()
         {

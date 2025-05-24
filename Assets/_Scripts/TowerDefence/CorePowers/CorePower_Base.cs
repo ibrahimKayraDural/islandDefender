@@ -8,6 +8,8 @@ namespace CorePowers
     {
         public int UsagesLeft => _usagesLeft;
 
+        [HideInInspector] public Transform CleanBeforeWaveParent;
+
         [SerializeField] internal CoreData Data;
 
         internal int _usagesLeft = 0;

@@ -7,12 +7,15 @@ using TMPro;
 using TowerDefence;
 using System;
 using UnityEngine.ProBuilder.MeshOperations;
+using Unity.Burst.CompilerServices;
+using System.Drawing;
 
 public class CorePowerActivator : MonoBehaviour
 {
     [SerializeField] Button _Button;
     [SerializeField] TextMeshProUGUI CountTM;
     [SerializeField] CoreManager _CoreManager;
+    [SerializeField] TowerDefenceGridManager _GridManager;
     [SerializeField] GameObject VisualParent;
     [SerializeField] Image Icon;
     [SerializeField] LayerMask _TileMask = 1 << 6;
@@ -29,7 +32,14 @@ public class CorePowerActivator : MonoBehaviour
         CorePower_Base power = _CoreManager.SelectedCorePower;
         if (power == null) return;
 
-        if (power as CorePower_OnPoint != null && _mouseTracker != null)
+        if (power as CorePower_AtRandomTiles != null)
+        {
+            var temp = power as CorePower_AtRandomTiles;
+            List<TowerDefenceTileScript> tiles = _GridManager.GetRandomFreeTiles(temp.TileCount);
+
+            if (power.TryActivate(new[] { tiles as object })) Refresh(power);
+        }
+        else if (power as CorePower_OnPoint != null && _mouseTracker != null)
         {
             SetButtonEnablity(false);
             AwaitMouseClick(OnClicked: OnClickCell, OnCanceled: EnableButton);
@@ -60,7 +70,7 @@ public class CorePowerActivator : MonoBehaviour
         Icon.sprite = corePower.Data.UISprite;
         var usagesLeft = corePower.UsagesLeft;
         CountTM.text = usagesLeft.ToString();
-        _Button.interactable = usagesLeft > 0;
+        SetButtonEnablity(usagesLeft > 0);
     }
 
     void EnableButton() => SetButtonEnablity(true);

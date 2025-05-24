@@ -347,7 +347,7 @@ namespace TowerDefence
         void SetWaveUp()
         {
             SetWaveValues();
-            _CoreManager?.ResetCorePowers();
+            _CoreManager?.OnWaveStart();
             //SetIndicatorValues();
             _TDPlayerController.EvaluateGameplayMode(WaveIsActive);
         }
