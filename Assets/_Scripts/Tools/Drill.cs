@@ -7,6 +7,7 @@ namespace Overworld
     using System.Linq;
     using TowerDefence;
     using UnityEngine;
+    using UnityEngine.SceneManagement;
     using UpgradeSystem;
 
     public class Drill : Tool, IUpgradeable
@@ -53,15 +54,19 @@ namespace Overworld
         }
         void Start()
         {
+            SceneManager.activeSceneChanged += CheckSave;
+
             (this as IUpgradeable).LoadUpgradeData();
         }
         void OnApplicationQuit()
         {
+            SceneManager.activeSceneChanged -= CheckSave;
             (this as IUpgradeable).SaveUpgradeData();
             _isSaved = true;
         }
-        void OnDestroy()
+        void CheckSave(Scene oldScene, Scene newScene)
         {
+            SceneManager.activeSceneChanged -= CheckSave;
             if (_isSaved == false) (this as IUpgradeable).SaveUpgradeData();
         }
 

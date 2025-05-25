@@ -13,7 +13,7 @@ namespace TowerDefence
 
         public void SelectTurret(Transform lookTransform = null)
         {
-            if (_isSelected) return;
+            if (_isSelected || _isGameOver) return;
 
             _lookTransform = lookTransform;
             IEnumUpdate_Handle = IEnumUpdate();
@@ -43,7 +43,7 @@ namespace TowerDefence
 
         virtual internal IEnumerator IEnumUpdate()
         {
-            while (true)
+            while (_isGameOver == false)
             {
                 yield return null;
                 OnUpdate();
@@ -57,11 +57,17 @@ namespace TowerDefence
 
         public void UseTurret()
         {
-            if (IsUsable == false) return;
+            if (IsUsable == false || _isGameOver) return;
 
             ActivationMethod();
 
             _nextUse_TargetTime = Time.time + Data.ActivationCooldown;
+        }
+        internal override void OnGameLost()
+        {
+            base.OnGameLost();
+
+            DeselectTurret();
         }
     }
 }

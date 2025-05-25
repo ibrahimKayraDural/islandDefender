@@ -67,6 +67,8 @@ namespace TowerDefence
         TowerDefenceGameplayMode _currentGameplayMode = TowerDefenceGameplayMode.Edit;
         TowerDefenceControlMode _currentControlMode = TowerDefenceControlMode.None;
 
+        bool _isGameOver;
+
         void Awake()
         {
             if (_camera == null)
@@ -82,6 +84,7 @@ namespace TowerDefence
         void Update()
         {
             if (_currentControlMode == TowerDefenceControlMode.None) return;
+            if (_isGameOver) return;
 
             switch (_currentGameplayMode)
             {
@@ -116,7 +119,14 @@ namespace TowerDefence
                 }
             }
         }
+        public void OnGameOver()
+        {
+            _isGameOver = true;
 
+            DeselectCurrentTile();
+            DeselectRemoteTurret();
+            DeselectTurretToSwap();
+        }
         void SetGameplayMode(TowerDefenceGameplayMode setTo)
         {
             TowerDefenceGameplayMode oldMode = _currentGameplayMode;

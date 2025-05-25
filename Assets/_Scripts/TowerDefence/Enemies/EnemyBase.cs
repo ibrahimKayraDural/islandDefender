@@ -201,7 +201,7 @@ namespace TowerDefence
 
             _Animator.SetBool("HasWon", true);
             _hasWon = true;
-            Invoke(nameof(Die), 2);
+            //Invoke(nameof(Die), 2);
         }
 
         void OnDrawGizmosSelected()

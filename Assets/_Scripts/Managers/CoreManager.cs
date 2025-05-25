@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerDefence;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CoreManager : MonoBehaviour
 {
@@ -38,6 +39,8 @@ public class CoreManager : MonoBehaviour
 
     void Start()
     {
+        SceneManager.activeSceneChanged += CheckSave;
+
         GatherCorePowerControllers();
         ResetCorePowers();
 
@@ -46,11 +49,13 @@ public class CoreManager : MonoBehaviour
     }
     void OnApplicationQuit()
     {
+        SceneManager.activeSceneChanged -= CheckSave;
         Save();
         _isSaved = true;
     }
-    void OnDestroy()
+    void CheckSave(Scene oldScene, Scene newScene)
     {
+        SceneManager.activeSceneChanged -= CheckSave;
         if (_isSaved == false) Save();
     }
 

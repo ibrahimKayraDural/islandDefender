@@ -70,7 +70,7 @@ namespace SaveSystem
             _isInitialized = true;
         }
 
-        void OnDestroy()//Is actually called when quitting the app
+        void OnApplicationQuit()//Is actually called when quitting the app
         {
             if (_isInitialized == false) return;
 

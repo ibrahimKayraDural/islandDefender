@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerDefence;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CrackInteractable : ProximityInteractable
 {
@@ -42,6 +43,8 @@ public class CrackInteractable : ProximityInteractable
 
     void Start()
     {
+        SceneManager.activeSceneChanged += CheckSave;
+
         if (AllGUIDs.Contains(_GUID))
             Debug.LogError("Can not have two objects with the same GUID. " +
                 "Regenerate this GUID or this will cause weird errors!\nSincerely, " + gameObject.name);
@@ -61,11 +64,13 @@ public class CrackInteractable : ProximityInteractable
 
     void OnApplicationQuit()
     {
+        SceneManager.activeSceneChanged -= CheckSave;
         SaveIndex();
         _isSaved = true;
     }
-    void OnDestroy()
+    void CheckSave(Scene oldScene, Scene newScene)
     {
+        SceneManager.activeSceneChanged -= CheckSave;
         if (_isSaved == false) SaveIndex();
     }
 

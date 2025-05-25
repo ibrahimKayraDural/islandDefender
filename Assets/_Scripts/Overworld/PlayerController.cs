@@ -7,6 +7,7 @@ namespace Overworld
     using System.Linq;
     using System.Reflection;
     using UnityEngine;
+    using UnityEngine.SceneManagement;
     using UpgradeSystem;
 
     [RequireComponent(typeof(Rigidbody))]
@@ -111,15 +112,19 @@ namespace Overworld
 
         void OnApplicationQuit()
         {
+            SceneManager.activeSceneChanged -= CheckSave;
             (this as IUpgradeable).SaveUpgradeData();
             _isSaved = true;
         }
-        void OnDestroy()
+        void CheckSave(Scene oldScene, Scene newScene)
         {
+            SceneManager.activeSceneChanged -= CheckSave;
             if (_isSaved == false) (this as IUpgradeable).SaveUpgradeData();
         }
         void Start()
         {
+            SceneManager.activeSceneChanged += CheckSave;
+
             _RB = GetComponent<Rigidbody>();
             _RB.useGravity = false;
             _RB.angularDrag = 1000000;
