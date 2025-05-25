@@ -17,6 +17,7 @@ public class BaseManager : MonoBehaviour, IHealth
     [SerializeField] AudioClip _DeathSFX;
     [SerializeField] AudioClip _HitSFX;
     [SerializeField] UnityEvent OnDeath;
+    [SerializeField] FadeEffect _DeathFade;
 
     public float Health => _health;
     float _health;
@@ -49,5 +50,10 @@ public class BaseManager : MonoBehaviour, IHealth
         AudioManager.Instance?.PlayClip(this + "_explosion", _DeathSFX);
 
         OnDeath?.Invoke();
+        Invoke(nameof(DeathFade), 2.25f);
+    }
+    void DeathFade()
+    {
+        _DeathFade.SetFade(true, 1);
     }
 }

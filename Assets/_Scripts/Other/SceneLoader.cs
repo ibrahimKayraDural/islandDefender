@@ -41,6 +41,10 @@ public class SceneLoader : MonoBehaviour
         IsLoadingScenes = true;
         StartCoroutine(SceneProgressChecker(operations));
     }
+    public void LoadSceneDirectly(int buildIndex)
+    {
+        SceneManager.LoadScene(buildIndex);
+    }
 
     IEnumerator SceneProgressChecker(List<AsyncOperation> operations)
     {
@@ -73,6 +77,8 @@ public class SceneLoader : MonoBehaviour
 
         SceneManager.UnloadSceneAsync(_LoadingScene);
     }
+
+    public void QuitGame() => Application.Quit();
 
     //void Awake()// or Start
     //{

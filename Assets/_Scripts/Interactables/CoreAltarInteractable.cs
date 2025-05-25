@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CoreAltarInteractable : ProximityInteractable
 {
@@ -44,6 +45,8 @@ public class CoreAltarInteractable : ProximityInteractable
 
     void Start()
     {
+        SceneManager.activeSceneChanged += CheckSave;
+
         if (AllGUIDs.Contains(_GUID))
             Debug.LogError("Can not have two objects with the same GUID. " +
                 "Regenerate this GUID or this will cause weird errors!\nSincerely, " + gameObject.name);
@@ -55,11 +58,13 @@ public class CoreAltarInteractable : ProximityInteractable
 
     void OnApplicationQuit()
     {
+        SceneManager.activeSceneChanged -= CheckSave;
         Save();
         _isSaved = true;
     }
-    void OnDestroy()
+    void CheckSave(Scene oldScene, Scene newScene)
     {
+        SceneManager.activeSceneChanged -= CheckSave;
         if (_isSaved == false) Save();
     }
 

@@ -1,6 +1,7 @@
 using SaveSystem;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class SaveHandler : MonoBehaviour
 {
@@ -23,15 +24,20 @@ public class SaveHandler : MonoBehaviour
 
     void Start()
     {
+        SceneManager.activeSceneChanged += CheckSave;
+
         OnLoaded?.Invoke();
     }
     void OnApplicationQuit()
     {
+        SceneManager.activeSceneChanged -= CheckSave;
         OnSaved?.Invoke();
         _isSaved = true;
     }
-    void OnDestroy()
+    void CheckSave(Scene oldScene, Scene newScene)
     {
+        SceneManager.activeSceneChanged -= CheckSave;
+
         if (_isSaved == false) OnSaved?.Invoke();
     }
 }
