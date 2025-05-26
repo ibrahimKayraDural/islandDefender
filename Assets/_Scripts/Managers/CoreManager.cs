@@ -105,7 +105,7 @@ public class CoreManager : MonoBehaviour
     {
         List<string> coreIDs = Cores?.Where(x => x?.Data?.ID != null)?.Select(x => x.Data.ID)?.ToList();
         if (coreIDs != null)
-            _SaveManager.SetCoreState(coreIDs, _selectedCore.ID);
+            _SaveManager.SetCoreState(coreIDs, _selectedCore?.ID);
     }
 
     [ContextMenu("Load")]

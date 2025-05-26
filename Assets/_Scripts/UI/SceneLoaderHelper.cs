@@ -13,4 +13,8 @@ public class SceneLoaderHelper : MonoBehaviour
 
         SceneLoader.Instance.LoadScenes(sceneStrings);
     }
+    public void LoadSceneDirectly(int scene)
+    {
+        SceneLoader.Instance?.LoadSceneDirectly(scene);
+    }
 }

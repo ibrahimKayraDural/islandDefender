@@ -54845,7 +54845,7 @@ PrefabInstance:
     - target: {fileID: 2239794231906955740, guid: 70a1f744d50e3c04799cb6becd3cd2db, type: 3}
       propertyPath: _DeathFade
       value: 
-      objectReference: {fileID: 899292554}
+      objectReference: {fileID: 899292559}
     - target: {fileID: 2239794231906955740, guid: 70a1f744d50e3c04799cb6becd3cd2db, type: 3}
       propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -62511,7 +62511,8 @@ GameObject:
   - component: {fileID: 899292557}
   - component: {fileID: 899292556}
   - component: {fileID: 899292555}
-  - component: {fileID: 899292554}
+  - component: {fileID: 899292559}
+  - component: {fileID: 899292560}
   m_Layer: 0
   m_Name: GameOverCanvas
   m_TagString: Untagged
@@ -62539,62 +62540,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &899292554
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 899292552}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b722d34f2363538499af7fdf2f8de687, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _CanvasGroup: {fileID: 899292555}
-  _Curve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _SetCanvasGroupSolidity: 1
-  _OnFullyFadedIn:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 516121667}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadSceneDirectly
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 7
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  _OnFullyFadedOut:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!225 &899292555
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -62670,6 +62615,75 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 101
   m_TargetDisplay: 0
+--- !u!114 &899292559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899292552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b722d34f2363538499af7fdf2f8de687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _CanvasGroup: {fileID: 899292555}
+  _Curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _SetCanvasGroupSolidity: 1
+  _OnFullyFadedIn:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 899292560}
+        m_TargetAssemblyTypeName: SceneLoaderHelper, Assembly-CSharp
+        m_MethodName: LoadSceneDirectly
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 7
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _OnFullyFadedOut:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &899292560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899292552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06a1da584044eb9458fdd36f00f94c9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ScenesToLoad: []
 --- !u!1 &900792320
 GameObject:
   m_ObjectHideFlags: 0
