@@ -17,7 +17,7 @@ namespace TowerDefence
         public List<DamageType> DamageTypes => _DamageTypes;
         public List<TurretAttribute> Attributes => _Attributes;
         public int Health => _Health;
-        public int Damage => _Damage;
+        public float Damage => _Damage;
         public float ActivationCooldown => _activationCooldown;
         public float SwapCooldown => _swapCooldown;
         public Cost[] Costs => _costs;
@@ -31,7 +31,7 @@ namespace TowerDefence
         [SerializeField] List<DamageType> _DamageTypes = new();
         [SerializeField] List<TurretAttribute> _Attributes = new();
         [SerializeField] int _Health = 1;
-        [SerializeField] int _Damage = 1;
+        [SerializeField] float _Damage = 1;
         [SerializeField] float _activationCooldown = 1;
         [SerializeField] float _swapCooldown = 1;
         [SerializeField] Cost[] _costs = new Cost[0];
