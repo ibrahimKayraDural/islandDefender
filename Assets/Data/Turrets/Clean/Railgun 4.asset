@@ -10,26 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f668a1441eb51ad46ac03f32cd815cc9, type: 3}
-  m_Name: Iron Bolter
+  m_Name: Railgun 4
   m_EditorClassIdentifier: 
-  _displayName: Iron Bolter
-  _id: turret-iron-bolter
-  _Description: Shoots at a lane dealing damage
-  _UISprite: {fileID: 21300000, guid: c27255e8f9ce4334ba4a3d9ea6e8bf44, type: 3}
-  PenetrationCount: 0
+  _displayName: Railgun Lvl 4
+  _id: turret-railgun
+  _Description: "Penetrates and hits up to 4 enemies\r"
+  _UISprite: {fileID: 21300000, guid: 603ef7fb2e4f55b4ab45b546dc20f580, type: 3}
+  PenetrationCount: 4
   AOE_Radius: 0
   _Type: 0
   _DamageTypes: 
-  _Attributes: 
+  _Attributes: 00000000
   _Health: 250
-  _Damage: 20
-  _activationCooldown: 1
-  _swapCooldown: 1
+  _Damage: 135
+  _activationCooldown: 3
+  _swapCooldown: 3
   _costs:
   - _resource: {fileID: 11400000, guid: a3d353e8c607ad34e90b5d5a647480a5, type: 2}
-    _amount: 20
-  _prefabObject: {fileID: 906911832218085558, guid: 999b60c5822905a4d93cba3074876370, type: 3}
-  _projectilePrefab: {fileID: 665859162509387241, guid: 001a401080937344bb4b906cb0679a15, type: 3}
-  _projectileSpeedMultiplier: 1
+    _amount: 80
+  _prefabObject: {fileID: 906911832218085558, guid: 1e4a680c1472bcf4f8d02d9523aa7555, type: 3}
+  _projectilePrefab: {fileID: 665859162509387241, guid: 39242c3aa2e891b41bb7227d9856dda7, type: 3}
+  _projectileSpeedMultiplier: 2.5
   _GetDamagedSFX: {fileID: 8300000, guid: 57e816778ca71674abdfddd09b2e98cd, type: 3}
   _DeathSFX: {fileID: 0}

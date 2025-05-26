@@ -28,7 +28,7 @@ namespace TowerDefence
         internal Vector3 _shootPos;
         internal Vector3 _halfExtents;
 
-        int _damage;
+        float _damage;
         List<DamageType> _damageTypes;
 
         internal override void OnInitialized()
