@@ -463,7 +463,7 @@ GameObject:
   - component: {fileID: 476764173}
   - component: {fileID: 476764176}
   m_Layer: 0
-  m_Name: Drill Strenght
+  m_Name: Drill Strength
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -795,7 +795,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
       propertyPath: _Upgrades.Array.data[2].ID
-      value: Drill-Strenght
+      value: Drill-Strength
       objectReference: {fileID: 0}
     - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
       propertyPath: _UnlockedTrees.Array.data[1]
@@ -803,7 +803,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
       propertyPath: _UnlockedTrees.Array.data[2]
-      value: Drill-Strenght
+      value: Drill-Strength
       objectReference: {fileID: 0}
     - target: {fileID: 2362883338264800309, guid: 3936a0fd8a0226d4b92ee238ca1fa977, type: 3}
       propertyPath: _Upgrades.Array.data[2].Button
