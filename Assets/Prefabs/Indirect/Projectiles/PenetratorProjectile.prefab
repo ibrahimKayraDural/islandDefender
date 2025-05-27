@@ -51,7 +51,7 @@ MonoBehaviour:
   _IterationDuration: 0.01
   _LifeTime: 10
   _VisualParent: {fileID: 6032751487839959539}
-  HitSfx: {fileID: 8300000, guid: da51225feb1d1a84f925d2ff1ecccef1, type: 3}
+  OnProjectileSpent: {fileID: 0}
   IgnoreTags:
   - Turret
   - Unhittable
@@ -171,7 +171,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: eb079b09787652245b6bf23890a3b626, type: 2}
+  - {fileID: 2100000, guid: be421c74836fc0e44b5d8652bc016a64, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
