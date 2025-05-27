@@ -72,6 +72,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TriConnectDiaUp
       objectReference: {fileID: 0}
+    - target: {fileID: 7749577559973047891, guid: cc2e0eb27f0590b44985e344263aa357, type: 3}
+      propertyPath: RequiredDrillLevel
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

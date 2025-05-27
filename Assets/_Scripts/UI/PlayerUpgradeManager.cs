@@ -222,6 +222,10 @@ public class PlayerUpgradeManager : MonoBehaviour
                 upgradeable = FindObjectOfType<Drill>(true);
                 upgradeID = "speed";
                 break;
+            case "Drill-Strength":
+                upgradeable = FindObjectOfType<Drill>(true);
+                upgradeID = "strength";
+                break;
             case "Walk-Speed":
                 upgradeable = PlayerInstance.Instance.PlayerController_Ref;
                 upgradeID = "speed";
