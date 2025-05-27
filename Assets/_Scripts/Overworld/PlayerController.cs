@@ -22,6 +22,7 @@ namespace Overworld
         [SerializeField, Min(0)] float _TurnSpeed = 1;
         [SerializeField, Min(0)] float _footstepCooldownBase = .6f;
         [SerializeField, Min(0)] float _footstepPitchModulation = .3f;
+        [SerializeField, Min(0)] float _footstepVolume = 1f;
 
         [Header("Reference")]
         [SerializeField] Rigidbody _RB;
@@ -326,7 +327,7 @@ namespace Overworld
                 _footstepSFX_targetTime = Time.time + FootstepCooldown;
 
                 float fsPitch = UnityEngine.Random.Range(-_footstepPitchModulation, _footstepPitchModulation) + 1;
-                _AudioManager?.PlayClip(FOOTSTEP_ID, _FootstepClip, pitch: fsPitch);
+                _AudioManager?.PlayClip(FOOTSTEP_ID, _FootstepClip,volume:_footstepVolume, pitch: fsPitch);
             }
         }
 

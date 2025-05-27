@@ -15,6 +15,6 @@ MonoBehaviour:
   _displayName: Organic Matter
   _id: resource-organic_matter
   _Description: Surprisingly sturdy.
-  _UISprite: {fileID: 21300000, guid: ef38a985d8530104184a2a4ded6fb3f9, type: 3}
+  _UISprite: {fileID: 21300000, guid: 42da75dd2ea937143b75429d9a2d82b9, type: 3}
   _stackSize: 20
   _DroppedItem: {fileID: 8977168894385176945, guid: eef4430f652b1ff47ba5f433e1c515fc, type: 3}

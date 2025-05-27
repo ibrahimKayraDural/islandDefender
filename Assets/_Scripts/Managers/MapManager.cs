@@ -9,8 +9,9 @@ public class MapManager : MonoBehaviour, IUserInterface
     [SerializeField] Camera mapCam;
     [SerializeField] Camera miniMapCam;
 
-    [SerializeField] RawImage mapRenderer;
+    [SerializeField] GameObject mapRenderer;
     [SerializeField] RawImage miniMapRenderer;
+    [SerializeField] RawImage MapRenderer;
 
     CanvasManager _CanvasManager
     {
@@ -29,7 +30,9 @@ public class MapManager : MonoBehaviour, IUserInterface
     public void OnEnablityChanged(bool changedTo, List<string> optionalParameters = null)
     {
         mapCam.enabled = changedTo;
-        mapRenderer.enabled = changedTo;
+        MapRenderer.enabled = changedTo;
+        mapRenderer.SetActive(changedTo);
+        IsOpen = changedTo;
     }
     public void SetMinimapEnablity(bool setTo)
     {
@@ -44,6 +47,16 @@ public class MapManager : MonoBehaviour, IUserInterface
         if (Input.GetKeyDown(KeyCode.M))
         {
             _CanvasManager.SetMapEnablity(!IsOpen);
+        }
+
+        if (IsOpen)
+        {
+            float scroll = Input.GetAxis("Mouse ScrollWheel");
+            if (Mathf.Abs(scroll) > 0.01f)
+            {
+                mapCam.orthographicSize -= scroll * 10f;
+                mapCam.orthographicSize = Mathf.Clamp(mapCam.orthographicSize, 5f, 50f); // Min-max zoom
+            }
         }
     }
     
