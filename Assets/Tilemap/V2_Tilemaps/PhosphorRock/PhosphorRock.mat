@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SulphurRock
+  m_Name: PhosphorRock
   m_Shader: {fileID: -6465566751694194690, guid: aebdca5b704cc7f4fb6912bacd907207, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -128,7 +128,7 @@ Material:
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
-    - _NormalStrength: 0.76
+    - _NormalStrength: 3.91
     - _OcclusionStrength: 1
     - _OpaqueCullMode: 2
     - _OverlayPower: 0.5
