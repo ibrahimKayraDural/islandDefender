@@ -12,7 +12,7 @@ public class BaseResourceController : MonoBehaviour
 {
     public static BaseResourceController Instance { get; private set; } = null;
 
-    [SerializeField] TextMeshProUGUI _resourceText;
+    [SerializeField] GameObject _resourceUIRoot;
     [SerializeField] CoreManager _CoreManager;
 
     Dictionary<ResourceData, int> _resourceDictionary = new();
@@ -226,12 +226,9 @@ public class BaseResourceController : MonoBehaviour
 
     void RefreshText()
     {
-        if (_resourceText == null) return;
+        if (_resourceUIRoot != null && _resourceUIRoot.activeSelf == false)
+            _resourceUIRoot.SetActive(true);
 
-        _resourceText.text = "";
-        foreach (KeyValuePair<ResourceData, int> pair in _resourceDictionary)
-        {
-            _resourceText.text += $"<color=red>{pair.Value}<color=white>    {pair.Key.ID}\n";
-        }
+        FindObjectOfType<UIResourceDisplay>()?.RefreshAll();
     }
 }
