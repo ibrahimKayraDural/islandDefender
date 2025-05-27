@@ -10,7 +10,7 @@ public class ProjectileExplosive : MonoBehaviour
     [SerializeField] ParticleObject _ExplosionEffect;
     [SerializeField] float XOffset = .1f;
 
-    public void Activate(int tileRadius, int damage, List<DamageType> _damageTypes, int targetMask = 1 << 7)
+    public void Activate(int tileRadius, float damage, List<DamageType> _damageTypes, int targetMask = 1 << 7)
     {
         float actualHeight = (tileRadius * TILE_SIZE) + (TILE_SIZE / 2);
         float radius = actualHeight * ROTATION_RESCALE;

@@ -23,7 +23,7 @@ MonoBehaviour:
   SwarmCooldownRange:
     _min: 0.5
     _max: 1.5
-  _MaxHealth: 90
+  _MaxHealth: 60
   _Speed: 0.5
   _Damage: 50
   _AttackCooldown: 1
