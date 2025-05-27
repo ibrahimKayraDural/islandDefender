@@ -113,6 +113,26 @@ namespace TowerDefence
             DestroyImmediate(tempParent.gameObject);
         }
 
+        public List<TowerDefenceTileScript> GetRandomFreeTiles(int count = 1)
+        {
+            List<TowerDefenceTileScript> returnList = new();
+
+            List<TowerDefenceTileScript> allTiles = new();
+            foreach (var tiles in _Tiles) allTiles.AddRange(tiles.Tiles);
+
+            while (returnList.Count < count && allTiles.Count > 0)
+            {
+                int i = Random.Range(0, allTiles.Count);
+                var tile = allTiles[i];
+
+                if (IsFree(tile)) returnList.Add(tile);
+
+                allTiles.RemoveAt(i);
+            }
+
+            return returnList;
+        }
+
         public TowerDefenceTileScript GetTile(int x, int y) => _Tiles[y].Tiles[x];
 
         public TowerDefenceTileScript GetFirstFreeTile()
@@ -123,7 +143,7 @@ namespace TowerDefence
                 for (int x = 0; x < xTiles.Count; x++)
                 {
                     var tile = xTiles[x];
-                    if (tile == null || tile.IsLocked || tile.IsOccupied) continue;
+                    if (IsFree(tile) == false) continue;
 
                     return tile;
                 }
@@ -131,5 +151,8 @@ namespace TowerDefence
 
             return null;
         }
+
+        public bool IsFree(TowerDefenceTileScript tile) =>
+            tile != null && tile.IsLocked == false && tile.IsOccupied == false;
     }
 }

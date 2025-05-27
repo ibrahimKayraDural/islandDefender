@@ -6,6 +6,7 @@ namespace Overworld
     using System.Linq;
     using TowerDefence;
     using UnityEngine;
+    using UnityEngine.SceneManagement;
 
     public class PlayerToolController : MonoBehaviour
     {
@@ -77,11 +78,13 @@ namespace Overworld
 
         void OnApplicationQuit()
         {
+            SceneManager.activeSceneChanged -= CheckSave;
             SaveActiveTools();
             _isSaved = true;
         }
-        void OnDestroy()
+        void CheckSave(Scene oldScene, Scene newScene)
         {
+            SceneManager.activeSceneChanged -= CheckSave;
             if (_isSaved == false) SaveActiveTools();
         }
 
@@ -110,6 +113,8 @@ namespace Overworld
         }
         void Start()
         {
+            SceneManager.activeSceneChanged += CheckSave;
+
             _toolDatabase = GLOBAL.GetToolDatabase();
             InitializeToolList();
 

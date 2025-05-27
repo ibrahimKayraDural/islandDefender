@@ -23,6 +23,7 @@ namespace TowerDefence
         internal float _health;
         internal bool _isInitialized;
         internal bool _isDead;
+        internal bool _isGameOver;
 
         virtual public void Initialize(TurretData data, TowerDefenceTileScript tile)
         {
@@ -111,10 +112,15 @@ namespace TowerDefence
                 _invokers.Remove(invoker);
             }
 
+            RefreshHighlight();
+        }
 
+        internal void RefreshHighlight()
+        {
             List<Material> mats = _Renderers.Select(x => x.material).ToList();
             foreach (var m in mats) m.SetFloat("_IsHighlighted", _invokers.Count > 0 ? 1 : 0);
         }
+
         internal virtual void PlayDamagedAnim()
         {
             List<Material> mats = _Renderers.Select(x => x.material).ToList();
@@ -139,6 +145,10 @@ namespace TowerDefence
             }
 
             foreach (var m in mats) m.SetFloat("_DamageFill", 0);
+        }
+        internal virtual void OnGameLost()
+        {
+            _isGameOver = true;
         }
     }
 }
