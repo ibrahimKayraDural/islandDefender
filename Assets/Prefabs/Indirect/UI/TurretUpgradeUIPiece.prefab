@@ -222,6 +222,7 @@ GameObject:
   - component: {fileID: 5472966441227027006}
   - component: {fileID: 3801227135177202486}
   - component: {fileID: 3358612183305153388}
+  - component: {fileID: 4379820326288900453}
   m_Layer: 0
   m_Name: Upgrade
   m_TagString: Untagged
@@ -365,7 +366,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 76425e4fdf13d3f438be15106a37395e, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 905463dc2069df249b02b4e1a2ae2cdd, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -451,6 +452,34 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4379820326288900453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2483941356823668780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e20c58656323ec540879c8cc3181e5e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _EventToRun:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3358612183305153388}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  namedEvent2Run: []
 --- !u!1 &5159475237692280824
 GameObject:
   m_ObjectHideFlags: 0
