@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class BaseManager : MonoBehaviour, IHealth
 {
@@ -13,7 +14,7 @@ public class BaseManager : MonoBehaviour, IHealth
     [Header("Values")]
     [SerializeField, Min(.1f)] float _MaxHealth = 10;
     [Header("Reference")]
-    [SerializeField] TextMeshProUGUI _HealthTM;
+    [SerializeField] Slider _HealthSlider;
     [SerializeField] AudioClip _DeathSFX;
     [SerializeField] AudioClip _HitSFX;
     [SerializeField] UnityEvent OnDeath;
@@ -38,9 +39,12 @@ public class BaseManager : MonoBehaviour, IHealth
     public void SetHealth(float setTo)
     {
         _health = Mathf.Clamp(setTo, 0, _MaxHealth);
-        _HealthTM.text = "BASE HEALTH : " + _health;
+
+        if (_HealthSlider != null)
+            _HealthSlider.value = _health / _MaxHealth;
 
         if (_health == 0) Die();
+           
     }
 
     void Die()
