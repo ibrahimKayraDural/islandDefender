@@ -15,7 +15,7 @@ MonoBehaviour:
   _displayName: Flamer Lvl 1
   _id: turret-flamer
   _Description: A fire spewing turret
-  _UISprite: {fileID: 21300000, guid: 0e4b6d22370eeca42b66c45accd80ba9, type: 3}
+  _UISprite: {fileID: 21300000, guid: 571fb0ccd9f13424cbff3ffbfdc9b454, type: 3}
   PenetrationCount: 0
   AOE_Radius: 0
   _Type: 0

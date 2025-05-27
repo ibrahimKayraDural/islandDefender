@@ -19,6 +19,11 @@ public class CraftingUICellScript : MonoBehaviour
     [SerializeField] OnHoverOver _OnHoverOver;
     [SerializeField] EventTrigger _EventTrigger;
     [SerializeField] GameObject _LockImage;
+    [SerializeField] GameObject _CheckImage;
+    [SerializeField] AudioClip _HoverAudio;
+    [SerializeField] AudioClip _ClickAudio;
+    [SerializeField] AudioClip _FailAudio;
+
 
     TurretCraftingUIController _owner;
     TurretData _turretData;
