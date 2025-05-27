@@ -15,7 +15,7 @@ namespace TowerDefence
 
         virtual internal IEnumerator ActivationLoop(float interval)
         {
-            while (_breakActivationLoop == false)
+            while (_breakActivationLoop == false && _isGameOver == false)
             {
                 yield return new WaitForSeconds(interval);
                 ActivationMethod();

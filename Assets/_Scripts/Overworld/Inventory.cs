@@ -6,6 +6,7 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static SaveSystem.SaveManager;
 
 namespace Overworld
@@ -74,6 +75,8 @@ namespace Overworld
 
         void Start()
         {
+            SceneManager.activeSceneChanged += CheckSave;
+
             AUTO_canvasManager = CanvasManager.Instance;
             Clean();
             LoadInventory();
@@ -88,11 +91,13 @@ namespace Overworld
         bool _isSaved;//prevents race conditions
         void OnApplicationQuit()
         {
+            SceneManager.activeSceneChanged -= CheckSave;
             SaveInventory();
             _isSaved = true;
         }
-        void OnDestroy()
+        void CheckSave(Scene oldScene, Scene newScene)
         {
+            SceneManager.activeSceneChanged -= CheckSave;
             if (_isSaved == false) SaveInventory();
         }
 

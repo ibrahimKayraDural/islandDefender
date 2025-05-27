@@ -7,6 +7,7 @@ namespace Overworld
     using System.Linq;
     using System.Reflection;
     using UnityEngine;
+    using UnityEngine.SceneManagement;
     using UpgradeSystem;
 
     [RequireComponent(typeof(Rigidbody))]
@@ -21,6 +22,7 @@ namespace Overworld
         [SerializeField, Min(0)] float _TurnSpeed = 1;
         [SerializeField, Min(0)] float _footstepCooldownBase = .6f;
         [SerializeField, Min(0)] float _footstepPitchModulation = .3f;
+        [SerializeField, Min(0)] float _footstepVolume = 1f;
 
         [Header("Reference")]
         [SerializeField] Rigidbody _RB;
@@ -111,15 +113,19 @@ namespace Overworld
 
         void OnApplicationQuit()
         {
+            SceneManager.activeSceneChanged -= CheckSave;
             (this as IUpgradeable).SaveUpgradeData();
             _isSaved = true;
         }
-        void OnDestroy()
+        void CheckSave(Scene oldScene, Scene newScene)
         {
+            SceneManager.activeSceneChanged -= CheckSave;
             if (_isSaved == false) (this as IUpgradeable).SaveUpgradeData();
         }
         void Start()
         {
+            SceneManager.activeSceneChanged += CheckSave;
+
             _RB = GetComponent<Rigidbody>();
             _RB.useGravity = false;
             _RB.angularDrag = 1000000;
@@ -321,7 +327,7 @@ namespace Overworld
                 _footstepSFX_targetTime = Time.time + FootstepCooldown;
 
                 float fsPitch = UnityEngine.Random.Range(-_footstepPitchModulation, _footstepPitchModulation) + 1;
-                _AudioManager?.PlayClip(FOOTSTEP_ID, _FootstepClip, pitch: fsPitch);
+                _AudioManager?.PlayClip(FOOTSTEP_ID, _FootstepClip,volume:_footstepVolume, pitch: fsPitch);
             }
         }
 

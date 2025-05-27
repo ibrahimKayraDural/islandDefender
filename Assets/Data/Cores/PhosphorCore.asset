@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c8648d67b17324691ecb778219cf6f, type: 3}
+  m_Name: PhosphorCore
+  m_EditorClassIdentifier: 
+  _displayName: Phosphor Core
+  _id: core-phosphor
+  _Description: The phosphorus core
+  _UISprite: {fileID: 21300000, guid: b715d92a413ce804ebf669be72dd48bd, type: 3}
+  _UsePerDay: 1

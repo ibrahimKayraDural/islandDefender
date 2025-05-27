@@ -6,6 +6,7 @@ using TMPro;
 using Overworld;
 using SaveSystem;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 namespace TowerDefence
 {
@@ -35,6 +36,7 @@ namespace TowerDefence
         [SerializeField] TDPlayerController _TDPlayerController;
         [SerializeField] ResourceData _RPData;
         [SerializeField] EnemyHealthbarManager _EnemyHBManager;
+        [SerializeField] CoreManager _CoreManager;
 
         TD_WaveValue? _CurrentWave
         {
@@ -93,6 +95,8 @@ namespace TowerDefence
 
         void Start()
         {
+            SceneManager.activeSceneChanged += CheckSave;
+
             //Locking waves assigns values to the wildcards in it.
             var datalist = GLOBAL.GetWaveDatabase()?.DataList;
             if (datalist != null) _waves = LockWaves(datalist);
@@ -112,12 +116,17 @@ namespace TowerDefence
 
         void OnApplicationQuit()
         {
+            SceneManager.activeSceneChanged -= CheckSave;
             SaveWaveIndex();
             _isSaved = true;
         }
-        void OnDestroy()
+        void CheckSave(Scene oldScene, Scene newScene)
         {
+            SceneManager.activeSceneChanged -= CheckSave;
+
             if (_isSaved == false) SaveWaveIndex();
+
+            _BaseMngr.e_BaseHasDied -= _BaseMngr_e_BaseHasDied;
         }
         void SaveWaveIndex()
         {
@@ -138,6 +147,7 @@ namespace TowerDefence
         void _BaseMngr_e_BaseHasDied(object sender, EventArgs e)
         {
             StopWave();
+            _TDPlayerController.OnGameOver();
 
             foreach (var enemy in ActiveEnemies)
             {
@@ -146,6 +156,15 @@ namespace TowerDefence
                     eb.Win();
                 }
             }
+
+            foreach (var tgo in ActiveTurretManager.ActiveTurrets)
+            {
+                if (tgo.TryGetComponent(out TurretUnit tu) == false) continue;
+
+                tu.OnGameLost();
+            }
+
+            _currentWaveIndex = Mathf.Max(_currentWaveIndex - 5, 0);
 
             _BaseMngr.e_BaseHasDied -= _BaseMngr_e_BaseHasDied;
         }
@@ -199,6 +218,13 @@ namespace TowerDefence
 
         IEnumerator WaveCoroutine()
         {
+            foreach (var ae in ActiveEnemies)
+            {
+                if (ae == null) continue;
+                Destroy(ae.gameObject);
+            }
+            ActiveEnemies = new();
+
             for (int i = 0; i < _currentEnemies.Count; i++)
             {
                 var ewl = _currentEnemies[i];
@@ -293,6 +319,7 @@ namespace TowerDefence
             WaveIsActive = false;
 
             GiveRewards();
+            //_CoreManager?.ResetCorePowers();
 
             if (_currentWaveIndex < _waves.Count - 1) _currentWaveIndex++;
 
@@ -345,6 +372,7 @@ namespace TowerDefence
         void SetWaveUp()
         {
             SetWaveValues();
+            _CoreManager?.OnWaveStart();
             //SetIndicatorValues();
             _TDPlayerController.EvaluateGameplayMode(WaveIsActive);
         }

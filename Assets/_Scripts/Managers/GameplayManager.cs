@@ -7,6 +7,7 @@ using System.Linq;
 using TowerDefence;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameplayManager : MonoBehaviour
 {
@@ -81,13 +82,19 @@ public class GameplayManager : MonoBehaviour
 
         LoadAllData();
     }
+    void Start()
+    {
+        SceneManager.activeSceneChanged += CheckSave;
+    }
     void OnApplicationQuit()
     {
+        SceneManager.activeSceneChanged -= CheckSave;
         SaveAllData();
         _isSaved = true;
     }
-    void OnDestroy()
+    void CheckSave(Scene oldScene, Scene newScene)
     {
+        SceneManager.activeSceneChanged -= CheckSave;
         if (_isSaved == false) SaveAllData();
     }
 
