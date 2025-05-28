@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using TMPro;
 using TowerDefence;
 using UnityEngine;
@@ -35,6 +36,7 @@ public class PlayerUpgradeManager : MonoBehaviour
         }
 
         [SerializeField] int _currentIndex = 0;
+
 
         public UpgradePiece? CurrentUpgrade
         {

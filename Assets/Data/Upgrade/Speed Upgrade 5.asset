@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c65a8dd4a3941c4dafe17e40d25a5fa, type: 3}
-  m_Name: Speed Upgrade 2
+  m_Name: Speed Upgrade 5
   m_EditorClassIdentifier: 
-  _displayName: Speed Upgrade X2
-  _id: upgrade-speed-2
-  _Description: Speed up to %120
+  _displayName: Speed Upgrade X3
+  _id: upgrade-speed-3
+  _Description: 150
   _UISprite: {fileID: 21300000, guid: f8b09dc77316b2a47b70781598722ed2, type: 3}
   _FloatValues:
   - Key: speed
-    Value: 1.2
+    Value: 1.5
   _GameObjectValues: []
