@@ -21,6 +21,7 @@ public class PlayerUpgradeManager : MonoBehaviour
         public string ID;
         public Button @Button;
         public TextMeshProUGUI CostTM;
+        public Image RPImage;
         public GameObject VisualParent;
         public List<UpgradePiece> Upgrades;
         public int CurrentIndex
@@ -61,13 +62,15 @@ public class PlayerUpgradeManager : MonoBehaviour
                 for (int i = 0; i < upgrade.BuyCost.Count; i++)
                 {
                     Cost buyCost = upgrade.BuyCost[i];
-                    CostTM.text += buyCost.Resource.DisplayName + " X " + buyCost.Amount;
+                    CostTM.text += /*buyCost.Resource.DisplayName + */" X " + buyCost.Amount;
                     if (i < upgrade.BuyCost.Count - 1) CostTM.text += "\n";
                 }
             }
             else if (IsFinished)
             {
                 CostTM.text = "MAXED OUT";
+                RPImage.gameObject.SetActive(false);
+
             }
         }
     }
