@@ -104,12 +104,14 @@ namespace SaveSystem
 
         [ContextMenu("Delete Save File")]
 
+#if UNITY_EDITOR
         [UnityEditor.MenuItem("Save System/Delete Save File")]
         public static void DeleteSaveFile()
         {
             File.Delete(_fullPath);
             Debug.Log($"EDITORDEBUG -> Save file at {_fullPath} is deleted.");
         }
+#endif
 
         /// <summary>
         /// Replaces player inventory in the current save. 

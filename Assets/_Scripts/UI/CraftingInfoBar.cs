@@ -1,6 +1,5 @@
 using TMPro;
 using TowerDefence;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class CraftingInfoBar : MonoBehaviour
