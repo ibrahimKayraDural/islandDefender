@@ -15,5 +15,5 @@ MonoBehaviour:
   _displayName: Force Core
   _id: core-force
   _Description: A core with an impactful force
-  _UISprite: {fileID: 21300000, guid: f4460917a1b21ce40a10c696381de8de, type: 3}
+  _UISprite: {fileID: 21300000, guid: c5e585770a764b74f883cbe31b469409, type: 3}
   _UsePerDay: 1

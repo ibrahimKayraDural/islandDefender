@@ -15,5 +15,5 @@ MonoBehaviour:
   _displayName: Phosphor Core
   _id: core-phosphor
   _Description: The phosphorus core
-  _UISprite: {fileID: 21300000, guid: b715d92a413ce804ebf669be72dd48bd, type: 3}
+  _UISprite: {fileID: 21300000, guid: e27e8d24d2e10b848a2e3512a0fae8be, type: 3}
   _UsePerDay: 1
