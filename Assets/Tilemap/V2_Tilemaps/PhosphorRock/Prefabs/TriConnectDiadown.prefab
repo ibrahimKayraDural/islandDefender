@@ -74,7 +74,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7749577559973047891, guid: cc2e0eb27f0590b44985e344263aa357, type: 3}
       propertyPath: RequiredDrillLevel
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

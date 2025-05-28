@@ -280,7 +280,7 @@ MonoBehaviour:
       m_Calls: []
   _Gains: []
   _MinableID: UNASSIGNED
-  RequiredDrillLevel: 3
+  RequiredDrillLevel: 1
   _MiningSFXCooldown: 0.25
   _MineDuration: 2
   _ForgetDuration: 0.5

@@ -22,19 +22,7 @@ MonoBehaviour:
       _wildCardValue: UNASSIGNED
     Cooldown: 15
   - Enemy:
-      _enemy: {fileID: 11400000, guid: 497aa653f34111048b53c7903a91ecc9, type: 2}
-      _isWildCard: 0
-      _wildCardID: UNASSIGNED
-      _wildCardValue: UNASSIGNED
-    Cooldown: 15
-  - Enemy:
-      _enemy: {fileID: 11400000, guid: 497aa653f34111048b53c7903a91ecc9, type: 2}
-      _isWildCard: 0
-      _wildCardID: UNASSIGNED
-      _wildCardValue: UNASSIGNED
-    Cooldown: 10
-  - Enemy:
-      _enemy: {fileID: 11400000, guid: 497aa653f34111048b53c7903a91ecc9, type: 2}
+      _enemy: {fileID: 11400000, guid: 7acbb34904e5b21448c5a180ea2dce44, type: 2}
       _isWildCard: 0
       _wildCardID: UNASSIGNED
       _wildCardValue: UNASSIGNED
@@ -51,6 +39,45 @@ MonoBehaviour:
       _wildCardID: UNASSIGNED
       _wildCardValue: UNASSIGNED
     Cooldown: 5
+  - Enemy:
+      _enemy: {fileID: 11400000, guid: 7acbb34904e5b21448c5a180ea2dce44, type: 2}
+      _isWildCard: 0
+      _wildCardID: UNASSIGNED
+      _wildCardValue: UNASSIGNED
+    Cooldown: 5
+  - Enemy:
+      _enemy: {fileID: 11400000, guid: 7acbb34904e5b21448c5a180ea2dce44, type: 2}
+      _isWildCard: 0
+      _wildCardID: UNASSIGNED
+      _wildCardValue: UNASSIGNED
+    Cooldown: 3
+  - Enemy:
+      _enemy: {fileID: 11400000, guid: 497aa653f34111048b53c7903a91ecc9, type: 2}
+      _isWildCard: 0
+      _wildCardID: UNASSIGNED
+      _wildCardValue: UNASSIGNED
+    Cooldown: 1
+  - Enemy:
+      _enemy: {fileID: 11400000, guid: 497aa653f34111048b53c7903a91ecc9, type: 2}
+      _isWildCard: 0
+      _wildCardID: UNASSIGNED
+      _wildCardValue: UNASSIGNED
+    Cooldown: 1
+  - Enemy:
+      _enemy: {fileID: 11400000, guid: 497aa653f34111048b53c7903a91ecc9, type: 2}
+      _isWildCard: 0
+      _wildCardID: UNASSIGNED
+      _wildCardValue: UNASSIGNED
+    Cooldown: 1
+  - Enemy:
+      _enemy: {fileID: 11400000, guid: 7acbb34904e5b21448c5a180ea2dce44, type: 2}
+      _isWildCard: 0
+      _wildCardID: UNASSIGNED
+      _wildCardValue: UNASSIGNED
+    Cooldown: 1
   _rewards:
   - Resource: {fileID: 11400000, guid: d0c0ceadfcdce394ba610da51a2a9bbf, type: 2}
     Count: 100
+  - Resource: {fileID: 11400000, guid: 169558a9b779cf74ca44a6954b916965, type: 2}
+    Count: 1
+  _unlockIDs: []

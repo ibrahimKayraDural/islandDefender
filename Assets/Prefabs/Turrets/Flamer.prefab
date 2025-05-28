@@ -5417,8 +5417,8 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 8
-    angle: 17.377785
-    length: 2.86
+    angle: 10.41411
+    length: 12.443077
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
     donutRadius: 0.2
@@ -9765,7 +9765,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5.0405927
+      scalar: 14.766155
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -28821,7 +28821,7 @@ MonoBehaviour:
   _Renderers:
   - {fileID: 9151001256974843767}
   _DeathDuration: 0.5
-  _ShootLenght: 6
+  _ShootLenght: 16
   _EnemyMask:
     serializedVersion: 2
     m_Bits: 128

@@ -73,9 +73,21 @@ PrefabInstance:
       value: TriConnectDiadown
       objectReference: {fileID: 0}
     - target: {fileID: 7749577559973047891, guid: cc2e0eb27f0590b44985e344263aa357, type: 3}
-      propertyPath: RequiredDrillLevel
-      value: 2
+      propertyPath: _Gains.Array.size
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7749577559973047891, guid: cc2e0eb27f0590b44985e344263aa357, type: 3}
+      propertyPath: RequiredDrillLevel
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7749577559973047891, guid: cc2e0eb27f0590b44985e344263aa357, type: 3}
+      propertyPath: _Gains.Array.data[0]._amount
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7749577559973047891, guid: cc2e0eb27f0590b44985e344263aa357, type: 3}
+      propertyPath: _Gains.Array.data[0]._resource
+      value: 
+      objectReference: {fileID: 11400000, guid: 0f8a29b6accb15f488e6ced493583b3a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
